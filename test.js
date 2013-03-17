@@ -23,6 +23,13 @@ require('leveldown/test/get-test').args(factory)
 require('leveldown/test/put-test').setUp(factory)
 require('leveldown/test/put-test').args(factory)
 
+require('leveldown/test/put-get-del-test').setUp(factory)
+require('leveldown/test/put-get-del-test').errorKeys()
+//require('leveldown/test/put-get-del-test').nonErrorKeys()
+require('leveldown/test/put-get-del-test').errorValues()
+//require('leveldown/test/put-get-del-test').nonErrorKeys()
+require('leveldown/test/put-get-del-test').tearDown()
+
 require('leveldown/test/approximate-size-test').setUp(factory)
 require('leveldown/test/approximate-size-test').args(factory)
 

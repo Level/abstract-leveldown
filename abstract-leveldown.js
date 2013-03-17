@@ -1,5 +1,17 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
+function checkKeyValue(obj, type) {
+  if (obj === null || obj === undefined)
+    return new Error(type + ' cannot be `null` or `undefined`')
+  if (obj === null || obj === undefined)
+    return new Error(type + ' cannot be `null` or `undefined`')
+  if (Buffer.isBuffer(obj)) {
+    if (obj.length === 0)
+      return new Error(type + ' cannot be an empty Buffer')
+  } else if (String(obj) === '')
+    return new Error(type + ' cannot be an empty String')
+}
+
 function AbstractIterator (db) {
   this.db = db
   this._ended = false
@@ -83,6 +95,8 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
     callback = options
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
+  var err = checkKeyValue(key, 'key')
+  if (err) return callback(err)
   if (typeof options != 'object')
     options = {}
 
@@ -97,6 +111,10 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
     callback = options
   if (typeof callback != 'function')
     throw new Error('put() requires a callback argument')
+  var err = checkKeyValue(value, 'value')
+  if (err) return callback(err)
+  err = checkKeyValue(key, 'key')
+  if (err) return callback(err)
   if (typeof options != 'object')
     options = {}
 
@@ -111,6 +129,8 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
     callback = options
   if (typeof callback != 'function')
     throw new Error('del() requires a callback argument')
+  var err = checkKeyValue(key, 'key')
+  if (err) return callback(err)
   if (typeof options != 'object')
     options = {}
 
