@@ -1,7 +1,7 @@
 {
     "name"            : "abstract-leveldown"
   , "description"     : "An abstract prototype matching the LevelDOWN API"
-  , "version"         : "0.0.1"
+  , "version"         : "0.0.2"
   , "homepage"        : "https://github.com/rvagg/node-abstract-leveldown"
   , "authors"         : [
         "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)"
