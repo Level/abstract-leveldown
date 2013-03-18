@@ -1,6 +1,6 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
-function checkKeyValue(obj, type) {
+function checkKeyValue (obj, type) {
   if (obj === null || obj === undefined)
     return new Error(type + ' cannot be `null` or `undefined`')
   if (obj === null || obj === undefined)
@@ -97,6 +97,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
     throw new Error('get() requires a callback argument')
   var err = checkKeyValue(key, 'key')
   if (err) return callback(err)
+  if (!Buffer.isBuffer(key)) key = String(key)
   if (typeof options != 'object')
     options = {}
 
@@ -115,6 +116,8 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (err) return callback(err)
   err = checkKeyValue(key, 'key')
   if (err) return callback(err)
+  if (!Buffer.isBuffer(key)) key = String(key)
+  if (!Buffer.isBuffer(value)) value = String(value)
   if (typeof options != 'object')
     options = {}
 
@@ -131,6 +134,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
     throw new Error('del() requires a callback argument')
   var err = checkKeyValue(key, 'key')
   if (err) return callback(err)
+  if (!Buffer.isBuffer(key)) key = String(key)
   if (typeof options != 'object')
     options = {}
 
@@ -165,6 +169,8 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   if (typeof callback != 'function')
     throw new Error('approximateSize() requires a callback argument')
 
+  if (!Buffer.isBuffer(start)) start = String(start)
+  if (!Buffer.isBuffer(end)) end = String(end)
   if (typeof this._approximateSize == 'function')
     return this._approximateSize(start, end, callback)
 
@@ -183,3 +189,4 @@ AbstractLevelDOWN.prototype.iterator = function (options) {
 
 module.exports.AbstractLevelDOWN = AbstractLevelDOWN
 module.exports.AbstractIterator  = AbstractIterator
+module.exports.checkKeyValue     = checkKeyValue
