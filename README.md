@@ -2,6 +2,8 @@
 
 An abstract prototype matching the [LevelDOWN](https://github.com/rvagg/node-leveldown/) API. Useful for extending [LevelUP](https://github.com/rvagg/node-levelup) functionality by providing a replacement to LevelDOWN.
 
+As of version 0.7, LevelUP allows you to pass a `'db'` option when you create a new instance. This will override the default LevelDOWN store with a LevelDOWN API compatible object.
+
 **Abstract LevelDOWN** provides a simple, operational *noop* base prototype that's ready for extending. By default, all operations have sensible "noops" (operations that essentially do nothing). For example, simple operations such as `.open(callback)` and `.close(callback)` will simply invoke the callback (on a *next tick*). More complex operations  perform sensible actions, for example: `.get(key, callback)` will always return a `'NotFound'` `Error` on the callback.
 
 You add functionality by implementing the underscore versions of the operations. For example, to implement a `put()` operation you add a `_put()` method to your object. Each of these underscore methods override the default *noop* operations and are always provided with **consistent arguments**, regardless of what is passed in by the client.
@@ -73,6 +75,8 @@ db.put('foo', 'bar', function (err) {
 })
 ```
 
+See [MemDOWN](https://github.com/rvagg/node-mem/) if you are looking for a complete in-memory replacement for LevelDOWN.
+
 ## Extensible API
 
 Remember that each of these methods, if you implement them, will receive exactly the number and order of arguments described. Optional arguments will be converted to sensible defaults.
@@ -98,8 +102,8 @@ By default an `iterator()` operation returns a blank `AbstractIterator` object. 
 
 Provided with the current instance of `AbstractLevelDOWN` by default.
 
-### AbstractIterator#next(callback)
-### AbstractIterator#end(callback)
+### AbstractIterator#_next(callback)
+### AbstractIterator#_end(callback)
 
 ## Licence
 
