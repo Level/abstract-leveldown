@@ -1,43 +1,43 @@
 var tap   = require('tap')
   , sinon = require('sinon')
   , util  = require('util')
+  , testCommon = require('./testCommon')
   , AbstractLevelDOWN = require('./').AbstractLevelDOWN
   , AbstractIterator = require('./').AbstractIterator
-
   , factory = function (location) {
       return new AbstractLevelDOWN(location)
     }
 
 /*** compatibility with basic LevelDOWN API ***/
 
-require('leveldown/test/leveldown-test').args(factory)
+require('./abstract/leveldown-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/open-test').args(factory)
+require('./abstract/open-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/del-test').setUp(factory)
-require('leveldown/test/del-test').args(factory)
+require('./abstract/del-test').setUp(factory, tap.test, testCommon)
+require('./abstract/del-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/get-test').setUp(factory)
-require('leveldown/test/get-test').args(factory)
+require('./abstract/get-test').setUp(factory, tap.test, testCommon)
+require('./abstract/get-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/put-test').setUp(factory)
-require('leveldown/test/put-test').args(factory)
+require('./abstract/put-test').setUp(factory, tap.test, testCommon)
+require('./abstract/put-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/put-get-del-test').setUp(factory)
-require('leveldown/test/put-get-del-test').errorKeys()
-//require('leveldown/test/put-get-del-test').nonErrorKeys()
-require('leveldown/test/put-get-del-test').errorValues()
-//require('leveldown/test/put-get-del-test').nonErrorKeys()
-require('leveldown/test/put-get-del-test').tearDown()
+require('./abstract/put-get-del-test').setUp(factory, tap.test, testCommon)
+require('./abstract/put-get-del-test').errorKeys(tap.test, testCommon)
+//require('./abstract/put-get-del-test').nonErrorKeys(tap.test, testCommon)
+require('./abstract/put-get-del-test').errorValues(tap.test, testCommon)
+//require('./abstract/test/put-get-del-test').nonErrorKeys(tap.test, testCommon)
+require('./abstract/put-get-del-test').tearDown(tap.test, testCommon)
 
-require('leveldown/test/approximate-size-test').setUp(factory)
-require('leveldown/test/approximate-size-test').args(factory)
+require('./abstract/approximate-size-test').setUp(factory, tap.test, testCommon)
+require('./abstract/approximate-size-test').args(factory, tap.test, testCommon)
 
-require('leveldown/test/close-test').close(factory)
+require('./abstract/close-test').close(factory, tap.test, testCommon)
 
-require('leveldown/test/iterator-test').setUp(factory)
-require('leveldown/test/iterator-test').args(factory)
-require('leveldown/test/iterator-test').sequence(factory)
+require('./abstract/iterator-test').setUp(factory, tap.test, testCommon)
+require('./abstract/iterator-test').args(factory, tap.test, testCommon)
+require('./abstract/iterator-test').sequence(factory, tap.test, testCommon)
 
 /*** extensibility ***/
 
