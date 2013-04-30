@@ -8,17 +8,25 @@ var db
         db.get(key, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
+<<<<<<< HEAD
+          t.ok(expectedError.test(expectedError), 'correct error message')
+=======
           console.log("GOT ERR!", err.message, expectedError)
           t.ok(err.message.match(expectedError), 'correct error message')
+>>>>>>> upstream/master
           t.end()
         })
-      })
+    })
 
       test('test del() with ' + type + ' causes error', function (t) {
         db.del(key, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
+<<<<<<< HEAD
+          t.ok(expectedError.test(expectedError), 'correct error message')
+=======
           t.ok(err.message.match(expectedError), 'correct error message')
+>>>>>>> upstream/master
           t.end()
         })
       })
@@ -29,7 +37,11 @@ var db
         db.put(key, value, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
+<<<<<<< HEAD
+          t.ok(expectedError.test(expectedError), 'correct error message')
+=======
           t.ok(err.message.match(expectedError), 'correct error message')
+>>>>>>> upstream/master
           t.end()
         })
       })

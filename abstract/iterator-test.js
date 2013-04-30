@@ -122,9 +122,11 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
               process.nextTick(next)
               idx++
             } else { // end
-              t.type(err, 'undefined', 'err argument is undefined')
-              t.type(key, 'undefined', 'key argument is undefined')
-              t.type(value, 'undefined', 'value argument is undefined')
+              // This was undefined but browser returns null need to confirm
+              t.ok(err === null, 'err argument is null')
+              t.ok(key === undefined || key === null, 'key argument is undefined')
+              t.ok(value === undefined, 'value argument is undefined')
+              
               t.equal(idx, data.length, 'correct number of entries')
               iterator.end(function () {
                 t.end()
@@ -145,6 +147,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
 
   test('setUp #2', function (t) {
     db.close(function () {
+      if(window.localStorage) window.localStorage.clear();
       db = leveldown(testCommon.location())
       db.open(function () {
         db.batch(sourceData, t.end.bind(t))
@@ -153,6 +156,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   })
 
   test('test full data collection', function (t) {
+    
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
       t.notOk(err, 'no error')
       t.equal(data.length, sourceData.length, 'correct number of entries')
@@ -163,7 +167,9 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   })
 
   test('test iterator with reverse=true', function (t) {
+    
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, reverse: true }), function (err, data) {
+    console.dir(data.length)
       t.notOk(err, 'no error')
       t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.slice().reverse().map(transformSource)

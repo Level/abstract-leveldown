@@ -43,6 +43,7 @@ module.exports.get = function (test) {
       t.notOk(err, 'no error')
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
+
         t.ok(typeof value !== 'string', 'should not be string by default')
         
         var result = value.toString()

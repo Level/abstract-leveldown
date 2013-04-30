@@ -47,6 +47,7 @@ module.exports.del = function (test) {
           t.ok(err, 'entry propertly deleted')
           var message = ""
           if (err) message = err.message
+
           t.ok(message.match(/NotFound/), 'returned NotFound')
           t.end()
         })
