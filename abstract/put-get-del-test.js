@@ -8,9 +8,7 @@ var db
         db.get(key, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
-          //t.type(err, Error)
           t.ok(expectedError.test(expectedError), 'correct error message')
-          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
     })
@@ -19,9 +17,7 @@ var db
         db.del(key, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
-          //t.type(err, Error)
           t.ok(expectedError.test(expectedError), 'correct error message')
-          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
       })
@@ -32,10 +28,7 @@ var db
         db.put(key, value, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
-          
-          //t.type(err, Error)
           t.ok(expectedError.test(expectedError), 'correct error message')
-          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
       })
@@ -53,7 +46,6 @@ var db
               db.get(key, function (err) {
                 t.ok(err, 'entry propertly deleted')
                 t.ok(err.message.indexOf('NotFound') > -1, 'Correct delete message') 
-                //like(err.message, /NotFound/)
                 t.end()
               })
             })
