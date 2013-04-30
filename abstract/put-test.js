@@ -52,7 +52,10 @@ module.exports.put = function (test) {
       t.notOk(err, 'no error')
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
-        t.equal(value.toString(), 'bar')
+        var result = value.toString()
+        if (value instanceof ArrayBuffer)
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        t.equal(result, 'bar')
         t.end()
       })
     })

@@ -7,8 +7,9 @@ var db
       test('test get() with ' + type + ' causes error', function (t) {
         db.get(key, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          console.log("GOT ERR!", err.message, expectedError)
+          t.ok(err.message.match(expectedError), 'correct error message')
           t.end()
         })
       })
@@ -16,8 +17,8 @@ var db
       test('test del() with ' + type + ' causes error', function (t) {
         db.del(key, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          t.ok(err.message.match(expectedError), 'correct error message')
           t.end()
         })
       })
@@ -27,8 +28,8 @@ var db
       test('test put() with ' + type + ' causes error', function (t) {
         db.put(key, value, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          t.ok(err.message.match(expectedError), 'correct error message')
           t.end()
         })
       })
@@ -40,12 +41,17 @@ var db
           t.notOk(err, 'no error')
           db.get(key, function (err, _value) {
             t.notOk(err, 'no error, has key/value for `' + key + '`')
-            t.equals(_value.toString(), value.toString())
+
+            var result = _value.toString()
+            if (_value instanceof ArrayBuffer)
+              result = String.fromCharCode.apply(null, new Uint16Array(_value))
+
+            t.equals(result, value)
             db.del(key, function (err) {
               t.notOk(err, 'no error, deleted key/value for `' + key + '`')
               db.get(key, function (err) {
                 t.ok(err, 'entry propertly deleted')
-                t.like(err.message, /NotFound/)
+                t.ok(err.message.match(/NotFound/))
                 t.end()
               })
             })
@@ -76,7 +82,8 @@ module.exports.errorKeys = function (testFunc) {
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest('empty Buffer key', new Buffer(0), /key cannot be an empty Buffer/)
+  if (process.browser) makeErrorKeyTest('empty ArrayBuffer key', new ArrayBuffer(0), /key cannot be an empty ArrayBuffer/)
+  else makeErrorKeyTest('empty Buffer key', new Buffer(0), /key cannot be an empty Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
 
@@ -108,7 +115,8 @@ module.exports.errorValues = function () {
   makePutErrorTest('null value', 'foo', null, /value cannot be `null` or `undefined`/)
   makePutErrorTest('undefined value', 'foo', undefined, /value cannot be `null` or `undefined`/)
   makePutErrorTest('empty String value', 'foo', '', /value cannot be an empty String/)
-  makePutErrorTest('empty Buffer value', 'foo', new Buffer(0), /value cannot be an empty Buffer/)
+  if (process.browser) makePutErrorTest('empty ArrayBuffer value', 'foo', new ArrayBuffer(0), /value cannot be an empty ArrayBuffer/)
+  else makePutErrorTest('empty Buffer value', 'foo', new Buffer(0), /value cannot be an empty Buffer/)
   makePutErrorTest('empty Array value', 'foo', [], /value cannot be an empty String/)
 }
 
