@@ -43,17 +43,18 @@ module.exports.get = function (test) {
       t.notOk(err, 'no error')
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
-        t.type(value, Buffer)
+        t.ok(value instanceof Buffer, 'instanceof buffer failed')
         t.equal(value.toString(), 'bar')
 
         db.get('foo', {}, function (err, value) { // same but with {}
           t.notOk(err, 'no error')
-          t.type(value, Buffer)
+          t.ok(value instanceof Buffer, 'instanceof buffer failed')
           t.equal(value.toString(), 'bar')
 
           db.get('foo', { asBuffer: false }, function (err, value) {
             t.notOk(err, 'no error')
-            t.type(value, 'string')
+            
+            t.ok(typeof value === 'string', 'instanceof string failed')
             t.equal(value, 'bar')
             t.end()
           })

@@ -55,7 +55,7 @@ AbstractIterator.prototype.end = function (callback) {
 
   process.nextTick(callback)
 }
-
+  
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
     throw new Error('leveldown() requires at least a location argument')

@@ -87,8 +87,8 @@ module.exports.approximateSize = function (test) {
 
               db.approximateSize('!', '~', function (err, size) {
                 t.notOk(err, 'no error')
-
-                t.type(size, 'number')
+                t.ok(size instanceof Number, "Approximate Size is a number")
+                //t.type(size, 'number')
                 t.ok(
                     size > 100000
                   , 'size reports a reasonable amount (' + size + ')'

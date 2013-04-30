@@ -7,17 +7,21 @@ var db
       test('test get() with ' + type + ' causes error', function (t) {
         db.get(key, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          //t.type(err, Error)
+          t.ok(expectedError.test(expectedError), 'correct error message')
+          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
-      })
+    })
 
       test('test del() with ' + type + ' causes error', function (t) {
         db.del(key, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          //t.type(err, Error)
+          t.ok(expectedError.test(expectedError), 'correct error message')
+          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
       })
@@ -27,8 +31,11 @@ var db
       test('test put() with ' + type + ' causes error', function (t) {
         db.put(key, value, function (err) {
           t.ok(err, 'has error')
-          t.type(err, Error)
-          t.like(err.message, expectedError, 'correct error message')
+          t.ok(err instanceof Error)
+          
+          //t.type(err, Error)
+          t.ok(expectedError.test(expectedError), 'correct error message')
+          //t.like(err.message, expectedError, 'correct error message')
           t.end()
         })
       })
@@ -45,7 +52,8 @@ var db
               t.notOk(err, 'no error, deleted key/value for `' + key + '`')
               db.get(key, function (err) {
                 t.ok(err, 'entry propertly deleted')
-                t.like(err.message, /NotFound/)
+                t.ok(err.message.indexOf('NotFound') > -1, 'Correct delete message') 
+                //like(err.message, /NotFound/)
                 t.end()
               })
             })
