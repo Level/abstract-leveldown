@@ -58,10 +58,10 @@ AbstractIterator.prototype.end = function (callback) {
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
-    throw new Error('leveldown() requires at least a location argument')
+    throw new Error('constructor requires at least a location argument')
 
   if (typeof location != 'string')
-    throw new Error('leveldown() requires a location string argument')
+    throw new Error('constructor requires a location string argument')
 
   this.location = location
 }
