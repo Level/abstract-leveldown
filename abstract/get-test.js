@@ -43,18 +43,26 @@ module.exports.get = function (test) {
       t.notOk(err, 'no error')
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
-        t.ok(value instanceof Buffer, 'instanceof buffer failed')
-        t.equal(value.toString(), 'bar')
+
+        t.ok(typeof value !== 'string', 'should not be string by default')
+        
+        var result = value.toString()
+        if (value instanceof ArrayBuffer)
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        t.equal(result, 'bar')
 
         db.get('foo', {}, function (err, value) { // same but with {}
           t.notOk(err, 'no error')
-          t.ok(value instanceof Buffer, 'instanceof buffer failed')
-          t.equal(value.toString(), 'bar')
+          t.ok(typeof value !== 'string', 'should not be string by default')
+          
+          var result = value.toString()
+          if (value instanceof ArrayBuffer)
+            result = String.fromCharCode.apply(null, new Uint16Array(value))
+          t.equal(result, 'bar')
 
           db.get('foo', { asBuffer: false }, function (err, value) {
             t.notOk(err, 'no error')
-            
-            t.ok(typeof value === 'string', 'instanceof string failed')
+            t.ok(typeof value === 'string', 'should be string if not buffer')
             t.equal(value, 'bar')
             t.end()
           })

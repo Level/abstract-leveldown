@@ -48,8 +48,7 @@ module.exports.del = function (test) {
           var message = ""
           if (err) message = err.message
 
-          t.ok(message.indexOf("NotFound") > -1)
-          
+          t.ok(message.match(/NotFound/), 'returned NotFound')
           t.end()
         })
 
