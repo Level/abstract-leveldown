@@ -54,6 +54,8 @@ var db
                 t.ok(err, 'entry propertly deleted')
                 t.ok(err.message.indexOf('NotFound') > -1, 'Correct delete message') 
                 //like(err.message, /NotFound/)
+
+                
                 t.end()
               })
             })
