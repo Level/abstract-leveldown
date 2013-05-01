@@ -46,7 +46,7 @@ var db
             if (_value instanceof ArrayBuffer)
               result = String.fromCharCode.apply(null, new Uint16Array(_value))
 
-            t.equals(result, value)
+            t.equals(result, value.toString())
             db.del(key, function (err) {
               t.notOk(err, 'no error, deleted key/value for `' + key + '`')
               db.get(key, function (err) {
