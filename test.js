@@ -358,6 +358,7 @@ tap.test('test next() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _next() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
   // awkward here cause of nextTick & an internal wrapped cb
+  //t.type(spy.getCall(0).args[0], 'function', 'got a callback function')
   t.ok(spy.getCall(0).args[0] instanceof Function, 'got a callback function')
   t.equal(spycb.callCount, 0, 'spycb not called')
   spy.getCall(0).args[0]()
