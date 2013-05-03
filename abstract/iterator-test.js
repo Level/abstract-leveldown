@@ -112,19 +112,18 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
 
     db.batch(data, function (err) {
       t.notOk(err, 'no error')
-
       var iterator = db.iterator()
         , fn = function (err, key, value) {
             t.notOk(err, 'no error')
             if (key && value) {
-              t.equal(key.toString(), data[idx].key, 'correct key')
-              t.equal(value.toString(), data[idx].value, 'correct value')
+              t.equal(JSON.stringify(key), JSON.stringify(data[idx].key), 'correct key')
+              t.equal(JSON.stringify(value), JSON.stringify(data[idx].value), 'correct value')
               process.nextTick(next)
               idx++
             } else { // end
-              t.type(err, 'undefined', 'err argument is undefined')
-              t.type(key, 'undefined', 'key argument is undefined')
-              t.type(value, 'undefined', 'value argument is undefined')
+              t.ok(typeof err === 'undefined', 'err argument is undefined')
+              t.ok(typeof key === 'undefined', 'key argument is undefined')
+              t.ok(typeof value === 'undefined', 'value argument is undefined')
               t.equal(idx, data.length, 'correct number of entries')
               iterator.end(function () {
                 t.end()
