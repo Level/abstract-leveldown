@@ -391,11 +391,17 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
       })
     })
   }
-
-  testIteratorCollectsFullDatabase(
-      'test iterator with start as empty buffer'
-    , { start: new Buffer(0) }
-  )
+  if (!process.browser) {
+    // Can't use buffers as query keys in indexeddb (I think :P)
+    testIteratorCollectsFullDatabase(
+        'test iterator with start as empty buffer'
+      , { start: new Buffer(0) }
+    )
+    testIteratorCollectsFullDatabase(
+        'test iterator with end as empty buffer'
+      , { end: new Buffer(0) }
+    )
+  }
   testIteratorCollectsFullDatabase(
       'test iterator with start as empty string'
     , { start: '' }
@@ -403,10 +409,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   testIteratorCollectsFullDatabase(
       'test iterator with start as null'
     , { start: null }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with end as empty buffer'
-    , { end: new Buffer(0) }
   )
   testIteratorCollectsFullDatabase(
       'test iterator with end as empty string'
