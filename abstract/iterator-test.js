@@ -112,7 +112,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
 
     db.batch(data, function (err) {
       t.notOk(err, 'no error')
-
       var iterator = db.iterator()
         , fn = function (err, key, value) {
             t.notOk(err, 'no error')
@@ -122,9 +121,9 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
               process.nextTick(next)
               idx++
             } else { // end
-              t.type(err, 'undefined', 'err argument is undefined')
-              t.type(key, 'undefined', 'key argument is undefined')
-              t.type(value, 'undefined', 'value argument is undefined')
+              t.ok(typeof err === 'undefined', 'err argument is undefined')
+              t.ok(typeof key === 'undefined', 'key argument is undefined')
+              t.ok(typeof value === 'undefined', 'value argument is undefined')
               t.equal(idx, data.length, 'correct number of entries')
               iterator.end(function () {
                 t.end()
@@ -392,11 +391,17 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
       })
     })
   }
-
-  testIteratorCollectsFullDatabase(
-      'test iterator with start as empty buffer'
-    , { start: new Buffer(0) }
-  )
+  if (!process.browser) {
+    // Can't use buffers as query keys in indexeddb (I think :P)
+    testIteratorCollectsFullDatabase(
+        'test iterator with start as empty buffer'
+      , { start: new Buffer(0) }
+    )
+    testIteratorCollectsFullDatabase(
+        'test iterator with end as empty buffer'
+      , { end: new Buffer(0) }
+    )
+  }
   testIteratorCollectsFullDatabase(
       'test iterator with start as empty string'
     , { start: '' }
@@ -404,10 +409,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   testIteratorCollectsFullDatabase(
       'test iterator with start as null'
     , { start: null }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with end as empty buffer'
-    , { end: new Buffer(0) }
   )
   testIteratorCollectsFullDatabase(
       'test iterator with end as empty string'
