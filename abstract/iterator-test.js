@@ -116,8 +116,8 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
         , fn = function (err, key, value) {
             t.notOk(err, 'no error')
             if (key && value) {
-              t.equal(JSON.stringify(key), JSON.stringify(data[idx].key), 'correct key')
-              t.equal(JSON.stringify(value), JSON.stringify(data[idx].value), 'correct value')
+              t.equal(key.toString(), data[idx].key, 'correct key')
+              t.equal(value.toString(), data[idx].value, 'correct value')
               process.nextTick(next)
               idx++
             } else { // end
