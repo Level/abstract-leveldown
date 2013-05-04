@@ -25,7 +25,7 @@ module.exports.args = function (leveldown, test, testCommon) {
 }
 
 module.exports.open = function (leveldown, test, testCommon) {
-  test('test database open', function (t) {
+  test('test database open, no options', function (t) {
     var db = leveldown(testCommon.location())
 
     // default createIfMissing=true, errorIfExists=false
@@ -37,6 +37,20 @@ module.exports.open = function (leveldown, test, testCommon) {
       })
   })
 
+  test('test database open, options', function (t) {
+    var db = leveldown(testCommon.location())
+
+    // default createIfMissing=true, errorIfExists=false
+    db.open({}, function (err) {
+        t.notOk(err, 'no error')
+        db.close(function () {
+          t.end()
+        })
+      })
+  })
+}
+
+module.exports.openAdvanced = function (leveldown, test, testCommon) {
   test('test database open createIfMissing:false', function (t) {
     var db = leveldown(testCommon.location())
 
@@ -77,5 +91,6 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(test, testCommon)
   module.exports.args(leveldown, test, testCommon)
   module.exports.open(leveldown, test, testCommon)
+  module.exports.openAdvanced(leveldown, test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
