@@ -25,19 +25,7 @@ module.exports.args = function (leveldown, test, testCommon) {
 }
 
 module.exports.open = function (leveldown, test, testCommon) {
-  test('test database open, no options', function (t) {
-    var db = leveldown(testCommon.location())
-
-    // default createIfMissing=true, errorIfExists=false
-    db.open(function (err) {
-        t.notOk(err, 'no error')
-        db.close(function () {
-          t.end()
-        })
-      })
-  })
-
-  test('test database open, options', function (t) {
+  test('test database open, options and callback', function (t) {
     var db = leveldown(testCommon.location())
 
     // default createIfMissing=true, errorIfExists=false
@@ -66,7 +54,7 @@ module.exports.openAdvanced = function (leveldown, test, testCommon) {
       , db       = leveldown(location)
 
     // make a valid database first, then close and dispose
-    db.open(function (err) {
+    db.open({}, function (err) {
       t.notOk(err, 'no error')
       db.close(function (err) {
         t.notOk(err, 'no error')
