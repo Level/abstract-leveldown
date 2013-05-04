@@ -41,9 +41,13 @@ var db
           db.get(key, function (err, _value) {
             t.notOk(err, 'no error, has key/value for `' + key + '`')
 
-            var result = _value.toString()
-            if (_value instanceof ArrayBuffer)
+            var result
+            if (_value instanceof ArrayBuffer) {
               result = String.fromCharCode.apply(null, new Uint16Array(_value))
+            } else {
+              t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer)
+              result= _value.toString()
+            }
 
             t.equals(result, value.toString())
             db.del(key, function (err) {

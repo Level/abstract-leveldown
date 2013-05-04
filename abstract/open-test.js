@@ -23,6 +23,7 @@ module.exports.args = function (leveldown, test, testCommon) {
     t.end()
   })
 }
+
 module.exports.open = function (leveldown, test, testCommon) {
   test('test database open', function (t) {
     var db = leveldown(testCommon.location())
