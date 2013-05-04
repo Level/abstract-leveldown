@@ -8,7 +8,6 @@ var db
         db.get(key, function (err) {
           t.ok(err, 'has error')
           t.ok(err instanceof Error)
-          console.log("GOT ERR!", err.message, expectedError)
           t.ok(err.message.match(expectedError), 'correct error message')
           t.end()
         })
