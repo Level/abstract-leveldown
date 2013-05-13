@@ -1,48 +1,7 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
-function AbstractIterator (db) {
-  this.db = db
-  this._ended = false
-  this._nexting = false
-}
-
-AbstractIterator.prototype.next = function (callback) {
-  if (typeof callback != 'function')
-    throw new Error('next() requires a callback argument')
-
-  if (this._ended)
-    throw new Error('cannot call next() after end()')
-  if (this._nexting)
-    throw new Error('cannot call next() before previous next() has completed')
-
-  this._nexting = true
-  if (typeof this._next == 'function') {
-    return this._next(function () {
-      this._nexting = false
-      callback.apply(null, arguments)
-    }.bind(this))
-  }
-
-  process.nextTick(function () {
-    this._nexting = false
-    callback()
-  }.bind(this))
-}
-
-AbstractIterator.prototype.end = function (callback) {
-  if (typeof callback != 'function')
-    throw new Error('end() requires a callback argument')
-
-  if (this._ended)
-    throw new Error('end() already called on iterator')
-
-  this._ended = true
-
-  if (typeof this._end == 'function')
-    return this._end(callback)
-
-  process.nextTick(callback)
-}
+var AbstractIterator     = require('./abstract-iterator')
+  , AbstractChainedBatch = require('./abstract-chained-batch')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
@@ -100,9 +59,9 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
     callback = options
   if (typeof callback != 'function')
     throw new Error('put() requires a callback argument')
-  var err = this._checkKeyValue(value, 'value', this._isBuffer)
+  var err = this._checkKeyValue(key, 'key', this._isBuffer)
   if (err) return callback(err)
-  err = this._checkKeyValue(key, 'key', this._isBuffer)
+  err = this._checkKeyValue(value, 'value', this._isBuffer)
   if (err) return callback(err)
   if (!this._isBuffer(key)) key = String(key)
   if (!this._isBuffer(value)) value = String(value)
@@ -134,16 +93,38 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
+  if (!arguments.length)
+    return this._chainedBatch()
+
   if (typeof options == 'function')
     callback = options
-  if (!Array.isArray(array) && typeof array == 'object') {
-    options = array
-    array = undefined
-  }
+  if (typeof callback != 'function')
+    throw new Error('batch(array) requires a callback argument')
+  if (!Array.isArray(array))
+    return callback(new Error('batch(array) requires an array argument'))
   if (typeof options != 'object')
     options = {}
 
-  // TODO: if array == undefined && callback == function, derp
+  var i = 0
+    , l = array.length
+    , e
+    , err
+
+  for (; i < l; i++) {
+    e = array[i]
+    if (typeof e != 'object') continue;
+
+    err = this._checkKeyValue(e.type, 'type', this._isBuffer)
+    if (err) return callback(err)
+
+    err = this._checkKeyValue(e.key, 'key', this._isBuffer)
+    if (err) return callback(err)
+
+    if (e.type == 'put') {
+      err = this._checkKeyValue(e.value, 'value', this._isBuffer)
+      if (err) return callback(err)
+    }
+  }
 
   if (typeof this._batch == 'function')
     return this._batch(array, options, callback)
@@ -173,6 +154,10 @@ AbstractLevelDOWN.prototype.iterator = function (options) {
     return this._iterator(options)
 
   return new AbstractIterator(this)
+}
+
+AbstractLevelDOWN.prototype._chainedBatch = function () {
+  return new AbstractChainedBatch(this)
 }
 
 AbstractLevelDOWN.prototype._isBuffer = function (obj) {

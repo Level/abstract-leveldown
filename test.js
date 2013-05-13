@@ -1,12 +1,13 @@
-var tap   = require('tap')
-  , sinon = require('sinon')
-  , util  = require('util')
-  , testCommon = require('./testCommon')
-  , AbstractLevelDOWN = require('./').AbstractLevelDOWN
-  , AbstractIterator = require('./').AbstractIterator
-  , factory = function (location) {
-      return new AbstractLevelDOWN(location)
-    }
+const tap               = require('tap')
+    , sinon             = require('sinon')
+    , util              = require('util')
+    , testCommon        = require('./testCommon')
+    , AbstractLevelDOWN = require('./').AbstractLevelDOWN
+    , AbstractIterator  = require('./').AbstractIterator
+
+function factory (location) {
+  return new AbstractLevelDOWN(location)
+}
 
 /*** compatibility with basic LevelDOWN API ***/
 
@@ -32,6 +33,12 @@ require('./abstract/put-get-del-test').tearDown(tap.test, testCommon)
 
 require('./abstract/approximate-size-test').setUp(factory, tap.test, testCommon)
 require('./abstract/approximate-size-test').args(factory, tap.test, testCommon)
+
+require('./abstract/batch-test').setUp(factory, tap.test, testCommon)
+require('./abstract/batch-test').args(tap.test)
+
+require('./abstract/chained-batch-test').setUp(factory, tap.test, testCommon)
+require('./abstract/chained-batch-test').args(tap.test)
 
 require('./abstract/close-test').close(factory, tap.test, testCommon)
 
@@ -264,41 +271,65 @@ tap.test('test batch() extensibility', function (t) {
 
   test = new Test('foobar')
 
-  test.batch()
+  test.batch(expectedArray, expectedCb)
 
   t.equal(spy.callCount, 1, 'got _batch() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(0).args[0], undefined, 'got expected array argument')
-  t.deepEqual(spy.getCall(0).args[1], {}, 'got blank options argument')
-  t.equal(spy.getCall(0).args[2], undefined, 'got expected callback argument')
+  t.equal(spy.getCall(0).args[0], expectedArray, 'got expected array argument')
+  t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
+  t.equal(spy.getCall(0).args[2], expectedCb, 'got expected callback argument')
 
-  test.batch(expectedOptions)
+  test.batch(expectedArray, expectedOptions, expectedCb)
 
   t.equal(spy.callCount, 2, 'got _batch() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(1).args[0], undefined, 'got expected array argument')
+  t.equal(spy.getCall(1).args[0], expectedArray, 'got expected array argument')
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
-  t.equal(spy.getCall(1).args[2], undefined, 'got expected callback argument')
+  t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
-  test.batch(expectedArray, expectedCb)
+  t.end()
+})
 
-  t.equal(spy.callCount, 3, 'got _batch() call')
-  t.equal(spy.getCall(2).thisValue, test, '`this` on _batch() was correct')
-  t.equal(spy.getCall(2).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(2).args[0], expectedArray, 'got expected array argument')
-  t.deepEqual(spy.getCall(2).args[1], {}, 'got expected options argument')
-  t.equal(spy.getCall(2).args[2], expectedCb, 'got expected callback argument')
+tap.test('test chained batch() extensibility', function (t) {
+  var spy = sinon.spy()
+    , expectedCb = function () {}
+    , expectedOptions = { options: 1 }
+    , expectedArray = [ 1, 2 ]
+    , test
 
-  test.batch(expectedArray, expectedOptions, expectedCb)
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
 
-  t.equal(spy.callCount, 4, 'got _batch() call')
-  t.equal(spy.getCall(3).thisValue, test, '`this` on _batch() was correct')
-  t.equal(spy.getCall(3).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(3).args[0], expectedArray, 'got expected array argument')
-  t.deepEqual(spy.getCall(3).args[1], expectedOptions, 'got expected options argument')
-  t.equal(spy.getCall(3).args[2], expectedCb, 'got expected callback argument')
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+
+  test.batch().put('foo', 'bar').del('bang').write(expectedCb)
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _batch() was correct')
+  t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
+  t.equal(spy.getCall(0).args[0].length, 2, 'got expected array argument')
+  t.deepEqual(spy.getCall(0).args[0][0], { type: 'put', key: 'foo', value: 'bar' }, 'got expected array argument[0]')
+  t.deepEqual(spy.getCall(0).args[0][1], { type: 'del', key: 'bang' }, 'got expected array argument[1]')
+  t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
+  t.equal(spy.getCall(0).args[2], expectedCb, 'got expected callback argument')
+
+  test.batch().put('foo', 'bar').del('bang').write(expectedOptions, expectedCb)
+
+  t.equal(spy.callCount, 2, 'got _batch() call')
+  t.equal(spy.getCall(1).thisValue, test, '`this` on _batch() was correct')
+  t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
+  t.equal(spy.getCall(1).args[0].length, 2, 'got expected array argument')
+  t.deepEqual(spy.getCall(1).args[0][0], { type: 'put', key: 'foo', value: 'bar' }, 'got expected array argument[0]')
+  t.deepEqual(spy.getCall(1).args[0][1], { type: 'del', key: 'bang' }, 'got expected array argument[1]')
+  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
+  t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
   t.end()
 })
