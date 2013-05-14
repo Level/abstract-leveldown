@@ -34,7 +34,7 @@ AbstractIterator.prototype.end = function (callback) {
     throw new Error('end() requires a callback argument')
 
   if (this._ended)
-    throw new Error('end() already called on iterator')
+    return callback(new Error('end() already called on iterator'))
 
   this._ended = true
 
