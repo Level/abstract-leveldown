@@ -23,7 +23,6 @@ module.exports.args = function (test) {
 
   test('test batch() with null `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1', value: null }], function (err) {
-      console.error('err', err)
       t.like(err.message, /value cannot be `null` or `undefined`/, 'correct error message')
       t.end()
     })
