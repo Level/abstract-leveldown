@@ -10,10 +10,14 @@ AbstractIterator.prototype.next = function (callback) {
   if (typeof callback != 'function')
     throw new Error('next() requires a callback argument')
 
-  if (this._ended)
-    throw new Error('cannot call next() after end()')
-  if (this._nexting)
-    throw new Error('cannot call next() before previous next() has completed')
+  if (this._ended) {
+    callback(new Error('cannot call next() after end()'))
+    return;
+  }
+  if (this._nexting) {
+    callback(new Error('cannot call next() before previous next() has completed'))
+    return;
+  }
 
   this._nexting = true
   if (typeof this._next == 'function') {
