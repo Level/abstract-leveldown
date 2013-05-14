@@ -58,29 +58,27 @@ module.exports.args = function (test) {
 }
 
 module.exports.sequence = function (test) {
-  test('test twice iterator#end() throws', function (t) {
+  test('test twice iterator#end() callback with error', function (t) {
     var iterator = db.iterator()
     iterator.end(function (err) {
       t.notOk(err, 'no error')
-      t.throws(
-          iterator.end.bind(iterator, function () {})
-        , { name: 'Error', message: 'end() already called on iterator' }
-        , 'no-arg iterator#next() throws'
-      )
-      t.end()
+      iterator.end(function(err2) {
+        var expected = { name: 'Error', message: 'end() already called on iterator' }
+        t.deepEqual(err2, expected, 'error expected in the callback')
+        t.end()
+      })
     })
   })
 
-  test('test iterator#next after iterator#end() throws', function (t) {
+  test('test iterator#next after iterator#end() callback with error', function (t) {
     var iterator = db.iterator()
     iterator.end(function (err) {
       t.notOk(err, 'no error')
-      t.throws(
-          iterator.next.bind(iterator, function () {})
-        , { name: 'Error', message: 'cannot call next() after end()' }
-        , 'no-arg iterator#next() after iterator#end() throws'
-      )
-      t.end()
+      iterator.next(function(err2) {
+        var expected = { name: 'Error', message: 'cannot call next() after end()' }
+        t.deepEqual(err2, expected, 'error expected in the callback')
+        t.end()
+      })
     })
   })
 
@@ -93,11 +91,11 @@ module.exports.sequence = function (test) {
         t.end()
       })
     })
-    t.throws(
-        iterator.next.bind(iterator, function () {})
-      , { name: 'Error', message: 'cannot call next() before previous next() has completed' }
-      , 'no-arg iterator#next() throws'
-    )
+    iterator.next(function(err) {
+      var expected = { name: 'Error', message: 'cannot call next() before previous next() has completed' }
+      t.deepEqual(err, expected, 'error expected in the callback')
+      t.end()
+    })
   })
 }
 
