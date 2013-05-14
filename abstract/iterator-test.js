@@ -63,8 +63,9 @@ module.exports.sequence = function (test) {
     iterator.end(function (err) {
       t.notOk(err, 'no error')
       iterator.end(function(err2) {
-        var expected = { name: 'Error', message: 'end() already called on iterator' }
-        t.deepEqual(err2, expected, 'error expected in the callback')
+        t.ok(err2, 'returned error')
+        t.equal(err2.name, 'Error', 'correct error')
+        t.equal(err2.message, 'end() already called on iterator')
         t.end()
       })
     })
@@ -75,8 +76,9 @@ module.exports.sequence = function (test) {
     iterator.end(function (err) {
       t.notOk(err, 'no error')
       iterator.next(function(err2) {
-        var expected = { name: 'Error', message: 'cannot call next() after end()' }
-        t.deepEqual(err2, expected, 'error expected in the callback')
+        t.ok(err2, 'returned error')
+        t.equal(err2.name, 'Error', 'correct error')
+        t.equal(err2.message, 'cannot call next() after end()', 'correct message')
         t.end()
       })
     })
@@ -92,8 +94,9 @@ module.exports.sequence = function (test) {
       })
     })
     iterator.next(function(err) {
-      var expected = { name: 'Error', message: 'cannot call next() before previous next() has completed' }
-      t.deepEqual(err, expected, 'error expected in the callback')
+      t.ok(err, 'returned error')
+      t.equal(err.name, 'Error', 'correct error')
+      t.equal(err.message, 'cannot call next() before previous next() has completed')
       t.end()
     })
   })
