@@ -30,6 +30,11 @@ AbstractChainedBatch.prototype.del = function (key) {
   return this
 }
 
+AbstractChainedBatch.prototype.clear = function () {
+  this._operations = []
+  return this
+}
+
 AbstractChainedBatch.prototype.write = function (options, callback) {
   if (typeof options == 'function')
     callback = options

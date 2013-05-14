@@ -89,6 +89,11 @@ module.exports.args = function (test) {
     t.fail('should have thrown')
   })
 
+  test('test batch#clear() doesn\'t throw', function (t) {
+    db.batch().clear()
+    t.end()
+  })
+
   test('test batch#write() with no callback', function (t) {
     try {
       db.batch().write()
@@ -112,6 +117,10 @@ module.exports.batch = function (test, testCommon) {
           t.notOk(err, 'no error')
 
           db.batch()
+            .put('1', 'one')
+            .del('2', 'two')
+            .put('3', 'three')
+            .clear()
             .put('one', 'I')
             .put('two', 'II')
             .del('three')
