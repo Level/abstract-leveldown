@@ -1,7 +1,7 @@
 {
     "name"            : "abstract-leveldown"
   , "description"     : "An abstract prototype matching the LevelDOWN API"
-  , "version"         : "0.4.0"
+  , "version"         : "0.4.0-1"
   , "homepage"        : "https://github.com/rvagg/node-abstract-leveldown"
   , "contributors"    : [
         "Rod Vagg <r@va.gg> (https://github.com/rvagg)"
@@ -13,6 +13,8 @@
       , "David Björklund <david.bjorklund@gmail.com> (https://github.com/kesla)"
       , "Julian Gruber <julian@juliangruber.com> (https://github.com/juliangruber)"
       , "Paolo Fragomeni <paolo@async.ly> (https://github.com/hij1nx)"
+      , "Anton Whalley <anton.whalley@nearform.com> (https://github.com/No9)"
+      , "Matteo Collina <matteo.collina@gmail.com> (https://github.com/mcollina)"
     ]
   , "authors"         : [
         "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)"
