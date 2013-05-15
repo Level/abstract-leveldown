@@ -106,7 +106,7 @@ module.exports.args = function (test) {
 }
 
 module.exports.batch = function (test, testCommon) {
-  test('basic batch', function (t) {
+  test('test basic batch', function (t) {
     db.batch(
         [
             { type: 'put', key: 'one', value: '1' }
