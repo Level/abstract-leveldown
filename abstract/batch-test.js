@@ -16,35 +16,35 @@ module.exports.args = function (test) {
 
   test('test batch() with missing `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1' }], function (err) {
-      t.like(err.message, /value cannot be `null` or `undefined`/, 'correct error message')
+      t.equal(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
       t.end()
     })
   })
 
   test('test batch() with null `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1', value: null }], function (err) {
-      t.like(err.message, /value cannot be `null` or `undefined`/, 'correct error message')
+      t.equal(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
       t.end()
     })
   })
 
   test('test batch() with missing `key`', function (t) {
     db.batch([{ type: 'put', value: 'foo1' }], function (err) {
-      t.like(err.message, /key cannot be `null` or `undefined`/, 'correct error message')
+      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
       t.end()
     })
   })
 
   test('test batch() with null `key`', function (t) {
     db.batch([{ type: 'put', key: null, value: 'foo1' }], function (err) {
-      t.like(err.message, /key cannot be `null` or `undefined`/, 'correct error message')
+      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
       t.end()
     })
   })
 
   test('test batch() with missing `key` and `value`', function (t) {
     db.batch([{ type: 'put' }], function (err) {
-      t.like(err.message, /key cannot be `null` or `undefined`/, 'correct error message')
+      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
       t.end()
     })
   })
@@ -64,9 +64,14 @@ module.exports.batch = function (test) {
 
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
-        t.type(value, Buffer)
-        t.equal(value.toString(), 'bar')
-
+        var result
+        if (value instanceof ArrayBuffer) {
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        } else {
+          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          result = value.toString()
+        }
+        t.equal(result, 'bar')
         t.end()
       })
     })
@@ -89,22 +94,34 @@ module.exports.batch = function (test) {
 
       db.get('foobatch1', function (err, value) {
         t.notOk(err, 'no error')
-        t.type(value, Buffer)
-        t.equal(value.toString(), 'bar1')
+        var result
+        if (value instanceof ArrayBuffer) {
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        } else {
+          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          result = value.toString()
+        }
+        t.equal(result, 'bar1')
         done()
       })
 
       db.get('foobatch2', function (err, value) {
         t.ok(err, 'entry not found')
         t.notOk(value, 'value not returned')
-        t.like(err.message, /NotFound/)
+        t.ok(/NotFound/.test(err.message), 'NotFound error')
         done()
       })
 
       db.get('foobatch3', function (err, value) {
         t.notOk(err, 'no error')
-        t.type(value, Buffer)
-        t.equal(value.toString(), 'bar3')
+        var result
+        if (value instanceof ArrayBuffer) {
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        } else {
+          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          result = value.toString()
+        }
+        t.equal(result, 'bar3')
         done()
       })
     })

@@ -50,7 +50,7 @@ module.exports.get = function (test) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
-          result= value.toString()
+          result = value.toString()
         }
 
         t.equal(result, 'bar')
@@ -64,7 +64,7 @@ module.exports.get = function (test) {
             result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
             t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
-            result= value.toString()
+            result = value.toString()
           }
 
           t.equal(result, 'bar')

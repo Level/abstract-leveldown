@@ -46,7 +46,7 @@ var db
               result = String.fromCharCode.apply(null, new Uint16Array(_value))
             } else {
               t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer)
-              result= _value.toString()
+              result = _value.toString()
             }
 
             t.equals(result, value.toString())
