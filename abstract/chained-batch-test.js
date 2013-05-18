@@ -17,6 +17,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#put() with null `value`', function (t) {
@@ -27,6 +28,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#put() with missing `key`', function (t) {
@@ -37,6 +39,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#put() with null `key`', function (t) {
@@ -47,6 +50,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#put() with missing `key` and `value`', function (t) {
@@ -57,6 +61,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#del() with missing `key`', function (t) {
@@ -67,6 +72,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#del() with null `key`', function (t) {
@@ -77,6 +83,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#del() with null `key`', function (t) {
@@ -87,6 +94,7 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
   })
 
   test('test batch#clear() doesn\'t throw', function (t) {
@@ -102,6 +110,59 @@ module.exports.args = function (test) {
       return t.end()
     }
     t.fail('should have thrown')
+    t.end()
+  })
+
+  test('test batch#put() after write()', function (t) {
+    var batch = db.batch().put('foo', 'bar')
+    batch.write(function () {})
+    try {
+      batch.put('boom', 'bang')
+    } catch (err) {
+      t.equal(err.message, 'write() already called on this batch', 'correct error message')
+      return t.end()
+    }
+    t.fail('should have thrown')
+    t.end()
+  })
+
+  test('test batch#del() after write()', function (t) {
+    var batch = db.batch().put('foo', 'bar')
+    batch.write(function () {})
+    try {
+      batch.del('foo')
+    } catch (err) {
+      t.equal(err.message, 'write() already called on this batch', 'correct error message')
+      return t.end()
+    }
+    t.fail('should have thrown')
+    t.end()
+  })
+
+  test('test batch#clear() after write()', function (t) {
+    var batch = db.batch().put('foo', 'bar')
+    batch.write(function () {})
+    try {
+      batch.clear()
+    } catch (err) {
+      t.equal(err.message, 'write() already called on this batch', 'correct error message')
+      return t.end()
+    }
+    t.fail('should have thrown')
+    t.end()
+  })
+
+  test('test batch#write() after write()', function (t) {
+    var batch = db.batch().put('foo', 'bar')
+    batch.write(function () {})
+    try {
+      batch.write(function (err) {})
+    } catch (err) {
+      t.equal(err.message, 'write() already called on this batch', 'correct error message')
+      return t.end()
+    }
+    t.fail('should have thrown')
+    t.end()
   })
 }
 
