@@ -41,20 +41,26 @@ var db
           db.get(key, function (err, _value) {
             t.notOk(err, 'no error, has key/value for `' + key + '`')
 
-            var result
+            var result, valueString
             if (_value instanceof ArrayBuffer) {
               result = String.fromCharCode.apply(null, new Uint16Array(_value))
             } else {
-              t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer)
+              t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer, 'is a Buffer')
               result = _value.toString()
             }
-
-            t.equals(result, value.toString())
+            
+            if (value instanceof ArrayBuffer) {
+              value  = String.fromCharCode.apply(null, new Uint16Array(value))
+            } else {
+              value = value.toString()
+            }
+            
+            t.equals(result, value)
             db.del(key, function (err) {
               t.notOk(err, 'no error, deleted key/value for `' + key + '`')
               db.get(key, function (err) {
                 t.ok(err, 'entry propertly deleted')
-                t.ok(err.message.match(/NotFound/))
+                t.ok(err.message.match(/NotFound/), 'is NotFound')
                 t.end()
               })
             })
@@ -105,10 +111,12 @@ module.exports.nonErrorKeys = function () {
     , 'foo'
   )
 
-  // Buffer key
-  makePutGetDelSuccessfulTest('Buffer key', testBuffer, 'foo')
+  if (!process.browser) {
+    // Buffer key
+    makePutGetDelSuccessfulTest('Buffer key', testBuffer, 'foo')
+  }
 
-  // non-empty Array as a key
+  // non-empty Array as a value
   makePutGetDelSuccessfulTest('Array value', 'foo', [1,2,3,4])
 }
 
@@ -137,10 +145,10 @@ module.exports.nonErrorKeys = function () {
   )
 
   // standard Buffer value
-  makePutGetDelSuccessfulTest('Buffer key', 'foo', testBuffer)
+  makePutGetDelSuccessfulTest('Buffer value', 'foo', testBuffer)
 
-  // non-empty Array as a value
-  makePutGetDelSuccessfulTest('Array value', [1,2,3,4], 'foo')
+  // non-empty Array as a key
+  makePutGetDelSuccessfulTest('Array key', [1,2,3,4], 'foo')
 }
 
 /**** CLEANUP ENVIRONMENT ****/
