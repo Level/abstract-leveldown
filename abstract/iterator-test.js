@@ -93,6 +93,7 @@ module.exports.sequence = function (test) {
         t.end()
       })
     })
+
     iterator.next(function(err) {
       t.ok(err, 'returned error')
       t.equal(err.name, 'Error', 'correct error')

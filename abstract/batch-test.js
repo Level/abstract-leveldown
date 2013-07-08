@@ -108,7 +108,7 @@ module.exports.batch = function (test) {
       db.get('foobatch2', function (err, value) {
         t.ok(err, 'entry not found')
         t.notOk(value, 'value not returned')
-        t.ok(/NotFound/.test(err.message), 'NotFound error')
+        t.ok((/NotFound/i).test(err.message), 'NotFound error')
         done()
       })
 

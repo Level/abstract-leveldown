@@ -54,7 +54,7 @@ var db
               t.notOk(err, 'no error, deleted key/value for `' + key + '`')
               db.get(key, function (err) {
                 t.ok(err, 'entry propertly deleted')
-                t.ok(err.message.match(/NotFound/))
+                t.ok(err.message.match(/NotFound/i))
                 t.end()
               })
             })

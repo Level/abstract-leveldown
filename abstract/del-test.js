@@ -47,11 +47,18 @@ module.exports.del = function (test) {
           t.ok(err, 'entry propertly deleted')
           var message = ""
           if (err) message = err.message
-          t.ok(message.match(/NotFound/), 'returned NotFound')
+          t.ok(message.match(/NotFound/i), 'returned NotFound')
           t.end()
         })
 
       })
+    })
+  })
+
+  test('test del on non-existent key', function (t) {
+    db.del('blargh', function (err) {
+      t.notOk(err, 'should not error on delete')
+      t.end()
     })
   })
 }

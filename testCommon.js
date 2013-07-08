@@ -1,7 +1,6 @@
 const path      = require('path')
     , fs        = require('fs')
     , rimraf    = require('rimraf')
-    , test      = require('tap').test
 
 var dbidx = 0
 
