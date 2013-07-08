@@ -38,20 +38,21 @@ AbstractLevelDOWN.prototype.close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
+  var self = this
   if (typeof options == 'function')
     callback = options
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
-  var err = this._checkKeyValue(key, 'key', this._isBuffer)
+  var err = self._checkKeyValue(key, 'key', self._isBuffer)
   if (err) return callback(err)
-  if (!this._isBuffer(key)) key = String(key)
+  if (!self._isBuffer(key)) key = String(key)
   if (typeof options != 'object')
     options = {}
 
-  if (typeof this._get == 'function')
-    return this._get(key, options, callback)
+  if (typeof self._get == 'function')
+    return self._get(key, options, callback)
 
-  process.nextTick(callback.bind(null, new Error('NotFound')))
+  process.nextTick(function () { callback(new Error('NotFound')) })
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
@@ -144,7 +145,7 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   if (typeof this._approximateSize == 'function')
     return this._approximateSize(start, end, callback)
 
-  process.nextTick(callback.bind(null, null, 0))
+  process.nextTick(function () { callback(null, 0) })
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
