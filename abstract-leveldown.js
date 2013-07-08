@@ -64,10 +64,11 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   err = this._checkKeyValue(value, 'value', this._isBuffer)
   if (err) return callback(err)
   if (!this._isBuffer(key)) key = String(key)
-  if (!this._isBuffer(value)) value = String(value)
+  // coerce value to string in node, dont touch it in browser
+  // (indexeddb can store any JS type)
+  if (!this._isBuffer(value) && !process.browser) value = String(value)
   if (typeof options != 'object')
     options = {}
-
   if (typeof this._put == 'function')
     return this._put(key, value, options, callback)
 

@@ -362,6 +362,14 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
+  test('test iterator with start after database end', function (t) {
+    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a' }), function (err, data) {
+      t.notOk(err, 'no error')
+      t.equal(data.length, 0, 'correct number of entries')
+      t.end()
+    })
+  })
+
   test('test iterator with start after database end and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a', reverse: true }), function (err, data) {
       t.notOk(err, 'no error')

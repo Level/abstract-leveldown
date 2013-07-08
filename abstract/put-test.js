@@ -60,6 +60,20 @@ module.exports.put = function (test) {
       })
     })
   })
+  
+  if (process.browser) {
+    test('test object value put()', function (t) {
+      db.put('dood', {pete: 'sampras'}, function (err) {
+        t.notOk(err, 'no error')
+        db.get('dood', { asBuffer: false }, function (err, value) {
+          t.notOk(err, 'no error')
+          t.equal(JSON.stringify(value), JSON.stringify({pete: 'sampras'}))
+          t.end()
+        })
+      })
+    })
+  }
+
 }
 
 module.exports.tearDown = function (test, testCommon) {
