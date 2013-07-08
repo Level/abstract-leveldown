@@ -7,26 +7,28 @@ function AbstractIterator (db) {
 }
 
 AbstractIterator.prototype.next = function (callback) {
+  var self = this
+
   if (typeof callback != 'function')
     throw new Error('next() requires a callback argument')
 
-  if (this._ended)
+  if (self._ended)
     return callback(new Error('cannot call next() after end()'))
-  if (this._nexting)
+  if (self._nexting)
     return callback(new Error('cannot call next() before previous next() has completed'))
 
-  this._nexting = true
-  if (typeof this._next == 'function') {
-    return this._next(function () {
-      this._nexting = false
+  self._nexting = true
+  if (typeof self._next == 'function') {
+    return self._next(function () {
+      self._nexting = false
       callback.apply(null, arguments)
-    }.bind(this))
+    })
   }
 
   process.nextTick(function () {
-    this._nexting = false
+    self._nexting = false
     callback()
-  }.bind(this))
+  })
 }
 
 AbstractIterator.prototype.end = function (callback) {
