@@ -342,7 +342,8 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with limit=-1', function (t) {
+  // the default limit value from levelup is -1
+  test('test iterator with limit=-1 should iterate over whole database', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: -1}), function (err, data) {
       t.notOk(err, 'no error')
       t.equal(data.length, sourceData.length, 'correct number of entries')
