@@ -1,6 +1,6 @@
-const path      = require('path')
-    , fs        = !process.browser && require('fs')
-    , rimraf    = !process.browser && require('rimraf')
+var path      = require('path')
+  , fs        = !process.browser && require('fs')
+  , rimraf    = !process.browser && require('rimraf')
 
 var dbidx = 0
 
