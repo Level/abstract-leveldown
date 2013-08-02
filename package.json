@@ -33,6 +33,9 @@
       , "sinon"           : "*"
       , "rimraf"          : "*"
     }
+  , "browser"         : {
+        "rimraf"          : false
+    }
   , "scripts": {
         "test"            : "node ./test.js"
     }

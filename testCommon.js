@@ -1,6 +1,6 @@
 const path      = require('path')
-    , fs        = require('fs')
-    , rimraf    = require('rimraf')
+    , fs        = process.title != 'browser' && require('fs')
+    , rimraf    = process.title != 'browser' && require('rimraf')
 
 var dbidx = 0
 
@@ -13,25 +13,27 @@ var dbidx = 0
     }
 
   , cleanup = function (callback) {
-      fs.readdir(__dirname, function (err, list) {
-        if (err) return callback(err)
+      if (process.title != 'browser') {
+        fs.readdir(__dirname, function (err, list) {
+          if (err) return callback(err)
 
-        list = list.filter(function (f) {
-          return (/^_leveldown_test_db_/).test(f)
-        })
+          list = list.filter(function (f) {
+            return (/^_leveldown_test_db_/).test(f)
+          })
 
-        if (!list.length)
-          return callback()
+          if (!list.length)
+            return callback()
 
-        var ret = 0
+          var ret = 0
 
-        list.forEach(function (f) {
-          rimraf(path.join(__dirname, f), function (err) {
-            if (++ret == list.length)
-              callback()
+          list.forEach(function (f) {
+            rimraf(path.join(__dirname, f), function (err) {
+              if (++ret == list.length)
+                callback()
+            })
           })
         })
-      })
+      }
     }
 
   , setUp = function (t) {
