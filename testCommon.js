@@ -1,6 +1,6 @@
 const path      = require('path')
-    , fs        = process.title != 'browser' && require('fs')
-    , rimraf    = process.title != 'browser' && require('rimraf')
+    , fs        = !process.browser && require('fs')
+    , rimraf    = !process.browser && require('rimraf')
 
 var dbidx = 0
 
@@ -13,8 +13,9 @@ var dbidx = 0
     }
 
   , cleanup = function (callback) {
-      if (process.title == 'browser')
+      if (process.browser)
         return callback()
+
       fs.readdir(__dirname, function (err, list) {
         if (err) return callback(err)
 

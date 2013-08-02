@@ -1,5 +1,9 @@
 var db
 
+function isTypedArray (value) {
+  return value instanceof ArrayBuffer || value instanceof Uint8Array
+}
+
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
@@ -65,7 +69,7 @@ module.exports.batch = function (test) {
       db.get('foo', function (err, value) {
         t.notOk(err, 'no error')
         var result
-        if (value instanceof ArrayBuffer) {
+        if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
@@ -95,7 +99,7 @@ module.exports.batch = function (test) {
       db.get('foobatch1', function (err, value) {
         t.notOk(err, 'no error')
         var result
-        if (value instanceof ArrayBuffer) {
+        if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
@@ -115,7 +119,7 @@ module.exports.batch = function (test) {
       db.get('foobatch3', function (err, value) {
         t.notOk(err, 'no error')
         var result
-        if (value instanceof ArrayBuffer) {
+        if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)

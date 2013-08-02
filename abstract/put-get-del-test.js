@@ -1,5 +1,9 @@
 /**** SETUP & UTILITY STUFF ****/
 
+function isTypedArray (value) {
+  return value instanceof ArrayBuffer || value instanceof Uint8Array
+}
+
 var db
   , testBuffer
   , test
@@ -42,14 +46,14 @@ var db
             t.notOk(err, 'no error, has key/value for `' + key + '`')
 
             var result, valueString
-            if (_value instanceof ArrayBuffer) {
+            if (isTypedArray(_value)) {
               result = String.fromCharCode.apply(null, new Uint16Array(_value))
             } else {
               t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer, 'is a Buffer')
               result = _value.toString()
             }
             
-            if (value instanceof ArrayBuffer) {
+            if (isTypedArray(value)) {
               value  = String.fromCharCode.apply(null, new Uint16Array(value))
             } else {
               value = value.toString()
@@ -86,20 +90,22 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 
 /**** TEST ERROR KEYS ****/
 
-module.exports.errorKeys = function (testFunc) {
+module.exports.errorKeys = function (testFunc, BufferType) {
+  if (!BufferType)
+    BufferType = process.browser ? ArrayBuffer : Buffer
   test = testFunc
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  if (process.browser) makeErrorKeyTest('empty ArrayBuffer key', new ArrayBuffer(0), /key cannot be an empty ArrayBuffer/)
-  else makeErrorKeyTest('empty Buffer key', new Buffer(0), /key cannot be an empty Buffer/)
+  makeErrorKeyTest('empty Buffer key', new BufferType(0), /key cannot be an empty Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
 
 /**** TEST NON-ERROR KEYS ****/
 
-module.exports.nonErrorKeys = function () {
+module.exports.nonErrorKeys = function (testFunc) {
   // valid falsey keys
+  test = testFunc
   makePutGetDelSuccessfulTest('`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest('`0` key', 0, 'foo 0')
   makePutGetDelSuccessfulTest('`NaN` key', NaN, 'foo NaN')
@@ -122,17 +128,20 @@ module.exports.nonErrorKeys = function () {
 
 /**** TEST ERROR VALUES ****/
 
-module.exports.errorValues = function () {
+module.exports.errorValues = function (testFunc, BufferType) {
+  if (!BufferType)
+    BufferType = process.browser ? ArrayBuffer : Buffer
+  test = testFunc
   makePutErrorTest('null value', 'foo', null, /value cannot be `null` or `undefined`/)
   makePutErrorTest('undefined value', 'foo', undefined, /value cannot be `null` or `undefined`/)
   makePutErrorTest('empty String value', 'foo', '', /value cannot be an empty String/)
-  if (process.browser) makePutErrorTest('empty ArrayBuffer value', 'foo', new ArrayBuffer(0), /value cannot be an empty ArrayBuffer/)
-  else makePutErrorTest('empty Buffer value', 'foo', new Buffer(0), /value cannot be an empty Buffer/)
+  makePutErrorTest('empty Buffer value', 'foo', new BufferType(0), /value cannot be an empty Buffer/)
   makePutErrorTest('empty Array value', 'foo', [], /value cannot be an empty String/)
 }
 
-module.exports.nonErrorKeys = function () {
+module.exports.nonErrorKeys = function (testFunc) {
   // valid falsey values
+  test = testFunc
   makePutGetDelSuccessfulTest('`false` value', 'foo false', false)
   makePutGetDelSuccessfulTest('`0` value', 'foo 0', 0)
   makePutGetDelSuccessfulTest('`NaN` value', 'foo NaN', NaN)
@@ -159,13 +168,13 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, testFunc, testCommon, buffer) {
+module.exports.all = function (leveldown, testFunc, testCommon, buffer, BufferType) {
   testBuffer = buffer
   test = testFunc
   module.exports.setUp(leveldown, test, testCommon)
-  module.exports.errorKeys(test)
-  module.exports.nonErrorKeys()
-  module.exports.errorValues()
-  module.exports.nonErrorKeys()
+  module.exports.errorKeys(test, BufferType)
+  module.exports.nonErrorKeys(test)
+  module.exports.errorValues(test, BufferType)
+  module.exports.nonErrorKeys(test)
   module.exports.tearDown(test, testCommon)
 }

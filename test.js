@@ -25,9 +25,9 @@ require('./abstract/put-test').setUp(factory, tap.test, testCommon)
 require('./abstract/put-test').args(factory, tap.test, testCommon)
 
 require('./abstract/put-get-del-test').setUp(factory, tap.test, testCommon)
-require('./abstract/put-get-del-test').errorKeys(tap.test, testCommon)
+require('./abstract/put-get-del-test').errorKeys(tap.test)
 //require('./abstract/put-get-del-test').nonErrorKeys(tap.test, testCommon)
-require('./abstract/put-get-del-test').errorValues(tap.test, testCommon)
+require('./abstract/put-get-del-test').errorValues(tap.test)
 //require('./abstract/test/put-get-del-test').nonErrorKeys(tap.test, testCommon)
 require('./abstract/put-get-del-test').tearDown(tap.test, testCommon)
 

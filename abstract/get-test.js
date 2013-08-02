@@ -1,5 +1,9 @@
 var db
 
+function isTypedArray (value) {
+  return value instanceof ArrayBuffer || value instanceof Uint8Array
+}
+
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
@@ -46,7 +50,7 @@ module.exports.get = function (test) {
         t.ok(typeof value !== 'string', 'should not be string by default')
 
         var result
-        if (value instanceof ArrayBuffer) {
+        if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
@@ -60,7 +64,7 @@ module.exports.get = function (test) {
           t.ok(typeof value !== 'string', 'should not be string by default')
 
           var result
-          if (value instanceof ArrayBuffer) {
+          if (isTypedArray(value)) {
             result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
             t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
