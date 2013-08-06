@@ -453,7 +453,7 @@ tap.test('test del() extensibility', function (t) {
   t.end()
 })
 
-tap.test('test del() extensibility', function (t) {
+tap.test('test clear() extensibility', function (t) {
   var spy = sinon.spy()
     , returnValue
     , test
