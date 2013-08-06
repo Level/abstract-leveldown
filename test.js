@@ -1,9 +1,10 @@
-const tap               = require('tap')
-    , sinon             = require('sinon')
-    , util              = require('util')
-    , testCommon        = require('./testCommon')
-    , AbstractLevelDOWN = require('./').AbstractLevelDOWN
-    , AbstractIterator  = require('./').AbstractIterator
+const tap                  = require('tap')
+    , sinon                = require('sinon')
+    , util                 = require('util')
+    , testCommon           = require('./testCommon')
+    , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
+    , AbstractIterator     = require('./').AbstractIterator
+    , AbstractChainedBatch = require('./').AbstractChainedBatch
 
 function factory (location) {
   return new AbstractLevelDOWN(location)
@@ -292,7 +293,7 @@ tap.test('test batch() extensibility', function (t) {
   t.end()
 })
 
-tap.test('test chained batch() extensibility', function (t) {
+tap.test('test chained batch() (array) extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
     , expectedOptions = { options: 1 }
@@ -331,6 +332,146 @@ tap.test('test chained batch() extensibility', function (t) {
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
+  t.end()
+})
+
+tap.test('test chained batch() (AbstractChainedBatch) extensibility', function (t) {
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._chainedBatch = spy
+
+  test = new Test('foobar')
+
+  test.batch()
+
+  t.equal(spy.callCount, 1, 'got _chainedBatch() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _chainedBatch() was correct')
+
+  test.batch()
+
+  t.equal(spy.callCount, 2, 'got _chainedBatch() call')
+  t.equal(spy.getCall(1).thisValue, test, '`this` on _chainedBatch() was correct')
+
+  t.end()
+})
+
+tap.test('test AbstractChainedBatch extensibility', function (t) {
+  function Test (db) {
+    AbstractChainedBatch.call(this, db)
+    t.equal(this._db, db, 'db set on `this`')
+    t.end()
+  }
+
+  util.inherits(Test, AbstractChainedBatch)
+
+  new Test('foobar')
+})
+
+tap.test('test write() extensibility', function (t) {
+  var spy = sinon.spy()
+    , spycb = sinon.spy()
+    , expectedOptions = { options: 1 }
+    , test
+
+  function Test (db) {
+    AbstractChainedBatch.call(this, db)
+  }
+
+  util.inherits(Test, AbstractChainedBatch)
+
+  Test.prototype._write = spy
+
+  test = new Test('foobar')
+  test.write(expectedOptions, spycb)
+
+  t.equal(spy.callCount, 1, 'got _write() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _write() was correct')
+  t.equal(spy.getCall(0).args.length, 2, 'got one arguments')
+  // awkward here cause of nextTick & an internal wrapped cb
+  t.equal(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
+  t.type(spy.getCall(0).args[1], 'function', 'got a callback function')
+  t.equal(spycb.callCount, 0, 'spycb not called')
+  spy.getCall(0).args[1]()
+  t.equal(spycb.callCount, 1, 'spycb called, i.e. was our cb argument')
+  t.end()
+})
+
+tap.test('test put() extensibility', function (t) {
+  var spy = sinon.spy()
+    , expectedKey = 'key'
+    , expectedValue = 'value'
+    , returnValue
+    , test
+
+  function Test (db) {
+    AbstractChainedBatch.call(this, db)
+  }
+
+  util.inherits(Test, AbstractChainedBatch)
+
+  Test.prototype._put = spy
+
+  test = new Test(factory('foobar'))
+  returnValue = test.put(expectedKey, expectedValue)
+  t.equal(spy.callCount, 1, 'got _put call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _put() was correct')
+  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
+  t.equal(spy.getCall(0).args[1], expectedValue, 'got expected value argument')
+  t.equal(returnValue, test, 'get expected return value')
+  t.end()
+})
+
+tap.test('test del() extensibility', function (t) {
+  var spy = sinon.spy()
+    , expectedKey = 'key'
+    , returnValue
+    , test
+
+  function Test (db) {
+    AbstractChainedBatch.call(this, db)
+  }
+
+  util.inherits(Test, AbstractChainedBatch)
+
+  Test.prototype._del = spy
+
+  test = new Test(factory('foobar'))
+  returnValue = test.del(expectedKey)
+  t.equal(spy.callCount, 1, 'got _del call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _del() was correct')
+  t.equal(spy.getCall(0).args.length, 1, 'got one argument')
+  t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
+  t.equal(returnValue, test, 'get expected return value')
+  t.end()
+})
+
+tap.test('test del() extensibility', function (t) {
+  var spy = sinon.spy()
+    , returnValue
+    , test
+
+  function Test (db) {
+    AbstractChainedBatch.call(this, db)
+  }
+
+  util.inherits(Test, AbstractChainedBatch)
+
+  Test.prototype._clear = spy
+
+  test = new Test(factory('foobar'))
+  returnValue = test.clear()
+  t.equal(spy.callCount, 1, 'got _clear call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _clear() was correct')
+  t.equal(spy.getCall(0).args.length, 0, 'got zero arguments')
+  t.equal(returnValue, test, 'get expected return value')
   t.end()
 })
 
