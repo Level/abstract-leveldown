@@ -335,7 +335,7 @@ tap.test('test chained batch() (array) extensibility', function (t) {
   t.end()
 })
 
-tap.test('test chained batch() (AbstractChainedBatch) extensibility', function (t) {
+tap.test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
   var spy = sinon.spy()
     , test
 
@@ -347,7 +347,7 @@ tap.test('test chained batch() (AbstractChainedBatch) extensibility', function (
 
   Test.prototype._chainedBatch = spy
 
-  test = new Test('foobar')
+  test = new Test(factory('foobar'))
 
   test.batch()
 
