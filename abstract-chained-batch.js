@@ -23,9 +23,9 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   if (!this._db._isBuffer(value)) value = String(value)
 
   if (typeof this._put == 'function' )
-    return this._put(key, value)
-
-  this._operations.push({ type: 'put', key: key, value: value })
+    this._put(key, value)
+  else
+    this._operations.push({ type: 'put', key: key, value: value })
 
   return this
 }
@@ -39,9 +39,9 @@ AbstractChainedBatch.prototype.del = function (key) {
   if (!this._db._isBuffer(key)) key = String(key)
 
   if (typeof this._del == 'function' )
-    return this._del(key)
-
-  this._operations.push({ type: 'del', key: key })
+    this._del(key)
+  else
+    this._operations.push({ type: 'del', key: key })
 
   return this
 }
@@ -52,7 +52,7 @@ AbstractChainedBatch.prototype.clear = function () {
   this._operations = []
 
   if (typeof this._clear == 'function' )
-    return this._clear()
+    this._clear()
 
   return this
 }
