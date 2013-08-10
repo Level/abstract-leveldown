@@ -70,7 +70,7 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
   this._written = true
 
   if (typeof this._write == 'function' )
-    return this._write(options, callback)
+    return this._write(callback)
 
   if (typeof this._db._batch == 'function')
     return this._db._batch(this._operations, options, callback)
