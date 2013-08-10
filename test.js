@@ -347,7 +347,7 @@ tap.test('test chained batch() (custom _chainedBatch) extensibility', function (
 
   Test.prototype._chainedBatch = spy
 
-  test = new Test(factory('foobar'))
+  test = new Test('foobar')
 
   test.batch()
 
@@ -377,7 +377,6 @@ tap.test('test AbstractChainedBatch extensibility', function (t) {
 tap.test('test write() extensibility', function (t) {
   var spy = sinon.spy()
     , spycb = sinon.spy()
-    , expectedOptions = { options: 1 }
     , test
 
   function Test (db) {
@@ -389,16 +388,15 @@ tap.test('test write() extensibility', function (t) {
   Test.prototype._write = spy
 
   test = new Test('foobar')
-  test.write(expectedOptions, spycb)
+  test.write(spycb)
 
   t.equal(spy.callCount, 1, 'got _write() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _write() was correct')
-  t.equal(spy.getCall(0).args.length, 2, 'got one arguments')
+  t.equal(spy.getCall(0).args.length, 1, 'got one argument')
   // awkward here cause of nextTick & an internal wrapped cb
-  t.equal(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
-  t.type(spy.getCall(0).args[1], 'function', 'got a callback function')
+  t.type(spy.getCall(0).args[0], 'function', 'got a callback function')
   t.equal(spycb.callCount, 0, 'spycb not called')
-  spy.getCall(0).args[1]()
+  spy.getCall(0).args[0]()
   t.equal(spycb.callCount, 1, 'spycb called, i.e. was our cb argument')
   t.end()
 })
