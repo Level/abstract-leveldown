@@ -16,13 +16,13 @@ require('./abstract/leveldown-test').args(factory, tap.test, testCommon)
 require('./abstract/open-test').args(factory, tap.test, testCommon)
 
 require('./abstract/del-test').setUp(factory, tap.test, testCommon)
-require('./abstract/del-test').args(factory, tap.test, testCommon)
+require('./abstract/del-test').args(tap.test)
 
 require('./abstract/get-test').setUp(factory, tap.test, testCommon)
-require('./abstract/get-test').args(factory, tap.test, testCommon)
+require('./abstract/get-test').args(tap.test)
 
 require('./abstract/put-test').setUp(factory, tap.test, testCommon)
-require('./abstract/put-test').args(factory, tap.test, testCommon)
+require('./abstract/put-test').args(tap.test)
 
 require('./abstract/put-get-del-test').setUp(factory, tap.test, testCommon)
 require('./abstract/put-get-del-test').errorKeys(tap.test)
@@ -32,7 +32,7 @@ require('./abstract/put-get-del-test').errorValues(tap.test)
 require('./abstract/put-get-del-test').tearDown(tap.test, testCommon)
 
 require('./abstract/approximate-size-test').setUp(factory, tap.test, testCommon)
-require('./abstract/approximate-size-test').args(factory, tap.test, testCommon)
+require('./abstract/approximate-size-test').args(tap.test)
 
 require('./abstract/batch-test').setUp(factory, tap.test, testCommon)
 require('./abstract/batch-test').args(tap.test)
@@ -43,8 +43,8 @@ require('./abstract/chained-batch-test').args(tap.test)
 require('./abstract/close-test').close(factory, tap.test, testCommon)
 
 require('./abstract/iterator-test').setUp(factory, tap.test, testCommon)
-require('./abstract/iterator-test').args(factory, tap.test, testCommon)
-require('./abstract/iterator-test').sequence(factory, tap.test, testCommon)
+require('./abstract/iterator-test').args(tap.test)
+require('./abstract/iterator-test').sequence(tap.test)
 
 /*** extensibility ***/
 
