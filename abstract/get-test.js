@@ -83,6 +83,32 @@ module.exports.get = function (test) {
       })
     })
   })
+
+  test('test simultaniously get()', function (t) {
+    db.put('hello', 'world', function (err) {
+      var r = 0
+        , done = function () {
+            if (++r == 20)
+              t.end()
+          }
+        , i = 0
+        , j = 0
+
+      for (; i < 10; ++i)
+        db.get('hello', function(err, value) {
+          t.notOk(err, 'should not error')
+          t.ok(value.toString(), 'worl')
+          done()
+        })
+
+      for (; j < 10; ++j)
+        db.get('not found', function(err, value) {
+          t.ok(err, 'should error')
+          t.equal(err.message, 'NotFound: ', 'should have correct error message')
+          done()
+        })
+    })
+  })
 }
 
 module.exports.tearDown = function (test, testCommon) {
