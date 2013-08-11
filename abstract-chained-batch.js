@@ -22,7 +22,10 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   if (!this._db._isBuffer(key)) key = String(key)
   if (!this._db._isBuffer(value)) value = String(value)
 
-  this._operations.push({ type: 'put', key: key, value: value })
+  if (typeof this._put == 'function' )
+    this._put(key, value)
+  else
+    this._operations.push({ type: 'put', key: key, value: value })
 
   return this
 }
@@ -35,7 +38,10 @@ AbstractChainedBatch.prototype.del = function (key) {
 
   if (!this._db._isBuffer(key)) key = String(key)
 
-  this._operations.push({ type: 'del', key: key })
+  if (typeof this._del == 'function' )
+    this._del(key)
+  else
+    this._operations.push({ type: 'del', key: key })
 
   return this
 }
@@ -44,6 +50,10 @@ AbstractChainedBatch.prototype.clear = function () {
   this._checkWritten()
 
   this._operations = []
+
+  if (typeof this._clear == 'function' )
+    this._clear()
+
   return this
 }
 
@@ -58,6 +68,9 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
     options = {}
 
   this._written = true
+
+  if (typeof this._write == 'function' )
+    return this._write(callback)
 
   if (typeof this._db._batch == 'function')
     return this._db._batch(this._operations, options, callback)
