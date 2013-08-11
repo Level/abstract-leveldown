@@ -97,7 +97,7 @@ module.exports.get = function (test) {
       for (; i < 10; ++i)
         db.get('hello', function(err, value) {
           t.notOk(err, 'should not error')
-          t.ok(value.toString(), 'worl')
+          t.equal(value.toString(), 'world')
           done()
         })
 
