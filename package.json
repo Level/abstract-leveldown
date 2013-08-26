@@ -2,7 +2,6 @@
     "name"            : "abstract-leveldown"
   , "description"     : "An abstract prototype matching the LevelDOWN API"
   , "version"         : "0.10.0"
-  , "homepage"        : "https://github.com/rvagg/node-abstract-leveldown"
   , "contributors"    : [
         "Rod Vagg <r@va.gg> (https://github.com/rvagg)"
       , "John Chesley <john@chesl.es> (https://github.com/chesles/)"
@@ -16,18 +15,16 @@
       , "Anton Whalley <anton.whalley@nearform.com> (https://github.com/No9)"
       , "Matteo Collina <matteo.collina@gmail.com> (https://github.com/mcollina)"
       , "Pedro Teixeira <pedro.teixeira@gmail.com> (https://github.com/pgte)"
+      , "James Halliday <mail@substack.net> (https://github.com/substack)"
     ]
-  , "authors"         : [
-        "Rod Vagg <rod@vagg.org> (https://github.com/rvagg)"
-    ]
-  , "keywords"        : [ "leveldb", "leveldown", "levelup" ]
-  , "main"            : "./abstract-leveldown.js"
   , "repository"      : {
         "type"            : "git"
       , "url"             : "https://github.com/rvagg/node-abstract-leveldown.git"
     }
-  , "dependencies" : {
-    }
+  , "homepage"        : "https://github.com/rvagg/node-abstract-leveldown"
+  , "keywords"        : [ "leveldb", "leveldown", "levelup" ]
+  , "main"            : "./abstract-leveldown.js"
+  , "dependencies" : {}
   , "devDependencies" : {
         "tap"             : "*"
       , "sinon"           : "*"
