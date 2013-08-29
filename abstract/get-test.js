@@ -104,7 +104,7 @@ module.exports.get = function (test) {
       for (; j < 10; ++j)
         db.get('not found', function(err, value) {
           t.ok(err, 'should error')
-          t.equal(err.message, 'NotFound: ', 'should have correct error message')
+          t.ok((/NotFound: /i).test(err.message), 'should have correct error message')
           done()
         })
     })
