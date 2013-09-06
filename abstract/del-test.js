@@ -1,4 +1,6 @@
 var db
+  , verifyNotFoundError = require('./util').verifyNotFoundError
+  , isTypedArray        = require('./util').isTypedArray
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -45,12 +47,10 @@ module.exports.del = function (test) {
         t.notOk(err, 'no error')
         db.get('foo', function (err) {
           t.ok(err, 'entry propertly deleted')
-          var message = ""
-          if (err) message = err.message
-          t.ok(message.match(/NotFound/i), 'returned NotFound')
+          t.ok(typeof value == 'undefined', 'value is undefined')
+          t.ok(verifyNotFoundError(err), 'NotFound error')
           t.end()
         })
-
       })
     })
   })

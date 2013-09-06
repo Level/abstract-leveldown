@@ -1,8 +1,6 @@
 var db
-
-function isTypedArray (value) {
-  return value instanceof ArrayBuffer || value instanceof Uint8Array
-}
+  , verifyNotFoundError = require('./util').verifyNotFoundError
+  , isTypedArray        = require('./util').isTypedArray
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)

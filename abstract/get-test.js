@@ -1,8 +1,6 @@
 var db
-
-function isTypedArray (value) {
-  return value instanceof ArrayBuffer || value instanceof Uint8Array
-}
+  , verifyNotFoundError = require('./util').verifyNotFoundError
+  , isTypedArray        = require('./util').isTypedArray
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -86,6 +84,7 @@ module.exports.get = function (test) {
 
   test('test simultaniously get()', function (t) {
     db.put('hello', 'world', function (err) {
+      t.notOk(err, 'should not error')
       var r = 0
         , done = function () {
             if (++r == 20)
@@ -104,7 +103,8 @@ module.exports.get = function (test) {
       for (; j < 10; ++j)
         db.get('not found', function(err, value) {
           t.ok(err, 'should error')
-          t.ok((/NotFound: /i).test(err.message), 'should have correct error message')
+          t.ok(verifyNotFoundError(err), 'should have correct error message')
+          t.ok(typeof value == 'undefined', 'value is undefined')
           done()
         })
     })

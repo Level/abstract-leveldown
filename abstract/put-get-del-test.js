@@ -1,82 +1,83 @@
 /**** SETUP & UTILITY STUFF ****/
 
-function isTypedArray (value) {
-  return value instanceof ArrayBuffer || value instanceof Uint8Array
-}
 
 var db
   , testBuffer
   , test
-  , makeGetDelErrorTests = function (type, key, expectedError) {
-      test('test get() with ' + type + ' causes error', function (t) {
-        db.get(key, function (err) {
-          t.ok(err, 'has error')
-          t.ok(err instanceof Error)
-          t.ok(err.message.match(expectedError), 'correct error message')
-          t.end()
-        })
-      })
+  , verifyNotFoundError = require('./util').verifyNotFoundError
+  , isTypedArray        = require('./util').isTypedArray
 
-      test('test del() with ' + type + ' causes error', function (t) {
+function makeGetDelErrorTests (type, key, expectedError) {
+  test('test get() with ' + type + ' causes error', function (t) {
+    db.get(key, function (err) {
+      t.ok(err, 'has error')
+      t.ok(err instanceof Error)
+      t.ok(err.message.match(expectedError), 'correct error message')
+      t.end()
+    })
+  })
+
+  test('test del() with ' + type + ' causes error', function (t) {
+    db.del(key, function (err) {
+      t.ok(err, 'has error')
+      t.ok(err instanceof Error)
+      t.ok(err.message.match(expectedError), 'correct error message')
+      t.end()
+    })
+  })
+}
+
+function makePutErrorTest (type, key, value, expectedError) {
+  test('test put() with ' + type + ' causes error', function (t) {
+    db.put(key, value, function (err) {
+      t.ok(err, 'has error')
+      t.ok(err instanceof Error)
+      t.ok(err.message.match(expectedError), 'correct error message')
+      t.end()
+    })
+  })
+}
+
+function makePutGetDelSuccessfulTest (type, key, value) {
+  test('test put()/get()/del() with ' + type, function (t) {
+    db.put(key, value, function (err) {
+      t.notOk(err, 'no error')
+      db.get(key, function (err, _value) {
+        t.notOk(err, 'no error, has key/value for `' + key + '`')
+
+        var result
+        if (isTypedArray(_value)) {
+          result = String.fromCharCode.apply(null, new Uint16Array(_value))
+        } else {
+          t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer, 'is a Buffer')
+          result = _value.toString()
+        }
+        
+        if (isTypedArray(value)) {
+          value  = String.fromCharCode.apply(null, new Uint16Array(value))
+        } else {
+          value = value.toString()
+        }
+        
+        t.equals(result, value)
         db.del(key, function (err) {
-          t.ok(err, 'has error')
-          t.ok(err instanceof Error)
-          t.ok(err.message.match(expectedError), 'correct error message')
-          t.end()
-        })
-      })
-    }
-
-  , makePutErrorTest = function (type, key, value, expectedError) {
-      test('test put() with ' + type + ' causes error', function (t) {
-        db.put(key, value, function (err) {
-          t.ok(err, 'has error')
-          t.ok(err instanceof Error)
-          t.ok(err.message.match(expectedError), 'correct error message')
-          t.end()
-        })
-      })
-    }
-
-  , makePutGetDelSuccessfulTest = function (type, key, value) {
-      test('test put()/get()/del() with ' + type, function (t) {
-        db.put(key, value, function (err) {
-          t.notOk(err, 'no error')
-          db.get(key, function (err, _value) {
-            t.notOk(err, 'no error, has key/value for `' + key + '`')
-
-            var result, valueString
-            if (isTypedArray(_value)) {
-              result = String.fromCharCode.apply(null, new Uint16Array(_value))
-            } else {
-              t.ok(typeof Buffer != 'undefined' && _value instanceof Buffer, 'is a Buffer')
-              result = _value.toString()
-            }
-            
-            if (isTypedArray(value)) {
-              value  = String.fromCharCode.apply(null, new Uint16Array(value))
-            } else {
-              value = value.toString()
-            }
-            
-            t.equals(result, value)
-            db.del(key, function (err) {
-              t.notOk(err, 'no error, deleted key/value for `' + key + '`')
-              db.get(key, function (err) {
-                t.ok(err, 'entry propertly deleted')
-                t.ok(err.message.match(/NotFound/i), 'is NotFound')
-                t.end()
-              })
-            })
+          t.notOk(err, 'no error, deleted key/value for `' + key + '`')
+          db.get(key, function (err,  value) {
+            t.ok(err, 'entry propertly deleted')
+            t.ok(verifyNotFoundError(err), 'should have correct error message')
+            t.ok(typeof value == 'undefined', 'value is undefined')
+            t.end()
           })
         })
       })
-    }
+    })
+  })
+}
 
-  , makeErrorKeyTest = function (type, key, expectedError) {
-      makeGetDelErrorTests(type, key, expectedError)
-      makePutErrorTest(type, key, 'foo', expectedError)
-    }
+function makeErrorKeyTest (type, key, expectedError) {
+  makeGetDelErrorTests(type, key, expectedError)
+  makePutErrorTest(type, key, 'foo', expectedError)
+}
 
 /**** SETUP ENVIRONMENT ****/
 
