@@ -1,6 +1,7 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
-var AbstractIterator     = require('./abstract-iterator')
+var xtend                = require('xtend')
+  , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
 
 function AbstractLevelDOWN (location) {
@@ -38,19 +39,20 @@ AbstractLevelDOWN.prototype.close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
-  var self = this
+  var err
+
   if (typeof options == 'function')
     callback = options
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
-  var err = self._checkKeyValue(key, 'key', self._isBuffer)
+  err = this._checkKeyValue(key, 'key', this._isBuffer)
   if (err) return callback(err)
-  if (!self._isBuffer(key)) key = String(key)
+  if (!this._isBuffer(key)) key = String(key)
   if (typeof options != 'object')
     options = {}
 
-  if (typeof self._get == 'function')
-    return self._get(key, options, callback)
+  if (typeof this._get == 'function')
+    return this._get(key, options, callback)
 
   process.nextTick(function () { callback(new Error('NotFound')) })
 }
@@ -148,9 +150,40 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   process.nextTick(function () { callback(null, 0) })
 }
 
+AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
+  var self = this
+
+  options = xtend(options)
+
+  ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
+    if (options[o] && self._isBuffer(options[o]) && options[o].length === 0)
+      delete options[o]
+  })
+
+  options.reverse = !!options.reverse
+
+  // fix `start` so it takes into account gt, gte, lt, lte as appropriate
+  if (options.reverse && options.lt)
+    options.start = options.lt
+  if (options.reverse && options.lte)
+    options.start = options.lte
+  if (!options.reverse && options.gt)
+    options.start = options.gt
+  if (!options.reverse && options.gte)
+    options.start = options.gte
+
+  if ((options.reverse && options.lt && !options.lte)
+    || (!options.reverse && options.gt && !options.gte))
+    options.exclusiveStart = true // start should *not* include matching key
+
+  return options
+}
+
 AbstractLevelDOWN.prototype.iterator = function (options) {
   if (typeof options != 'object')
     options = {}
+
+  options = this._setupIteratorOptions(options)
 
   if (typeof this._iterator == 'function')
     return this._iterator(options)
