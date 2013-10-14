@@ -17,8 +17,10 @@ function AbstractLevelDOWN (location) {
 AbstractLevelDOWN.prototype.open = function (options, callback) {
   if (typeof options == 'function')
     callback = options
+
   if (typeof callback != 'function')
     throw new Error('open() requires a callback argument')
+
   if (typeof options != 'object')
     options = {}
 
@@ -43,11 +45,16 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
   if (typeof options == 'function')
     callback = options
+
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
-  err = this._checkKeyValue(key, 'key', this._isBuffer)
-  if (err) return callback(err)
-  if (!this._isBuffer(key)) key = String(key)
+
+  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
+    return callback(err)
+
+  if (!this._isBuffer(key))
+    key = String(key)
+
   if (typeof options != 'object')
     options = {}
 
@@ -58,20 +65,31 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
+  var err
+
   if (typeof options == 'function')
     callback = options
+
   if (typeof callback != 'function')
     throw new Error('put() requires a callback argument')
-  var err = this._checkKeyValue(key, 'key', this._isBuffer)
-  if (err) return callback(err)
-  err = this._checkKeyValue(value, 'value', this._isBuffer)
-  if (err) return callback(err)
-  if (!this._isBuffer(key)) key = String(key)
-  // coerce value to string in node, dont touch it in browser
+
+  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
+    return callback(err)
+
+  if (err = this._checkKeyValue(value, 'value', this._isBuffer))
+    return callback(err)
+
+  if (!this._isBuffer(key))
+    key = String(key)
+
+  // coerce value to string in node, don't touch it in browser
   // (indexeddb can store any JS type)
-  if (!this._isBuffer(value) && !process.browser) value = String(value)
+  if (!this._isBuffer(value) && !process.browser)
+    value = String(value)
+
   if (typeof options != 'object')
     options = {}
+
   if (typeof this._put == 'function')
     return this._put(key, value, options, callback)
 
@@ -79,16 +97,22 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
+  var err
+
   if (typeof options == 'function')
     callback = options
+
   if (typeof callback != 'function')
     throw new Error('del() requires a callback argument')
-  var err = this._checkKeyValue(key, 'key', this._isBuffer)
-  if (err) return callback(err)
-  if (!this._isBuffer(key)) key = String(key)
+
+  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
+    return callback(err)
+
+  if (!this._isBuffer(key))
+    key = String(key)
+
   if (typeof options != 'object')
     options = {}
-
 
   if (typeof this._del == 'function')
     return this._del(key, options, callback)
@@ -102,10 +126,13 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
   if (typeof options == 'function')
     callback = options
+
   if (typeof callback != 'function')
     throw new Error('batch(array) requires a callback argument')
+
   if (!Array.isArray(array))
     return callback(new Error('batch(array) requires an array argument'))
+
   if (typeof options != 'object')
     options = {}
 
@@ -116,17 +143,18 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
   for (; i < l; i++) {
     e = array[i]
-    if (typeof e != 'object') continue;
+    if (typeof e != 'object')
+      continue
 
-    err = this._checkKeyValue(e.type, 'type', this._isBuffer)
-    if (err) return callback(err)
+    if (err = this._checkKeyValue(e.type, 'type', this._isBuffer))
+      return callback(err)
 
-    err = this._checkKeyValue(e.key, 'key', this._isBuffer)
-    if (err) return callback(err)
+    if (err = this._checkKeyValue(e.key, 'key', this._isBuffer))
+      return callback(err)
 
     if (e.type == 'put') {
-      err = this._checkKeyValue(e.value, 'value', this._isBuffer)
-      if (err) return callback(err)
+      if (err = this._checkKeyValue(e.value, 'value', this._isBuffer))
+        return callback(err)
     }
   }
 
@@ -136,18 +164,30 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
+//TODO: remove from here, not a necessary primitive
 AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
-  if (start == null || end == null || typeof start == 'function' || typeof end == 'function')
+  if (   start == null
+      || end == null
+      || typeof start == 'function'
+      || typeof end == 'function') {
     throw new Error('approximateSize() requires valid `start`, `end` and `callback` arguments')
+  }
+
   if (typeof callback != 'function')
     throw new Error('approximateSize() requires a callback argument')
 
-  if (!this._isBuffer(start)) start = String(start)
-  if (!this._isBuffer(end)) end = String(end)
+  if (!this._isBuffer(start))
+    start = String(start)
+
+  if (!this._isBuffer(end))
+    end = String(end)
+
   if (typeof this._approximateSize == 'function')
     return this._approximateSize(start, end, callback)
 
-  process.nextTick(function () { callback(null, 0) })
+  process.nextTick(function () {
+    callback(null, 0)
+  })
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
@@ -202,8 +242,10 @@ AbstractLevelDOWN.prototype._isBuffer = function (obj) {
 AbstractLevelDOWN.prototype._checkKeyValue = function (obj, type) {
   if (obj === null || obj === undefined)
     return new Error(type + ' cannot be `null` or `undefined`')
+
   if (obj === null || obj === undefined)
     return new Error(type + ' cannot be `null` or `undefined`')
+
   if (this._isBuffer(obj)) {
     if (obj.length === 0)
       return new Error(type + ' cannot be an empty Buffer')
