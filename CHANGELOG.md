@@ -1,3 +1,6 @@
+### 0.11.0 - Oct 14 2013
+ * Introduce _setupIteratorOptions() method to fix options object prior to _iterator() call; makes working with gt/gte/lt/lte options a little easier (@rvagg)
+
 ### 0.10.2 - Sep 6 2013
 
  * Refactor duplicated versions of isTypedArray into util.js (@rvagg)
