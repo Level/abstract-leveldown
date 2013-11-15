@@ -90,7 +90,8 @@ module.exports.approximateSize = function (test) {
 
                 t.type(size, 'number')
                 t.ok(
-                    size > 100000
+                    size > 40000 // account for snappy compression
+                                 // original would be ~100000
                   , 'size reports a reasonable amount (' + size + ')'
                 )
 
