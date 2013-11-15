@@ -1,3 +1,6 @@
+### 0.11.1 - Nov 15 2013
+ * Adjust approximate-size-test.js to account for snappy compression
+
 ### 0.11.0 - Oct 14 2013
  * Introduce _setupIteratorOptions() method to fix options object prior to _iterator() call; makes working with gt/gte/lt/lte options a little easier (@rvagg)
 
