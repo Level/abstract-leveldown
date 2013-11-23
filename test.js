@@ -475,7 +475,7 @@ tap.test('test clear() extensibility', function (t) {
 
 tap.test('test iterator() extensibility', function (t) {
   var spy = sinon.spy()
-    , expectedOptions = { options: 1 }
+    , expectedOptions = { options: 1, reverse: false } // reverse now explicitly set
     , test
 
   function Test (location) {
@@ -487,12 +487,12 @@ tap.test('test iterator() extensibility', function (t) {
   Test.prototype._iterator = spy
 
   test = new Test('foobar')
-  test.iterator(expectedOptions)
+  test.iterator({ options: 1 })
 
   t.equal(spy.callCount, 1, 'got _close() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
-  t.equal(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
+  t.deepEqual(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
   t.end()
 })
 
