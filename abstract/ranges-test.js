@@ -1,19 +1,6 @@
 var db
-  , sourceData = (function () {
-      var d = []
-        , i = 0
-        , k
-      for (; i < 100; i++) {
-        k = (i < 10 ? '0' : '') + i
-        d.push({
-            type  : 'put'
-          , key   : k
-          , value : Math.random()
-        })
-      }
-      return d
-    }())
-  , transformSource = function (d) { return { key: d.key, value: d.value } }
+  , sourceData      = require('./iterator-test').sourceData
+  , transformSource = require('./iterator-test').transformSource
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)

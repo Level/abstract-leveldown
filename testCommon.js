@@ -58,7 +58,7 @@ var dbidx = 0
                   callback(err, data)
                 })
               }
-              if (key == +key) key = +key
+              //if (key == +key) key = +key
               data.push({ key: key, value: value })
               process.nextTick(next)
             })

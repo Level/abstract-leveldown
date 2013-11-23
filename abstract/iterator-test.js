@@ -13,7 +13,12 @@ var db
       }
       return d
     }())
-  , transformSource = function (d) { return { key: d.key, value: d.value } }
+  , transformSource = function (d) {
+      return { key: d.key, value: String(d.value) }
+    }
+
+module.exports.sourceData      = sourceData
+module.exports.transformSource = transformSource
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
