@@ -1,6 +1,9 @@
-# Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/rvagg/node-abstract-leveldown.png)](http://travis-ci.org/rvagg/node-abstract-leveldown)
+# Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/rvagg/abstract-leveldown.png)](http://travis-ci.org/rvagg/abstract-leveldown)
 
-An abstract prototype matching the [LevelDOWN](https://github.com/rvagg/node-leveldown/) API. Useful for extending [LevelUP](https://github.com/rvagg/node-levelup) functionality by providing a replacement to LevelDOWN.
+[![NPM](https://nodei.co/npm/abstract-leveldown.png?downloads=true)](https://nodei.co/npm/abstract-leveldown/)
+[![NPM](https://nodei.co/npm-dl/abstract-leveldown.png?months=6)](https://nodei.co/npm/abstract-leveldown/)
+
+An abstract prototype matching the **[LevelDOWN](https://github.com/rvagg/node-leveldown/)** API. Useful for extending **[LevelUP](https://github.com/rvagg/node-levelup)** functionality by providing a replacement to LevelDOWN.
 
 As of version 0.7, LevelUP allows you to pass a `'db'` option when you create a new instance. This will override the default LevelDOWN store with a LevelDOWN API compatible object.
 
