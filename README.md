@@ -78,7 +78,7 @@ db.put('foo', 'bar', function (err) {
 })
 ```
 
-See [MemDOWN](https://github.com/rvagg/node-mem/) if you are looking for a complete in-memory replacement for LevelDOWN.
+See [MemDOWN](https://github.com/rvagg/memdown/) if you are looking for a complete in-memory replacement for LevelDOWN.
 
 ## Extensible API
 
