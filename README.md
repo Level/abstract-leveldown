@@ -86,6 +86,7 @@ Remember that each of these methods, if you implement them, will receive exactly
 
 ### AbstractLevelDOWN(location)
 ### AbstractLevelDOWN#_open(options, callback)
+### AbstractLevelDOWN#_destroy(options, callback)
 ### AbstractLevelDOWN#_close(callback)
 ### AbstractLevelDOWN#_get(key, options, callback)
 ### AbstractLevelDOWN#_put(key, value, options, callback)
