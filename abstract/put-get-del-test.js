@@ -80,8 +80,7 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 /**** TEST ERROR KEYS ****/
 
 module.exports.errorKeys = function (testFunc, BufferType) {
-  if (!BufferType)
-    BufferType = process.browser ? ArrayBuffer : Buffer
+  if (!BufferType) BufferType = Buffer
   test = testFunc
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
@@ -118,8 +117,7 @@ module.exports.nonErrorKeys = function (testFunc) {
 /**** TEST ERROR VALUES ****/
 
 module.exports.errorValues = function (testFunc, BufferType) {
-  if (!BufferType)
-    BufferType = process.browser ? ArrayBuffer : Buffer
+  if (!BufferType) BufferType = Buffer
   test = testFunc
   makePutErrorTest('null value', 'foo', null, /value cannot be `null` or `undefined`/)
   makePutErrorTest('undefined value', 'foo', undefined, /value cannot be `null` or `undefined`/)
