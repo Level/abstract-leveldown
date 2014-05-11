@@ -41,7 +41,7 @@ function makePutErrorTest (type, key, value, expectedError) {
 function makePutGetDelSuccessfulTest (type, key, value) {
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       db.get(key, function (err, _value) {
         t.notOk(err, 'no error, has key/value for `' + key + '`')
         t.ok(Buffer.isBuffer(_value), 'is a Buffer')
