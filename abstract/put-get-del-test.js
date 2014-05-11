@@ -45,8 +45,9 @@ function makePutGetDelSuccessfulTest (type, key, value) {
       db.get(key, function (err, _value) {
         t.notOk(err, 'no error, has key/value for `' + key + '`')
         t.ok(Buffer.isBuffer(_value), 'is a Buffer')
-        var result = _value.toString()
-        value = value.toString()
+        var result = _value
+        if (result != null) result = _value.toString()
+        if (value != null) value = value.toString()
         t.equals(result, value)
         db.del(key, function (err) {
           t.notOk(err, 'no error, deleted key/value for `' + key + '`')
