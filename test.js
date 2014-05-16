@@ -290,6 +290,14 @@ tap.test('test batch() extensibility', function (t) {
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
+  test.batch(expectedArray, null, expectedCb)
+
+  t.equal(spy.callCount, 3, 'got _batch() call')
+  t.equal(spy.getCall(2).thisValue, test, '`this` on _batch() was correct')
+  t.equal(spy.getCall(2).args.length, 3, 'got three arguments')
+  t.equal(spy.getCall(2).args[0], expectedArray, 'got expected array argument')
+  t.ok(spy.getCall(2).args[1], 'options should not be null')
+  t.equal(spy.getCall(2).args[2], expectedCb, 'got expected callback argument')
   t.end()
 })
 

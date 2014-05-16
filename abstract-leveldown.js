@@ -127,13 +127,16 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (typeof options == 'function')
     callback = options
 
+  if (typeof array == 'function')
+    callback = array
+
   if (typeof callback != 'function')
     throw new Error('batch(array) requires a callback argument')
 
   if (!Array.isArray(array))
     return callback(new Error('batch(array) requires an array argument'))
 
-  if (typeof options != 'object')
+  if (!options || typeof options != 'object')
     options = {}
 
   var i = 0

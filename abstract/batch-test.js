@@ -50,6 +50,34 @@ module.exports.args = function (test) {
       t.end()
     })
   })
+
+  test('test batch() with missing array', function (t) {
+    db.batch(function (err) {
+      t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.end()
+    })
+  })
+
+  test('test batch() with undefined array', function (t) {
+    db.batch(void 0, function (err) {
+      t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.end()
+    })
+  })
+
+  test('test batch() with null array', function (t) {
+    db.batch(null, function (err) {
+      t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.end()
+    })
+  })
+
+  test('test batch() with null options', function (t) {
+    db.batch([], null, function (err) {
+      t.notOk(err, 'no error')
+      t.end()
+    })
+  })
 }
 
 module.exports.batch = function (test) {
