@@ -29,7 +29,7 @@
   ],
   "main": "./abstract-leveldown.js",
   "dependencies": {
-    "xtend": "~2.1.1"
+    "xtend": "~3.0.0"
   },
   "devDependencies": {
     "tap": "*",
