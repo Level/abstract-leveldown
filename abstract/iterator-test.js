@@ -447,6 +447,30 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   )
 }
 
+module.exports.snapshot = function (leveldown, test, testCommon) {
+  test('setUp #3', function (t) {
+    db.close(function () {
+      db = leveldown(testCommon.location())
+      db.open(function () {
+        db.put('foobatch1', 'bar1', t.end.bind(t))
+      })
+    })
+  })
+
+  test('iterator create snapshot correctly', function (t) {
+    var iterator = db.iterator()
+
+    db.del('foobatch1', function () {
+      iterator.next(function (err, key, value) {
+        t.notOk(err, 'no error')
+        t.equal(key.toString(), 'foobatch1', 'correct key')
+        t.equal(value.toString(), 'bar1', 'correct value')
+        iterator.end(t.end.bind(t))
+      })
+    })
+  })
+}
+
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
@@ -458,5 +482,6 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(test)
   module.exports.sequence(test)
   module.exports.iterator(leveldown, test, testCommon, testCommon.collectEntries)
+  module.exports.snapshot(leveldown, test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
