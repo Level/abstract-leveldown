@@ -150,10 +150,10 @@ Abstract LevelDOWN is only possible due to the excellent work of the following c
 <tr><th align="left">James Halliday</th><td><a href="https://github.com/substack">GitHub/substack</a></td><td><a href="https://twitter.com/substack">Twitter/@substack</a></td></tr>
 </tbody></table>
 
-<a name="licence"></a>
-Licence &amp; copyright
+<a name="license"></a>
+License &amp; copyright
 -------------------
 
-Copyright (c) 2012-2013 Abstract LevelDOWN contributors (listed above).
+Copyright (c) 2012-2014 Abstract LevelDOWN contributors (listed above).
 
-Abstract LevelDOWN is licensed under an MIT +no-false-attribs license. All rights not explicitly granted in the MIT license are reserved. See the included LICENSE file for more details.
+Abstract LevelDOWN is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included LICENSE.md file for more details.
