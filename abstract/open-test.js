@@ -52,17 +52,17 @@ module.exports.open = function (leveldown, test, testCommon) {
     var db = leveldown(testCommon.location())
 
     db.open(function (err) {
+      t.notOk(err, 'no error')
+      db.close(function (err) {
         t.notOk(err, 'no error')
-        db.close(function (err) {
+        db.open(function (err) {
           t.notOk(err, 'no error')
-          db.open(function (err) {
-            t.notOk(err, 'no error')
-            db.close(function () {
-              t.end()
-            })
+          db.close(function () {
+            t.end()
           })
         })
       })
+    })
   })
 }
 
