@@ -459,10 +459,10 @@ module.exports.snapshot = function (leveldown, test, testCommon) {
 
   test('iterator create snapshot correctly', function (t) {
     var iterator = db.iterator()
-
     db.del('foobatch1', function () {
       iterator.next(function (err, key, value) {
         t.notOk(err, 'no error')
+        t.ok(key, 'got a key')
         t.equal(key.toString(), 'foobatch1', 'correct key')
         t.equal(value.toString(), 'bar1', 'correct value')
         iterator.end(t.end.bind(t))
