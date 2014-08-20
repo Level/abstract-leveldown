@@ -48,6 +48,22 @@ module.exports.open = function (leveldown, test, testCommon) {
         })
       })
   })
+  test('test database open, close and open', function (t) {
+    var db = leveldown(testCommon.location())
+
+    db.open(function (err) {
+        t.notOk(err, 'no error')
+        db.close(function (err) {
+          t.notOk(err, 'no error')
+          db.open(function (err) {
+            t.notOk(err, 'no error')
+            db.close(function () {
+              t.end()
+            })
+          })
+        })
+      })
+  })
 }
 
 module.exports.openAdvanced = function (leveldown, test, testCommon) {
