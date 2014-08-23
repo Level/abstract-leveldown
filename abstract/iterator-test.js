@@ -359,6 +359,14 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
+  test('test iterator with limit=0 should not iterate over anything', function (t) {
+    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 0 }), function (err, data) {
+      t.notOk(err, 'no error')
+      t.equal(data.length, 0, 'correct number of entries')
+      t.end()
+    })
+  })
+
   test('test iterator with end after limit', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, end: '50' }), function (err, data) {
       t.notOk(err, 'no error')
