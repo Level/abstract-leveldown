@@ -208,20 +208,6 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options.keyAsBuffer = 'keyAsBuffer' in options ? !!options.keyAsBuffer : true
   options.valueAsBuffer = 'valueAsBuffer' in options ? !!options.valueAsBuffer : true
 
-  // fix `start` so it takes into account gt, gte, lt, lte as appropriate
-  if (options.reverse && options.lt)
-    options.start = options.lt
-  if (options.reverse && options.lte)
-    options.start = options.lte
-  if (!options.reverse && options.gt)
-    options.start = options.gt
-  if (!options.reverse && options.gte)
-    options.start = options.gte
-
-  if ((options.reverse && options.lt && !options.lte)
-    || (!options.reverse && options.gt && !options.gte))
-    options.exclusiveStart = true // start should *not* include matching key
-
   return options
 }
 
