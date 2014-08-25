@@ -49,7 +49,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
 
-  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
+  if (err = this._checkKey(key, 'key', this._isBuffer))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -73,10 +73,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (typeof callback != 'function')
     throw new Error('put() requires a callback argument')
 
-  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
-    return callback(err)
-
-  if (err = this._checkKeyValue(value, 'value', this._isBuffer))
+  if (err = this._checkKey(key, 'key', this._isBuffer))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -84,7 +81,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 
   // coerce value to string in node, don't touch it in browser
   // (indexeddb can store any JS type)
-  if (!this._isBuffer(value) && !process.browser)
+  if (value != null && !this._isBuffer(value) && !process.browser)
     value = String(value)
 
   if (typeof options != 'object')
@@ -105,7 +102,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (typeof callback != 'function')
     throw new Error('del() requires a callback argument')
 
-  if (err = this._checkKeyValue(key, 'key', this._isBuffer))
+  if (err = this._checkKey(key, 'key', this._isBuffer))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -149,16 +146,11 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (typeof e != 'object')
       continue
 
-    if (err = this._checkKeyValue(e.type, 'type', this._isBuffer))
+    if (err = this._checkKey(e.type, 'type', this._isBuffer))
       return callback(err)
 
-    if (err = this._checkKeyValue(e.key, 'key', this._isBuffer))
+    if (err = this._checkKey(e.key, 'key', this._isBuffer))
       return callback(err)
-
-    if (e.type == 'put') {
-      if (err = this._checkKeyValue(e.value, 'value', this._isBuffer))
-        return callback(err)
-    }
   }
 
   if (typeof this._batch == 'function')
@@ -234,7 +226,7 @@ AbstractLevelDOWN.prototype._isBuffer = function (obj) {
   return Buffer.isBuffer(obj)
 }
 
-AbstractLevelDOWN.prototype._checkKeyValue = function (obj, type) {
+AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
 
   if (obj === null || obj === undefined)
     return new Error(type + ' cannot be `null` or `undefined`')
