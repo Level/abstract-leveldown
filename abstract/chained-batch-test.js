@@ -10,24 +10,12 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 
 module.exports.args = function (test) {
   test('test batch#put() with missing `value`', function (t) {
-    try {
-      db.batch().put('foo1')
-    } catch (err) {
-      t.equal(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
+    db.batch().put('foo1')
     t.end()
   })
 
   test('test batch#put() with null `value`', function (t) {
-    try {
-      db.batch().put('foo1', null)
-    } catch (err) {
-      t.equal(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
+    db.batch().put('foo1', null)
     t.end()
   })
 
