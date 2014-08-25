@@ -38,7 +38,7 @@ function makePutErrorTest (type, key, value, expectedError) {
 }
 
 function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
-  var hasExpectedResult = arguments.length == 4
+  var hasExpectedResult = arguments.length === 4
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
       t.error(err)
@@ -60,7 +60,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
           db.get(key, function (err,  value) {
             t.ok(err, 'entry propertly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')
-            t.ok(typeof value == 'undefined', 'value is undefined')
+            t.ok(typeof value === 'undefined', 'value is undefined')
             t.end()
           })
         })

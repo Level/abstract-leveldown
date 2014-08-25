@@ -21,7 +21,7 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   if (!this._db._isBuffer(key)) key = String(key)
   if (!this._db._isBuffer(value)) value = String(value)
 
-  if (typeof this._put == 'function' )
+  if (typeof this._put === 'function' )
     this._put(key, value)
   else
     this._operations.push({ type: 'put', key: key, value: value })
@@ -37,7 +37,7 @@ AbstractChainedBatch.prototype.del = function (key) {
 
   if (!this._db._isBuffer(key)) key = String(key)
 
-  if (typeof this._del == 'function' )
+  if (typeof this._del === 'function' )
     this._del(key)
   else
     this._operations.push({ type: 'del', key: key })
@@ -50,7 +50,7 @@ AbstractChainedBatch.prototype.clear = function () {
 
   this._operations = []
 
-  if (typeof this._clear == 'function' )
+  if (typeof this._clear === 'function' )
     this._clear()
 
   return this
@@ -59,19 +59,19 @@ AbstractChainedBatch.prototype.clear = function () {
 AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
 
-  if (typeof options == 'function')
+  if (typeof options === 'function')
     callback = options
-  if (typeof callback != 'function')
+  if (typeof callback !== 'function')
     throw new Error('write() requires a callback argument')
-  if (typeof options != 'object')
+  if (typeof options !== 'object')
     options = {}
 
   this._written = true
 
-  if (typeof this._write == 'function' )
+  if (typeof this._write === 'function' )
     return this._write(callback)
 
-  if (typeof this._db._batch == 'function')
+  if (typeof this._db._batch === 'function')
     return this._db._batch(this._operations, options, callback)
 
   process.nextTick(callback)

@@ -51,7 +51,7 @@ module.exports.get = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
 
@@ -65,7 +65,7 @@ module.exports.get = function (test) {
           if (isTypedArray(value)) {
             result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
-            t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+            t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
             result = value.toString()
           }
 
@@ -87,7 +87,7 @@ module.exports.get = function (test) {
       t.notOk(err, 'should not error')
       var r = 0
         , done = function () {
-            if (++r == 20)
+            if (++r === 20)
               t.end()
           }
         , i = 0
@@ -104,7 +104,7 @@ module.exports.get = function (test) {
         db.get('not found', function(err, value) {
           t.ok(err, 'should error')
           t.ok(verifyNotFoundError(err), 'should have correct error message')
-          t.ok(typeof value == 'undefined', 'value is undefined')
+          t.ok(typeof value === 'undefined', 'value is undefined')
           done()
         })
     })
