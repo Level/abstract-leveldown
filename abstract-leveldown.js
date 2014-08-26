@@ -196,12 +196,12 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   })
 
   options.reverse = !!options.reverse
-  options.keys = 'keys' in options ? !!options.keys : true
-  options.values = 'values' in options ? !!options.values : true
+  options.keys = options.keys !== false
+  options.values = options.values !== false
   options.limit = 'limit' in options ? options.limit : -1
   options.fillCache = !!options.fillCache
-  options.keyAsBuffer = 'keyAsBuffer' in options ? !!options.keyAsBuffer : true
-  options.valueAsBuffer = 'valueAsBuffer' in options ? !!options.valueAsBuffer : true
+  options.keyAsBuffer = options.keyAsBuffer !== false
+  options.valueAsBuffer = options.valueAsBuffer !== false
 
   return options
 }
