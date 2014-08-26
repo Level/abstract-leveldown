@@ -64,7 +64,16 @@ tap.test('test core extensibility', function (t) {
 tap.test('test open() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
+    , expectedOptions = {
+        createIfMissing: true,
+        errorIfExists: false,
+        compression: true,
+        cacheSize: 8*1024*1024,
+        writeBufferSize: 4*1024*1024,
+        blockSize: 4096,
+        maxOpenFiles: 1000,
+        blockRestartInterval: 16
+      }
     , test
 
   function Test (location) {
@@ -81,15 +90,17 @@ tap.test('test open() extensibility', function (t) {
   t.equal(spy.callCount, 1, 'got _open() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _open() was correct')
   t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
-  t.deepEqual(spy.getCall(0).args[0], {}, 'got blank options argument')
+  t.deepEqual(spy.getCall(0).args[0], expectedOptions, 'got default options argument')
   t.equal(spy.getCall(0).args[1], expectedCb, 'got expected cb argument')
 
-  test.open(expectedOptions, expectedCb)
+  test.open({ options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
 
   t.equal(spy.callCount, 2, 'got _open() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _open() was correct')
   t.equal(spy.getCall(1).args.length, 2, 'got two arguments')
-  t.deepEqual(spy.getCall(1).args[0], expectedOptions, 'got blank options argument')
+  t.deepEqual(spy.getCall(1).args[0], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[1], expectedCb, 'got expected cb argument')
   t.end()
 })
@@ -120,7 +131,7 @@ tap.test('test close() extensibility', function (t) {
 tap.test('test get() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
+    , expectedOptions = { fillCache: true, asBuffer: true }
     , expectedKey = 'a key'
     , test
 
@@ -139,16 +150,18 @@ tap.test('test get() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _get() was correct')
   t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
-  t.deepEqual(spy.getCall(0).args[1], {}, 'got blank options argument')
+  t.deepEqual(spy.getCall(0).args[1], expectedOptions, 'got default options argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
 
-  test.get(expectedKey, expectedOptions, expectedCb)
+  test.get(expectedKey, { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
 
   t.equal(spy.callCount, 2, 'got _get() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _get() was correct')
   t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(1).args[0], expectedKey, 'got expected key argument')
-  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got blank options argument')
+  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected cb argument')
   t.end()
 })
@@ -156,7 +169,7 @@ tap.test('test get() extensibility', function (t) {
 tap.test('test del() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
+    , expectedOptions = { sync: false }
     , expectedKey = 'a key'
     , test
 
@@ -175,16 +188,18 @@ tap.test('test del() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _del() was correct')
   t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
-  t.deepEqual(spy.getCall(0).args[1], {}, 'got blank options argument')
+  t.deepEqual(spy.getCall(0).args[1], expectedOptions, 'got default options argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
 
-  test.del(expectedKey, expectedOptions, expectedCb)
+  test.del(expectedKey, { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
 
   t.equal(spy.callCount, 2, 'got _del() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _del() was correct')
   t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(1).args[0], expectedKey, 'got expected key argument')
-  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got blank options argument')
+  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected cb argument')
   t.end()
 })
@@ -192,7 +207,7 @@ tap.test('test del() extensibility', function (t) {
 tap.test('test put() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
+    , expectedOptions = { sync: false }
     , expectedKey = 'a key'
     , expectedValue = 'a value'
     , test
@@ -213,10 +228,12 @@ tap.test('test put() extensibility', function (t) {
   t.equal(spy.getCall(0).args.length, 4, 'got four arguments')
   t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
   t.equal(spy.getCall(0).args[1], expectedValue, 'got expected value argument')
-  t.deepEqual(spy.getCall(0).args[2], {}, 'got blank options argument')
+  t.deepEqual(spy.getCall(0).args[2], expectedOptions, 'got blank options argument')
   t.equal(spy.getCall(0).args[3], expectedCb, 'got expected cb argument')
 
-  test.put(expectedKey, expectedValue, expectedOptions, expectedCb)
+  test.put(expectedKey, expectedValue, { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
 
   t.equal(spy.callCount, 2, 'got _put() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _put() was correct')
@@ -258,7 +275,7 @@ tap.test('test approximateSize() extensibility', function (t) {
 tap.test('test batch() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
+    , expectedOptions = { sync: false }
     , expectedArray = [ 1, 2 ]
     , test
 
@@ -278,10 +295,12 @@ tap.test('test batch() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(0).args[0], expectedArray, 'got expected array argument')
-  t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
+  t.deepEqual(spy.getCall(0).args[1], expectedOptions, 'got default options argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected callback argument')
 
-  test.batch(expectedArray, expectedOptions, expectedCb)
+  test.batch(expectedArray, { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
 
   t.equal(spy.callCount, 2, 'got _batch() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _batch() was correct')
