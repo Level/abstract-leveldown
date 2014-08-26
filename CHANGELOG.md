@@ -1,3 +1,7 @@
+### 2.0.0 - Aug 26 2014
+ * Lots of stuff between 0.11.1 and now, omitted updating changelog
+ * Switch to allowing writes of empty values: null, undefined, '', []
+
 ### 0.11.1 - Nov 15 2013
  * Adjust approximate-size-test.js to account for snappy compression
 
