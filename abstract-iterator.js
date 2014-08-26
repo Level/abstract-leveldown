@@ -9,7 +9,7 @@ function AbstractIterator (db) {
 AbstractIterator.prototype.next = function (callback) {
   var self = this
 
-  if (typeof callback != 'function')
+  if (typeof callback !== 'function')
     throw new Error('next() requires a callback argument')
 
   if (self._ended)
@@ -18,7 +18,7 @@ AbstractIterator.prototype.next = function (callback) {
     return callback(new Error('cannot call next() before previous next() has completed'))
 
   self._nexting = true
-  if (typeof self._next == 'function') {
+  if (typeof self._next === 'function') {
     return self._next(function () {
       self._nexting = false
       callback.apply(null, arguments)
@@ -32,7 +32,7 @@ AbstractIterator.prototype.next = function (callback) {
 }
 
 AbstractIterator.prototype.end = function (callback) {
-  if (typeof callback != 'function')
+  if (typeof callback !== 'function')
     throw new Error('end() requires a callback argument')
 
   if (this._ended)
@@ -40,7 +40,7 @@ AbstractIterator.prototype.end = function (callback) {
 
   this._ended = true
 
-  if (typeof this._end == 'function')
+  if (typeof this._end === 'function')
     return this._end(callback)
 
   process.nextTick(callback)

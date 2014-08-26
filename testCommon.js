@@ -30,7 +30,7 @@ var dbidx = 0
 
         list.forEach(function (f) {
           rimraf(path.join(__dirname, f), function (err) {
-            if (++ret == list.length)
+            if (++ret === list.length)
               callback()
           })
         })

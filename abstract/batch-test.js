@@ -104,7 +104,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar')
@@ -124,7 +124,7 @@ module.exports.batch = function (test) {
 
       var r = 0
         , done = function () {
-            if (++r == 3)
+            if (++r === 3)
               t.end()
           }
 
@@ -134,7 +134,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar1')
@@ -143,7 +143,7 @@ module.exports.batch = function (test) {
 
       db.get('foobatch2', function (err, value) {
         t.ok(err, 'entry not found')
-        t.ok(typeof value == 'undefined', 'value is undefined')
+        t.ok(typeof value === 'undefined', 'value is undefined')
         t.ok(verifyNotFoundError(err), 'NotFound error')
         done()
       })
@@ -154,7 +154,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar3')
