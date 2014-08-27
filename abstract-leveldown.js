@@ -24,9 +24,9 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  options.createIfMissing = options.createIfMissing !== false
+  options.createIfMissing = options.createIfMissing != false
   options.errorIfExists = !!options.errorIfExists
-  options.compression = options.compression !== false
+  options.compression = options.compression != false
   options.cacheSize = 'cacheSize' in options ? options.cacheSize : 8*1024*1024
   options.writeBufferSize = 'writeBufferSize' in options ? options.writeBufferSize : 4*1024*1024
   options.blockSize = 'blockSize' in options ? options.blockSize : 4096
@@ -67,8 +67,8 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  options.fillCache = options.fillCache !== false
-  options.asBuffer = options.asBuffer !== false
+  options.fillCache = options.fillCache != false
+  options.asBuffer = options.asBuffer != false
 
   if (typeof this._get == 'function')
     return this._get(key, options, callback)
@@ -214,12 +214,12 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   })
 
   options.reverse = !!options.reverse
-  options.keys = options.keys !== false
-  options.values = options.values !== false
+  options.keys = options.keys != false
+  options.values = options.values != false
   options.limit = 'limit' in options ? options.limit : -1
   options.fillCache = !!options.fillCache
-  options.keyAsBuffer = options.keyAsBuffer !== false
-  options.valueAsBuffer = options.valueAsBuffer !== false
+  options.keyAsBuffer = options.keyAsBuffer != false
+  options.valueAsBuffer = options.valueAsBuffer != false
 
   return options
 }
