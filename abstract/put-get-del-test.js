@@ -4,7 +4,8 @@
 var db
   , testBuffer
   , test
-  , verifyNotFoundError = require('./util').verifyNotFoundError
+  , util = require('./util')
+  , verifyNotFoundError = util.verifyNotFoundError
 
 function makeGetDelErrorTests (type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
@@ -51,8 +52,12 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
         } else {
           if (result != null)
             result = _value.toString()
-          if (value != null)
-            value = value.toString()
+          if (value != null) {
+            if (util.isArray(value))
+              value = new Buffer(value).toString()
+            else
+              value = value.toString()
+          }
           t.equals(result, value)
         }
         db.del(key, function (err) {
