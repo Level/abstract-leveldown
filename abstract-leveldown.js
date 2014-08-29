@@ -26,12 +26,6 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
 
   options.createIfMissing = options.createIfMissing != false
   options.errorIfExists = !!options.errorIfExists
-  options.compression = options.compression != false
-  options.cacheSize = 'cacheSize' in options ? options.cacheSize : 8*1024*1024
-  options.writeBufferSize = 'writeBufferSize' in options ? options.writeBufferSize : 4*1024*1024
-  options.blockSize = 'blockSize' in options ? options.blockSize : 4096
-  options.maxOpenFiles = 'maxOpenFiles' in options ? options.maxOpenFiles : 1000
-  options.blockRestartInterval = 'blockRestartInterval' in options ? options.blockRestartInterval : 16
 
   if (typeof this._open == 'function')
     return this._open(options, callback)
@@ -67,7 +61,6 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  options.fillCache = options.fillCache != false
   options.asBuffer = options.asBuffer != false
 
   if (typeof this._get == 'function')
@@ -99,8 +92,6 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  options.sync = !!options.sync
-
   if (typeof this._put == 'function')
     return this._put(key, value, options, callback)
 
@@ -124,8 +115,6 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 
   if (typeof options != 'object')
     options = {}
-
-  options.sync = !!options.sync
 
   if (typeof this._del == 'function')
     return this._del(key, options, callback)
@@ -168,8 +157,6 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (err = this._checkKey(e.key, 'key', this._isBuffer))
       return callback(err)
   }
-
-  options.sync = !!options.sync
 
   if (typeof this._batch == 'function')
     return this._batch(array, options, callback)
@@ -217,7 +204,6 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options.keys = options.keys != false
   options.values = options.values != false
   options.limit = 'limit' in options ? options.limit : -1
-  options.fillCache = !!options.fillCache
   options.keyAsBuffer = options.keyAsBuffer != false
   options.valueAsBuffer = options.valueAsBuffer != false
 
