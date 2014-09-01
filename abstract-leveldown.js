@@ -24,6 +24,9 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   if (typeof options != 'object')
     options = {}
 
+  options.createIfMissing = options.createIfMissing != false
+  options.errorIfExists = !!options.errorIfExists
+
   if (typeof this._open == 'function')
     return this._open(options, callback)
 
@@ -57,6 +60,8 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
   if (typeof options != 'object')
     options = {}
+
+  options.asBuffer = options.asBuffer != false
 
   if (typeof this._get == 'function')
     return this._get(key, options, callback)
@@ -196,12 +201,11 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   })
 
   options.reverse = !!options.reverse
-  options.keys = 'keys' in options ? !!options.keys : true
-  options.values = 'values' in options ? !!options.values : true
+  options.keys = options.keys != false
+  options.values = options.values != false
   options.limit = 'limit' in options ? options.limit : -1
-  options.fillCache = !!options.fillCache
-  options.keyAsBuffer = 'keyAsBuffer' in options ? !!options.keyAsBuffer : true
-  options.valueAsBuffer = 'valueAsBuffer' in options ? !!options.valueAsBuffer : true
+  options.keyAsBuffer = options.keyAsBuffer != false
+  options.valueAsBuffer = options.valueAsBuffer != false
 
   return options
 }
