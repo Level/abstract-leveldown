@@ -163,7 +163,24 @@ module.exports.batch = function (test) {
     })
   })
 }
-
+module.exports.atomic = function (test) {
+  test('test multiple batch()', function (t) {
+    t.plan(3)
+    db.batch([
+        { type: 'put', key: 'foobah1', value: 'bar1' }
+      , { type: 'put', value: 'bar2' }
+      , { type: 'put', key: 'foobah3', value: 'bar3' }
+    ], function (err) {
+      t.ok(err, 'should error')
+      db.get('foobah1', function (err) {
+        t.ok(err, 'should not be found')
+      })
+      db.get('foobah3', function (err) {
+        t.ok(err, 'should not be found')
+      })
+   })
+  })
+}
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
@@ -174,5 +191,6 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.batch(test)
+  module.exports.atomic(test)
   module.exports.tearDown(test, testCommon)
 }
