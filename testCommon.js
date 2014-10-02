@@ -51,6 +51,11 @@ var dbidx = 0
   , collectEntries = function (iterator, callback) {
       var data = []
         , next = function () {
+            var f = _next()
+            while (f) f = f()
+          }
+        , _next = function () {
+            var state = 0
             iterator.next(function (err, key, value) {
               if (err) return callback(err)
               if (!arguments.length) {
@@ -59,9 +64,19 @@ var dbidx = 0
                 })
               }
               data.push({ key: key, value: value })
-              process.nextTick(next)
+              if (state == 1) {
+                next()
+              } else {
+                state = 1
+              }
             })
+            if (state == 1) {
+              return _next
+            } else {
+              state = 1
+            }
           }
+
       next()
     }
 
