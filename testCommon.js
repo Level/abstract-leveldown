@@ -59,7 +59,7 @@ var dbidx = 0
                 })
               }
               data.push({ key: key, value: value })
-              setImmediate(next)
+              setTimeout(next, 0)
             })
           }
       next()
