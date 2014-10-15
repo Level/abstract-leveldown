@@ -453,6 +453,65 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
       'test iterator with end as null'
     , { end: null }
   )
+
+  test('delete while iterating', function (t) {
+    var db = leveldown(testCommon.location())
+      , noerr = function (err) {
+        t.error(err, 'opens crrectly');
+      }
+      , noop = function () {}
+      , iterator
+    db.open(noerr)
+    db.put('a', 'A', noop)
+    db.put('b', 'B', noop)
+    db.put('c', 'C', noop)
+    iterator = db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: 'a' })
+    iterator.next(function (err, key, value) {
+      t.equal(key, 'a')
+      t.equal(value, 'A')
+      db.del('b', function (err) {
+        t.notOk(err, 'no error')
+        iterator.next(function (err, key, value) {
+          t.notOk(err, 'no error')
+          t.equals(key, 'c')
+          t.equal(value, 'C')
+          t.end()
+        })
+      })
+    })
+  })
+
+  test('concurrent batch delete while iterating', function (t) {
+    var db = leveldown(testCommon.location())
+      , noerr = function (err) {
+        t.error(err, 'opens crrectly')
+      }
+      , noop = function () {}
+      , iterator
+    var noop = function () {}
+    var iterator
+    db.open(noerr)
+    db.put('a', 'A', noop)
+    db.put('b', 'B', noop)
+    db.put('c', 'C', noop)
+    iterator = db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: 'a' })
+    iterator.next(function (err, key, value) {
+      t.equal(key, 'a')
+      t.equal(value, 'A')
+      db.batch([{
+        type: 'del',
+        key: 'b'
+      }], noerr)
+      iterator.next(function (err, key, value) {
+        t.notOk(err, 'no error')
+        // on backends that support snapshots, it will be 'b'.
+        // else it will be 'c'
+        t.ok(key, 'key should exist')
+        t.ok(value, 'value should exist')
+        t.end()
+      })
+    })
+  })
 }
 
 module.exports.snapshot = function (leveldown, test, testCommon) {
