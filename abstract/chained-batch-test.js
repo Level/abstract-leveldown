@@ -163,7 +163,7 @@ module.exports.batch = function (test, testCommon) {
           , { type: 'put', key: 'three', value: '3' }
         ]
       , function (err) {
-          t.notOk(err, 'no error')
+          t.error(err)
 
           db.batch()
             .put('1', 'one')
@@ -175,11 +175,11 @@ module.exports.batch = function (test, testCommon) {
             .del('three')
             .put('foo', 'bar')
             .write(function (err) {
-              t.notOk(err, 'no error')
+              t.error(err)
               testCommon.collectEntries(
                   db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
                 , function (err, data) {
-                    t.notOk(err, 'no error')
+                    t.error(err)
                     t.equal(data.length, 3, 'correct number of entries')
                     var expected = [
                         { key: 'foo', value: 'bar' }
