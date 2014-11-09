@@ -43,7 +43,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
     db.put(key, value, function (err) {
       t.error(err)
       db.get(key, function (err, _value) {
-        t.notOk(err, 'no error, has key/value for `' + type + '`')
+        t.error(err, 'no error, has key/value for `' + type + '`')
         t.ok(Buffer.isBuffer(_value), 'is a Buffer')
         var result = _value
         if (hasExpectedResult) {
@@ -56,7 +56,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
           t.equals(result, value)
         }
         db.del(key, function (err) {
-          t.notOk(err, 'no error, deleted key/value for `' + type + '`')
+          t.error(err, 'no error, deleted key/value for `' + type + '`')
           db.get(key, function (err,  value) {
             t.ok(err, 'entry propertly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')

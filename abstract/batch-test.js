@@ -18,14 +18,14 @@ module.exports.args = function (test) {
 
   test('test batch() with missing `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1' }], function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       t.end()
     })
   })
 
   test('test batch() with null `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1', value: null }], function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       t.end()
     })
   })
@@ -80,7 +80,7 @@ module.exports.args = function (test) {
 
   test('test batch() with null options', function (t) {
     db.batch([], null, function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       t.end()
     })
   })
@@ -89,17 +89,17 @@ module.exports.args = function (test) {
 module.exports.batch = function (test) {
   test('test batch() with empty array', function (t) {
     db.batch([], function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       t.end()
     })
   })
 
   test('test simple batch()', function (t) {
     db.batch([{ type: 'put', key: 'foo', value: 'bar' }], function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
 
       db.get('foo', function (err, value) {
-        t.notOk(err, 'no error')
+        t.error(err)
         var result
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
@@ -120,7 +120,7 @@ module.exports.batch = function (test) {
       , { type: 'put', key: 'foobatch3', value: 'bar3' }
       , { type: 'del', key: 'foobatch2' }
     ], function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
 
       var r = 0
         , done = function () {
@@ -129,7 +129,7 @@ module.exports.batch = function (test) {
           }
 
       db.get('foobatch1', function (err, value) {
-        t.notOk(err, 'no error')
+        t.error(err)
         var result
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
@@ -149,7 +149,7 @@ module.exports.batch = function (test) {
       })
 
       db.get('foobatch3', function (err, value) {
-        t.notOk(err, 'no error')
+        t.error(err)
         var result
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))

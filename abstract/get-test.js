@@ -42,9 +42,9 @@ module.exports.args = function (test) {
 module.exports.get = function (test) {
   test('test simple get()', function (t) {
     db.put('foo', 'bar', function (err) {
-      t.notOk(err, 'no error')
+      t.error(err)
       db.get('foo', function (err, value) {
-        t.notOk(err, 'no error')
+        t.error(err)
         t.ok(typeof value !== 'string', 'should not be string by default')
 
         var result
@@ -62,7 +62,7 @@ module.exports.get = function (test) {
         t.equal(result, 'bar')
 
         db.get('foo', {}, function (err, value) { // same but with {}
-          t.notOk(err, 'no error')
+          t.error(err)
           t.ok(typeof value !== 'string', 'should not be string by default')
 
           var result
@@ -80,7 +80,7 @@ module.exports.get = function (test) {
           t.equal(result, 'bar')
 
           db.get('foo', { asBuffer: false }, function (err, value) {
-            t.notOk(err, 'no error')
+            t.error(err)
             t.ok(typeof value === 'string', 'should be string if not buffer')
             t.equal(value, 'bar')
             t.end()
@@ -92,7 +92,7 @@ module.exports.get = function (test) {
 
   test('test simultaniously get()', function (t) {
     db.put('hello', 'world', function (err) {
-      t.notOk(err, 'should not error')
+      t.error(err)
       var r = 0
         , done = function () {
             if (++r == 20)
@@ -103,7 +103,7 @@ module.exports.get = function (test) {
 
       for (; i < 10; ++i)
         db.get('hello', function(err, value) {
-          t.notOk(err, 'should not error')
+          t.error(err)
           t.equal(value.toString(), 'world')
           done()
         })
