@@ -148,6 +148,7 @@ Abstract LevelDOWN is only possible due to the excellent work of the following c
 <tr><th align="left">Matteo Collina</th><td><a href="https://github.com/mcollina">GitHub/mcollina</a></td><td><a href="https://twitter.com/matteocollina">Twitter/@matteocollina</a></td></tr>
 <tr><th align="left">Pedro Teixeira</th><td><a href="https://github.com/pgte">GitHub/pgte</a></td><td><a href="https://twitter.com/pgte">Twitter/@pgte</a></td></tr>
 <tr><th align="left">James Halliday</th><td><a href="https://github.com/substack">GitHub/substack</a></td><td><a href="https://twitter.com/substack">Twitter/@substack</a></td></tr>
+<tr><th align="left">Thomas Watson Steen</th><td><a href="https://github.com/watson">GitHub/watson</a></td><td><a href="https://twitter.com/wa7son">Twitter/@wa7son</a></td></tr>
 </tbody></table>
 
 <a name="license"></a>
