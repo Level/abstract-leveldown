@@ -196,8 +196,10 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(test)
   module.exports.batch(test)
   module.exports.atomic(test)
-  module.exports.sync(test)
-  module.exports.batch(test)
-  module.exports.atomic(test)
+  if (leveldown._batchSync) {
+    module.exports.sync(test)
+    module.exports.batch(test)
+    module.exports.atomic(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

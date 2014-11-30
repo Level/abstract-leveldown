@@ -2,6 +2,11 @@ var path      = require('path')
   , fs        = !process.browser && require('fs')
   , rimraf    = !process.browser && require('rimraf')
 
+//let debug more easy.
+global.setImmediate = function(callback) {
+  callback()
+}
+
 var dbidx = 0
 
   , location = function () {

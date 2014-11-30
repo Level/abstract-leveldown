@@ -112,7 +112,9 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.get(test)
-  module.exports.sync(test)
-  module.exports.get(test)
+  if (leveldown._getSync) {
+    module.exports.sync(test)
+    module.exports.get(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

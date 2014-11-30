@@ -7,12 +7,6 @@ const tap                  = require('tap')
     , AbstractChainedBatch = require('./').AbstractChainedBatch
 
 
-//let debug more easy.
-global.setImmediate = function(callback) {
-  callback()
-}
-
-
 function factory (location) {
   return new AbstractLevelDOWN(location)
 }

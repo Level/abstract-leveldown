@@ -4,8 +4,6 @@ module.exports.close = function (leveldown, test, testCommon) {
 
     db.open(function (err) {
       t.error(err)
-      if (db._closeSync)
-        t.ok(db.close(), "close sync should be ok")
       t.throws(
           db.close.bind(db, 'foo')
         , { name: 'Error', message: 'close() requires callback function argument' }

@@ -55,12 +55,6 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.approximateSizeSync = function (test) {
-  if (db._approximateSizeSync) {
-    delete db.prototype._approximateSize
-    module.exports.approximateSize(test)
-  }
-}
 module.exports.approximateSize = function (test) {
   test('test approximateSize()', function (t) {
     var data = Array.apply(null, Array(10000)).map(function () {
@@ -104,6 +98,15 @@ module.exports.approximateSize = function (test) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._approximateSizeSync) {
+      delete db.__proto__._approximateSize
+    }
+    t.end()
+  })
+}
+
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
@@ -114,6 +117,9 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.approximateSize(test)
-  module.exports.approximateSizeSync(test)
+  if (leveldown._approximateSizeSync) {
+    module.exports.sync(test)
+    module.exports.approximateSize(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

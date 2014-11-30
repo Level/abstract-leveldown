@@ -85,7 +85,8 @@ AbstractLevelDOWN.prototype._open = function (options, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._close = function (callback) {
   var that = this
@@ -99,7 +100,8 @@ AbstractLevelDOWN.prototype._close = function (callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._get = function (key, options, callback) {
   var that = this
@@ -113,7 +115,8 @@ AbstractLevelDOWN.prototype._get = function (key, options, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
   var that = this
@@ -127,7 +130,8 @@ AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._del = function (key, options, callback) {
   var that = this
@@ -141,7 +145,8 @@ AbstractLevelDOWN.prototype._del = function (key, options, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   var that = this
@@ -155,7 +160,8 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 //TODO: remove from here, not a necessary primitive
 AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
@@ -170,7 +176,8 @@ AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
     }
     callback(null, result)
   })
-  setImmediate(callback)
+  else
+    setImmediate(callback)
 }
 //slower impl:
 /*

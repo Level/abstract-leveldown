@@ -56,7 +56,9 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.del(test)
-  module.exports.sync(test)
-  module.exports.del(test)
+  if (leveldown._delSync) {
+    module.exports.sync(test)
+    module.exports.del(test)
+  }
   module.exports.tearDown(test, testCommon)
 }
