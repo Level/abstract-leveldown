@@ -22,7 +22,7 @@ module.exports.put = function (test) {
         var result = value.toString()
         if (isTypedArray(value))
           result = String.fromCharCode.apply(null, new Uint16Array(value))
-        t.equal(result, 'bar')
+        t.equal(result, 'bar', "should be ok")
         t.end()
       })
     })
@@ -49,13 +49,20 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._putSync) {
+      delete db.__proto__._put
+    }
+    t.end()
+  })
+}
+
 module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.put(test)
-  if (db._putSync) {
-    delete db.prototype._put
-    module.exports.put(test)
-  }
+  module.exports.sync(test)
+  module.exports.put(test)
   module.exports.tearDown(test, testCommon)
 }

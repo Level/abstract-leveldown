@@ -99,13 +99,20 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._getSync) {
+      delete db.__proto__._get
+    }
+    t.end()
+  })
+}
+
 module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.get(test)
-  if (db._getSync) {
-    delete db.prototype._get
-    module.exports.get(test)
-  }
+  module.exports.sync(test)
+  module.exports.get(test)
   module.exports.tearDown(test, testCommon)
 }

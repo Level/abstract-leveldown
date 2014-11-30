@@ -43,13 +43,20 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._delSync) {
+      delete db.__proto__._del
+    }
+    t.end()
+  })
+}
+
 module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.del(test)
-  if (db._delSync) {
-    delete db.prototype._del
-    module.exports.del(test)
-  }
+  module.exports.sync(test)
+  module.exports.del(test)
   module.exports.tearDown(test, testCommon)
 }

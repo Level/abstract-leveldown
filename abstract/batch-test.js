@@ -182,15 +182,22 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._batchSync) {
+      delete db.__proto__._batch
+    }
+    t.end()
+  })
+}
+
 module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.batch(test)
   module.exports.atomic(test)
-  if (db._batchSync) {
-    delete db.prototype._batch
-    module.exports.batch(test)
-    module.exports.atomic(test)
-  }
+  module.exports.sync(test)
+  module.exports.batch(test)
+  module.exports.atomic(test)
   module.exports.tearDown(test, testCommon)
 }

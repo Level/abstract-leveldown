@@ -89,8 +89,8 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(leveldown, test, testCommon)
   module.exports.open(leveldown, test, testCommon)
   module.exports.openAdvanced(leveldown, test, testCommon)
-  if (db._openSync) {
-    delete db.prototype._open
+  if (leveldown._openSync) {
+    delete db.__proto__._open
     module.exports.open(leveldown, test, testCommon)
     module.exports.openAdvanced(leveldown, test, testCommon)
   }

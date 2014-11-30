@@ -30,7 +30,7 @@ AbstractLevelDOWN.prototype.putSync = function (key, value, options) {
   throw new Error("NotImplementation")
 }
 
-AbstractLevelDOWN.prototype.delSync = function (key, flushSync) {
+AbstractLevelDOWN.prototype.delSync = function (key, options) {
   if (this._delSync) {
     var result = this._delSync(key, options)
     return result
@@ -74,10 +74,11 @@ AbstractLevelDOWN.prototype.closeSync = function () {
 //the async methods simulated by sync methods:
 //the derived class can override these methods to implement the real async methods for better performance.
 AbstractLevelDOWN.prototype._open = function (options, callback) {
+  var that = this
   if (this._openSync) setImmediate(function() {
     var result
     try {
-      result = this._openSync(options)
+      result = that._openSync(options)
     } catch (err) {
       callback(err)
       return
@@ -87,10 +88,11 @@ AbstractLevelDOWN.prototype._open = function (options, callback) {
   setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._close = function (callback) {
+  var that = this
   if (this._closeSync) setImmediate(function() {
     var result
     try {
-      result = this._closeSync()
+      result = that._closeSync()
     } catch (err) {
       callback(err)
       return
@@ -100,10 +102,11 @@ AbstractLevelDOWN.prototype._close = function (callback) {
   setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._get = function (key, options, callback) {
+  var that = this
   if (this._getSync) setImmediate(function() {
     var result
     try {
-      result = this._getSync(key, options)
+      result = that._getSync(key, options)
     } catch (err) {
       callback(err)
       return
@@ -113,10 +116,11 @@ AbstractLevelDOWN.prototype._get = function (key, options, callback) {
   setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
+  var that = this
   if (this._putSync) setImmediate(function() {
     var result
     try {
-      result = this._putSync(key, value, options)
+      result = that._putSync(key, value, options)
     } catch (err) {
       callback(err)
       return
@@ -126,10 +130,11 @@ AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
   setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._del = function (key, options, callback) {
+  var that = this
   if (this._delSync) setImmediate(function() {
     var result
     try {
-      result = this._delSync(key, options)
+      result = that._delSync(key, options)
     } catch (err) {
       callback(err)
       return
@@ -139,10 +144,11 @@ AbstractLevelDOWN.prototype._del = function (key, options, callback) {
   setImmediate(callback)
 }
 AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
+  var that = this
   if (this._batchSync) setImmediate(function() {
     var result
     try {
-      result = this._batchSync(array, options)
+      result = that._batchSync(array, options)
     } catch (err) {
       callback(err)
       return
@@ -153,10 +159,11 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
 }
 //TODO: remove from here, not a necessary primitive
 AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
+  var that = this
   if (this._approximateSizeSync) setImmediate(function() {
     var result
     try {
-      result = this._approximateSizeSync(start, end, options)
+      result = that._approximateSizeSync(start, end, options)
     } catch (err) {
       callback(err)
       return
@@ -168,10 +175,11 @@ AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
 //slower impl:
 /*
 AbstractLevelDOWN.prototype._exec = function (fn, args, callback) {
+  var that = this
   if (fn) setImmediate(function() {
     var result
     try {
-      result = fn.apply(this, args)
+      result = fn.apply(that, args)
     } catch (err) {
       callback(err)
       return
