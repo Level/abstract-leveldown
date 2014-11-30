@@ -11,11 +11,6 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 }
 
 module.exports.args = function (test) {
-  test('test callback-less, 2-arg, batch() throws', function (t) {
-    t.throws(db.batch.bind(db, 'foo', {}), 'callback-less, 2-arg batch() throws')
-    t.end()
-  })
-
   test('test batch() with missing `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1' }], function (err) {
       t.error(err)
@@ -192,5 +187,10 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(test)
   module.exports.batch(test)
   module.exports.atomic(test)
+  if (db._batchSync) {
+    delete db.prototype._batch
+    module.exports.batch(test)
+    module.exports.atomic(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

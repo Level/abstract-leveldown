@@ -11,32 +11,6 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 }
 
 module.exports.args = function (test) {
-  test('test argument-less del() throws', function (t) {
-    t.throws(
-        db.del.bind(db)
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'no-arg del() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 1-arg, del() throws', function (t) {
-    t.throws(
-        db.del.bind(db, 'foo')
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'callback-less, 1-arg del() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 3-arg, del() throws', function (t) {
-    t.throws(
-        db.del.bind(db, 'foo', {})
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'callback-less, 2-arg del() throws'
-    )
-    t.end()
-  })
 }
 
 module.exports.del = function (test) {
@@ -73,5 +47,9 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.del(test)
+  if (db._delSync) {
+    delete db.prototype._del
+    module.exports.del(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

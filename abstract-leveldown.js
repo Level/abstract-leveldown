@@ -1,5 +1,4 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
-
 var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
@@ -14,12 +13,180 @@ function AbstractLevelDOWN (location) {
   this.location = location
 }
 
+//the optimal low-level sync functions:
+AbstractLevelDOWN.prototype.getSync = function (key, options) {
+  if (this._getSync) {
+    var result = this._getSync(key, options)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+AbstractLevelDOWN.prototype.putSync = function (key, value, options) {
+  if (this._putSync) {
+    var result = this._putSync(key, value, options)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+AbstractLevelDOWN.prototype.delSync = function (key, flushSync) {
+  if (this._delSync) {
+    var result = this._delSync(key, options)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+AbstractLevelDOWN.prototype.batchSync = function (operations, options) {
+  if (this._batchSync) {
+    var result = this._batchSync(operations, options)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+AbstractLevelDOWN.prototype.approximateSizeSync = function (start, end) {
+  if (this._approximateSizeSync) {
+    var result = this._approximateSizeSync(start, end)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+AbstractLevelDOWN.prototype.openSync = function (options) {
+  if (this._openSync) {
+    var result = this._openSync(options)
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+//if successful should return true.
+AbstractLevelDOWN.prototype.closeSync = function () {
+  if (this._closeSync) {
+    var result = this._closeSync()
+    return result
+  }
+  throw new Error("NotImplementation")
+}
+
+//the async methods simulated by sync methods:
+//the derived class can override these methods to implement the real async methods for better performance.
+AbstractLevelDOWN.prototype._open = function (options, callback) {
+  if (this._openSync) setImmediate(function() {
+    var result
+    try {
+      result = this._openSync(options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._close = function (callback) {
+  if (this._closeSync) setImmediate(function() {
+    var result
+    try {
+      result = this._closeSync()
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._get = function (key, options, callback) {
+  if (this._getSync) setImmediate(function() {
+    var result
+    try {
+      result = this._getSync(key, options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
+  if (this._putSync) setImmediate(function() {
+    var result
+    try {
+      result = this._putSync(key, value, options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._del = function (key, options, callback) {
+  if (this._delSync) setImmediate(function() {
+    var result
+    try {
+      result = this._delSync(key, options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
+  if (this._batchSync) setImmediate(function() {
+    var result
+    try {
+      result = this._batchSync(array, options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+//TODO: remove from here, not a necessary primitive
+AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
+  if (this._approximateSizeSync) setImmediate(function() {
+    var result
+    try {
+      result = this._approximateSizeSync(start, end, options)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+//slower impl:
+/*
+AbstractLevelDOWN.prototype._exec = function (fn, args, callback) {
+  if (fn) setImmediate(function() {
+    var result
+    try {
+      result = fn.apply(this, args)
+    } catch (err) {
+      callback(err)
+      return
+    }
+    callback(null, result)
+  })
+  setImmediate(callback)
+}
+AbstractLevelDOWN.prototype._open = function (options, callback) {
+  this._exec(this._openSync, [options], callback)
+}
+*/
 AbstractLevelDOWN.prototype.open = function (options, callback) {
   if (typeof options == 'function')
     callback = options
-
-  if (typeof callback != 'function')
-    throw new Error('open() requires a callback argument')
 
   if (typeof options != 'object')
     options = {}
@@ -27,20 +194,21 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   options.createIfMissing = options.createIfMissing != false
   options.errorIfExists = !!options.errorIfExists
 
-  if (typeof this._open == 'function')
-    return this._open(options, callback)
-
-  process.nextTick(callback)
+  if (callback)
+    this._open(options, callback)
+  else
+    return this.openSync(options)
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
-  if (typeof callback != 'function')
-    throw new Error('close() requires a callback argument')
-
-  if (typeof this._close == 'function')
-    return this._close(callback)
-
-  process.nextTick(callback)
+  if (callback) {
+    if (typeof callback === 'function')
+      this._close(callback)
+    else
+      throw new Error('close() requires callback function argument')
+  }
+  else
+    return this.closeSync()
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
@@ -49,11 +217,12 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (typeof options == 'function')
     callback = options
 
-  if (typeof callback != 'function')
-    throw new Error('get() requires a callback argument')
-
-  if (err = this._checkKey(key, 'key', this._isBuffer))
-    return callback(err)
+  if (err = this._checkKey(key, 'key', this._isBuffer)) {
+    if (callback)
+      return callback(err)
+    else
+      throw err
+  }
 
   if (!this._isBuffer(key))
     key = String(key)
@@ -63,10 +232,11 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
   options.asBuffer = options.asBuffer != false
 
-  if (typeof this._get == 'function')
-    return this._get(key, options, callback)
-
-  process.nextTick(function () { callback(new Error('NotFound')) })
+  if (callback) {
+    this._get(key, options, callback)
+  } else {
+    return this.getSync(key, options)
+  }
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
@@ -75,11 +245,12 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (typeof options == 'function')
     callback = options
 
-  if (typeof callback != 'function')
-    throw new Error('put() requires a callback argument')
-
-  if (err = this._checkKey(key, 'key', this._isBuffer))
-    return callback(err)
+  if (err = this._checkKey(key, 'key', this._isBuffer)) {
+    if (callback)
+      return callback(err)
+    else
+      throw err
+  }
 
   if (!this._isBuffer(key))
     key = String(key)
@@ -92,10 +263,11 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  if (typeof this._put == 'function')
-    return this._put(key, value, options, callback)
-
-  process.nextTick(callback)
+  if (callback) {
+    this._put(key, value, options, callback)
+  } else {
+    return this.putSync(key, value, options)
+  }
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
@@ -104,11 +276,12 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (typeof options == 'function')
     callback = options
 
-  if (typeof callback != 'function')
-    throw new Error('del() requires a callback argument')
-
-  if (err = this._checkKey(key, 'key', this._isBuffer))
-    return callback(err)
+  if (err = this._checkKey(key, 'key', this._isBuffer)) {
+    if (callback)
+      return callback(err)
+    else
+      throw err
+  }
 
   if (!this._isBuffer(key))
     key = String(key)
@@ -116,10 +289,12 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (typeof options != 'object')
     options = {}
 
-  if (typeof this._del == 'function')
-    return this._del(key, options, callback)
-
-  process.nextTick(callback)
+  if (callback) {
+    this._del(key, options, callback)
+  }
+  else {
+    return this.delSync(key, options)
+  }
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
@@ -132,11 +307,13 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (typeof array == 'function')
     callback = array
 
-  if (typeof callback != 'function')
-    throw new Error('batch(array) requires a callback argument')
-
-  if (!Array.isArray(array))
-    return callback(new Error('batch(array) requires an array argument'))
+  if (!Array.isArray(array)) {
+    var vError = new Error('batch(array) requires an array argument')
+    if (callback)
+      return callback(vError)
+    else
+      throw vError
+  }
 
   if (!options || typeof options != 'object')
     options = {}
@@ -151,17 +328,25 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (typeof e != 'object')
       continue
 
-    if (err = this._checkKey(e.type, 'type', this._isBuffer))
-      return callback(err)
+    if (err = this._checkKey(e.type, 'type', this._isBuffer)) {
+      if (callback)
+        return callback(err)
+      else
+        throw err
+    }
 
     if (err = this._checkKey(e.key, 'key', this._isBuffer))
-      return callback(err)
+      if (callback)
+        return callback(err)
+      else
+        throw err
   }
 
-  if (typeof this._batch == 'function')
-    return this._batch(array, options, callback)
-
-  process.nextTick(callback)
+  if (callback) {
+    this._batch(array, options, callback)
+  } else {
+    return this.batchSync(array, options)
+  }
 }
 
 //TODO: remove from here, not a necessary primitive
@@ -170,11 +355,8 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
       || end == null
       || typeof start == 'function'
       || typeof end == 'function') {
-    throw new Error('approximateSize() requires valid `start`, `end` and `callback` arguments')
+    throw new Error('approximateSize() requires valid `start`, `end` and `callback`(for async) arguments')
   }
-
-  if (typeof callback != 'function')
-    throw new Error('approximateSize() requires a callback argument')
 
   if (!this._isBuffer(start))
     start = String(start)
@@ -182,12 +364,10 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   if (!this._isBuffer(end))
     end = String(end)
 
-  if (typeof this._approximateSize == 'function')
-    return this._approximateSize(start, end, callback)
-
-  process.nextTick(function () {
-    callback(null, 0)
-  })
+  if(callback)
+    this._approximateSize(start, end, callback)
+  else
+    return this.approximateSize(start, end)
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {

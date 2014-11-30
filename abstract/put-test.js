@@ -11,41 +11,6 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 }
 
 module.exports.args = function (test) {
-  test('test argument-less put() throws', function (t) {
-    t.throws(
-        db.put.bind(db)
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'no-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 1-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo')
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 1-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 2-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo', 'bar')
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 2-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 3-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo', 'bar', {})
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 3-arg put() throws'
-    )
-    t.end()
-  })
 }
 
 module.exports.put = function (test) {
@@ -88,5 +53,9 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.put(test)
+  if (db._putSync) {
+    delete db.prototype._put
+    module.exports.put(test)
+  }
   module.exports.tearDown(test, testCommon)
 }
