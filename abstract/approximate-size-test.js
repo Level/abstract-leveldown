@@ -85,11 +85,8 @@ module.exports.approximateSize = function (test) {
                                  // original would be ~100000
                   , 'size reports a reasonable amount (' + size + ')'
                 )
+                t.end()
 
-                db.close(function (err) {
-                  t.error(err)
-                  t.end()
-                })
               })
             })
           })
@@ -117,7 +114,7 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.approximateSize(test)
-  if (leveldown._approximateSizeSync) {
+  if (leveldown.prototype._approximateSizeSync) {
     module.exports.sync(test)
     module.exports.approximateSize(test)
   }
