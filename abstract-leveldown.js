@@ -2,6 +2,7 @@
 var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
+  , setImmediate         = global.setImmediate || process.nextTick
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
