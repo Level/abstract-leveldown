@@ -2,11 +2,11 @@ var path      = require('path')
   , fs        = !process.browser && require('fs')
   , rimraf    = !process.browser && require('rimraf')
 
-//let debug more easy.
+/*//let debug more easy.
 global.setImmediate = function(callback) {
   setTimeout(callback, 0) //for iterator-recursion-test.js
   //callback() //will raise max stack exceed error!
-}
+}//*/
 
 var dbidx = 0
 
