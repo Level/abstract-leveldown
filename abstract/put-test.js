@@ -62,7 +62,7 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.put(test)
-  if (leveldown._putSync) {
+  if (leveldown.prototype._putSync) {
     module.exports.sync(test)
     module.exports.put(test)
   }

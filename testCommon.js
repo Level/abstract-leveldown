@@ -4,7 +4,6 @@ var path      = require('path')
 
 /*//let debug more easy.
 global.setImmediate = function(callback) {
-  setTimeout(callback, 0) //for iterator-recursion-test.js
   //callback() //will raise max stack exceed error!
 }//*/
 

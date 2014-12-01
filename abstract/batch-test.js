@@ -196,7 +196,7 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(test)
   module.exports.batch(test)
   module.exports.atomic(test)
-  if (leveldown._batchSync) {
+  if (leveldown.prototype._batchSync) {
     module.exports.sync(test)
     module.exports.batch(test)
     module.exports.atomic(test)
