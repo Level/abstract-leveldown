@@ -170,7 +170,7 @@ AbstractLevelDOWN.prototype._approximateSize = function (start, end, callback) {
   if (this._approximateSizeSync) setImmediate(function() {
     var result
     try {
-      result = that._approximateSizeSync(start, end, options)
+      result = that._approximateSizeSync(start, end)
     } catch (err) {
       callback(err)
       return
