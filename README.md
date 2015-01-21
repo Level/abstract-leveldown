@@ -1,5 +1,7 @@
 # Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/rvagg/abstract-leveldown.png)](http://travis-ci.org/rvagg/abstract-leveldown)
 
+<img alt="LevelDB Logo" height="100" src="http://leveldb.org/img/logo.svg">
+
 [![NPM](https://nodei.co/npm/abstract-leveldown.png?downloads=true&downloadRank=true)](https://nodei.co/npm/abstract-leveldown/)
 [![NPM](https://nodei.co/npm-dl/abstract-leveldown.png?months=6&height=3)](https://nodei.co/npm/abstract-leveldown/)
 
@@ -155,6 +157,6 @@ Abstract LevelDOWN is only possible due to the excellent work of the following c
 License &amp; copyright
 -------------------
 
-Copyright (c) 2012-2014 Abstract LevelDOWN contributors (listed above).
+Copyright (c) 2012-2015 Abstract LevelDOWN contributors (listed above).
 
 Abstract LevelDOWN is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included LICENSE.md file for more details.
