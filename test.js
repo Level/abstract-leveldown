@@ -39,6 +39,9 @@ require('./abstract/approximate-size-test').args(test)
 require('./abstract/batch-test').setUp(factory, test, testCommon)
 require('./abstract/batch-test').args(test)
 
+require('./abstract/compare-test').setUp(factory, test, testCommon)
+require('./abstract/compare-test').args(test)
+
 require('./abstract/chained-batch-test').setUp(factory, test, testCommon)
 require('./abstract/chained-batch-test').args(test)
 
@@ -300,6 +303,31 @@ test('test batch() extensibility', function (t) {
   t.equal(spy.getCall(2).args[0], expectedArray, 'got expected array argument')
   t.ok(spy.getCall(2).args[1], 'options should not be null')
   t.equal(spy.getCall(2).args[2], expectedCb, 'got expected callback argument')
+  t.end()
+})
+
+test('test compare() extensibility', function (t) {
+  var spy = sinon.spy()
+  , expectedKeyA = 'first key'
+  , expectedKeyB = 'second key'
+  , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._compare = spy
+
+  test = new Test('foobar')
+  test.compare(expectedKeyA, expectedKeyB)
+
+  t.equal(spy.callCount, 1, 'got _compare() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _compare() was correct')
+  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.equal(spy.getCall(0).args[0], expectedKeyA, 'got expected first key argument')
+  t.equal(spy.getCall(0).args[1], expectedKeyB, 'got expected second key argument')
   t.end()
 })
 

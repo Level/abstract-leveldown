@@ -41,7 +41,7 @@ FakeLevelDOWN.prototype._open = function (options, callback) {
 }
 
 FakeLevelDOWN.prototype._put = function (key, value, options, callback) {
-  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery 
+  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery
   this._store[key] = value
   process.nextTick(callback)
 }
@@ -93,6 +93,7 @@ Remember that each of these methods, if you implement them, will receive exactly
 ### AbstractLevelDOWN#_put(key, value, options, callback)
 ### AbstractLevelDOWN#_del(key, options, callback)
 ### AbstractLevelDOWN#_batch(array, options, callback)
+### AbstractLevelDOWN#_compare(keyA, keyB)
 
 If `batch()` is called without argument or with only an options object then it should return a `Batch` object with chainable methods. Otherwise it will invoke a classic batch operation.
 
