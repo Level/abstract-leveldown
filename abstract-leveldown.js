@@ -224,6 +224,8 @@ AbstractLevelDOWN.prototype.compare = function (keyA, keyB) {
 
   if (typeof this._compare == 'function')
     return this._compare(keyA, keyB)
+
+  throw new Error('_compare() is not defined')
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {

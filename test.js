@@ -328,6 +328,14 @@ test('test compare() extensibility', function (t) {
   t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
   t.equal(spy.getCall(0).args[0], expectedKeyA, 'got expected first key argument')
   t.equal(spy.getCall(0).args[1], expectedKeyB, 'got expected second key argument')
+
+  Test.prototype._compare = void 0
+  t.throws(
+    test.compare.bind(test, expectedKeyA, expectedKeyB)
+    , { name: 'Error', message: '_compare() is not defined' }
+    , 'calling undefined compare() throws'
+  )
+
   t.end()
 })
 
