@@ -9,7 +9,16 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 }
 
 module.exports.args = function (test) {
+  test('test undefined _compare() throws', function (t) {
+    t.throws(
+      db.compare.bind(db)
+      , { name: 'Error', message: '_compare() is not defined' }
+      , 'undefined _compare() throws'
+    )
+    t.end()
+  })
   test('test argument-less compare() throws', function (t) {
+    db._compare = function () {}
     t.throws(
       db.compare.bind(db)
       , { name: 'Error', message: 'compare() requires valid `keyA`, `keyB` arguments' }

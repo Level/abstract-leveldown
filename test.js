@@ -616,6 +616,7 @@ test('isLevelDOWN', function (t) {
     get: function () {},
     put: function () {},
     del: function () {},
+    compare: function() {},
     batch: function () {},
     iterator: function () {}
   }), 'IS a leveldown')
@@ -625,6 +626,7 @@ test('isLevelDOWN', function (t) {
     get: function () {},
     put: function () {},
     del: function () {},
+    compare: function() {},
     batch: function () {},
     approximateSize: function () {},
     iterator: function () {}

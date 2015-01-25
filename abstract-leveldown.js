@@ -218,14 +218,15 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
 }
 
 AbstractLevelDOWN.prototype.compare = function (keyA, keyB) {
+  if (typeof this._compare != 'function') {
+    throw new Error('_compare() is not defined')
+  }
+
   if (keyA == null || keyB == null) {
     throw new Error('compare() requires valid `keyA`, `keyB` arguments')
   }
 
-  if (typeof this._compare == 'function')
-    return this._compare(keyA, keyB)
-
-  throw new Error('_compare() is not defined')
+  return this._compare(keyA, keyB)
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
