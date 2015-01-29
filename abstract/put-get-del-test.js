@@ -172,6 +172,6 @@ module.exports.all = function (leveldown, testFunc, testCommon, buffer, BufferTy
   module.exports.errorKeys(test, BufferType)
   module.exports.nonErrorKeys(test)
   module.exports.errorValues(test, BufferType)
-  module.exports.nonErrorKeys(test)
+  module.exports.nonErrorValues(test, BufferType)
   module.exports.tearDown(test, testCommon)
 }
