@@ -47,7 +47,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
         t.ok(Buffer.isBuffer(_value), 'is a Buffer')
         var result = _value
         if (hasExpectedResult) {
-          t.ok(result === expectedResult, 'got `' + expectedResult + '`')
+          t.ok(result.toString() === expectedResult, 'got `' + expectedResult + '`')
         } else {
           if (result != null)
             result = _value.toString()
