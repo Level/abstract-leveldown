@@ -1,11 +1,11 @@
-# Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/rvagg/abstract-leveldown.png)](http://travis-ci.org/rvagg/abstract-leveldown)
+# Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/Level/abstract-leveldown.png)](http://travis-ci.org/Level/abstract-leveldown)
 
 <img alt="LevelDB Logo" height="100" src="http://leveldb.org/img/logo.svg">
 
 [![NPM](https://nodei.co/npm/abstract-leveldown.png?downloads=true&downloadRank=true)](https://nodei.co/npm/abstract-leveldown/)
 [![NPM](https://nodei.co/npm-dl/abstract-leveldown.png?months=6&height=3)](https://nodei.co/npm/abstract-leveldown/)
 
-An abstract prototype matching the **[LevelDOWN](https://github.com/rvagg/node-leveldown/)** API. Useful for extending **[LevelUP](https://github.com/rvagg/node-levelup)** functionality by providing a replacement to LevelDOWN.
+An abstract prototype matching the **[LevelDOWN](https://github.com/level/leveldown/)** API. Useful for extending **[LevelUP](https://github.com/level/levelup)** functionality by providing a replacement to LevelDOWN.
 
 As of version 0.7, LevelUP allows you to pass a `'db'` option when you create a new instance. This will override the default LevelDOWN store with a LevelDOWN API compatible object.
 
@@ -130,7 +130,7 @@ Abstract LevelDOWN is an **OPEN Open Source Project**. This means that:
 
 > Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit. This project is more like an open wiki than a standard guarded open source project.
 
-See the [CONTRIBUTING.md](https://github.com/rvagg/node-levelup/blob/master/CONTRIBUTING.md) file for more details.
+See the [CONTRIBUTING.md](https://github.com/level/levelup/blob/master/CONTRIBUTING.md) file for more details.
 
 ### Contributors
 
