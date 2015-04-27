@@ -26,6 +26,8 @@ var dbidx = 0
         if (!list.length)
           return callback()
 
+        return callback()
+
         var ret = 0
 
         list.forEach(function (f) {

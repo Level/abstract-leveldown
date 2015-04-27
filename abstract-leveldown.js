@@ -222,6 +222,22 @@ AbstractLevelDOWN.prototype.iterator = function (options) {
   return new AbstractIterator(this)
 }
 
+AbstractLevelDOWN.prototype.destroy = function (options, callback) {
+  if (typeof options == 'function')
+    callback = options
+
+  if (typeof callback != 'function')
+    throw new Error('destroy() requires a callback argument')
+
+  if (typeof options != 'object')
+    options = {}
+
+  if (typeof this._destroy == 'function')
+    return this._destroy(options, callback)
+
+  process.nextTick(callback)
+}
+
 AbstractLevelDOWN.prototype._chainedBatch = function () {
   return new AbstractChainedBatch(this)
 }

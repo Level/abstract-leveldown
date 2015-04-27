@@ -35,6 +35,8 @@ require('./abstract/put-get-del-test').tearDown(tap.test, testCommon)
 require('./abstract/approximate-size-test').setUp(factory, tap.test, testCommon)
 require('./abstract/approximate-size-test').args(tap.test)
 
+require('./abstract/destroy-test').args(factory, tap.test, testCommon)
+
 require('./abstract/batch-test').setUp(factory, tap.test, testCommon)
 require('./abstract/batch-test').args(tap.test)
 
@@ -256,6 +258,29 @@ tap.test('test approximateSize() extensibility', function (t) {
   t.equal(spy.getCall(0).args[0], expectedStart, 'got expected start argument')
   t.equal(spy.getCall(0).args[1], expectedEnd, 'got expected end argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
+  t.end()
+})
+
+tap.test('test destroy() extensibility', function (t) {
+  var spy = sinon.spy()
+    , expectedCb = function () {}
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._destroy = spy
+
+  test = new Test('foobar')
+  test.destroy(expectedCb)
+
+  t.equal(spy.callCount, 1, 'got _destroy() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _destroy() was correct')
+  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.equal(spy.getCall(0).args[1], expectedCb, 'got expected cb argument')
   t.end()
 })
 
