@@ -30,18 +30,18 @@
   ],
   "main": "./abstract-leveldown.js",
   "dependencies": {
-    "xtend": "~3.0.0"
+    "xtend": "~4.0.0"
   },
   "devDependencies": {
-    "tap": "*",
-    "sinon": "*",
-    "rimraf": "*"
+    "rimraf": "~2.3.2",
+    "sinon": "~1.14.1",
+    "tape": "~4.0.0"
   },
   "browser": {
     "rimraf": false
   },
   "scripts": {
-    "test": "node ./test.js"
+    "test": "node test.js"
   },
   "license": "MIT"
 }
