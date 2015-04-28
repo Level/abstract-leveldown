@@ -88,7 +88,7 @@ module.exports.approximateSize = function (test) {
               db.approximateSize('!', '~', function (err, size) {
                 t.error(err)
 
-                t.type(size, 'number')
+                t.equal(typeof size, 'number')
                 t.ok(
                     size > 40000 // account for snappy compression
                                  // original would be ~100000
