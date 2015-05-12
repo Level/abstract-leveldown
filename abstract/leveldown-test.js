@@ -13,7 +13,7 @@ module.exports.args = function (leveldown, test) {
         function () {
           leveldown({})
         }
-      , /constructor requires a location string argument/
+      , /constructor requires a non empty location string/
       , 'non-string location leveldown() throws'
     )
     t.end()
