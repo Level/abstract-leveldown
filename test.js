@@ -6,6 +6,7 @@ const test                 = require('tape')
     , AbstractIterator     = require('./').AbstractIterator
     , AbstractChainedBatch = require('./').AbstractChainedBatch
 
+
 function factory (location) {
   return new AbstractLevelDOWN(location)
 }

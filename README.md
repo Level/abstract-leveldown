@@ -15,9 +15,85 @@ You add functionality by implementing the underscore versions of the operations.
 
 Additionally, all methods provide argument checking and sensible defaults for optional arguments. All bad-argument errors are compatible with LevelDOWN (they pass the LevelDOWN method arguments tests). For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
 
+
+## Changes
+
+Add the sync methods support now. You can implement the sync methods only.
+The async methods will be simulated via these sync methods. if you wanna
+support the async only, just do not implement these sync methods.
+but if you wanna support the sync only, you should override the async methods to disable it.
+
 ## Example
 
 A simplistic in-memory LevelDOWN replacement
+
+use sync methods:
+
+
+```js
+var util = require('util')
+  , AbstractLevelDOWN = require('./').AbstractLevelDOWN
+
+// constructor, passes through the 'location' argument to the AbstractLevelDOWN constructor
+function FakeLevelDOWN (location) {
+  AbstractLevelDOWN.call(this, location)
+}
+
+// our new prototype inherits from AbstractLevelDOWN
+util.inherits(FakeLevelDOWN, AbstractLevelDOWN)
+
+// implement some methods
+
+FakeLevelDOWN.prototype._openSync = function (options) {
+  this._store = {}
+  return true
+}
+
+FakeLevelDOWN.prototype._putSync = function (key, value, options) {
+  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery 
+  this._store[key] = value
+  return true
+}
+
+FakeLevelDOWN.prototype._get = function (key, options) {
+  var value = this._store['_' + key]
+  if (value === undefined) {
+    // 'NotFound' error, consistent with LevelDOWN API
+    throw new Error('NotFound')
+  }
+  return value
+}
+
+FakeLevelDOWN.prototype._del = function (key, options) {
+  delete this._store['_' + key]
+  return true
+}
+
+// now use it in LevelUP
+
+var levelup = require('levelup')
+
+var db = levelup('/who/cares/', {
+  // the 'db' option replaces LevelDOWN
+  db: function (location) { return new FakeLevelDOWN(location) }
+})
+
+//async:
+db.put('foo', 'bar', function (err) {
+  if (err) throw err
+  db.get('foo', function (err, value) {
+    if (err) throw err
+    console.log('Got foo =', value)
+  })
+})
+
+//sync:
+db.put('foo', 'bar')
+console.log(db.get('foo'))
+```
+
+use async methods(no sync supports now):
+
 
 ```js
 var util = require('util')

@@ -3,25 +3,6 @@ module.exports.setUp = function (test, testCommon) {
 }
 
 module.exports.args = function (leveldown, test, testCommon) {
-  test('test database open no-arg throws', function (t) {
-    var db = leveldown(testCommon.location())
-    t.throws(
-        db.open.bind(db)
-      , { name: 'Error', message: 'open() requires a callback argument' }
-      , 'no-arg open() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 1-arg, open() throws', function (t) {
-    var db = leveldown(testCommon.location())
-    t.throws(
-        db.open.bind(db, {})
-      , { name: 'Error', message: 'open() requires a callback argument' }
-      , 'callback-less, 1-arg open() throws'
-    )
-    t.end()
-  })
 }
 
 module.exports.open = function (leveldown, test, testCommon) {
@@ -108,5 +89,10 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(leveldown, test, testCommon)
   module.exports.open(leveldown, test, testCommon)
   module.exports.openAdvanced(leveldown, test, testCommon)
+  if (leveldown.prototype._openSync) {
+    delete leveldown.prototype._open
+    module.exports.open(leveldown, test, testCommon)
+    module.exports.openAdvanced(leveldown, test, testCommon)
+  }
   module.exports.tearDown(test, testCommon)
 }

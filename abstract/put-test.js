@@ -11,41 +11,6 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 }
 
 module.exports.args = function (test) {
-  test('test argument-less put() throws', function (t) {
-    t.throws(
-        db.put.bind(db)
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'no-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 1-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo')
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 1-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 2-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo', 'bar')
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 2-arg put() throws'
-    )
-    t.end()
-  })
-
-  test('test callback-less, 3-arg, put() throws', function (t) {
-    t.throws(
-        db.put.bind(db, 'foo', 'bar', {})
-      , { name: 'Error', message: 'put() requires a callback argument' }
-      , 'callback-less, 3-arg put() throws'
-    )
-    t.end()
-  })
 }
 
 module.exports.put = function (test) {
@@ -57,7 +22,7 @@ module.exports.put = function (test) {
         var result = value.toString()
         if (isTypedArray(value))
           result = String.fromCharCode.apply(null, new Uint16Array(value))
-        t.equal(result, 'bar')
+        t.equal(result, 'bar', "should be ok")
         t.end()
       })
     })
@@ -106,9 +71,22 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
+module.exports.sync = function (test) {
+  test('sync', function (t) {
+    if (db._putSync) {
+      delete db.__proto__._put
+    }
+    t.end()
+  })
+}
+
 module.exports.all = function (leveldown, test, testCommon) {
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.put(test)
+  if (leveldown.prototype._putSync) {
+    module.exports.sync(test)
+    module.exports.put(test)
+  }
   module.exports.tearDown(test, testCommon)
 }

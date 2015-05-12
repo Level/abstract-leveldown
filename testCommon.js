@@ -2,6 +2,11 @@ var path      = require('path')
   , fs        = !process.browser && require('fs')
   , rimraf    = !process.browser && require('rimraf')
 
+/*//let debug more easy.
+global.setImmediate = function(callback) {
+  //callback() //will raise max stack exceed error!
+}//*/
+
 var dbidx = 0
 
   , location = function () {
