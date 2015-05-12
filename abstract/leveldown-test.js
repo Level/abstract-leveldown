@@ -18,8 +18,9 @@ module.exports.args = function (leveldown, test) {
     t.end()
   })
 
-  test('test database open no-arg throws', function (t) {
-    var db = leveldown('foo')
+  test('test database creation non empty string does not throw', function (t) {
+    var db
+    t.doesNotThrow(function () { db = leveldown('foo') })
     t.ok(db, 'database object returned')
     t.ok(typeof db.open === 'function', 'open() function exists')
     t.end()
