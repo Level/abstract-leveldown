@@ -19,6 +19,17 @@ module.exports.args = function (leveldown, test) {
     t.end()
   })
 
+  test('test database creation empty string location throws', function (t) {
+    t.throws(
+        function () {
+          leveldown('')
+        }
+      , /constructor requires a non empty location string/
+      , 'non-string location leveldown() throws'
+    )
+    t.end()
+  })
+
   test('test database creation non empty string does not throw', function (t) {
     var db
     t.doesNotThrow(function () { db = leveldown('foo') })
