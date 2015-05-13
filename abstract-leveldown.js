@@ -8,8 +8,8 @@ function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
     throw new Error('constructor requires at least a location argument')
 
-  if (typeof location != 'string' || !location.length)
-    throw new Error('constructor requires a non empty location string')
+  if (typeof location != 'string')
+    throw new Error('constructor requires a location string argument')
 
   this.location = location
 }
