@@ -47,7 +47,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
         t.ok(Buffer.isBuffer(_value), 'is a Buffer')
         var result = _value
         if (hasExpectedResult) {
-          t.ok(result.toString() === expectedResult, 'got `' + expectedResult + '`')
+          t.equal(result.toString(), expectedResult)
         } else {
           if (result != null)
             result = _value.toString()
@@ -60,7 +60,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
           db.get(key, function (err,  value) {
             t.ok(err, 'entry propertly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')
-            t.ok(typeof value == 'undefined', 'value is undefined')
+            t.equal(typeof value, 'undefined', 'value is undefined')
             t.end()
           })
         })
