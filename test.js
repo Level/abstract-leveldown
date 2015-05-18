@@ -5,6 +5,7 @@ const test                 = require('tape')
     , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
     , AbstractIterator     = require('./').AbstractIterator
     , AbstractChainedBatch = require('./').AbstractChainedBatch
+    , isLevelDOWN          = require('./').isLevelDOWN
 
 function factory (location) {
   return new AbstractLevelDOWN(location)
@@ -567,5 +568,33 @@ test('test end() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _end() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
   t.equal(spy.getCall(0).args[0], expectedCb, 'got expected cb argument')
+  t.end()
+})
+
+test('isLevelDOWN', function (t) {
+  t.notOk(isLevelDOWN(), 'is not a leveldown')
+  t.notOk(isLevelDOWN(''), 'is not a leveldown')
+  t.notOk(isLevelDOWN({}), 'is not a leveldown')
+  t.notOk(isLevelDOWN({ put: function () {} }), 'is not a leveldown')
+  t.ok(isLevelDOWN(new AbstractLevelDOWN('location')), 'IS a leveldown')
+  t.ok(isLevelDOWN({
+    open: function () {},
+    close: function () {},
+    get: function () {},
+    put: function () {},
+    del: function () {},
+    batch: function () {},
+    iterator: function () {}
+  }), 'IS a leveldown')
+  t.ok(isLevelDOWN({
+    open: function () {},
+    close: function () {},
+    get: function () {},
+    put: function () {},
+    del: function () {},
+    batch: function () {},
+    approximateSize: function () {},
+    iterator: function () {}
+  }), 'IS also a leveldown')
   t.end()
 })
