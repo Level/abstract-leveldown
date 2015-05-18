@@ -28,7 +28,7 @@
     "leveldown",
     "levelup"
   ],
-  "main": "./abstract-leveldown.js",
+  "main": "index.js",
   "dependencies": {
     "xtend": "~4.0.0"
   },

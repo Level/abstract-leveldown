@@ -242,18 +242,4 @@ AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
     return new Error(type + ' cannot be an empty String')
 }
 
-function isLevelDOWN (db) {
-  if (!db || typeof db !== 'object')
-    return false
-  return Object.keys(AbstractLevelDOWN.prototype).filter(function (name) {
-    // TODO remove approximateSize check when method is gone
-    return name[0] != '_' && name != 'approximateSize'
-  }).every(function (name) {
-    return typeof db[name] == 'function'
-  })
-}
-
-exports.AbstractLevelDOWN    = AbstractLevelDOWN
-exports.AbstractIterator     = AbstractIterator
-exports.AbstractChainedBatch = AbstractChainedBatch
-exports.isLevelDOWN          = isLevelDOWN
+module.exports = AbstractLevelDOWN
