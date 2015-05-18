@@ -1,27 +1,11 @@
-module.exports.args = function (leveldown, test) {
-  test('test database creation no-arg throws', function (t) {
-    t.throws(
-        leveldown
-      , { name: 'Error', message: 'constructor requires at least a location argument' }
-      , 'no-arg leveldown() throws'
-    )
-    t.end()
-  })
-  test('test database creation non-string location throws', function (t) {
-    t.throws(
-        function () {
-          leveldown({})
-        }
-      , { name: 'Error', message: 'constructor requires a location string argument' }
-      , 'non-string location leveldown() throws'
-    )
-    t.end()
-  })
-
-  test('test database open no-arg throws', function (t) {
-    var db = leveldown('foo')
+module.exports.args = function (leveldown, test, testCommon) {
+  test('test database creation, optional options', function (t) {
+    var opts = { foo: 'bar' }
+    var db = leveldown(opts)
     t.ok(db, 'database object returned')
-    t.ok(typeof db.open === 'function', 'open() function exists')
+    t.deepEqual(db.opts, opts)
+    t.equal(typeof db.open, 'function', 'open() function exists')
+    t.equal(leveldown().opts, undefined, 'undefined options')
     t.end()
   })
 }
