@@ -122,6 +122,10 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### AbstractChainedBatch#_clear()
 ### AbstractChainedBatch#_write(options, callback)
 
+### isLevelDown(db)
+
+Returns `true` if `db` has the same public api as `AbstractLevelDOWN`, otherwise `false`. This is a utility function and it's not part of the extensible api.
+
 <a name="contributing"></a>
 Contributing
 ------------
