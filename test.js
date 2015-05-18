@@ -5,9 +5,26 @@ const test                 = require('tape')
     , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
     , AbstractIterator     = require('./').AbstractIterator
     , AbstractChainedBatch = require('./').AbstractChainedBatch
+    , isLevelDOWN          = require('./').isLevelDOWN
 
 function factory (location) {
   return new AbstractLevelDOWN(location)
+}
+
+function createTest (opts) {
+  var test
+
+  function Test (param) {
+    opts.base.call(this, param)
+  }
+  util.inherits(Test, opts.base)
+
+  test = new Test(opts.options || opts.db)
+
+  if (typeof opts.spy == 'string')
+    test.spy = Test.prototype[opts.spy] = sinon.spy()
+
+  return test
 }
 
 /*** compatibility with basic LevelDOWN API ***/
@@ -412,18 +429,30 @@ test('test end() extensibility', function (t) {
   t.end()
 })
 
-function createTest (opts) {
-  var test
-
-  function Test (param) {
-    opts.base.call(this, param)
-  }
-  util.inherits(Test, opts.base)
-
-  test = new Test(opts.options || opts.db)
-
-  if (typeof opts.spy == 'string')
-    test.spy = Test.prototype[opts.spy] = sinon.spy()
-
-  return test
-}
+test('isLevelDOWN', function (t) {
+  t.notOk(isLevelDOWN(), 'is not a leveldown')
+  t.notOk(isLevelDOWN(''), 'is not a leveldown')
+  t.notOk(isLevelDOWN({}), 'is not a leveldown')
+  t.notOk(isLevelDOWN({ put: function () {} }), 'is not a leveldown')
+  t.ok(isLevelDOWN(new AbstractLevelDOWN('location')), 'IS a leveldown')
+  t.ok(isLevelDOWN({
+    open: function () {},
+    close: function () {},
+    get: function () {},
+    put: function () {},
+    del: function () {},
+    batch: function () {},
+    iterator: function () {}
+  }), 'IS a leveldown')
+  t.ok(isLevelDOWN({
+    open: function () {},
+    close: function () {},
+    get: function () {},
+    put: function () {},
+    del: function () {},
+    batch: function () {},
+    approximateSize: function () {},
+    iterator: function () {}
+  }), 'IS also a leveldown')
+  t.end()
+})

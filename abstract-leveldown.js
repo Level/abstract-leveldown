@@ -236,6 +236,4 @@ AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
     return new Error(type + ' cannot be an empty String')
 }
 
-module.exports.AbstractLevelDOWN    = AbstractLevelDOWN
-module.exports.AbstractIterator     = AbstractIterator
-module.exports.AbstractChainedBatch = AbstractChainedBatch
+module.exports = AbstractLevelDOWN
