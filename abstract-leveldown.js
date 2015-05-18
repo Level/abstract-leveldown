@@ -4,8 +4,8 @@ var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
 
-function AbstractLevelDOWN (opts) {
-  this.opts = opts
+function AbstractLevelDOWN (options) {
+  this.options = options
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {

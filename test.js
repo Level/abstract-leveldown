@@ -50,9 +50,9 @@ require('./abstract/iterator-test').sequence(test)
 /*** extensibility ***/
 
 test('test core extensibility', function (t) {
-  var opts = { foo: 'bar' }
-  var test = createTest({ base: AbstractLevelDOWN, opts: opts })
-  t.deepEqual(test.opts, opts, 'opts set on `this`')
+  var options = { foo: 'bar' }
+  var test = createTest({ base: AbstractLevelDOWN, options: options })
+  t.deepEqual(test.options, options, 'options set on `this`')
   t.end()
 })
 
@@ -420,7 +420,7 @@ function createTest (opts) {
   }
   util.inherits(Test, opts.base)
 
-  test = new Test(opts.opts || opts.db)
+  test = new Test(opts.options || opts.db)
 
   if (typeof opts.spy == 'string')
     test.spy = Test.prototype[opts.spy] = sinon.spy()
