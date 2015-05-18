@@ -413,12 +413,14 @@ test('test end() extensibility', function (t) {
 })
 
 function createTest (opts) {
+  var test
+
   function Test (param) {
     opts.base.call(this, param)
   }
   util.inherits(Test, opts.base)
 
-  var test = new Test(opts.opts || opts.db)
+  test = new Test(opts.opts || opts.db)
 
   if (typeof opts.spy == 'string')
     test.spy = Test.prototype[opts.spy] = sinon.spy()

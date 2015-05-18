@@ -4,14 +4,8 @@ var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
 
-function AbstractLevelDOWN (location) {
-  if (!arguments.length || location === undefined)
-    throw new Error('constructor requires at least a location argument')
-
-  if (typeof location != 'string')
-    throw new Error('constructor requires a location string argument')
-
-  this.location = location
+function AbstractLevelDOWN (opts) {
+  this.opts = opts
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
