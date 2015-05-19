@@ -83,7 +83,6 @@ test('test open() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _open() was correct')
   t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
   t.deepEqual(spy.getCall(0).args[0], expectedOptions, 'got default options argument')
-  t.equal(spy.getCall(0).args[1], expectedCb, 'got expected cb argument')
 
   test.open({ options: 1 }, expectedCb)
 
@@ -93,7 +92,6 @@ test('test open() extensibility', function (t) {
   t.equal(spy.getCall(1).thisValue, test, '`this` on _open() was correct')
   t.equal(spy.getCall(1).args.length, 2, 'got two arguments')
   t.deepEqual(spy.getCall(1).args[0], expectedOptions, 'got expected options argument')
-  t.equal(spy.getCall(1).args[1], expectedCb, 'got expected cb argument')
   t.end()
 })
 
@@ -116,7 +114,6 @@ test('test close() extensibility', function (t) {
   t.equal(spy.callCount, 1, 'got _close() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
-  t.equal(spy.getCall(0).args[0], expectedCb, 'got expected cb argument')
   t.end()
 })
 
@@ -597,4 +594,121 @@ test('isLevelDOWN', function (t) {
     iterator: function () {}
   }), 'IS also a leveldown')
   t.end()
+})
+
+test('.status', function (t) {
+  t.test('empty prototype', function (t) {
+    var test
+
+    function Test (location) {
+      AbstractLevelDOWN.call(this, location)
+    }
+
+    util.inherits(Test, AbstractLevelDOWN)
+
+    test = new Test('foobar')
+    t.equal(test.status, 'new')
+
+    test.open(function (err) {
+      t.error(err)
+      t.equal(test.status, 'open')
+
+      test.close(function (err) {
+        t.error(err)
+        t.equal(test.status, 'closed')
+        t.end()
+      })
+    })
+  })
+
+  t.test('open error', function (t) {
+    var test
+
+    function Test (location) {
+      AbstractLevelDOWN.call(this, location)
+    }
+
+    util.inherits(Test, AbstractLevelDOWN)
+
+    Test.prototype._open = function (options, cb) {
+      cb(new Error)
+    }
+
+    test = new Test('foobar')
+    test.open(function (err) {
+      t.ok(err)
+      t.equal(test.status, 'new')
+      t.end()
+    })
+  })
+
+  t.test('close error', function (t) {
+    var test
+
+    function Test (location) {
+      AbstractLevelDOWN.call(this, location)
+    }
+
+    util.inherits(Test, AbstractLevelDOWN)
+
+    Test.prototype._close = function (cb) {
+      cb(new Error)
+    }
+
+    test = new Test('foobar')
+    test.open(function () {
+      test.close(function (err) {
+        t.ok(err)
+        t.equal(test.status, 'open')
+        t.end()
+      })
+    })
+  })
+
+  t.test('open', function (t) {
+    var test
+
+    function Test (location) {
+      AbstractLevelDOWN.call(this, location)
+    }
+
+    util.inherits(Test, AbstractLevelDOWN)
+
+    Test.prototype._open = function (options, cb) {
+      process.nextTick(cb)
+    }
+
+    test = new Test('foobar')
+    test.open(function (err) {
+      t.error(err)
+      t.equal(test.status, 'open')
+      t.end()
+    })
+    t.equal(test.status, 'opening')
+  })
+
+  t.test('close', function (t) {
+    var test
+
+    function Test (location) {
+      AbstractLevelDOWN.call(this, location)
+    }
+
+    util.inherits(Test, AbstractLevelDOWN)
+
+    Test.prototype._close = function (cb) {
+      process.nextTick(cb)
+    }
+
+    test = new Test('foobar')
+    test.open(function (err) {
+      t.error(err)
+      test.close(function (err) {
+        t.error(err)
+        t.equal(test.status, 'closed')
+        t.end()
+      })
+      t.equal(test.status, 'closing')
+    })
+  })
 })
