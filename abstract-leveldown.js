@@ -12,9 +12,13 @@ function AbstractLevelDOWN (location) {
     throw new Error('constructor requires a location string argument')
 
   this.location = location
+  this.status = 'new'
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
+  var self      = this
+    , oldStatus = this.status
+
   if (typeof options == 'function')
     callback = options
 
@@ -27,20 +31,43 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   options.createIfMissing = options.createIfMissing != false
   options.errorIfExists = !!options.errorIfExists
 
-  if (typeof this._open == 'function')
-    return this._open(options, callback)
-
-  process.nextTick(callback)
+  if (typeof this._open == 'function') {
+    this.status = 'opening'
+    this._open(options, function (err) {
+      if (err) {
+        self.status = oldStatus
+        return callback(err)
+      }
+      self.status = 'open'
+      callback()
+    })
+  } else {
+    this.status = 'open'
+    process.nextTick(callback)
+  }
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
+  var self      = this
+    , oldStatus = this.status
+
   if (typeof callback != 'function')
     throw new Error('close() requires a callback argument')
 
-  if (typeof this._close == 'function')
-    return this._close(callback)
-
-  process.nextTick(callback)
+  if (typeof this._close == 'function') {
+    this.status = 'closing'
+    this._close(function (err) {
+      if (err) {
+        self.status = oldStatus
+        return callback(err)
+      }
+      self.status = 'closed'
+      callback()
+    })
+  } else {
+    this.status = 'closed'
+    process.nextTick(callback)
+  }
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
