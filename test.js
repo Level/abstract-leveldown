@@ -609,10 +609,12 @@ test('.status', function (t) {
     test = new Test('foobar')
     t.equal(test.status, 'new')
 
-    test.open(function () {
+    test.open(function (err) {
+      t.error(err)
       t.equal(test.status, 'open')
 
-      test.close(function () {
+      test.close(function (err) {
+        t.error(err)
         t.equal(test.status, 'closed')
         t.end()
       })
@@ -677,7 +679,8 @@ test('.status', function (t) {
     }
 
     test = new Test('foobar')
-    test.open(function () {
+    test.open(function (err) {
+      t.error(err)
       t.equal(test.status, 'open')
       t.end()
     })
@@ -698,8 +701,10 @@ test('.status', function (t) {
     }
 
     test = new Test('foobar')
-    test.open(function () {
-      test.close(function () {
+    test.open(function (err) {
+      t.error(err)
+      test.close(function (err) {
+        t.error(err)
         t.equal(test.status, 'closed')
         t.end()
       })
