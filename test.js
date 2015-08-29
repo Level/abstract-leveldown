@@ -1,11 +1,11 @@
-const test                 = require('tape')
-    , sinon                = require('sinon')
-    , util                 = require('util')
-    , testCommon           = require('./testCommon')
-    , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
-    , AbstractIterator     = require('./').AbstractIterator
-    , AbstractChainedBatch = require('./').AbstractChainedBatch
-    , isLevelDOWN          = require('./').isLevelDOWN
+var test                 = require('tape')
+  , sinon                = require('sinon')
+  , util                 = require('util')
+  , testCommon           = require('./testCommon')
+  , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
+  , AbstractIterator     = require('./').AbstractIterator
+  , AbstractChainedBatch = require('./').AbstractChainedBatch
+  , isLevelDOWN          = require('./').isLevelDOWN
 
 function factory (location) {
   return new AbstractLevelDOWN(location)

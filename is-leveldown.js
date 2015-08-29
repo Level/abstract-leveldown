@@ -1,4 +1,4 @@
-const AbstractLevelDOWN = require('./abstract-leveldown')
+var AbstractLevelDOWN = require('./abstract-leveldown')
 
 function isLevelDOWN (db) {
   if (!db || typeof db !== 'object')
