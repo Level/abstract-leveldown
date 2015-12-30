@@ -1,6 +1,9 @@
-# Abstract LevelDOWN [![Build Status](https://secure.travis-ci.org/Level/abstract-leveldown.png)](http://travis-ci.org/Level/abstract-leveldown)
+# Abstract LevelDOWN
 
 <img alt="LevelDB Logo" height="100" src="http://leveldb.org/img/logo.svg">
+
+[![Build Status](https://secure.travis-ci.org/Level/abstract-leveldown.png)](http://travis-ci.org/Level/abstract-leveldown)
+[![dependencies](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
 
 [![NPM](https://nodei.co/npm/abstract-leveldown.png?downloads=true&downloadRank=true)](https://nodei.co/npm/abstract-leveldown/)
 [![NPM](https://nodei.co/npm-dl/abstract-leveldown.png?months=6&height=3)](https://nodei.co/npm/abstract-leveldown/)
@@ -80,7 +83,7 @@ db.put('foo', 'bar', function (err) {
 })
 ```
 
-See [MemDOWN](https://github.com/rvagg/memdown/) if you are looking for a complete in-memory replacement for LevelDOWN.
+See [MemDOWN](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for LevelDOWN.
 
 ## Extensible API
 
