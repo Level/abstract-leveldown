@@ -1,13 +1,15 @@
 language: node_js
-before_install: npm install npm -g
+
 node_js:
-  - "0.8"
-  - "0.10"
+  - "5"
+  - "4"
+  - "3"
+  - "2"
+  - "1.8"
+  - "1.0"
   - "0.12"
-  - "iojs"
-branches:
-  only:
-    - master
+  - "0.10"
+
 notifications:
   email:
     - rod@vagg.org
