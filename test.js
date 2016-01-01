@@ -66,9 +66,12 @@ test('test core extensibility', function (t) {
 })
 
 test('test open() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { createIfMissing: true, errorIfExists: false }
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
+    , expectedOptions = {
+          createIfMissing : true
+        , errorIfExists   : false
+      }
     , test
 
   function Test (location) {
@@ -99,7 +102,7 @@ test('test open() extensibility', function (t) {
 })
 
 test('test close() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy        = sinon.spy()
     , expectedCb = function () {}
     , test
 
@@ -121,10 +124,10 @@ test('test close() extensibility', function (t) {
 })
 
 test('test get() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
     , expectedOptions = { asBuffer: true }
-    , expectedKey = 'a key'
+    , expectedKey     = 'a key'
     , test
 
   function Test (location) {
@@ -159,10 +162,10 @@ test('test get() extensibility', function (t) {
 })
 
 test('test del() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
     , expectedOptions = { options: 1 }
-    , expectedKey = 'a key'
+    , expectedKey     = 'a key'
     , test
 
   function Test (location) {
@@ -195,11 +198,11 @@ test('test del() extensibility', function (t) {
 })
 
 test('test put() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
     , expectedOptions = { options: 1 }
-    , expectedKey = 'a key'
-    , expectedValue = 'a value'
+    , expectedKey     = 'a key'
+    , expectedValue   = 'a value'
     , test
 
   function Test (location) {
@@ -234,10 +237,10 @@ test('test put() extensibility', function (t) {
 })
 
 test('test approximateSize() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy           = sinon.spy()
+    , expectedCb    = function () {}
     , expectedStart = 'a start'
-    , expectedEnd = 'an end'
+    , expectedEnd   = 'an end'
     , test
 
   function Test (location) {
@@ -261,10 +264,10 @@ test('test approximateSize() extensibility', function (t) {
 })
 
 test('test batch() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
     , expectedOptions = { options: 1 }
-    , expectedArray = [ 1, 2 ]
+    , expectedArray   = [ 1, 2 ]
     , test
 
   function Test (location) {
@@ -307,10 +310,10 @@ test('test batch() extensibility', function (t) {
 })
 
 test('test compare() extensibility', function (t) {
-  var spy = sinon.spy()
-  , expectedKeyA = 'first key'
-  , expectedKeyB = 'second key'
-  , test
+  var spy          = sinon.spy()
+    , expectedKeyA = 'first key'
+    , expectedKeyB = 'second key'
+    , test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -331,7 +334,7 @@ test('test compare() extensibility', function (t) {
 
   Test.prototype._compare = void 0
   t.throws(
-    test.compare.bind(test, expectedKeyA, expectedKeyB)
+      test.compare.bind(test, expectedKeyA, expectedKeyB)
     , { name: 'Error', message: '_compare() is not defined' }
     , 'calling undefined compare() throws'
   )
@@ -340,10 +343,10 @@ test('test compare() extensibility', function (t) {
 })
 
 test('test chained batch() (array) extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
+  var spy             = sinon.spy()
+    , expectedCb      = function () {}
     , expectedOptions = { options: 1 }
-    , expectedArray = [ 1, 2 ]
+    , expectedArray   = [ 1, 2 ]
     , test
 
   function Test (location) {
@@ -382,7 +385,7 @@ test('test chained batch() (array) extensibility', function (t) {
 })
 
 test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy  = sinon.spy()
     , test
 
   function Test (location) {
@@ -421,7 +424,7 @@ test('test AbstractChainedBatch extensibility', function (t) {
 })
 
 test('test write() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy   = sinon.spy()
     , spycb = sinon.spy()
     , test
 
@@ -448,8 +451,8 @@ test('test write() extensibility', function (t) {
 })
 
 test('test put() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedKey = 'key'
+  var spy           = sinon.spy()
+    , expectedKey   = 'key'
     , expectedValue = 'value'
     , returnValue
     , test
@@ -474,7 +477,7 @@ test('test put() extensibility', function (t) {
 })
 
 test('test del() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy         = sinon.spy()
     , expectedKey = 'key'
     , returnValue
     , test
@@ -498,7 +501,7 @@ test('test del() extensibility', function (t) {
 })
 
 test('test clear() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy         = sinon.spy()
     , returnValue
     , test
 
@@ -520,8 +523,16 @@ test('test clear() extensibility', function (t) {
 })
 
 test('test iterator() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedOptions = { options: 1, reverse: false, keys: true, values: true, limit: -1, keyAsBuffer: true, valueAsBuffer: true }
+  var spy             = sinon.spy()
+    , expectedOptions = {
+          options       : 1
+        , reverse       : false
+        , keys          : true
+        , values        : true
+        , limit         : -1
+        , keyAsBuffer   : true
+        , valueAsBuffer : true
+      }
     , test
 
   function Test (location) {
@@ -555,7 +566,7 @@ test('test AbstractIterator extensibility', function (t) {
 })
 
 test('test next() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy   = sinon.spy()
     , spycb = sinon.spy()
     , test
 
@@ -582,7 +593,7 @@ test('test next() extensibility', function (t) {
 })
 
 test('test end() extensibility', function (t) {
-  var spy = sinon.spy()
+  var spy        = sinon.spy()
     , expectedCb = function () {}
     , test
 
@@ -605,31 +616,32 @@ test('test end() extensibility', function (t) {
 })
 
 test('isLevelDOWN', function (t) {
+  var noop = function () {}
   t.notOk(isLevelDOWN(), 'is not a leveldown')
   t.notOk(isLevelDOWN(''), 'is not a leveldown')
   t.notOk(isLevelDOWN({}), 'is not a leveldown')
   t.notOk(isLevelDOWN({ put: function () {} }), 'is not a leveldown')
   t.ok(isLevelDOWN(new AbstractLevelDOWN('location')), 'IS a leveldown')
   t.ok(isLevelDOWN({
-    open: function () {},
-    close: function () {},
-    get: function () {},
-    put: function () {},
-    del: function () {},
-    compare: function() {},
-    batch: function () {},
-    iterator: function () {}
+      open     : noop
+    , close    : noop
+    , get      : noop
+    , put      : noop
+    , del      : noop
+    , compare  : noop
+    , batch    : noop
+    , iterator : noop
   }), 'IS a leveldown')
   t.ok(isLevelDOWN({
-    open: function () {},
-    close: function () {},
-    get: function () {},
-    put: function () {},
-    del: function () {},
-    compare: function() {},
-    batch: function () {},
-    approximateSize: function () {},
-    iterator: function () {}
+      open            : noop
+    , close           : noop
+    , get             : noop
+    , put             : noop
+    , del             : noop
+    , compare         : noop
+    , batch           : noop
+    , approximateSize : noop
+    , iterator        : noop
   }), 'IS also a leveldown')
   t.end()
 })
