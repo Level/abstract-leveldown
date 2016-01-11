@@ -79,7 +79,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (typeof callback != 'function')
     throw new Error('get() requires a callback argument')
 
-  if (err = this._checkKey(key, 'key', this._isBuffer))
+  if (err = this._checkKey(key, 'key'))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -105,7 +105,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (typeof callback != 'function')
     throw new Error('put() requires a callback argument')
 
-  if (err = this._checkKey(key, 'key', this._isBuffer))
+  if (err = this._checkKey(key, 'key'))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -134,7 +134,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (typeof callback != 'function')
     throw new Error('del() requires a callback argument')
 
-  if (err = this._checkKey(key, 'key', this._isBuffer))
+  if (err = this._checkKey(key, 'key'))
     return callback(err)
 
   if (!this._isBuffer(key))
@@ -178,10 +178,10 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (typeof e != 'object')
       continue
 
-    if (err = this._checkKey(e.type, 'type', this._isBuffer))
+    if (err = this._checkKey(e.type, 'type'))
       return callback(err)
 
-    if (err = this._checkKey(e.key, 'key', this._isBuffer))
+    if (err = this._checkKey(e.key, 'key'))
       return callback(err)
   }
 
@@ -258,14 +258,12 @@ AbstractLevelDOWN.prototype._isBuffer = function (obj) {
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
-
   if (obj === null || obj === undefined)
     return new Error(type + ' cannot be `null` or `undefined`')
 
-  if (this._isBuffer(obj)) {
-    if (obj.length === 0)
-      return new Error(type + ' cannot be an empty Buffer')
-  } else if (String(obj) === '')
+  if (this._isBuffer(obj) && obj.length === 0)
+    return new Error(type + ' cannot be an empty Buffer')
+  else if (String(obj) === '')
     return new Error(type + ' cannot be an empty String')
 }
 
