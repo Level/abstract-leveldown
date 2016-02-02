@@ -101,7 +101,7 @@ If `batch()` is called without argument or with only an options object then it s
 
 ### AbstractLevelDOWN#_chainedBatch()
 
-By default an `batch()` operation without argument returns a blank `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
+By default a `batch()` operation without argument returns a blank `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
 
 ### AbstractLevelDOWN#_approximateSize(start, end, callback)
 ### AbstractLevelDOWN#_iterator(options)
