@@ -14,7 +14,7 @@ var db
       return d
     }())
   , transformSource = function (d) {
-      return { key: d.key, value: String(d.value) }
+      return { key: d.key, value: process.browser ? d.value : String(d.value) }
     }
 
 module.exports.sourceData      = sourceData
