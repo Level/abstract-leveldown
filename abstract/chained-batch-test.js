@@ -152,6 +152,17 @@ module.exports.args = function (test) {
     t.fail('should have thrown')
     t.end()
   })
+
+  test('test pass through key and value', function (t) {
+    var batch = db.batch()
+      .put({ foo: 'bar' }, { beep: 'boop' })
+      .del({ bar: 'baz' })
+    t.deepEqual(batch._operations, [
+        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
+      , { type: 'del', key: { bar: 'baz' } }
+    ])
+    t.end()
+  })
 }
 
 module.exports.batch = function (test, testCommon) {

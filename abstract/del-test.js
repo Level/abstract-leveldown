@@ -1,10 +1,14 @@
 var db
+  , leveldown
+  , testCommon
   , verifyNotFoundError = require('./util').verifyNotFoundError
   , isTypedArray        = require('./util').isTypedArray
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -36,6 +40,20 @@ module.exports.args = function (test) {
       , 'callback-less, 2-arg del() throws'
     )
     t.end()
+  })
+
+  test('test pass through key', function (t) {
+    t.plan(2)
+    var db = leveldown(testCommon.location())
+    db._del = function (key, options, callback) {
+      t.deepEqual(key, { foo: 'bar' })
+      callback()
+    }
+    db.open(function () {
+      db.del({ foo: 'bar' }, function (err) {
+        t.error(err)
+      })
+    })
   })
 }
 

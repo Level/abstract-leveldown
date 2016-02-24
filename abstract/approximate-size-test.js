@@ -1,8 +1,12 @@
 var db
+  , leveldown
+  , testCommon
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -61,6 +65,21 @@ module.exports.args = function (test) {
       , '1-arg + callback approximateSize() throws'
     )
     t.end()
+  })
+
+  test('test pass through start and end', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._approximateSize = function (start, end, callback) {
+      t.deepEqual(start, { foo: 'bar' })
+      t.deepEqual(end, { beep: 'boop' })
+      callback()
+    }
+    db.open(function () {
+      db.approximateSize({ foo: 'bar' }, { beep: 'boop' }, function (err) {
+        t.error(err)
+      })
+    })
   })
 }
 
