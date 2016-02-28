@@ -1,9 +1,13 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
-function AbstractChainedBatch (db) {
+function AbstractChainedBatch (db, opts) {
+  opts             = opts || {}
   this._db         = db
   this._operations = []
   this._written    = false
+  this._toBuffer   = typeof opts.toBuffer != 'undefined'
+    ? opts.toBuffer
+    : true
 }
 
 AbstractChainedBatch.prototype._checkWritten = function () {
@@ -18,6 +22,11 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   if (err)
     throw err
 
+  if (this._toBuffer) {
+    if (!this._db._isBuffer(key)) key = String(key)
+    if (!this._db._isBuffer(value)) value = String(value)
+  }
+
   if (typeof this._put == 'function' )
     this._put(key, value)
   else
@@ -31,6 +40,8 @@ AbstractChainedBatch.prototype.del = function (key) {
 
   var err = this._db._checkKey(key, 'key', this._db._isBuffer)
   if (err) throw err
+
+  if (this._toBuffer && !this._db._isBuffer(key)) key = String(key)
 
   if (typeof this._del == 'function' )
     this._del(key)

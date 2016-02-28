@@ -1,8 +1,12 @@
 var db
+  , leveldown
+  , testCommon
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -153,15 +157,20 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test pass through key and value', function (t) {
-    var batch = db.batch()
-      .put({ foo: 'bar' }, { beep: 'boop' })
-      .del({ bar: 'baz' })
-    t.deepEqual(batch._operations, [
-        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
-      , { type: 'del', key: { bar: 'baz' } }
-    ])
-    t.end()
+  test('test toBuffer=false', function (t) {
+    var db = leveldown(testCommon.location(), {
+      toBuffer: false
+    })
+    db.open(function () {
+      var batch = db.batch()
+        .put({ foo: 'bar' }, { beep: 'boop' })
+        .del({ bar: 'baz' })
+      t.deepEqual(batch._operations, [
+          { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
+        , { type: 'del', key: { bar: 'baz' } }
+      ])
+      db.close(t.end.bind(t))
+    })
   })
 }
 

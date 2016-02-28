@@ -89,7 +89,12 @@ See [MemDOWN](https://github.com/Level/memdown/) if you are looking for a comple
 
 Remember that each of these methods, if you implement them, will receive exactly the number and order of arguments described. Optional arguments will be converted to sensible defaults.
 
-### AbstractLevelDOWN(location)
+### AbstractLevelDOWN(location, options)
+
+Available options:
+
+- `toBuffer`: Convert all keys and values to buffers. Default: `true`.
+
 ### AbstractLevelDOWN#_open(options, callback)
 ### AbstractLevelDOWN#_close(callback)
 ### AbstractLevelDOWN#_get(key, options, callback)

@@ -67,9 +67,11 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test pass through start and end', function (t) {
+  test('test toBuffer=false', function (t) {
     t.plan(3)
-    var db = leveldown(testCommon.location())
+    var db = leveldown(testCommon.location(), {
+      toBuffer: false
+    })
     db._approximateSize = function (start, end, callback) {
       t.deepEqual(start, { foo: 'bar' })
       t.deepEqual(end, { beep: 'boop' })

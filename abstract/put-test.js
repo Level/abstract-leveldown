@@ -51,9 +51,11 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test pass through key and value', function (t) {
+  test('test toBuffer=false', function (t) {
     t.plan(3)
-    var db = leveldown(testCommon.location())
+    var db = leveldown(testCommon.location(), {
+      toBuffer: false
+    })
     db._put = function (key, value, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
       t.deepEqual(value, { beep: 'boop' })
