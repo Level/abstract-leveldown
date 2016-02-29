@@ -42,11 +42,10 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test toBuffer=false', function (t) {
+  test('test custom _serialize*', function (t) {
     t.plan(2)
-    var db = leveldown(testCommon.location(), {
-      toBuffer: false
-    })
+    var db = leveldown(testCommon.location())
+    db._serializeKey = function (data) { return data }
     db._del = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
       callback()

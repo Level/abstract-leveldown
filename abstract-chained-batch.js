@@ -1,13 +1,17 @@
 /* Copyright (c) 2013 Rod Vagg, MIT License */
 
-function AbstractChainedBatch (db, opts) {
-  opts             = opts || {}
+function AbstractChainedBatch (db) {
   this._db         = db
   this._operations = []
   this._written    = false
-  this._toBuffer   = typeof opts.toBuffer != 'undefined'
-    ? opts.toBuffer
-    : true
+}
+
+AbstractChainedBatch.prototype._serializeKey = function (key) {
+  return this._db._serializeKey(key)
+}
+
+AbstractChainedBatch.prototype._serializeValue = function (value) {
+  return this._db._serializeValue(value)
 }
 
 AbstractChainedBatch.prototype._checkWritten = function () {
@@ -22,10 +26,8 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   if (err)
     throw err
 
-  if (this._toBuffer) {
-    if (!this._db._isBuffer(key)) key = String(key)
-    if (!this._db._isBuffer(value)) value = String(value)
-  }
+  key = this._serializeKey(key)
+  value = this._serializeValue(value)
 
   if (typeof this._put == 'function' )
     this._put(key, value)
@@ -41,7 +43,7 @@ AbstractChainedBatch.prototype.del = function (key) {
   var err = this._db._checkKey(key, 'key', this._db._isBuffer)
   if (err) throw err
 
-  if (this._toBuffer && !this._db._isBuffer(key)) key = String(key)
+  key = this._serializeKey(key)
 
   if (typeof this._del == 'function' )
     this._del(key)

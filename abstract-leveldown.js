@@ -4,19 +4,15 @@ var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')
   , AbstractChainedBatch = require('./abstract-chained-batch')
 
-function AbstractLevelDOWN (location, opts) {
+function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined)
     throw new Error('constructor requires at least a location argument')
 
   if (typeof location != 'string')
     throw new Error('constructor requires a location string argument')
 
-  opts = opts || {}
   this.location = location
   this.status = 'new'
-  this._toBuffer = typeof opts.toBuffer != 'undefined'
-    ? opts.toBuffer
-    : true
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
@@ -86,8 +82,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (this._toBuffer && !this._isBuffer(key))
-    key = String(key)
+  key = this._serializeKey(key)
 
   if (typeof options != 'object')
     options = {}
@@ -112,15 +107,8 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (this._toBuffer) {
-    if (!this._isBuffer(key))
-      key = String(key)
-
-    // coerce value to string in node, don't touch it in browser
-    // (indexeddb can store any JS type)
-    if (value != null && !this._isBuffer(value) && !process.browser)
-      value = String(value)
-  }
+  key = this._serializeKey(key)
+  value = this._serializeValue(value)
 
   if (typeof options != 'object')
     options = {}
@@ -143,8 +131,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (this._toBuffer && !this._isBuffer(key))
-    key = String(key)
+  key = this._serializeKey(key)
 
   if (typeof options != 'object')
     options = {}
@@ -157,9 +144,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (!arguments.length)
-    return this._chainedBatch({
-      toBuffer: this._toBuffer
-    })
+    return this._chainedBatch()
 
   if (typeof options == 'function')
     callback = options
@@ -211,12 +196,8 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   if (typeof callback != 'function')
     throw new Error('approximateSize() requires a callback argument')
 
-  if (this._toBuffer) {
-    if (!this._isBuffer(start))
-      start = String(start)
-    if (!this._isBuffer(end))
-      end = String(end)
-  }
+  start = this._serializeKey(start)
+  end = this._serializeKey(end)
 
   if (typeof this._approximateSize == 'function')
     return this._approximateSize(start, end, callback)
@@ -258,12 +239,20 @@ AbstractLevelDOWN.prototype.iterator = function (options) {
   return new AbstractIterator(this)
 }
 
-AbstractLevelDOWN.prototype._chainedBatch = function (opts) {
-  return new AbstractChainedBatch(this, opts)
+AbstractLevelDOWN.prototype._chainedBatch = function () {
+  return new AbstractChainedBatch(this)
 }
 
 AbstractLevelDOWN.prototype._isBuffer = function (obj) {
   return Buffer.isBuffer(obj)
+}
+
+AbstractLevelDOWN.prototype._serializeKey = function (key) {
+  if (!this._isBuffer(key)) return String(key)
+}
+
+AbstractLevelDOWN.prototype._serializeValue = function (value) {
+  if (!this._isBuffer(value) && !process.browser) return String(value)
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {

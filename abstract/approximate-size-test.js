@@ -67,11 +67,10 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test toBuffer=false', function (t) {
+  test('test custom _serialize*', function (t) {
     t.plan(3)
-    var db = leveldown(testCommon.location(), {
-      toBuffer: false
-    })
+    var db = leveldown(testCommon.location())
+    db._serializeKey = function (data) { return data }
     db._approximateSize = function (start, end, callback) {
       t.deepEqual(start, { foo: 'bar' })
       t.deepEqual(end, { beep: 'boop' })

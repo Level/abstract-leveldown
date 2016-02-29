@@ -157,10 +157,9 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test toBuffer=false', function (t) {
-    var db = leveldown(testCommon.location(), {
-      toBuffer: false
-    })
+  test('test custom _serialize*', function (t) {
+    var db = leveldown(testCommon.location())
+    db._serializeKey = db._serializeValue = function (data) { return data }
     db.open(function () {
       var batch = db.batch()
         .put({ foo: 'bar' }, { beep: 'boop' })
