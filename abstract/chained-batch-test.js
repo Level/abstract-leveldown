@@ -157,6 +157,27 @@ module.exports.args = function (test) {
     t.end()
   })
 
+  test('test serialize object', function (t) {
+    var batch = db.batch()
+      .put({ foo: 'bar' }, { beep: 'boop' })
+      .del({ bar: 'baz' })
+    t.deepEqual(batch._operations, [
+        { type: 'put', key: '[object Object]', value: '[object Object]' }
+      , { type: 'del', key: '[object Object]' }
+    ])
+    t.end()
+  })
+
+  test('test serialize buffer', function (t) {
+    var batch = db.batch()
+      .put(Buffer('foo'), Buffer('bar'))
+      .del(Buffer('baz'))
+    t.equal(batch._operations[0].key.toString(), 'foo')
+    t.equal(batch._operations[0].value.toString(), 'bar')
+    t.equal(batch._operations[1].key.toString(), 'baz')
+    t.end()
+  })
+
   test('test custom _serialize*', function (t) {
     var db = leveldown(testCommon.location())
     db._serializeKey = db._serializeValue = function (data) { return data }

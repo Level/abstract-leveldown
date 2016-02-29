@@ -51,6 +51,32 @@ module.exports.args = function (test) {
     t.end()
   })
 
+  test('test _serialize object', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._put = function (key, value, opts, callback) {
+      t.equal(key, '[object Object]')
+      t.equal(value, '[object Object]')
+      callback()
+    }
+    db.put({}, {}, function (err, val) {
+      t.error(err)
+    })
+  })
+
+  test('test _serialize buffer', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._put = function (key, value, opts, callback) {
+      t.ok(Buffer.isBuffer(key))
+      t.ok(Buffer.isBuffer(value))
+      callback()
+    }
+    db.put(Buffer('buf'), Buffer('buf'), function (err, val) {
+      t.error(err)
+    })
+  })
+
   test('test custom _serialize*', function (t) {
     t.plan(3)
     var db = leveldown(testCommon.location())
