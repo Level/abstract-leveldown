@@ -104,6 +104,8 @@ If `batch()` is called without arguments or with only an options object then it 
 By default a `batch()` operation without arguments returns a blank `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
 
 ### AbstractLevelDOWN#_approximateSize(start, end, callback)
+### AbstractLevelDOWN#_serializeKey(key)
+### AbstractLevelDOWN#_serializeValue(value)
 ### AbstractLevelDOWN#_iterator(options)
 
 By default an `iterator()` operation returns a blank `AbstractIterator` object. The prototype is available on the main exports for you to extend. If you want to implement iterator operations then you should extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
@@ -124,6 +126,8 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### AbstractChainedBatch#_del(key)
 ### AbstractChainedBatch#_clear()
 ### AbstractChainedBatch#_write(options, callback)
+### AbstractChainedBatch#_serializeKey(key)
+### AbstractChainedBatch#_serializeValue(value)
 
 ### isLevelDown(db)
 

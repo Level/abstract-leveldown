@@ -7,8 +7,8 @@ var test                 = require('tape')
   , AbstractChainedBatch = require('./').AbstractChainedBatch
   , isLevelDOWN          = require('./').isLevelDOWN
 
-function factory (location) {
-  return new AbstractLevelDOWN(location)
+function factory (location, opts) {
+  return new AbstractLevelDOWN(location, opts)
 }
 
 /*** compatibility with basic LevelDOWN API ***/
@@ -712,3 +712,4 @@ test('.status', function (t) {
     })
   })
 })
+

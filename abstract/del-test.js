@@ -1,10 +1,14 @@
 var db
+  , leveldown
+  , testCommon
   , verifyNotFoundError = require('./util').verifyNotFoundError
   , isTypedArray        = require('./util').isTypedArray
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -36,6 +40,45 @@ module.exports.args = function (test) {
       , 'callback-less, 2-arg del() throws'
     )
     t.end()
+  })
+
+  test('test _serialize object', function (t) {
+    t.plan(2)
+    var db = leveldown(testCommon.location())
+    db._del = function (key, opts, callback) {
+      t.equal(key, '[object Object]')
+      callback()
+    }
+    db.del({}, function (err, val) {
+      t.error(err)
+    })
+  })
+
+  test('test _serialize buffer', function (t) {
+    t.plan(2)
+    var db = leveldown(testCommon.location())
+    db._del = function (key, opts, callback) {
+      t.ok(Buffer.isBuffer(key))
+      callback()
+    }
+    db.del(Buffer('buf'), function (err, val) {
+      t.error(err)
+    })
+  })
+
+  test('test custom _serialize*', function (t) {
+    t.plan(2)
+    var db = leveldown(testCommon.location())
+    db._serializeKey = function (data) { return data }
+    db._del = function (key, options, callback) {
+      t.deepEqual(key, { foo: 'bar' })
+      callback()
+    }
+    db.open(function () {
+      db.del({ foo: 'bar' }, function (err) {
+        t.error(err)
+      })
+    })
   })
 }
 

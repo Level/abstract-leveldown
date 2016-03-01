@@ -82,8 +82,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (!this._isBuffer(key))
-    key = String(key)
+  key = this._serializeKey(key)
 
   if (typeof options != 'object')
     options = {}
@@ -108,13 +107,8 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (!this._isBuffer(key))
-    key = String(key)
-
-  // coerce value to string in node, don't touch it in browser
-  // (indexeddb can store any JS type)
-  if (value != null && !this._isBuffer(value) && !process.browser)
-    value = String(value)
+  key = this._serializeKey(key)
+  value = this._serializeValue(value)
 
   if (typeof options != 'object')
     options = {}
@@ -137,8 +131,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   if (err = this._checkKey(key, 'key'))
     return callback(err)
 
-  if (!this._isBuffer(key))
-    key = String(key)
+  key = this._serializeKey(key)
 
   if (typeof options != 'object')
     options = {}
@@ -203,11 +196,8 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
   if (typeof callback != 'function')
     throw new Error('approximateSize() requires a callback argument')
 
-  if (!this._isBuffer(start))
-    start = String(start)
-
-  if (!this._isBuffer(end))
-    end = String(end)
+  start = this._serializeKey(start)
+  end = this._serializeKey(end)
 
   if (typeof this._approximateSize == 'function')
     return this._approximateSize(start, end, callback)
@@ -255,6 +245,18 @@ AbstractLevelDOWN.prototype._chainedBatch = function () {
 
 AbstractLevelDOWN.prototype._isBuffer = function (obj) {
   return Buffer.isBuffer(obj)
+}
+
+AbstractLevelDOWN.prototype._serializeKey = function (key) {
+  return this._isBuffer(key)
+    ? key
+    : String(key)
+}
+
+AbstractLevelDOWN.prototype._serializeValue = function (value) {
+  return this._isBuffer(value) || process.browser
+    ? value
+    : String(value)
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {

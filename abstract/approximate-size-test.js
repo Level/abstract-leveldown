@@ -1,8 +1,12 @@
 var db
+  , leveldown
+  , testCommon
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -61,6 +65,48 @@ module.exports.args = function (test) {
       , '1-arg + callback approximateSize() throws'
     )
     t.end()
+  })
+
+  test('test _serialize object', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._approximateSize = function (start, end, callback) {
+      t.equal(start, '[object Object]')
+      t.equal(end, '[object Object]')
+      callback()
+    }
+    db.approximateSize({}, {}, function (err, val) {
+      t.error(err)
+    })
+  })
+
+  test('test _serialize buffer', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._approximateSize = function (start, end, callback) {
+      t.same(start, Buffer('start'))
+      t.same(end, Buffer('end'))
+      callback()
+    }
+    db.approximateSize(Buffer('start'), Buffer('end'), function (err, val) {
+      t.error(err)
+    })
+  })
+
+  test('test custom _serialize*', function (t) {
+    t.plan(3)
+    var db = leveldown(testCommon.location())
+    db._serializeKey = function (data) { return data }
+    db._approximateSize = function (start, end, callback) {
+      t.deepEqual(start, { foo: 'bar' })
+      t.deepEqual(end, { beep: 'boop' })
+      callback()
+    }
+    db.open(function () {
+      db.approximateSize({ foo: 'bar' }, { beep: 'boop' }, function (err) {
+        t.error(err)
+      })
+    })
   })
 }
 

@@ -1,8 +1,12 @@
 var db
+  , leveldown
+  , testCommon
 
-module.exports.setUp = function (leveldown, test, testCommon) {
-  test('setUp common', testCommon.setUp)
+module.exports.setUp = function (_leveldown, test, _testCommon) {
+  test('setUp common', _testCommon.setUp)
   test('setUp db', function (t) {
+    leveldown = _leveldown
+    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -151,6 +155,42 @@ module.exports.args = function (test) {
     }
     t.fail('should have thrown')
     t.end()
+  })
+
+  test('test serialize object', function (t) {
+    var batch = db.batch()
+      .put({ foo: 'bar' }, { beep: 'boop' })
+      .del({ bar: 'baz' })
+    t.deepEqual(batch._operations, [
+        { type: 'put', key: '[object Object]', value: '[object Object]' }
+      , { type: 'del', key: '[object Object]' }
+    ])
+    t.end()
+  })
+
+  test('test serialize buffer', function (t) {
+    var batch = db.batch()
+      .put(Buffer('foo'), Buffer('bar'))
+      .del(Buffer('baz'))
+    t.equal(batch._operations[0].key.toString(), 'foo')
+    t.equal(batch._operations[0].value.toString(), 'bar')
+    t.equal(batch._operations[1].key.toString(), 'baz')
+    t.end()
+  })
+
+  test('test custom _serialize*', function (t) {
+    var db = leveldown(testCommon.location())
+    db._serializeKey = db._serializeValue = function (data) { return data }
+    db.open(function () {
+      var batch = db.batch()
+        .put({ foo: 'bar' }, { beep: 'boop' })
+        .del({ bar: 'baz' })
+      t.deepEqual(batch._operations, [
+          { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
+        , { type: 'del', key: { bar: 'baz' } }
+      ])
+      db.close(t.end.bind(t))
+    })
   })
 }
 
