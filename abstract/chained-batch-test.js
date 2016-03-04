@@ -1,6 +1,4 @@
 var db
-  , leveldown
-  , testCommon
 
 function collectBatchOps (batch) {
   var _put        = batch._put
@@ -24,11 +22,9 @@ function collectBatchOps (batch) {
   return _operations
 }
 
-module.exports.setUp = function (_leveldown, test, _testCommon) {
-  test('setUp common', _testCommon.setUp)
+module.exports.setUp = function (leveldown, test, testCommon) {
+  test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    leveldown = _leveldown
-    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -207,21 +203,27 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    var db = leveldown(testCommon.location())
-    db._serializeKey = db._serializeValue = function (data) { return data }
-    db.open(function () {
-      var batch = db.batch()
-        , ops   = collectBatchOps(batch)
+    var batch           = db.batch()
+      , ops             = collectBatchOps(batch)
+      , _serializeKey   = db._serializeKey
+      , _serializeValue = db._serializeValue
 
-      batch
-        .put({ foo: 'bar' }, { beep: 'boop' })
-        .del({ bar: 'baz' })
-      t.deepEqual(ops, [
-          { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
-        , { type: 'del', key: { bar: 'baz' } }
-      ])
-      db.close(t.end.bind(t))
-    })
+    // patch _serialize* with identity function
+    db._serializeKey = db._serializeValue = function (data) { return data }
+
+    batch
+      .put({ foo: 'bar' }, { beep: 'boop' })
+      .del({ bar: 'baz' })
+
+    t.deepEqual(ops, [
+        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
+      , { type: 'del', key: { bar: 'baz' } }
+    ])
+
+    // remove _serialize* patch
+    db._serializeKey = _serializeKey
+    db._serializeValue = _serializeValue
+    t.end()
   })
 }
 
