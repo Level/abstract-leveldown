@@ -65,6 +65,15 @@ var dbidx = 0
       next()
     }
 
+  , checkBatchSize = function (batch, approximateSize) {
+      var maxCompressionFactor = 0.04 // accounts for snappy compression
+        , total = batch.reduce(function (n, op) {
+            return n + (op.key + op.value).length
+          }, 0)
+
+      return approximateSize > total * maxCompressionFactor
+    }
+
 module.exports = {
     location       : location
   , cleanup        : cleanup
@@ -72,4 +81,5 @@ module.exports = {
   , setUp          : setUp
   , tearDown       : tearDown
   , collectEntries : collectEntries
+  , checkBatchSize : checkBatchSize
 }
