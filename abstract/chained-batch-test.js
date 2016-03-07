@@ -202,7 +202,6 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    // create a delegate db and patch _serialize* method with identity function
     var _db = Object.create(db)
     _db._serializeKey = _db._serializeValue = function (data) { return data }
 
