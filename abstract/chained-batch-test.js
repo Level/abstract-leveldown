@@ -202,13 +202,12 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    var batch           = db.batch()
-      , ops             = collectBatchOps(batch)
-      , _serializeKey   = db._serializeKey
-      , _serializeValue = db._serializeValue
+    // create a delegate db and patch _serialize* method with identity function
+    var _db = Object.create(db)
+    _db._serializeKey = _db._serializeValue = function (data) { return data }
 
-    // patch _serialize* with identity function
-    db._serializeKey = db._serializeValue = function (data) { return data }
+    var batch = _db.batch()
+      , ops   = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
@@ -219,9 +218,6 @@ module.exports.args = function (test) {
       , { type: 'del', key: { bar: 'baz' } }
     ])
 
-    // remove _serialize* patch
-    db._serializeKey = _serializeKey
-    db._serializeValue = _serializeValue
     t.end()
   })
 }
