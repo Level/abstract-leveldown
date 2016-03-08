@@ -1,12 +1,29 @@
 var db
-  , leveldown
-  , testCommon
 
-module.exports.setUp = function (_leveldown, test, _testCommon) {
-  test('setUp common', _testCommon.setUp)
+function collectBatchOps (batch) {
+  var _put        = batch._put
+    , _del        = batch._del
+    , _operations = []
+
+  if (typeof _put !== 'function' || typeof _del !== 'function')
+    return batch._operations
+
+  batch._put = function (key, value) {
+    _operations.push({ type: 'put', key: key, value: value })
+    return _put.apply(this, arguments)
+  }
+
+  batch._del = function (key) {
+    _operations.push({ type: 'del', key: key })
+    return _del.apply(this, arguments)
+  }
+
+  return _operations
+}
+
+module.exports.setUp = function (leveldown, test, testCommon) {
+  test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    leveldown = _leveldown
-    testCommon = _testCommon
     db = leveldown(testCommon.location())
     db.open(t.end.bind(t))
   })
@@ -159,9 +176,12 @@ module.exports.args = function (test) {
 
   test('test serialize object', function (t) {
     var batch = db.batch()
+      , ops   = collectBatchOps(batch)
+
+    batch
       .put({ foo: 'bar' }, { beep: 'boop' })
       .del({ bar: 'baz' })
-    t.deepEqual(batch._operations, [
+    t.deepEqual(ops, [
         { type: 'put', key: '[object Object]', value: '[object Object]' }
       , { type: 'del', key: '[object Object]' }
     ])
@@ -170,27 +190,34 @@ module.exports.args = function (test) {
 
   test('test serialize buffer', function (t) {
     var batch = db.batch()
+      , ops   = collectBatchOps(batch)
+
+    batch
       .put(Buffer('foo'), Buffer('bar'))
       .del(Buffer('baz'))
-    t.equal(batch._operations[0].key.toString(), 'foo')
-    t.equal(batch._operations[0].value.toString(), 'bar')
-    t.equal(batch._operations[1].key.toString(), 'baz')
+    t.equal(ops[0].key.toString(), 'foo')
+    t.equal(ops[0].value.toString(), 'bar')
+    t.equal(ops[1].key.toString(), 'baz')
     t.end()
   })
 
   test('test custom _serialize*', function (t) {
-    var db = leveldown(testCommon.location())
-    db._serializeKey = db._serializeValue = function (data) { return data }
-    db.open(function () {
-      var batch = db.batch()
-        .put({ foo: 'bar' }, { beep: 'boop' })
-        .del({ bar: 'baz' })
-      t.deepEqual(batch._operations, [
-          { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
-        , { type: 'del', key: { bar: 'baz' } }
-      ])
-      db.close(t.end.bind(t))
-    })
+    var _db = Object.create(db)
+    _db._serializeKey = _db._serializeValue = function (data) { return data }
+
+    var batch = _db.batch()
+      , ops   = collectBatchOps(batch)
+
+    batch
+      .put({ foo: 'bar' }, { beep: 'boop' })
+      .del({ bar: 'baz' })
+
+    t.deepEqual(ops, [
+        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
+      , { type: 'del', key: { bar: 'baz' } }
+    ])
+
+    t.end()
   })
 }
 
