@@ -46,7 +46,7 @@ module.exports.args = function (test) {
     t.plan(2)
     var db = leveldown(testCommon.location())
     db._del = function (key, opts, callback) {
-      t.equal(key, '[object Object]')
+      t.equal(Buffer.isBuffer(key) ? String(key) : key, '[object Object]')
       callback()
     }
     db.del({}, function (err, val) {
