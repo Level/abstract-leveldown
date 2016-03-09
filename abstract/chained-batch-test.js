@@ -181,6 +181,10 @@ module.exports.args = function (test) {
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
       .del({ bar: 'baz' })
+    ops.forEach(function (op) {
+      if (Buffer.isBuffer(op.key)) op.key = String(op.key)
+      if (Buffer.isBuffer(op.value)) op.value = String(op.value)
+    })
     t.deepEqual(ops, [
         { type: 'put', key: '[object Object]', value: '[object Object]' }
       , { type: 'del', key: '[object Object]' }
