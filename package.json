@@ -33,15 +33,18 @@
     "xtend": "~4.0.0"
   },
   "devDependencies": {
+    "phantomjs-prebuilt": "^2.1.7",
     "rimraf": "~2.5.0",
     "sinon": "~1.17.2",
-    "tape": "~4.5.0"
+    "tape": "~4.5.0",
+    "zuul": "^3.10.1"
   },
   "browser": {
     "rimraf": false
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "test-browser": "zuul --phantom --no-coverage --ui tape test.js"
   },
   "license": "MIT"
 }

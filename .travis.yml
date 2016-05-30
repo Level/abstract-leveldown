@@ -2,13 +2,29 @@ language: node_js
 
 node_js:
   - "5"
-  - "4"
-  - "3"
-  - "2"
-  - "1.8"
-  - "1.0"
-  - "0.12"
-  - "0.10"
+
+script: npm run $COMMAND
+
+env:
+  matrix:
+    - COMMAND=test
+    - COMMAND=test-browser
+matrix:
+  include:
+    - node_js: "0.10"
+      env: COMMAND=test
+    - node_js: "0.12"
+      env: COMMAND=test
+    - node_js: "1.0"
+      env: COMMAND=test
+    - node_js: "1.8"
+      env: COMMAND=test
+    - node_js: "2"
+      env: COMMAND=test
+    - node_js: "3"
+      env: COMMAND=test
+    - node_js: "4"
+      env: COMMAND=test
 
 notifications:
   email:
