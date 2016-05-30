@@ -256,7 +256,7 @@ AbstractLevelDOWN.prototype._serializeKey = function (key) {
 AbstractLevelDOWN.prototype._serializeValue = function (value) {
   return this._isBuffer(value) || process.browser
     ? value
-    : String(value)
+    : String(value || '')
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
