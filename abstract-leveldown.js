@@ -254,7 +254,7 @@ AbstractLevelDOWN.prototype._serializeKey = function (key) {
 }
 
 AbstractLevelDOWN.prototype._serializeValue = function (value) {
-  return (typeof value === 'undefined' || value === null)
+  return (obj === null || obj === undefined)
     ? ''
     : this._isBuffer(value) || process.browser
       ? value
