@@ -254,7 +254,7 @@ AbstractLevelDOWN.prototype._serializeKey = function (key) {
 }
 
 AbstractLevelDOWN.prototype._serializeValue = function (value) {
-  return (obj === null || obj === undefined)
+  return (typeof value === 'undefined' || value === null)
     ? ''
     : this._isBuffer(value) || process.browser
       ? value
@@ -262,7 +262,7 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
-  if (obj === null || obj === undefined)
+  if (typeof value === 'undefined' || value === null)
     return new Error(type + ' cannot be `null` or `undefined`')
 
   if (this._isBuffer(obj) && obj.length === 0)
