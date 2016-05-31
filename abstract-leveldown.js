@@ -262,7 +262,7 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
-  if (typeof value === 'undefined' || value === null)
+  if (typeof obj === 'undefined' || obj === null)
     return new Error(type + ' cannot be `null` or `undefined`')
 
   if (this._isBuffer(obj) && obj.length === 0)
