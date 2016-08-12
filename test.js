@@ -85,7 +85,7 @@ test('test key/value serialization', function (t) {
   process.browser = true
   t.equal(test._serializeValue(1), 1, '_serializeValue returns value as is when process.browser')
 
-  process.browser = process.browser
+  process.browser = browser
 
   t.end()
 })
