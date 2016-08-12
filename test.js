@@ -75,13 +75,17 @@ test('test key/value serialization', function (t) {
   t.equal(test._serializeKey(1), '1', '_serializeKey converts to string')
   t.ok(test._serializeKey(buffer) === buffer, '_serializeKey returns Buffer as is')
 
+  var browser = !! process.browser
+  process.browser = false
+
   t.equal(test._serializeValue(1), '1', '_serializeValue converts to string')
   t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
   t.ok(test._serializeValue(buffer) === buffer, '_serializeValue returns Buffer as is')
 
   process.browser = true
   t.equal(test._serializeValue(1), 1, '_serializeValue returns value as is when process.browser')
-  delete process.browser
+
+  process.browser = process.browser
 
   t.end()
 })
