@@ -56,7 +56,7 @@ module.exports.args = function (test) {
     var db = leveldown(testCommon.location())
     db._put = function (key, value, opts, callback) {
       t.equal(Buffer.isBuffer(key) ? String(key) : key, '[object Object]')
-      t.equal(Buffer.isBuffer(value) ? String(value) : value, '[object Object]')
+      t.deepEqual(Buffer.isBuffer(value) ? String(value) : value, process.browser ? {} : '[object Object]')
       callback()
     }
     db.put({}, {}, function (err, val) {

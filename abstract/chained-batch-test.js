@@ -185,10 +185,17 @@ module.exports.args = function (test) {
       if (Buffer.isBuffer(op.key)) op.key = String(op.key)
       if (Buffer.isBuffer(op.value)) op.value = String(op.value)
     })
-    t.deepEqual(ops, [
-        { type: 'put', key: '[object Object]', value: '[object Object]' }
-      , { type: 'del', key: '[object Object]' }
-    ])
+    var expected = process.browser ?
+      [
+          { type: 'put', key: '[object Object]', value: {beep: 'boop'} }
+        , { type: 'del', key: '[object Object]' }
+      ] :
+      [
+          { type: 'put', key: '[object Object]', value: '[object Object]' }
+        , { type: 'del', key: '[object Object]' }
+      ];
+    console.log('expected');
+    t.deepEqual(ops, expected)
     t.end()
   })
 
