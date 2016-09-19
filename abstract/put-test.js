@@ -55,8 +55,8 @@ module.exports.args = function (test) {
     t.plan(3)
     var db = leveldown(testCommon.location())
     db._put = function (key, value, opts, callback) {
-      t.equal(Buffer.isBuffer(key) ? String(key) : key, '[object Object]')
-      t.equal(Buffer.isBuffer(value) ? String(value) : value, '[object Object]')
+      t.ok(key)
+      t.ok(value)
       callback()
     }
     db.put({}, {}, function (err, val) {
