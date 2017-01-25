@@ -568,6 +568,38 @@ test('test end() extensibility', function (t) {
   t.end()
 })
 
+test('test serialization extensibility', function (t) {
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._put = spy
+
+  test = new Test('foobar')
+  test.put('no', 'nope', function () {})
+
+  t.equal(spy.callCount, 1, 'got _put() call')
+  t.equal(spy.getCall(0).args[0], 'foo', 'got expected key argument')
+  t.equal(spy.getCall(0).args[1], 'bar', 'got expected value argument')
+
+  t.end()
+})
+
 test('isLevelDOWN', function (t) {
   t.notOk(isLevelDOWN(), 'is not a leveldown')
   t.notOk(isLevelDOWN(''), 'is not a leveldown')
@@ -712,4 +744,3 @@ test('.status', function (t) {
     })
   })
 })
-
