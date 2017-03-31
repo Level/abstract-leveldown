@@ -8,3 +8,7 @@ module.exports.isTypedArray = function isTypedArray (value) {
   return (typeof ArrayBuffer != 'undefined' && value instanceof ArrayBuffer)
       || (typeof Uint8Array != 'undefined' && value instanceof Uint8Array)
 }
+
+module.exports.isArray = function (arr) {
+  return Array.isArray ? Array.isArray(arr) : (arr && arr.push && arr.length);
+}
