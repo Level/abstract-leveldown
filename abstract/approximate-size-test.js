@@ -113,43 +113,40 @@ module.exports.args = function (test) {
 module.exports.approximateSize = function (test) {
   test('test approximateSize()', function (t) {
     var data = Array.apply(null, Array(10000)).map(function () {
-      return 'aaaaaaaaaa'
-    }).join('')
-
-    db.batch(
-        Array.apply(null, Array(10)).map(function (x, i) {
+          return 'aaaaaaaaaa'
+        }).join('')
+      , items = Array.apply(null, Array(10)).map(function (x, i) {
           return { type: 'put', key: 'foo' + i, value: data }
         })
-      , function (err) {
+
+    db.batch(items, function (err) {
+      t.error(err)
+
+      // cycle open/close to ensure a pack to .sst
+
+      db.close(function (err) {
+        t.error(err)
+
+        db.open(function (err) {
           t.error(err)
 
-          // cycle open/close to ensure a pack to .sst
-
-          db.close(function (err) {
+          db.approximateSize('!', '~', function (err, size) {
             t.error(err)
 
-            db.open(function (err) {
+            t.equal(typeof size, 'number')
+            t.ok(
+                testCommon.checkBatchSize(items, size)
+              , 'size reports a reasonable amount (' + size + ')'
+            )
+
+            db.close(function (err) {
               t.error(err)
-
-              db.approximateSize('!', '~', function (err, size) {
-                t.error(err)
-
-                t.equal(typeof size, 'number')
-                t.ok(
-                    size > 40000 // account for snappy compression
-                                 // original would be ~100000
-                  , 'size reports a reasonable amount (' + size + ')'
-                )
-
-                db.close(function (err) {
-                  t.error(err)
-                  t.end()
-                })
-              })
+              t.end()
             })
           })
-        }
-    )
+        })
+      })
+    })
   })
 }
 
