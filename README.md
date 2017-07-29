@@ -147,6 +147,6 @@ See the [contribution guide](https://github.com/Level/community/blob/master/CONT
 License &amp; Copyright
 -------------------
 
-Copyright &copy; 2012-2015 **AbstractLevelDOWN** [contributors](https://github.com/level/community#contributors).
+Copyright &copy; 2013-2017 **AbstractLevelDOWN** [contributors](https://github.com/level/community#contributors).
 
 **AbstractLevelDOWN** is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
