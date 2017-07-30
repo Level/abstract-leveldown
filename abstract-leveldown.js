@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Rod Vagg, MIT License */
+/* Copyright (c) 2017 Rod Vagg, MIT License */
 
 var xtend                = require('xtend')
   , AbstractIterator     = require('./abstract-iterator')

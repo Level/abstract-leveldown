@@ -1,4 +1,4 @@
-/* Copyright (c) 2013 Rod Vagg, MIT License */
+/* Copyright (c) 2017 Rod Vagg, MIT License */
 
 function AbstractIterator (db) {
   this.db = db

@@ -33,9 +33,9 @@
     "xtend": "~4.0.0"
   },
   "devDependencies": {
-    "rimraf": "~2.6.0",
-    "sinon": "~2.0.0",
-    "tape": "~4.6.1"
+    "rimraf": "^2.6.1",
+    "sinon": "^2.4.1",
+    "tape": "^4.7.0"
   },
   "browser": {
     "rimraf": false
