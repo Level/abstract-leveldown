@@ -1,5 +1,7 @@
 # Abstract LevelDOWN
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Level/abstract-leveldown.svg)](https://greenkeeper.io/)
+
 <img alt="LevelDB Logo" height="100" src="http://leveldb.org/img/logo.svg">
 
 [![Build Status](https://travis-ci.org/Level/abstract-leveldown.svg?branch=master)](http://travis-ci.org/Level/abstract-leveldown)
