@@ -62,6 +62,36 @@ test('test core extensibility', function (t) {
   ;new Test('foobar')
 })
 
+test('test key/value serialization', function (t) {
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  var buffer = new Buffer(0)
+  var test = new Test('foobar')
+
+  t.equal(test._serializeKey(1), '1', '_serializeKey converts to string')
+  t.ok(test._serializeKey(buffer) === buffer, '_serializeKey returns Buffer as is')
+
+  t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
+  t.equal(test._serializeValue(undefined), '', '_serializeValue converts undefined to empty string')
+
+  var browser = !! process.browser
+  process.browser = false
+
+  t.equal(test._serializeValue(1), '1', '_serializeValue converts to string')
+  t.ok(test._serializeValue(buffer) === buffer, '_serializeValue returns Buffer as is')
+
+  process.browser = true
+  t.equal(test._serializeValue(1), 1, '_serializeValue returns value as is when process.browser')
+
+  process.browser = browser
+
+  t.end()
+})
+
 test('test open() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
