@@ -76,6 +76,7 @@ test('test key/value serialization', function (t) {
   t.ok(test._serializeKey(buffer) === buffer, '_serializeKey returns Buffer as is')
 
   t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
+  t.equal(test._serializeValue(undefined), '', '_serializeValue converts undefined to empty string')
 
   var browser = !! process.browser
   process.browser = false
