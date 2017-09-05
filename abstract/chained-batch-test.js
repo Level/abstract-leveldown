@@ -182,13 +182,11 @@ module.exports.args = function (test) {
       .put({ foo: 'bar' }, { beep: 'boop' })
       .del({ bar: 'baz' })
     ops.forEach(function (op) {
-      if (Buffer.isBuffer(op.key)) op.key = String(op.key)
-      if (Buffer.isBuffer(op.value)) op.value = String(op.value)
+      t.ok(op.key, '.key is set for .put and .del operations')
+      if (op.type === 'put') {
+        t.ok(op.value, '.value is set for .put operation')
+      }
     })
-    t.deepEqual(ops, [
-        { type: 'put', key: '[object Object]', value: '[object Object]' }
-      , { type: 'del', key: '[object Object]' }
-    ])
     t.end()
   })
 
