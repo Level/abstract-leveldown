@@ -35,7 +35,7 @@ declare namespace Abstract {
       TDeleteOptions=any,
       TIteratorOptions=any,
       TBatchOptions=any
-      >(db: any): LevelDOWN<
+      >(location: string): LevelDOWN<
       TKey,
       TValue,
       TOptions,
@@ -53,7 +53,7 @@ declare namespace Abstract {
       TDeleteOptions=any,
       TIteratorOptions=any,
       TBatchOptions=any
-      >(db: any): LevelDOWN<
+      >(location: string): LevelDOWN<
       TKey,
       TValue,
       TOptions,
