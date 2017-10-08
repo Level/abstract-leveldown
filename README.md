@@ -8,19 +8,19 @@
 [![david](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
 [![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 
-**Abstract LevelDOWN** provides a simple, operational *noop* base prototype that's ready for extending. By default, all operations have sensible "noops" (operations that essentially do nothing). For example, simple operations such as `.open(callback)` and `.close(callback)` will simply invoke the callback (on a *next tick*). More complex operations  perform sensible actions, for example: `.get(key, callback)` will always return a `'NotFound'` `Error` on the callback.
+`abstract-leveldown` provides a simple, operational *noop* base prototype that's ready for extending. By default, all operations have sensible "noops" (operations that essentially do nothing). For example, simple operations such as `.open(callback)` and `.close(callback)` will simply invoke the callback (on a *next tick*). More complex operations  perform sensible actions, for example: `.get(key, callback)` will always return a `'NotFound'` `Error` on the callback.
 
 You add functionality by implementing the underscore versions of the operations. For example, to implement a `put()` operation you add a `_put()` method to your object. Each of these underscore methods override the default *noop* operations and are always provided with **consistent arguments**, regardless of what is passed in by the client.
 
-Additionally, all methods provide argument checking and sensible defaults for optional arguments. All bad-argument errors are compatible with LevelDOWN (they pass the LevelDOWN method arguments tests). For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
+Additionally, all methods provide argument checking and sensible defaults for optional arguments. All bad-argument errors are compatible with `leveldown` (they pass the `leveldown` method arguments tests). For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
 
 ## Example
 
-A simplistic in-memory LevelDOWN replacement
+A simplistic in-memory `leveldown` replacement
 
 ```js
 var util = require('util')
-  , AbstractLevelDOWN = require('./').AbstractLevelDOWN
+var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 
 // constructor, passes through the 'location' argument to the AbstractLevelDOWN constructor
 function FakeLevelDOWN (location) {
@@ -40,7 +40,7 @@ FakeLevelDOWN.prototype._open = function (options, callback) {
 }
 
 FakeLevelDOWN.prototype._put = function (key, value, options, callback) {
-  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery 
+  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery
   this._store[key] = value
   process.nextTick(callback)
 }
@@ -79,7 +79,7 @@ db.put('foo', 'bar', function (err) {
 })
 ```
 
-See [MemDOWN](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for LevelDOWN.
+See [`memdown`](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for `leveldown`.
 
 ## Extensible API
 
@@ -137,13 +137,13 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 
 ### isLevelDown(db)
 
-Returns `true` if `db` has the same public api as `AbstractLevelDOWN`, otherwise `false`. This is a utility function and it's not part of the extensible api.
+Returns `true` if `db` has the same public api as `abstract-leveldown`, otherwise `false`. This is a utility function and it's not part of the extensible api.
 
 <a name="contributing"></a>
 Contributing
 ------------
 
-AbstractLevelDOWN is an **OPEN Open Source Project**. This means that:
+`abstract-leveldown` is an **OPEN Open Source Project**. This means that:
 
 > Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit. This project is more like an open wiki than a standard guarded open source project.
 
@@ -153,8 +153,8 @@ See the [contribution guide](https://github.com/Level/community/blob/master/CONT
 License &amp; Copyright
 -------------------
 
-Copyright &copy; 2013-2017 **AbstractLevelDOWN** [contributors](https://github.com/level/community#contributors).
+Copyright &copy; 2013-2017 `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
 
-**AbstractLevelDOWN** is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
+`abstract-leveldown` is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
 
 [level-badge]: http://leveldb.org/img/badge.svg
