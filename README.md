@@ -1,13 +1,10 @@
-# Abstract LevelDOWN
+# abstract-leveldown
 
-<img alt="LevelDB Logo" height="100" src="http://leveldb.org/img/logo.svg">
-
-[![Build Status](https://travis-ci.org/Level/abstract-leveldown.svg?branch=master)](http://travis-ci.org/Level/abstract-leveldown)
-[![dependencies](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
-[![Greenkeeper badge](https://badges.greenkeeper.io/Level/abstract-leveldown.svg)](https://greenkeeper.io/)
-
-[![NPM](https://nodei.co/npm/abstract-leveldown.png?downloads=true&downloadRank=true)](https://nodei.co/npm/abstract-leveldown/)
-[![NPM](https://nodei.co/npm-dl/abstract-leveldown.png?months=6&height=3)](https://nodei.co/npm/abstract-leveldown/)
+[![level badge][level-badge]](https://github.com/level/awesome)
+[![npm](https://img.shields.io/npm/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
+[![Travis](https://travis-ci.org/Level/abstract-leveldown.svg?branch=master)](http://travis-ci.org/Level/abstract-leveldown)
+[![david](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
+[![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 
 An abstract prototype matching the **[LevelDOWN](https://github.com/level/leveldown/)** API. Useful for extending **[LevelUP](https://github.com/level/levelup)** functionality by providing a replacement to LevelDOWN.
 
@@ -161,3 +158,5 @@ License &amp; Copyright
 Copyright &copy; 2013-2017 **AbstractLevelDOWN** [contributors](https://github.com/level/community#contributors).
 
 **AbstractLevelDOWN** is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
+
+[level-badge]: http://leveldb.org/img/badge.svg
