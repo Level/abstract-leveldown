@@ -61,14 +61,11 @@ FakeLevelDOWN.prototype._del = function (key, options, callback) {
   process.nextTick(callback)
 }
 
-// now use it in LevelUP
+// Now use it with levelup
 
 var levelup = require('levelup')
 
-var db = levelup('/who/cares/', {
-  // the 'db' option replaces LevelDOWN
-  db: function (location) { return new FakeLevelDOWN(location) }
-})
+var db = levelup(new FakeLevelDOWN('/who/cares'))
 
 db.put('foo', 'bar', function (err) {
   if (err) throw err
