@@ -44,5 +44,8 @@
   "scripts": {
     "test": "node test.js"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">=4"
+  }
 }
