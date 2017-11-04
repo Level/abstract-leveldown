@@ -1,21 +1,21 @@
 interface AbstractLevelDOWN<K=any, V=any, O=any, PO=any, GO=any, DO=any, IO=any, BO=any> {
-  open(callback: (err?: any) => void);
-  open(options: O, callback: (err?: any) => void);
+  open(callback: (err?: any) => void): void;
+  open(options: O, callback: (err?: any) => void): void;
 
-  close(callback: (err?: any) => void);
+  close(callback: (err?: any) => void): void;
 
-  get(key: K, callback: (err, value: V) => any);
-  get(key: K, options: GO, callback: (err, value: V) => any);
+  get(key: K, callback: (err: any, value: V) => any): void;
+  get(key: K, options: GO, callback: (err: any, value: V) => any): void;
 
-  put(key: K, value: V, callback: (err: any) => any);
-  put(key: K, value: V, options: PO, callback: (err: any) => any);
+  put(key: K, value: V, callback: (err: any) => any): void;
+  put(key: K, value: V, options: PO, callback: (err: any) => any): void;
 
-  del(key: K, callback: (err: any) => any);
-  del(key: K, options: DO, callback: (err: any) => any);
+  del(key: K, callback: (err: any) => any): void;
+  del(key: K, options: DO, callback: (err: any) => any): void;
 
   batch(): AbstractChainedBatch<K, V, BO>;
-  batch(array: Batch<K, V>[], callback: (err: any) => any);
-  batch(array: Batch<K, V>[], options: BO, callback: (err: any) => any);
+  batch(array: Batch<K, V>[], callback: (err: any) => any): AbstractChainedBatch<K, V, BO>;
+  batch(array: Batch<K, V>[], options: BO, callback: (err: any) => any): AbstractChainedBatch<K, V, BO>;
 
   iterator(options?: IO & AbstractIteratorOptions<K>): AbstractIterator<K, V>;
 
