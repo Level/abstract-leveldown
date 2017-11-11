@@ -598,7 +598,9 @@ test('test end() extensibility', function (t) {
   t.end()
 })
 
-test('test serialization extensibility', function (t) {
+test('test serialization extensibility (put)', function (t) {
+  t.plan(5)
+
   var spy = sinon.spy()
     , test
 
@@ -626,8 +628,162 @@ test('test serialization extensibility', function (t) {
   t.equal(spy.callCount, 1, 'got _put() call')
   t.equal(spy.getCall(0).args[0], 'foo', 'got expected key argument')
   t.equal(spy.getCall(0).args[1], 'bar', 'got expected value argument')
+})
+
+test('test serialization extensibility (del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._del = spy
+
+  test = new Test('foobar')
+  test.del('no', function () {})
+
+  t.equal(spy.callCount, 1, 'got _del() call')
+  t.equal(spy.getCall(0).args[0], 'foo', 'got expected key argument')
 
   t.end()
+})
+
+test('test serialization extensibility (batch array put)', function (t) {
+  t.plan(5)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch([ { type: 'put', key: 'no', value: 'nope' } ], function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+  t.equal(spy.getCall(0).args[0][0].value, 'bar', 'got expected value')
+})
+
+test('test serialization extensibility (batch chain put)', function (t) {
+  t.plan(5)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch().put('no', 'nope').write(function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+  t.equal(spy.getCall(0).args[0][0].value, 'bar', 'got expected value')
+})
+
+test('test serialization extensibility (batch array del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch([ { type: 'del', key: 'no' } ], function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+})
+
+test('test serialization extensibility (batch chain del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch().del('no').write(function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
 })
 
 test('isLevelDOWN', function (t) {
