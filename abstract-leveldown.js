@@ -176,6 +176,13 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
     if (err = this._checkKey(e.key, 'key'))
       return callback(err)
+
+    // TODO: do not mutate input
+    e.key = this._serializeKey(e.key)
+
+    if (e.type === 'put') {
+      e.value = this._serializeValue(e.value)
+    }
   }
 
   if (typeof this._batch == 'function')
