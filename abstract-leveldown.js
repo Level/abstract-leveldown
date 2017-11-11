@@ -161,15 +161,14 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (!options || typeof options != 'object')
     options = {}
 
-  var i = 0
-    , l = array.length
-    , e
-    , err
+  var serialized = []
 
-  for (; i < l; i++) {
-    e = array[i]
-    if (typeof e != 'object')
+  for (var i = 0; i < array.length; i++) {
+    if (typeof array[i] !== 'object')
       continue
+
+    var e = Object.assign({}, array[i])
+    var err
 
     if (err = this._checkKey(e.type, 'type'))
       return callback(err)
@@ -177,16 +176,16 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (err = this._checkKey(e.key, 'key'))
       return callback(err)
 
-    // TODO: do not mutate input
     e.key = this._serializeKey(e.key)
 
-    if (e.type === 'put') {
+    if (e.type !== 'del')
       e.value = this._serializeValue(e.value)
-    }
+
+    serialized.push(e)
   }
 
   if (typeof this._batch == 'function')
-    return this._batch(array, options, callback)
+    return this._batch(serialized, options, callback)
 
   process.nextTick(callback)
 }
