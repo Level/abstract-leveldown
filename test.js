@@ -291,7 +291,10 @@ test('test batch() extensibility', function (t) {
   var spy = sinon.spy()
     , expectedCb = function () {}
     , expectedOptions = { options: 1 }
-    , expectedArray = [ 1, 2 ]
+    , expectedArray = [
+        { type: 'put', key: '1', value: '1' },
+        { type: 'del', key: '2' }
+      ]
     , test
 
   function Test (location) {
@@ -309,7 +312,7 @@ test('test batch() extensibility', function (t) {
   t.equal(spy.callCount, 1, 'got _batch() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(0).args[0], expectedArray, 'got expected array argument')
+  t.deepEqual(spy.getCall(0).args[0], expectedArray, 'got expected array argument')
   t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected callback argument')
 
@@ -318,7 +321,7 @@ test('test batch() extensibility', function (t) {
   t.equal(spy.callCount, 2, 'got _batch() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(1).args[0], expectedArray, 'got expected array argument')
+  t.deepEqual(spy.getCall(1).args[0], expectedArray, 'got expected array argument')
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
@@ -327,7 +330,7 @@ test('test batch() extensibility', function (t) {
   t.equal(spy.callCount, 3, 'got _batch() call')
   t.equal(spy.getCall(2).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(2).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(2).args[0], expectedArray, 'got expected array argument')
+  t.deepEqual(spy.getCall(2).args[0], expectedArray, 'got expected array argument')
   t.ok(spy.getCall(2).args[1], 'options should not be null')
   t.equal(spy.getCall(2).args[2], expectedCb, 'got expected callback argument')
   t.end()
@@ -598,7 +601,9 @@ test('test end() extensibility', function (t) {
   t.end()
 })
 
-test('test serialization extensibility', function (t) {
+test('test serialization extensibility (put)', function (t) {
+  t.plan(5)
+
   var spy = sinon.spy()
     , test
 
@@ -626,8 +631,199 @@ test('test serialization extensibility', function (t) {
   t.equal(spy.callCount, 1, 'got _put() call')
   t.equal(spy.getCall(0).args[0], 'foo', 'got expected key argument')
   t.equal(spy.getCall(0).args[1], 'bar', 'got expected value argument')
+})
+
+test('test serialization extensibility (del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._del = spy
+
+  test = new Test('foobar')
+  test.del('no', function () {})
+
+  t.equal(spy.callCount, 1, 'got _del() call')
+  t.equal(spy.getCall(0).args[0], 'foo', 'got expected key argument')
 
   t.end()
+})
+
+test('test serialization extensibility (batch array put)', function (t) {
+  t.plan(5)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch([ { type: 'put', key: 'no', value: 'nope' } ], function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+  t.equal(spy.getCall(0).args[0][0].value, 'bar', 'got expected value')
+})
+
+test('test serialization extensibility (batch chain put)', function (t) {
+  t.plan(5)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch().put('no', 'nope').write(function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+  t.equal(spy.getCall(0).args[0][0].value, 'bar', 'got expected value')
+})
+
+test('test serialization extensibility (batch array del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch([ { type: 'del', key: 'no' } ], function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+})
+
+test('test serialization extensibility (batch chain del)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.fail('should not be called')
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+  test.batch().del('no').write(function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+})
+
+test('test serialization extensibility (batch array is not mutated)', function (t) {
+  t.plan(7)
+
+  var spy = sinon.spy()
+    , test
+
+  function Test (location) {
+    AbstractLevelDOWN.call(this, location)
+  }
+
+  util.inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.equal(key, 'no')
+    return 'foo'
+  }
+
+  Test.prototype._serializeValue = function (value) {
+    t.equal(value, 'nope')
+    return 'bar'
+  }
+
+  Test.prototype._batch = spy
+
+  test = new Test('foobar')
+
+  var op = { type: 'put', key: 'no', value: 'nope' }
+  test.batch([op], function () {})
+
+  t.equal(spy.callCount, 1, 'got _batch() call')
+  t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
+  t.equal(spy.getCall(0).args[0][0].value, 'bar', 'got expected value')
+
+  t.equal(op.key, 'no', 'did not mutate input key')
+  t.equal(op.value, 'nope', 'did not mutate input value')
 })
 
 test('isLevelDOWN', function (t) {
