@@ -8,13 +8,13 @@ var db
         d.push({
             type  : 'put'
           , key   : k
-          , value : Math.random()
+          , value : String(Math.random())
         })
       }
       return d
     }())
   , transformSource = function (d) {
-      return { key: d.key, value: String(d.value) }
+      return { key: d.key, value: d.value }
     }
 
 module.exports.sourceData      = sourceData
