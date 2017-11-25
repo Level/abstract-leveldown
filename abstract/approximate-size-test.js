@@ -67,19 +67,6 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test _serialize object', function (t) {
-    t.plan(3)
-    var db = leveldown(testCommon.location())
-    db._approximateSize = function (start, end, callback) {
-      t.equal(Buffer.isBuffer(start) ? String(start) : start, '[object Object]')
-      t.equal(Buffer.isBuffer(end) ? String(end) : end, '[object Object]')
-      callback()
-    }
-    db.approximateSize({}, {}, function (err, val) {
-      t.error(err)
-    })
-  })
-
   test('test _serialize buffer', function (t) {
     t.plan(3)
     var db = leveldown(testCommon.location())
