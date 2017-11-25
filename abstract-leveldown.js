@@ -167,7 +167,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (typeof array[i] !== 'object')
       continue
 
-    var e = Object.assign({}, array[i])
+    var e = xtend(array[i])
     var err
 
     if (err = this._checkKey(e.type, 'type'))
