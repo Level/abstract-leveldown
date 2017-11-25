@@ -161,11 +161,11 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (!options || typeof options != 'object')
     options = {}
 
-  var serialized = []
+  var serialized = new Array(array.length)
 
   for (var i = 0; i < array.length; i++) {
-    if (typeof array[i] !== 'object')
-      continue
+    if (typeof array[i] !== 'object' || array[i] === null)
+      return callback(new Error('batch(array) element must be an object and not `null`'))
 
     var e = Object.assign({}, array[i])
     var err
@@ -181,7 +181,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     if (e.type !== 'del')
       e.value = this._serializeValue(e.value)
 
-    serialized.push(e)
+    serialized[i] = e
   }
 
   if (typeof this._batch == 'function')
