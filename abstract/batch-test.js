@@ -84,6 +84,18 @@ module.exports.args = function (test) {
       t.end()
     })
   })
+
+  ;[null, undefined, 1, true].forEach(function (element) {
+    var type = element === null ? 'null' : typeof element
+
+    test('test batch() with ' + type + ' element', function (t) {
+      db.batch([element], function (err) {
+        t.ok(err, 'got error')
+        t.equal(err.message, 'batch(array) element must be an object and not `null`', 'correct error message')
+        t.end()
+      })
+    })
+  })
 }
 
 module.exports.batch = function (test) {
