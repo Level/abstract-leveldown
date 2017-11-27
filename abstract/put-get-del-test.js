@@ -8,32 +8,47 @@ var db
 
 function makeGetDelErrorTests (type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
+    var async = false
+
     db.get(key, function (err) {
       t.ok(err, 'has error')
       t.ok(err instanceof Error)
       t.ok(err.message.match(expectedError), 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test del() with ' + type + ' causes error', function (t) {
+    var async = false
+
     db.del(key, function (err) {
       t.ok(err, 'has error')
       t.ok(err instanceof Error)
       t.ok(err.message.match(expectedError), 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 }
 
 function makePutErrorTest (type, key, value, expectedError) {
   test('test put() with ' + type + ' causes error', function (t) {
+    var async = false
+
     db.put(key, value, function (err) {
       t.ok(err, 'has error')
       t.ok(err instanceof Error)
       t.ok(err.message.match(expectedError), 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 }
 
@@ -57,12 +72,18 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
         }
         db.del(key, function (err) {
           t.error(err, 'no error, deleted key/value for `' + type + '`')
+
+          var async = false
+
           db.get(key, function (err,  value) {
             t.ok(err, 'entry propertly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')
             t.equal(typeof value, 'undefined', 'value is undefined')
+            t.ok(async, 'callback is asynchronous')
             t.end()
           })
+
+          async = true
         })
       })
     })

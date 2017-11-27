@@ -31,51 +31,94 @@ module.exports.args = function (test) {
   })
 
   test('test batch() with missing `key`', function (t) {
+    var async = false
+
     db.batch([{ type: 'put', value: 'foo1' }], function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test batch() with null `key`', function (t) {
+    var async = false
+
     db.batch([{ type: 'put', key: null, value: 'foo1' }], function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test batch() with missing `key` and `value`', function (t) {
+    var async = false
+
     db.batch([{ type: 'put' }], function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
+  })
+
+  test('test batch() with missing `type`', function (t) {
+    var async = false
+
+    db.batch([{ key: 'key', value: 'value' }], function (err) {
+      t.ok(err, 'got error')
+      t.equal(err.message, 'type cannot be `null` or `undefined`', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
+      t.end()
+    })
+
+    async = true
   })
 
   test('test batch() with missing array', function (t) {
+    var async = false
+
     db.batch(function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test batch() with undefined array', function (t) {
+    var async = false
+
     db.batch(void 0, function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test batch() with null array', function (t) {
+    var async = false
+
     db.batch(null, function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test batch() with null options', function (t) {
@@ -89,11 +132,16 @@ module.exports.args = function (test) {
     var type = element === null ? 'null' : typeof element
 
     test('test batch() with ' + type + ' element', function (t) {
+      var async = false
+
       db.batch([element], function (err) {
         t.ok(err, 'got error')
         t.equal(err.message, 'batch(array) element must be an object and not `null`', 'correct error message')
+        t.ok(async, 'callback is asynchronous')
         t.end()
       })
+
+      async = true
     })
   })
 }
@@ -178,19 +226,26 @@ module.exports.batch = function (test) {
 module.exports.atomic = function (test) {
   test('test multiple batch()', function (t) {
     t.plan(3)
+
+    var async = false
+
     db.batch([
         { type: 'put', key: 'foobah1', value: 'bar1' }
       , { type: 'put', value: 'bar2' }
       , { type: 'put', key: 'foobah3', value: 'bar3' }
     ], function (err) {
       t.ok(err, 'should error')
+      t.ok(async, 'callback is asynchronous')
+
       db.get('foobah1', function (err) {
         t.ok(err, 'should not be found')
       })
       db.get('foobah3', function (err) {
         t.ok(err, 'should not be found')
       })
-   })
+    })
+
+    async = true
   })
 }
 module.exports.tearDown = function (test, testCommon) {

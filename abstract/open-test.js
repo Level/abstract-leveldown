@@ -69,12 +69,16 @@ module.exports.open = function (leveldown, test, testCommon) {
 module.exports.openAdvanced = function (leveldown, test, testCommon) {
   test('test database open createIfMissing:false', function (t) {
     var db = leveldown(testCommon.location())
+    var async = false
 
     db.open({ createIfMissing: false }, function (err) {
       t.ok(err, 'error')
       t.ok(/does not exist/.test(err.message), 'error is about dir not existing')
+      t.ok(async, 'callback is asynchronous')
       t.end()
     })
+
+    async = true
   })
 
   test('test database open errorIfExists:true', function (t) {
@@ -89,11 +93,17 @@ module.exports.openAdvanced = function (leveldown, test, testCommon) {
 
         // open again with 'errorIfExists'
         db = leveldown(location)
+
+        var async = false
+
         db.open({ createIfMissing: false, errorIfExists: true }, function (err) {
           t.ok(err, 'error')
           t.ok(/exists/.test(err.message), 'error is about already existing')
+          t.ok(async, 'callback is asynchronous')
           t.end()
         })
+
+        async = true
       })
     })
   })
