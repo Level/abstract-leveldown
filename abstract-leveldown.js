@@ -80,7 +80,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
     throw new Error('get() requires a callback argument')
 
   if (err = this._checkKey(key, 'key'))
-    return callback(err)
+    return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -105,7 +105,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
     throw new Error('put() requires a callback argument')
 
   if (err = this._checkKey(key, 'key'))
-    return callback(err)
+    return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
   value = this._serializeValue(value)
@@ -129,7 +129,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
     throw new Error('del() requires a callback argument')
 
   if (err = this._checkKey(key, 'key'))
-    return callback(err)
+    return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -156,7 +156,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     throw new Error('batch(array) requires a callback argument')
 
   if (!Array.isArray(array))
-    return callback(new Error('batch(array) requires an array argument'))
+    return process.nextTick(callback, new Error('batch(array) requires an array argument'))
 
   if (!options || typeof options != 'object')
     options = {}
@@ -165,16 +165,16 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
   for (var i = 0; i < array.length; i++) {
     if (typeof array[i] !== 'object' || array[i] === null)
-      return callback(new Error('batch(array) element must be an object and not `null`'))
+      return process.nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
 
     var e = xtend(array[i])
     var err
 
     if (err = this._checkKey(e.type, 'type'))
-      return callback(err)
+      return process.nextTick(callback, err)
 
     if (err = this._checkKey(e.key, 'key'))
-      return callback(err)
+      return process.nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 

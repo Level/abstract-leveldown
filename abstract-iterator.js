@@ -13,9 +13,9 @@ AbstractIterator.prototype.next = function (callback) {
     throw new Error('next() requires a callback argument')
 
   if (self._ended)
-    return callback(new Error('cannot call next() after end()'))
+    return process.nextTick(callback, new Error('cannot call next() after end()'))
   if (self._nexting)
-    return callback(new Error('cannot call next() before previous next() has completed'))
+    return process.nextTick(callback, new Error('cannot call next() before previous next() has completed'))
 
   self._nexting = true
   if (typeof self._next == 'function') {
@@ -36,7 +36,7 @@ AbstractIterator.prototype.end = function (callback) {
     throw new Error('end() requires a callback argument')
 
   if (this._ended)
-    return callback(new Error('end() already called on iterator'))
+    return process.nextTick(callback, new Error('end() already called on iterator'))
 
   this._ended = true
 
