@@ -225,7 +225,7 @@ module.exports.batch = function (test) {
 }
 module.exports.atomic = function (test) {
   test('test multiple batch()', function (t) {
-    t.plan(3)
+    t.plan(4)
 
     var async = false
 
