@@ -160,6 +160,25 @@ module.exports.get = function (test) {
         })
     })
   })
+
+  test('test get() not found error is asynchronous', function (t) {
+    t.plan(5)
+
+    db.put('hello', 'world', function (err) {
+      t.error(err)
+
+      var async = false
+
+      db.get('not found', function(err, value) {
+        t.ok(err, 'should error')
+        t.ok(verifyNotFoundError(err), 'should have correct error message')
+        t.ok(typeof value == 'undefined', 'value is undefined')
+        t.ok(async, 'callback is asynchronous')
+      })
+
+      async =  true
+    })
+  })
 }
 
 module.exports.tearDown = function (test, testCommon) {

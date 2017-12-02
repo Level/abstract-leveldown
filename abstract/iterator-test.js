@@ -67,12 +67,18 @@ module.exports.sequence = function (test) {
     var iterator = db.iterator()
     iterator.end(function (err) {
       t.error(err)
+
+      var async = false
+
       iterator.end(function(err2) {
         t.ok(err2, 'returned error')
         t.equal(err2.name, 'Error', 'correct error')
         t.equal(err2.message, 'end() already called on iterator')
+        t.ok(async, 'callback is asynchronous')
         t.end()
       })
+
+      async = true
     })
   })
 
@@ -80,12 +86,18 @@ module.exports.sequence = function (test) {
     var iterator = db.iterator()
     iterator.end(function (err) {
       t.error(err)
+
+      var async = false
+
       iterator.next(function(err2) {
         t.ok(err2, 'returned error')
         t.equal(err2.name, 'Error', 'correct error')
         t.equal(err2.message, 'cannot call next() after end()', 'correct message')
+        t.ok(async, 'callback is asynchronous')
         t.end()
       })
+
+      async = true
     })
   })
 
@@ -99,11 +111,16 @@ module.exports.sequence = function (test) {
       })
     })
 
+    var async = false
+
     iterator.next(function(err) {
       t.ok(err, 'returned error')
       t.equal(err.name, 'Error', 'correct error')
       t.equal(err.message, 'cannot call next() before previous next() has completed')
+      t.ok(async, 'callback is asynchronous')
     })
+
+    async = true
   })
 }
 
