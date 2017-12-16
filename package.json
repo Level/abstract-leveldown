@@ -36,13 +36,14 @@
   "devDependencies": {
     "rimraf": "^2.6.1",
     "sinon": "^4.0.0",
+    "standard": "^10.0.3",
     "tape": "^4.7.0"
   },
   "browser": {
     "rimraf": false
   },
   "scripts": {
-    "test": "node test.js"
+    "test": "standard && node test.js"
   },
   "license": "MIT",
   "engines": {
