@@ -170,15 +170,15 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     var e = xtend(array[i])
     var err
 
-    if (err = this._checkKey(e.type, 'type'))
-      return process.nextTick(callback, err)
+    if (e.type !== 'put' && e.type !== 'del')
+      return process.nextTick(callback, new Error("`type` must be 'put' or 'del'"))
 
     if (err = this._checkKey(e.key, 'key'))
       return process.nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 
-    if (e.type !== 'del')
+    if (e.type === 'put')
       e.value = this._serializeValue(e.value)
 
     serialized[i] = e

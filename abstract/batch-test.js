@@ -74,7 +74,20 @@ module.exports.args = function (test) {
 
     db.batch([{ key: 'key', value: 'value' }], function (err) {
       t.ok(err, 'got error')
-      t.equal(err.message, 'type cannot be `null` or `undefined`', 'correct error message')
+      t.equal(err.message, "`type` must be 'put' or 'del'", 'correct error message')
+      t.ok(async, 'callback is asynchronous')
+      t.end()
+    })
+
+    async = true
+  })
+
+  test('test batch() with wrong `type`', function (t) {
+    var async = false
+
+    db.batch([{ key: 'key', value: 'value', type: 'foo' }], function (err) {
+      t.ok(err, 'got error')
+      t.equal(err.message, "`type` must be 'put' or 'del'", 'correct error message')
       t.ok(async, 'callback is asynchronous')
       t.end()
     })
