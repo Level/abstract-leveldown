@@ -1,23 +1,23 @@
-var db
-  , sourceData = (function () {
-      var d = []
-        , i = 0
-        , k
-      for (; i < 100; i++) {
-        k = (i < 10 ? '0' : '') + i
-        d.push({
-            type  : 'put'
-          , key   : k
-          , value : String(Math.random())
-        })
-      }
-      return d
-    }())
-  , transformSource = function (d) {
-      return { key: d.key, value: d.value }
+var db,
+  sourceData = (function () {
+    var d = [],
+      i = 0,
+      k
+    for (; i < 100; i++) {
+      k = (i < 10 ? '0' : '') + i
+      d.push({
+        type: 'put',
+        key: k,
+        value: String(Math.random())
+      })
     }
+    return d
+  }()),
+  transformSource = function (d) {
+    return { key: d.key, value: d.value }
+  }
 
-module.exports.sourceData      = sourceData
+module.exports.sourceData = sourceData
 module.exports.transformSource = transformSource
 
 module.exports.setUp = function (leveldown, test, testCommon) {
@@ -70,7 +70,7 @@ module.exports.sequence = function (test) {
 
       var async = false
 
-      iterator.end(function(err2) {
+      iterator.end(function (err2) {
         t.ok(err2, 'returned error')
         t.equal(err2.name, 'Error', 'correct error')
         t.equal(err2.message, 'end() already called on iterator')
@@ -89,7 +89,7 @@ module.exports.sequence = function (test) {
 
       var async = false
 
-      iterator.next(function(err2) {
+      iterator.next(function (err2) {
         t.ok(err2, 'returned error')
         t.equal(err2.name, 'Error', 'correct error')
         t.equal(err2.message, 'cannot call next() after end()', 'correct message')
@@ -113,7 +113,7 @@ module.exports.sequence = function (test) {
 
     var async = false
 
-    iterator.next(function(err) {
+    iterator.next(function (err) {
       t.ok(err, 'returned error')
       t.equal(err.name, 'Error', 'correct error')
       t.equal(err.message, 'cannot call next() before previous next() has completed')
@@ -127,37 +127,37 @@ module.exports.sequence = function (test) {
 module.exports.iterator = function (leveldown, test, testCommon, collectEntries) {
   test('test simple iterator()', function (t) {
     var data = [
-            { type: 'put', key: 'foobatch1', value: 'bar1' }
-          , { type: 'put', key: 'foobatch2', value: 'bar2' }
-          , { type: 'put', key: 'foobatch3', value: 'bar3' }
-        ]
-      , idx = 0
+            { type: 'put', key: 'foobatch1', value: 'bar1' },
+           { type: 'put', key: 'foobatch2', value: 'bar2' },
+           { type: 'put', key: 'foobatch3', value: 'bar3' }
+      ],
+      idx = 0
 
     db.batch(data, function (err) {
       t.error(err)
-      var iterator = db.iterator()
-        , fn = function (err, key, value) {
-            t.error(err)
-            if (key && value) {
-              t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
-              t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
-              t.equal(key.toString(), data[idx].key, 'correct key')
-              t.equal(value.toString(), data[idx].value, 'correct value')
-              process.nextTick(next)
-              idx++
-            } else { // end
-              t.ok(typeof err === 'undefined', 'err argument is undefined')
-              t.ok(typeof key === 'undefined', 'key argument is undefined')
-              t.ok(typeof value === 'undefined', 'value argument is undefined')
-              t.equal(idx, data.length, 'correct number of entries')
-              iterator.end(function () {
-                t.end()
-              })
-            }
+      var iterator = db.iterator(),
+        fn = function (err, key, value) {
+          t.error(err)
+          if (key && value) {
+            t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
+            t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
+            t.equal(key.toString(), data[idx].key, 'correct key')
+            t.equal(value.toString(), data[idx].value, 'correct value')
+            process.nextTick(next)
+            idx++
+          } else { // end
+            t.ok(typeof err === 'undefined', 'err argument is undefined')
+            t.ok(typeof key === 'undefined', 'key argument is undefined')
+            t.ok(typeof value === 'undefined', 'value argument is undefined')
+            t.equal(idx, data.length, 'correct number of entries')
+            iterator.end(function () {
+              t.end()
+            })
           }
-        , next = function () {
-            iterator.next(fn)
-          }
+        },
+        next = function () {
+          iterator.next(fn)
+        }
 
       next()
     })
@@ -431,7 +431,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   })
 
   function testIteratorCollectsFullDatabase (name, iteratorOptions) {
-    iteratorOptions.keyAsBuffer   = false
+    iteratorOptions.keyAsBuffer = false
     iteratorOptions.valueAsBuffer = false
     test(name, function (t) {
       collectEntries(db.iterator(iteratorOptions), function (err, data) {

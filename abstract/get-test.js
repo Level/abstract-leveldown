@@ -1,8 +1,8 @@
-var db
-  , leveldown
-  , testCommon
-  , verifyNotFoundError = require('./util').verifyNotFoundError
-  , isTypedArray        = require('./util').isTypedArray
+var db,
+  leveldown,
+  testCommon,
+  verifyNotFoundError = require('./util').verifyNotFoundError,
+  isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -82,7 +82,7 @@ module.exports.get = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           try {
             result = value.toString()
           } catch (e) {
@@ -100,7 +100,7 @@ module.exports.get = function (test) {
           if (isTypedArray(value)) {
             result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
-            t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+            t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
             try {
               result = value.toString()
             } catch (e) {
@@ -124,28 +124,29 @@ module.exports.get = function (test) {
   test('test simultaniously get()', function (t) {
     db.put('hello', 'world', function (err) {
       t.error(err)
-      var r = 0
-        , done = function () {
-            if (++r == 20)
-              t.end()
-          }
-        , i = 0
-        , j = 0
+      var r = 0,
+        done = function () {
+          if (++r == 20) { t.end() }
+        },
+        i = 0,
+        j = 0
 
-      for (; i < 10; ++i)
-        db.get('hello', function(err, value) {
+      for (; i < 10; ++i) {
+        db.get('hello', function (err, value) {
           t.error(err)
           t.equal(value.toString(), 'world')
           done()
         })
+      }
 
-      for (; j < 10; ++j)
-        db.get('not found', function(err, value) {
+      for (; j < 10; ++j) {
+        db.get('not found', function (err, value) {
           t.ok(err, 'should error')
           t.ok(verifyNotFoundError(err), 'should have correct error message')
-          t.ok(typeof value == 'undefined', 'value is undefined')
+          t.ok(typeof value === 'undefined', 'value is undefined')
           done()
         })
+      }
     })
   })
 
@@ -157,14 +158,14 @@ module.exports.get = function (test) {
 
       var async = false
 
-      db.get('not found', function(err, value) {
+      db.get('not found', function (err, value) {
         t.ok(err, 'should error')
         t.ok(verifyNotFoundError(err), 'should have correct error message')
-        t.ok(typeof value == 'undefined', 'value is undefined')
+        t.ok(typeof value === 'undefined', 'value is undefined')
         t.ok(async, 'callback is asynchronous')
       })
 
-      async =  true
+      async = true
     })
   })
 }

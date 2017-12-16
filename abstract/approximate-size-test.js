@@ -1,6 +1,6 @@
-var db
-  , leveldown
-  , testCommon
+var db,
+  leveldown,
+  testCommon
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -108,34 +108,34 @@ module.exports.approximateSize = function (test) {
           return { type: 'put', key: 'foo' + i, value: data }
         })
       , function (err) {
-          t.error(err)
+      t.error(err)
 
           // cycle open/close to ensure a pack to .sst
 
-          db.close(function (err) {
+      db.close(function (err) {
+        t.error(err)
+
+        db.open(function (err) {
+          t.error(err)
+
+          db.approximateSize('!', '~', function (err, size) {
             t.error(err)
 
-            db.open(function (err) {
-              t.error(err)
-
-              db.approximateSize('!', '~', function (err, size) {
-                t.error(err)
-
-                t.equal(typeof size, 'number')
-                t.ok(
+            t.equal(typeof size, 'number')
+            t.ok(
                     size > 40000 // account for snappy compression
                                  // original would be ~100000
                   , 'size reports a reasonable amount (' + size + ')'
                 )
 
-                db.close(function (err) {
-                  t.error(err)
-                  t.end()
-                })
-              })
+            db.close(function (err) {
+              t.error(err)
+              t.end()
             })
           })
-        }
+        })
+      })
+    }
     )
   })
 }

@@ -1,37 +1,32 @@
 /* Copyright (c) 2017 Rod Vagg, MIT License */
 
-var xtend                = require('xtend')
-  , AbstractIterator     = require('./abstract-iterator')
-  , AbstractChainedBatch = require('./abstract-chained-batch')
+var xtend = require('xtend'),
+  AbstractIterator = require('./abstract-iterator'),
+  AbstractChainedBatch = require('./abstract-chained-batch')
 
 function AbstractLevelDOWN (location) {
-  if (!arguments.length || location === undefined)
-    throw new Error('constructor requires at least a location argument')
+  if (!arguments.length || location === undefined) { throw new Error('constructor requires at least a location argument') }
 
-  if (typeof location != 'string')
-    throw new Error('constructor requires a location string argument')
+  if (typeof location !== 'string') { throw new Error('constructor requires a location string argument') }
 
   this.location = location
   this.status = 'new'
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
-  var self      = this
-    , oldStatus = this.status
+  var self = this,
+    oldStatus = this.status
 
-  if (typeof options == 'function')
-    callback = options
+  if (typeof options === 'function') { callback = options }
 
-  if (typeof callback != 'function')
-    throw new Error('open() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('open() requires a callback argument') }
 
-  if (typeof options != 'object')
-    options = {}
+  if (typeof options !== 'object') { options = {} }
 
   options.createIfMissing = options.createIfMissing != false
   options.errorIfExists = !!options.errorIfExists
 
-  if (typeof this._open == 'function') {
+  if (typeof this._open === 'function') {
     this.status = 'opening'
     this._open(options, function (err) {
       if (err) {
@@ -48,13 +43,12 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
-  var self      = this
-    , oldStatus = this.status
+  var self = this,
+    oldStatus = this.status
 
-  if (typeof callback != 'function')
-    throw new Error('close() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('close() requires a callback argument') }
 
-  if (typeof this._close == 'function') {
+  if (typeof this._close === 'function') {
     this.status = 'closing'
     this._close(function (err) {
       if (err) {
@@ -73,24 +67,19 @@ AbstractLevelDOWN.prototype.close = function (callback) {
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   var err
 
-  if (typeof options == 'function')
-    callback = options
+  if (typeof options === 'function') { callback = options }
 
-  if (typeof callback != 'function')
-    throw new Error('get() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('get() requires a callback argument') }
 
-  if (err = this._checkKey(key, 'key'))
-    return process.nextTick(callback, err)
+  if (err = this._checkKey(key, 'key')) { return process.nextTick(callback, err) }
 
   key = this._serializeKey(key)
 
-  if (typeof options != 'object')
-    options = {}
+  if (typeof options !== 'object') { options = {} }
 
   options.asBuffer = options.asBuffer != false
 
-  if (typeof this._get == 'function')
-    return this._get(key, options, callback)
+  if (typeof this._get === 'function') { return this._get(key, options, callback) }
 
   process.nextTick(function () { callback(new Error('NotFound')) })
 }
@@ -98,23 +87,18 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   var err
 
-  if (typeof options == 'function')
-    callback = options
+  if (typeof options === 'function') { callback = options }
 
-  if (typeof callback != 'function')
-    throw new Error('put() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('put() requires a callback argument') }
 
-  if (err = this._checkKey(key, 'key'))
-    return process.nextTick(callback, err)
+  if (err = this._checkKey(key, 'key')) { return process.nextTick(callback, err) }
 
   key = this._serializeKey(key)
   value = this._serializeValue(value)
 
-  if (typeof options != 'object')
-    options = {}
+  if (typeof options !== 'object') { options = {} }
 
-  if (typeof this._put == 'function')
-    return this._put(key, value, options, callback)
+  if (typeof this._put === 'function') { return this._put(key, value, options, callback) }
 
   process.nextTick(callback)
 }
@@ -122,91 +106,73 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   var err
 
-  if (typeof options == 'function')
-    callback = options
+  if (typeof options === 'function') { callback = options }
 
-  if (typeof callback != 'function')
-    throw new Error('del() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('del() requires a callback argument') }
 
-  if (err = this._checkKey(key, 'key'))
-    return process.nextTick(callback, err)
+  if (err = this._checkKey(key, 'key')) { return process.nextTick(callback, err) }
 
   key = this._serializeKey(key)
 
-  if (typeof options != 'object')
-    options = {}
+  if (typeof options !== 'object') { options = {} }
 
-  if (typeof this._del == 'function')
-    return this._del(key, options, callback)
+  if (typeof this._del === 'function') { return this._del(key, options, callback) }
 
   process.nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
-  if (!arguments.length)
-    return this._chainedBatch()
+  if (!arguments.length) { return this._chainedBatch() }
 
-  if (typeof options == 'function')
-    callback = options
+  if (typeof options === 'function') { callback = options }
 
-  if (typeof array == 'function')
-    callback = array
+  if (typeof array === 'function') { callback = array }
 
-  if (typeof callback != 'function')
-    throw new Error('batch(array) requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('batch(array) requires a callback argument') }
 
-  if (!Array.isArray(array))
-    return process.nextTick(callback, new Error('batch(array) requires an array argument'))
+  if (!Array.isArray(array)) { return process.nextTick(callback, new Error('batch(array) requires an array argument')) }
 
-  if (!options || typeof options != 'object')
-    options = {}
+  if (!options || typeof options !== 'object') { options = {} }
 
   var serialized = new Array(array.length)
 
   for (var i = 0; i < array.length; i++) {
-    if (typeof array[i] !== 'object' || array[i] === null)
-      return process.nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
+    if (typeof array[i] !== 'object' || array[i] === null) { return process.nextTick(callback, new Error('batch(array) element must be an object and not `null`')) }
 
     var e = xtend(array[i])
     var err
 
-    if (e.type !== 'put' && e.type !== 'del')
-      return process.nextTick(callback, new Error("`type` must be 'put' or 'del'"))
+    if (e.type !== 'put' && e.type !== 'del') { return process.nextTick(callback, new Error("`type` must be 'put' or 'del'")) }
 
-    if (err = this._checkKey(e.key, 'key'))
-      return process.nextTick(callback, err)
+    if (err = this._checkKey(e.key, 'key')) { return process.nextTick(callback, err) }
 
     e.key = this._serializeKey(e.key)
 
-    if (e.type === 'put')
-      e.value = this._serializeValue(e.value)
+    if (e.type === 'put') { e.value = this._serializeValue(e.value) }
 
     serialized[i] = e
   }
 
-  if (typeof this._batch == 'function')
-    return this._batch(serialized, options, callback)
+  if (typeof this._batch === 'function') { return this._batch(serialized, options, callback) }
 
   process.nextTick(callback)
 }
 
-//TODO: remove from here, not a necessary primitive
+// TODO: remove from here, not a necessary primitive
 AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
-  if (   start == null
-      || end == null
-      || typeof start == 'function'
-      || typeof end == 'function') {
+  if (start == null ||
+      end == null ||
+      typeof start === 'function' ||
+      typeof end === 'function') {
     throw new Error('approximateSize() requires valid `start`, `end` and `callback` arguments')
   }
 
-  if (typeof callback != 'function')
-    throw new Error('approximateSize() requires a callback argument')
+  if (typeof callback !== 'function') { throw new Error('approximateSize() requires a callback argument') }
 
   start = this._serializeKey(start)
   end = this._serializeKey(end)
 
-  if (typeof this._approximateSize == 'function')
-    return this._approximateSize(start, end, callback)
+  if (typeof this._approximateSize === 'function') { return this._approximateSize(start, end, callback) }
 
   process.nextTick(function () {
     callback(null, 0)
@@ -219,8 +185,7 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = xtend(options)
 
   ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (options[o] && self._isBuffer(options[o]) && options[o].length === 0)
-      delete options[o]
+    if (options[o] && self._isBuffer(options[o]) && options[o].length === 0) { delete options[o] }
   })
 
   options.reverse = !!options.reverse
@@ -234,13 +199,11 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
-  if (typeof options != 'object')
-    options = {}
+  if (typeof options !== 'object') { options = {} }
 
   options = this._setupIteratorOptions(options)
 
-  if (typeof this._iterator == 'function')
-    return this._iterator(options)
+  if (typeof this._iterator === 'function') { return this._iterator(options) }
 
   return new AbstractIterator(this)
 }
@@ -265,13 +228,9 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
-  if (obj === null || obj === undefined)
-    return new Error(type + ' cannot be `null` or `undefined`')
+  if (obj === null || obj === undefined) { return new Error(type + ' cannot be `null` or `undefined`') }
 
-  if (this._isBuffer(obj) && obj.length === 0)
-    return new Error(type + ' cannot be an empty Buffer')
-  else if (String(obj) === '')
-    return new Error(type + ' cannot be an empty String')
+  if (this._isBuffer(obj) && obj.length === 0) { return new Error(type + ' cannot be an empty Buffer') } else if (String(obj) === '') { return new Error(type + ' cannot be an empty String') }
 }
 
 module.exports = AbstractLevelDOWN

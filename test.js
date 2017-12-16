@@ -1,17 +1,17 @@
-var test                 = require('tape')
-  , sinon                = require('sinon')
-  , util                 = require('util')
-  , testCommon           = require('./testCommon')
-  , AbstractLevelDOWN    = require('./').AbstractLevelDOWN
-  , AbstractIterator     = require('./').AbstractIterator
-  , AbstractChainedBatch = require('./').AbstractChainedBatch
-  , isLevelDOWN          = require('./').isLevelDOWN
+var test = require('tape'),
+  sinon = require('sinon'),
+  util = require('util'),
+  testCommon = require('./testCommon'),
+  AbstractLevelDOWN = require('./').AbstractLevelDOWN,
+  AbstractIterator = require('./').AbstractIterator,
+  AbstractChainedBatch = require('./').AbstractChainedBatch,
+  isLevelDOWN = require('./').isLevelDOWN
 
 function factory (location, opts) {
   return new AbstractLevelDOWN(location, opts)
 }
 
-/*** compatibility with basic LevelDOWN API ***/
+/** * compatibility with basic LevelDOWN API ***/
 
 require('./abstract/leveldown-test').args(factory, test, testCommon)
 
@@ -28,9 +28,9 @@ require('./abstract/put-test').args(test)
 
 require('./abstract/put-get-del-test').setUp(factory, test, testCommon)
 require('./abstract/put-get-del-test').errorKeys(test)
-//require('./abstract/put-get-del-test').nonErrorKeys(test, testCommon)
+// require('./abstract/put-get-del-test').nonErrorKeys(test, testCommon)
 require('./abstract/put-get-del-test').errorValues(test)
-//require('./abstract/test/put-get-del-test').nonErrorKeys(test, testCommon)
+// require('./abstract/test/put-get-del-test').nonErrorKeys(test, testCommon)
 require('./abstract/put-get-del-test').tearDown(test, testCommon)
 
 require('./abstract/approximate-size-test').setUp(factory, test, testCommon)
@@ -48,7 +48,7 @@ require('./abstract/iterator-test').setUp(factory, test, testCommon)
 require('./abstract/iterator-test').args(test)
 require('./abstract/iterator-test').sequence(test)
 
-/*** extensibility ***/
+/** * extensibility ***/
 
 test('test core extensibility', function (t) {
   function Test (location) {
@@ -78,7 +78,7 @@ test('test key/value serialization', function (t) {
   t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
   t.equal(test._serializeValue(undefined), '', '_serializeValue converts undefined to empty string')
 
-  var browser = !! process.browser
+  var browser = !!process.browser
   process.browser = false
 
   t.equal(test._serializeValue(1), '1', '_serializeValue converts to string')
@@ -93,10 +93,10 @@ test('test key/value serialization', function (t) {
 })
 
 test('test open() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { createIfMissing: true, errorIfExists: false }
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { createIfMissing: true, errorIfExists: false },
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -126,9 +126,9 @@ test('test open() extensibility', function (t) {
 })
 
 test('test close() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -148,11 +148,11 @@ test('test close() extensibility', function (t) {
 })
 
 test('test get() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { asBuffer: true }
-    , expectedKey = 'a key'
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { asBuffer: true },
+    expectedKey = 'a key',
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -186,11 +186,11 @@ test('test get() extensibility', function (t) {
 })
 
 test('test del() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
-    , expectedKey = 'a key'
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { options: 1 },
+    expectedKey = 'a key',
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -222,12 +222,12 @@ test('test del() extensibility', function (t) {
 })
 
 test('test put() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
-    , expectedKey = 'a key'
-    , expectedValue = 'a value'
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { options: 1 },
+    expectedKey = 'a key',
+    expectedValue = 'a value',
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -261,11 +261,11 @@ test('test put() extensibility', function (t) {
 })
 
 test('test approximateSize() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedStart = 'a start'
-    , expectedEnd = 'an end'
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedStart = 'a start',
+    expectedEnd = 'an end',
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -288,14 +288,14 @@ test('test approximateSize() extensibility', function (t) {
 })
 
 test('test batch() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
-    , expectedArray = [
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { options: 1 },
+    expectedArray = [
         { type: 'put', key: '1', value: '1' },
         { type: 'del', key: '2' }
-      ]
-    , test
+    ],
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -337,11 +337,11 @@ test('test batch() extensibility', function (t) {
 })
 
 test('test chained batch() (array) extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , expectedOptions = { options: 1 }
-    , expectedArray = [ 1, 2 ]
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    expectedOptions = { options: 1 },
+    expectedArray = [ 1, 2 ],
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -379,8 +379,8 @@ test('test chained batch() (array) extensibility', function (t) {
 })
 
 test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -418,9 +418,9 @@ test('test AbstractChainedBatch extensibility', function (t) {
 })
 
 test('test write() extensibility', function (t) {
-  var spy = sinon.spy()
-    , spycb = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    spycb = sinon.spy(),
+    test
 
   function Test (db) {
     AbstractChainedBatch.call(this, db)
@@ -445,11 +445,11 @@ test('test write() extensibility', function (t) {
 })
 
 test('test put() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedKey = 'key'
-    , expectedValue = 'value'
-    , returnValue
-    , test
+  var spy = sinon.spy(),
+    expectedKey = 'key',
+    expectedValue = 'value',
+    returnValue,
+    test
 
   function Test (db) {
     AbstractChainedBatch.call(this, db)
@@ -471,10 +471,10 @@ test('test put() extensibility', function (t) {
 })
 
 test('test del() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedKey = 'key'
-    , returnValue
-    , test
+  var spy = sinon.spy(),
+    expectedKey = 'key',
+    returnValue,
+    test
 
   function Test (db) {
     AbstractChainedBatch.call(this, db)
@@ -495,9 +495,9 @@ test('test del() extensibility', function (t) {
 })
 
 test('test clear() extensibility', function (t) {
-  var spy = sinon.spy()
-    , returnValue
-    , test
+  var spy = sinon.spy(),
+    returnValue,
+    test
 
   function Test (db) {
     AbstractChainedBatch.call(this, db)
@@ -517,9 +517,9 @@ test('test clear() extensibility', function (t) {
 })
 
 test('test iterator() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedOptions = { options: 1, reverse: false, keys: true, values: true, limit: -1, keyAsBuffer: true, valueAsBuffer: true }
-    , test
+  var spy = sinon.spy(),
+    expectedOptions = { options: 1, reverse: false, keys: true, values: true, limit: -1, keyAsBuffer: true, valueAsBuffer: true },
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -552,9 +552,9 @@ test('test AbstractIterator extensibility', function (t) {
 })
 
 test('test next() extensibility', function (t) {
-  var spy = sinon.spy()
-    , spycb = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    spycb = sinon.spy(),
+    test
 
   function Test (db) {
     AbstractIterator.call(this, db)
@@ -579,9 +579,9 @@ test('test next() extensibility', function (t) {
 })
 
 test('test end() extensibility', function (t) {
-  var spy = sinon.spy()
-    , expectedCb = function () {}
-    , test
+  var spy = sinon.spy(),
+    expectedCb = function () {},
+    test
 
   function Test (db) {
     AbstractIterator.call(this, db)
@@ -604,8 +604,8 @@ test('test end() extensibility', function (t) {
 test('test serialization extensibility (put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -636,8 +636,8 @@ test('test serialization extensibility (put)', function (t) {
 test('test serialization extensibility (del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -668,8 +668,8 @@ test('test serialization extensibility (del)', function (t) {
 test('test serialization extensibility (batch array put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -700,8 +700,8 @@ test('test serialization extensibility (batch array put)', function (t) {
 test('test serialization extensibility (batch chain put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -732,8 +732,8 @@ test('test serialization extensibility (batch chain put)', function (t) {
 test('test serialization extensibility (batch array del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -762,8 +762,8 @@ test('test serialization extensibility (batch array del)', function (t) {
 test('test serialization extensibility (batch chain del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -792,8 +792,8 @@ test('test serialization extensibility (batch chain del)', function (t) {
 test('test serialization extensibility (batch array is not mutated)', function (t) {
   t.plan(7)
 
-  var spy = sinon.spy()
-    , test
+  var spy = sinon.spy(),
+    test
 
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
@@ -889,7 +889,7 @@ test('.status', function (t) {
     util.inherits(Test, AbstractLevelDOWN)
 
     Test.prototype._open = function (options, cb) {
-      cb(new Error)
+      cb(new Error())
     }
 
     test = new Test('foobar')
@@ -910,7 +910,7 @@ test('.status', function (t) {
     util.inherits(Test, AbstractLevelDOWN)
 
     Test.prototype._close = function (cb) {
-      cb(new Error)
+      cb(new Error())
     }
 
     test = new Test('foobar')

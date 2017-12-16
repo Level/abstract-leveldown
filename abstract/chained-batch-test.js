@@ -1,12 +1,11 @@
 var db
 
 function collectBatchOps (batch) {
-  var _put        = batch._put
-    , _del        = batch._del
-    , _operations = []
+  var _put = batch._put,
+    _del = batch._del,
+    _operations = []
 
-  if (typeof _put !== 'function' || typeof _del !== 'function')
-    return batch._operations
+  if (typeof _put !== 'function' || typeof _del !== 'function') { return batch._operations }
 
   batch._put = function (key, value) {
     _operations.push({ type: 'put', key: key, value: value })
@@ -175,8 +174,8 @@ module.exports.args = function (test) {
   })
 
   test('test serialize object', function (t) {
-    var batch = db.batch()
-      , ops   = collectBatchOps(batch)
+    var batch = db.batch(),
+      ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
@@ -191,8 +190,8 @@ module.exports.args = function (test) {
   })
 
   test('test serialize buffer', function (t) {
-    var batch = db.batch()
-      , ops   = collectBatchOps(batch)
+    var batch = db.batch(),
+      ops = collectBatchOps(batch)
 
     batch
       .put(Buffer('foo'), Buffer('bar'))
@@ -207,16 +206,16 @@ module.exports.args = function (test) {
     var _db = Object.create(db)
     _db._serializeKey = _db._serializeValue = function (data) { return data }
 
-    var batch = _db.batch()
-      , ops   = collectBatchOps(batch)
+    var batch = _db.batch(),
+      ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
       .del({ bar: 'baz' })
 
     t.deepEqual(ops, [
-        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
-      , { type: 'del', key: { bar: 'baz' } }
+        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } },
+       { type: 'del', key: { bar: 'baz' } }
     ])
 
     t.end()
@@ -226,15 +225,15 @@ module.exports.args = function (test) {
 module.exports.batch = function (test, testCommon) {
   test('test basic batch', function (t) {
     db.batch(
-        [
-            { type: 'put', key: 'one', value: '1' }
-          , { type: 'put', key: 'two', value: '2' }
-          , { type: 'put', key: 'three', value: '3' }
-        ]
+      [
+            { type: 'put', key: 'one', value: '1' },
+           { type: 'put', key: 'two', value: '2' },
+           { type: 'put', key: 'three', value: '3' }
+      ]
       , function (err) {
-          t.error(err)
+      t.error(err)
 
-          db.batch()
+      db.batch()
             .put('1', 'one')
             .del('2', 'two')
             .put('3', 'three')
@@ -248,19 +247,19 @@ module.exports.batch = function (test, testCommon) {
               testCommon.collectEntries(
                   db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
                 , function (err, data) {
-                    t.error(err)
-                    t.equal(data.length, 3, 'correct number of entries')
-                    var expected = [
-                        { key: 'foo', value: 'bar' }
-                      , { key: 'one', value: 'I' }
-                      , { key: 'two', value: 'II' }
-                    ]
-                    t.deepEqual(data, expected)
-                    t.end()
-                  }
+                  t.error(err)
+                  t.equal(data.length, 3, 'correct number of entries')
+                  var expected = [
+                        { key: 'foo', value: 'bar' },
+                       { key: 'one', value: 'I' },
+                       { key: 'two', value: 'II' }
+                  ]
+                  t.deepEqual(data, expected)
+                  t.end()
+                }
               )
             })
-        }
+    }
     )
   })
 }

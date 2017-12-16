@@ -1,8 +1,8 @@
-var db
-  , leveldown
-  , testCommon
-  , verifyNotFoundError = require('./util').verifyNotFoundError
-  , isTypedArray        = require('./util').isTypedArray
+var db,
+  leveldown,
+  testCommon,
+  verifyNotFoundError = require('./util').verifyNotFoundError,
+  isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -78,7 +78,7 @@ module.exports.del = function (test) {
         t.error(err)
         db.get('foo', function (err) {
           t.ok(err, 'entry propertly deleted')
-          t.ok(typeof value == 'undefined', 'value is undefined')
+          t.ok(typeof value === 'undefined', 'value is undefined')
           t.ok(verifyNotFoundError(err), 'NotFound error')
           t.end()
         })
