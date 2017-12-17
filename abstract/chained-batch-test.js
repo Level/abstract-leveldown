@@ -196,8 +196,8 @@ module.exports.args = function (test) {
     var ops = collectBatchOps(batch)
 
     batch
-      .put(Buffer('foo'), Buffer('bar'))
-      .del(Buffer('baz'))
+      .put(Buffer.from('foo'), Buffer.from('bar'))
+      .del(Buffer.from('baz'))
     t.equal(ops[0].key.toString(), 'foo')
     t.equal(ops[0].value.toString(), 'bar')
     t.equal(ops[1].key.toString(), 'baz')

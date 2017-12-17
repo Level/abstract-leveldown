@@ -69,7 +69,7 @@ test('test key/value serialization', function (t) {
 
   util.inherits(Test, AbstractLevelDOWN)
 
-  var buffer = new Buffer(0)
+  var buffer = Buffer.alloc(0)
   var test = new Test('foobar')
 
   t.equal(test._serializeKey(1), '1', '_serializeKey converts to string')

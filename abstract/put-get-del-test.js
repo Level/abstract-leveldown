@@ -110,7 +110,7 @@ module.exports.errorKeys = function (testFunc, BufferType) {
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest('empty Buffer key', new BufferType(0), /key cannot be an empty \w*Buffer/)
+  makeErrorKeyTest('empty Buffer key', BufferType.alloc(0), /key cannot be an empty \w*Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
 
@@ -157,7 +157,7 @@ module.exports.nonErrorValues = function (testFunc, BufferType) {
   makePutGetDelSuccessfulTest('`null` value', 'foo null', null, '')
   makePutGetDelSuccessfulTest('`undefined` value', 'foo undefined', undefined, '')
   makePutGetDelSuccessfulTest('empty String value', 'foo', '', '')
-  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', new BufferType(0), '')
+  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', BufferType.alloc(0), '')
   makePutGetDelSuccessfulTest('empty Array value', 'foo', [], '')
 
   // standard String value

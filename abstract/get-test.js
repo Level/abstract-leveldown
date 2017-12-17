@@ -46,10 +46,10 @@ module.exports.args = function (test) {
     t.plan(2)
     var db = leveldown(testCommon.location())
     db._get = function (key, opts, callback) {
-      t.same(key, Buffer('key'))
+      t.same(key, Buffer.from('key'))
       callback()
     }
-    db.get(Buffer('key'), function (err, val) {
+    db.get(Buffer.from('key'), function (err, val) {
       t.error(err)
     })
   })

@@ -48,7 +48,7 @@ module.exports.args = function (test) {
       t.ok(Buffer.isBuffer(key))
       callback()
     }
-    db.del(Buffer('buf'), function (err, val) {
+    db.del(Buffer.from('buf'), function (err, val) {
       t.error(err)
     })
   })

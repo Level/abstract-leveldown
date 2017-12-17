@@ -71,11 +71,11 @@ module.exports.args = function (test) {
     t.plan(3)
     var db = leveldown(testCommon.location())
     db._approximateSize = function (start, end, callback) {
-      t.same(start, Buffer('start'))
-      t.same(end, Buffer('end'))
+      t.same(start, Buffer.from('start'))
+      t.same(end, Buffer.from('end'))
       callback()
     }
-    db.approximateSize(Buffer('start'), Buffer('end'), function (err, val) {
+    db.approximateSize(Buffer.from('start'), Buffer.from('end'), function (err, val) {
       t.error(err)
     })
   })
