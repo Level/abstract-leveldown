@@ -1,8 +1,8 @@
-var db,
-  leveldown,
-  testCommon,
-  verifyNotFoundError = require('./util').verifyNotFoundError,
-  isTypedArray = require('./util').isTypedArray
+var db
+var leveldown
+var testCommon
+var verifyNotFoundError = require('./util').verifyNotFoundError
+var isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -124,12 +124,12 @@ module.exports.get = function (test) {
   test('test simultaniously get()', function (t) {
     db.put('hello', 'world', function (err) {
       t.error(err)
-      var r = 0,
-        done = function () {
-          if (++r == 20) { t.end() }
-        },
-        i = 0,
-        j = 0
+      var r = 0
+      var done = function () {
+        if (++r == 20) { t.end() }
+      }
+      var i = 0
+      var j = 0
 
       for (; i < 10; ++i) {
         db.get('hello', function (err, value) {

@@ -1,9 +1,9 @@
 /** ** SETUP & UTILITY STUFF ****/
 
-var db,
-  testBuffer,
-  test,
-  verifyNotFoundError = require('./util').verifyNotFoundError
+var db
+var testBuffer
+var test
+var verifyNotFoundError = require('./util').verifyNotFoundError
 
 function makeGetDelErrorTests (type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {

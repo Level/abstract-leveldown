@@ -82,8 +82,8 @@ module.exports.openAdvanced = function (leveldown, test, testCommon) {
   })
 
   test('test database open errorIfExists:true', function (t) {
-    var location = testCommon.location(),
-      db = leveldown(location)
+    var location = testCommon.location()
+    var db = leveldown(location)
 
     // make a valid database first, then close and dispose
     db.open({}, function (err) {

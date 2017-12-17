@@ -1,8 +1,8 @@
-var db,
-  leveldown,
-  testCommon,
-  verifyNotFoundError = require('./util').verifyNotFoundError,
-  isTypedArray = require('./util').isTypedArray
+var db
+var leveldown
+var testCommon
+var verifyNotFoundError = require('./util').verifyNotFoundError
+var isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)

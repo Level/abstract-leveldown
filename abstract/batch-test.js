@@ -1,6 +1,6 @@
-var db,
-  verifyNotFoundError = require('./util').verifyNotFoundError,
-  isTypedArray = require('./util').isTypedArray
+var db
+var verifyNotFoundError = require('./util').verifyNotFoundError
+var isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -195,10 +195,10 @@ module.exports.batch = function (test) {
     ], function (err) {
       t.error(err)
 
-      var r = 0,
-        done = function () {
-          if (++r == 3) { t.end() }
-        }
+      var r = 0
+      var done = function () {
+        if (++r == 3) { t.end() }
+      }
 
       db.get('foobatch1', function (err, value) {
         t.error(err)

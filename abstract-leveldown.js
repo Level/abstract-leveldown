@@ -1,8 +1,8 @@
 /* Copyright (c) 2017 Rod Vagg, MIT License */
 
-var xtend = require('xtend'),
-  AbstractIterator = require('./abstract-iterator'),
-  AbstractChainedBatch = require('./abstract-chained-batch')
+var xtend = require('xtend')
+var AbstractIterator = require('./abstract-iterator')
+var AbstractChainedBatch = require('./abstract-chained-batch')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined) {
@@ -18,8 +18,8 @@ function AbstractLevelDOWN (location) {
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
-  var self = this,
-    oldStatus = this.status
+  var self = this
+  var oldStatus = this.status
 
   if (typeof options === 'function') { callback = options }
 
@@ -49,8 +49,8 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
-  var self = this,
-    oldStatus = this.status
+  var self = this
+  var oldStatus = this.status
 
   if (typeof callback !== 'function') {
     throw new Error('close() requires a callback argument')

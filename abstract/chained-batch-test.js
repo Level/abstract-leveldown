@@ -1,9 +1,9 @@
 var db
 
 function collectBatchOps (batch) {
-  var _put = batch._put,
-    _del = batch._del,
-    _operations = []
+  var _put = batch._put
+  var _del = batch._del
+  var _operations = []
 
   if (typeof _put !== 'function' || typeof _del !== 'function') {
     return batch._operations
@@ -176,8 +176,8 @@ module.exports.args = function (test) {
   })
 
   test('test serialize object', function (t) {
-    var batch = db.batch(),
-      ops = collectBatchOps(batch)
+    var batch = db.batch()
+    var ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
@@ -192,8 +192,8 @@ module.exports.args = function (test) {
   })
 
   test('test serialize buffer', function (t) {
-    var batch = db.batch(),
-      ops = collectBatchOps(batch)
+    var batch = db.batch()
+    var ops = collectBatchOps(batch)
 
     batch
       .put(Buffer('foo'), Buffer('bar'))
@@ -208,8 +208,8 @@ module.exports.args = function (test) {
     var _db = Object.create(db)
     _db._serializeKey = _db._serializeValue = function (data) { return data }
 
-    var batch = _db.batch(),
-      ops = collectBatchOps(batch)
+    var batch = _db.batch()
+    var ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })

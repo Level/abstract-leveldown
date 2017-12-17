@@ -1,6 +1,6 @@
-var db,
-  sourceData = require('./iterator-test').sourceData,
-  transformSource = require('./iterator-test').transformSource
+var db
+var sourceData = require('./iterator-test').sourceData
+var transformSource = require('./iterator-test').transformSource
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -13,35 +13,35 @@ module.exports.setUp = function (leveldown, test, testCommon) {
 module.exports.iterator = function (leveldown, test, testCommon, collectEntries) {
   test('test simple iterator()', function (t) {
     var data = [
-            { type: 'put', key: 'foobatch1', value: 'bar1' },
-           { type: 'put', key: 'foobatch2', value: 'bar2' },
-           { type: 'put', key: 'foobatch3', value: 'bar3' }
-      ],
-      idx = 0
+      { type: 'put', key: 'foobatch1', value: 'bar1' },
+      { type: 'put', key: 'foobatch2', value: 'bar2' },
+      { type: 'put', key: 'foobatch3', value: 'bar3' }
+    ]
+    var idx = 0
 
     db.batch(data, function (err) {
       t.error(err)
-      var iterator = db.iterator(),
-        fn = function (err, key, value) {
-          t.error(err)
-          if (key && value) {
-            t.equal(key.toString(), data[idx].key, 'correct key')
-            t.equal(value.toString(), data[idx].value, 'correct value')
-            process.nextTick(next)
-            idx++
-          } else { // end
-            t.ok(typeof err === 'undefined', 'err argument is undefined')
-            t.ok(typeof key === 'undefined', 'key argument is undefined')
-            t.ok(typeof value === 'undefined', 'value argument is undefined')
-            t.equal(idx, data.length, 'correct number of entries')
-            iterator.end(function () {
-              t.end()
-            })
-          }
-        },
-        next = function () {
-          iterator.next(fn)
+      var iterator = db.iterator()
+      var fn = function (err, key, value) {
+        t.error(err)
+        if (key && value) {
+          t.equal(key.toString(), data[idx].key, 'correct key')
+          t.equal(value.toString(), data[idx].value, 'correct value')
+          process.nextTick(next)
+          idx++
+        } else { // end
+          t.ok(typeof err === 'undefined', 'err argument is undefined')
+          t.ok(typeof key === 'undefined', 'key argument is undefined')
+          t.ok(typeof value === 'undefined', 'value argument is undefined')
+          t.equal(idx, data.length, 'correct number of entries')
+          iterator.end(function () {
+            t.end()
+          })
         }
+      }
+      var next = function () {
+        iterator.next(fn)
+      }
 
       next()
     })
