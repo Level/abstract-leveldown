@@ -166,7 +166,7 @@ module.exports.args = function (test) {
     var batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
-      batch.write(function (err) {})
+      batch.write(function () {})
     } catch (err) {
       t.equal(err.message, 'write() already called on this batch', 'correct error message')
       return t.end()
