@@ -1,6 +1,6 @@
 var db
-  , leveldown
-  , testCommon
+var leveldown
+var testCommon
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -71,11 +71,11 @@ module.exports.args = function (test) {
     t.plan(3)
     var db = leveldown(testCommon.location())
     db._approximateSize = function (start, end, callback) {
-      t.same(start, Buffer('start'))
-      t.same(end, Buffer('end'))
+      t.same(start, Buffer.from('start'))
+      t.same(end, Buffer.from('end'))
       callback()
     }
-    db.approximateSize(Buffer('start'), Buffer('end'), function (err, val) {
+    db.approximateSize(Buffer.from('start'), Buffer.from('end'), function (err, val) {
       t.error(err)
     })
   })
@@ -103,39 +103,37 @@ module.exports.approximateSize = function (test) {
       return 'aaaaaaaaaa'
     }).join('')
 
-    db.batch(
-        Array.apply(null, Array(10)).map(function (x, i) {
-          return { type: 'put', key: 'foo' + i, value: data }
-        })
-      , function (err) {
+    db.batch(Array.apply(null, Array(10)).map(function (x, i) {
+      return { type: 'put', key: 'foo' + i, value: data }
+    }), function (err) {
+      t.error(err)
+
+      // cycle open/close to ensure a pack to .sst
+
+      db.close(function (err) {
+        t.error(err)
+
+        db.open(function (err) {
           t.error(err)
 
-          // cycle open/close to ensure a pack to .sst
-
-          db.close(function (err) {
+          db.approximateSize('!', '~', function (err, size) {
             t.error(err)
 
-            db.open(function (err) {
-              t.error(err)
-
-              db.approximateSize('!', '~', function (err, size) {
-                t.error(err)
-
-                t.equal(typeof size, 'number')
-                t.ok(
+            t.equal(typeof size, 'number')
+            t.ok(
                     size > 40000 // account for snappy compression
                                  // original would be ~100000
                   , 'size reports a reasonable amount (' + size + ')'
                 )
 
-                db.close(function (err) {
-                  t.error(err)
-                  t.end()
-                })
-              })
+            db.close(function (err) {
+              t.error(err)
+              t.end()
             })
           })
-        }
+        })
+      })
+    }
     )
   })
 }

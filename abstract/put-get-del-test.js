@@ -1,10 +1,7 @@
-/**** SETUP & UTILITY STUFF ****/
-
-
 var db
-  , testBuffer
-  , test
-  , verifyNotFoundError = require('./util').verifyNotFoundError
+var testBuffer
+var test
+var verifyNotFoundError = require('./util').verifyNotFoundError
 
 function makeGetDelErrorTests (type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
@@ -53,7 +50,7 @@ function makePutErrorTest (type, key, value, expectedError) {
 }
 
 function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
-  var hasExpectedResult = arguments.length == 4
+  var hasExpectedResult = arguments.length === 4
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
       t.error(err)
@@ -64,10 +61,8 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
         if (hasExpectedResult) {
           t.equal(result.toString(), expectedResult)
         } else {
-          if (result != null)
-            result = _value.toString()
-          if (value != null)
-            value = value.toString()
+          if (result != null) { result = _value.toString() }
+          if (value != null) { value = value.toString() }
           t.equals(result, value)
         }
         db.del(key, function (err) {
@@ -75,7 +70,7 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
 
           var async = false
 
-          db.get(key, function (err,  value) {
+          db.get(key, function (err, value) {
             t.ok(err, 'entry propertly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')
             t.equal(typeof value, 'undefined', 'value is undefined')
@@ -95,8 +90,6 @@ function makeErrorKeyTest (type, key, expectedError) {
   makePutErrorTest(type, key, 'foo', expectedError)
 }
 
-/**** SETUP ENVIRONMENT ****/
-
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
@@ -105,20 +98,15 @@ module.exports.setUp = function (leveldown, test, testCommon) {
   })
 }
 
-/**** TEST ERROR KEYS ****/
-
 module.exports.errorKeys = function (testFunc, BufferType) {
-  if (!BufferType)
-    BufferType = Buffer
+  if (!BufferType) { BufferType = Buffer }
   test = testFunc
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest('empty Buffer key', new BufferType(0), /key cannot be an empty \w*Buffer/)
+  makeErrorKeyTest('empty Buffer key', BufferType.alloc(0), /key cannot be an empty \w*Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
-
-/**** TEST NON-ERROR KEYS ****/
 
 module.exports.nonErrorKeys = function (testFunc) {
   // valid falsey keys
@@ -140,10 +128,8 @@ module.exports.nonErrorKeys = function (testFunc) {
   }
 
   // non-empty Array as a value
-  makePutGetDelSuccessfulTest('Array value', 'foo', [1,2,3,4])
+  makePutGetDelSuccessfulTest('Array value', 'foo', [1, 2, 3, 4])
 }
-
-/**** TEST ERROR VALUES ****/
 
 module.exports.errorValues = function () {
 }
@@ -161,7 +147,7 @@ module.exports.nonErrorValues = function (testFunc, BufferType) {
   makePutGetDelSuccessfulTest('`null` value', 'foo null', null, '')
   makePutGetDelSuccessfulTest('`undefined` value', 'foo undefined', undefined, '')
   makePutGetDelSuccessfulTest('empty String value', 'foo', '', '')
-  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', new BufferType(0), '')
+  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', BufferType.alloc(0), '')
   makePutGetDelSuccessfulTest('empty Array value', 'foo', [], '')
 
   // standard String value
@@ -175,10 +161,8 @@ module.exports.nonErrorValues = function (testFunc, BufferType) {
   makePutGetDelSuccessfulTest('Buffer value', 'foo', testBuffer)
 
   // non-empty Array as a key
-  makePutGetDelSuccessfulTest('Array key', [1,2,3,4], 'foo')
+  makePutGetDelSuccessfulTest('Array key', [1, 2, 3, 4], 'foo')
 }
-
-/**** CLEANUP ENVIRONMENT ****/
 
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {

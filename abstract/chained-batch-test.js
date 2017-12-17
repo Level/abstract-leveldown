@@ -1,12 +1,13 @@
 var db
 
 function collectBatchOps (batch) {
-  var _put        = batch._put
-    , _del        = batch._del
-    , _operations = []
+  var _put = batch._put
+  var _del = batch._del
+  var _operations = []
 
-  if (typeof _put !== 'function' || typeof _del !== 'function')
+  if (typeof _put !== 'function' || typeof _del !== 'function') {
     return batch._operations
+  }
 
   batch._put = function (key, value) {
     _operations.push({ type: 'put', key: key, value: value })
@@ -165,7 +166,7 @@ module.exports.args = function (test) {
     var batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
-      batch.write(function (err) {})
+      batch.write(function () {})
     } catch (err) {
       t.equal(err.message, 'write() already called on this batch', 'correct error message')
       return t.end()
@@ -176,7 +177,7 @@ module.exports.args = function (test) {
 
   test('test serialize object', function (t) {
     var batch = db.batch()
-      , ops   = collectBatchOps(batch)
+    var ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
@@ -192,11 +193,11 @@ module.exports.args = function (test) {
 
   test('test serialize buffer', function (t) {
     var batch = db.batch()
-      , ops   = collectBatchOps(batch)
+    var ops = collectBatchOps(batch)
 
     batch
-      .put(Buffer('foo'), Buffer('bar'))
-      .del(Buffer('baz'))
+      .put(Buffer.from('foo'), Buffer.from('bar'))
+      .del(Buffer.from('baz'))
     t.equal(ops[0].key.toString(), 'foo')
     t.equal(ops[0].value.toString(), 'bar')
     t.equal(ops[1].key.toString(), 'baz')
@@ -208,15 +209,15 @@ module.exports.args = function (test) {
     _db._serializeKey = _db._serializeValue = function (data) { return data }
 
     var batch = _db.batch()
-      , ops   = collectBatchOps(batch)
+    var ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
       .del({ bar: 'baz' })
 
     t.deepEqual(ops, [
-        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } }
-      , { type: 'del', key: { bar: 'baz' } }
+      { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } },
+      { type: 'del', key: { bar: 'baz' } }
     ])
 
     t.end()
@@ -225,43 +226,38 @@ module.exports.args = function (test) {
 
 module.exports.batch = function (test, testCommon) {
   test('test basic batch', function (t) {
-    db.batch(
-        [
-            { type: 'put', key: 'one', value: '1' }
-          , { type: 'put', key: 'two', value: '2' }
-          , { type: 'put', key: 'three', value: '3' }
-        ]
-      , function (err) {
+    db.batch([
+      { type: 'put', key: 'one', value: '1' },
+      { type: 'put', key: 'two', value: '2' },
+      { type: 'put', key: 'three', value: '3' }
+    ], function (err) {
+      t.error(err)
+      db.batch()
+        .put('1', 'one')
+        .del('2', 'two')
+        .put('3', 'three')
+        .clear()
+        .put('one', 'I')
+        .put('two', 'II')
+        .del('three')
+        .put('foo', 'bar')
+        .write(function (err) {
           t.error(err)
-
-          db.batch()
-            .put('1', 'one')
-            .del('2', 'two')
-            .put('3', 'three')
-            .clear()
-            .put('one', 'I')
-            .put('two', 'II')
-            .del('three')
-            .put('foo', 'bar')
-            .write(function (err) {
+          testCommon.collectEntries(
+            db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
               t.error(err)
-              testCommon.collectEntries(
-                  db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
-                , function (err, data) {
-                    t.error(err)
-                    t.equal(data.length, 3, 'correct number of entries')
-                    var expected = [
-                        { key: 'foo', value: 'bar' }
-                      , { key: 'one', value: 'I' }
-                      , { key: 'two', value: 'II' }
-                    ]
-                    t.deepEqual(data, expected)
-                    t.end()
-                  }
-              )
-            })
-        }
-    )
+              t.equal(data.length, 3, 'correct number of entries')
+              var expected = [
+                { key: 'foo', value: 'bar' },
+                { key: 'one', value: 'I' },
+                { key: 'two', value: 'II' }
+              ]
+              t.deepEqual(data, expected)
+              t.end()
+            }
+          )
+        })
+    })
   })
 }
 

@@ -1,8 +1,7 @@
 var db
-  , leveldown
-  , testCommon
-  , verifyNotFoundError = require('./util').verifyNotFoundError
-  , isTypedArray        = require('./util').isTypedArray
+var leveldown
+var testCommon
+var isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
@@ -68,11 +67,11 @@ module.exports.args = function (test) {
     t.plan(3)
     var db = leveldown(testCommon.location())
     db._put = function (key, value, opts, callback) {
-      t.same(key, Buffer('key'))
-      t.same(value, Buffer('value'))
+      t.same(key, Buffer.from('key'))
+      t.same(value, Buffer.from('value'))
       callback()
     }
-    db.put(Buffer('key'), Buffer('value'), function (err, val) {
+    db.put(Buffer.from('key'), Buffer.from('value'), function (err, val) {
       t.error(err)
     })
   })
@@ -87,7 +86,7 @@ module.exports.args = function (test) {
       callback()
     }
     db.open(function () {
-      db.put({ foo: 'bar' }, { beep: 'boop'}, function (err) {
+      db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
       })
     })
@@ -101,14 +100,15 @@ module.exports.put = function (test) {
       db.get('foo', function (err, value) {
         t.error(err)
         var result = value.toString()
-        if (isTypedArray(value))
+        if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
+        }
         t.equal(result, 'bar')
         t.end()
       })
     })
   })
-  
+
   if (process.browser) {
     test('test object value put()', function (t) {
       db.put('dood', {pete: 'sampras'}, function (err) {
@@ -121,7 +121,6 @@ module.exports.put = function (test) {
       })
     })
   }
-
 }
 
 module.exports.sync = function (test) {

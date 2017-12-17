@@ -1,6 +1,6 @@
 var db
-  , verifyNotFoundError = require('./util').verifyNotFoundError
-  , isTypedArray        = require('./util').isTypedArray
+var verifyNotFoundError = require('./util').verifyNotFoundError
+var isTypedArray = require('./util').isTypedArray
 
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -177,7 +177,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar')
@@ -188,18 +188,17 @@ module.exports.batch = function (test) {
 
   test('test multiple batch()', function (t) {
     db.batch([
-        { type: 'put', key: 'foobatch1', value: 'bar1' }
-      , { type: 'put', key: 'foobatch2', value: 'bar2' }
-      , { type: 'put', key: 'foobatch3', value: 'bar3' }
-      , { type: 'del', key: 'foobatch2' }
+      { type: 'put', key: 'foobatch1', value: 'bar1' },
+      { type: 'put', key: 'foobatch2', value: 'bar2' },
+      { type: 'put', key: 'foobatch3', value: 'bar3' },
+      { type: 'del', key: 'foobatch2' }
     ], function (err) {
       t.error(err)
 
       var r = 0
-        , done = function () {
-            if (++r == 3)
-              t.end()
-          }
+      var done = function () {
+        if (++r === 3) { t.end() }
+      }
 
       db.get('foobatch1', function (err, value) {
         t.error(err)
@@ -207,7 +206,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar1')
@@ -216,7 +215,7 @@ module.exports.batch = function (test) {
 
       db.get('foobatch2', function (err, value) {
         t.ok(err, 'entry not found')
-        t.ok(typeof value == 'undefined', 'value is undefined')
+        t.ok(typeof value === 'undefined', 'value is undefined')
         t.ok(verifyNotFoundError(err), 'NotFound error')
         done()
       })
@@ -227,7 +226,7 @@ module.exports.batch = function (test) {
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
-          t.ok(typeof Buffer != 'undefined' && value instanceof Buffer)
+          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
           result = value.toString()
         }
         t.equal(result, 'bar3')
@@ -243,9 +242,9 @@ module.exports.atomic = function (test) {
     var async = false
 
     db.batch([
-        { type: 'put', key: 'foobah1', value: 'bar1' }
-      , { type: 'put', value: 'bar2' }
-      , { type: 'put', key: 'foobah3', value: 'bar3' }
+      { type: 'put', key: 'foobah1', value: 'bar1' },
+      { type: 'put', value: 'bar2' },
+      { type: 'put', key: 'foobah3', value: 'bar3' }
     ], function (err) {
       t.ok(err, 'should error')
       t.ok(async, 'callback is asynchronous')
