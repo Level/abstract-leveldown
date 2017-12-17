@@ -53,13 +53,13 @@ require('./abstract/iterator-test').sequence(test)
 test('test core extensibility', function (t) {
   function Test (location) {
     AbstractLevelDOWN.call(this, location)
-    t.equal(this.location, location, 'location set on `this`')
-    t.end()
   }
 
   util.inherits(Test, AbstractLevelDOWN)
 
-  ;new Test('foobar')
+  var test = new Test('foobar')
+  t.equal(test.location, 'foobar', 'location set on `this`')
+  t.end()
 })
 
 test('test key/value serialization', function (t) {
@@ -407,13 +407,13 @@ test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
 test('test AbstractChainedBatch extensibility', function (t) {
   function Test (db) {
     AbstractChainedBatch.call(this, db)
-    t.equal(this._db, db, 'db set on `this`')
-    t.end()
   }
 
   util.inherits(Test, AbstractChainedBatch)
 
-  new Test('foobar')
+  var test = new Test('foobar')
+  t.equal(test._db, 'foobar', 'db set on `this`')
+  t.end()
 })
 
 test('test write() extensibility', function (t) {
@@ -549,13 +549,13 @@ test('test iterator() extensibility', function (t) {
 test('test AbstractIterator extensibility', function (t) {
   function Test (db) {
     AbstractIterator.call(this, db)
-    t.equal(this.db, db, 'db set on `this`')
-    t.end()
   }
 
   util.inherits(Test, AbstractIterator)
 
-  ;new Test('foobar')
+  var test = new Test('foobar')
+  t.equal(test.db, 'foobar', 'db set on `this`')
+  t.end()
 })
 
 test('test next() extensibility', function (t) {
