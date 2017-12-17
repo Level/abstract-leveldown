@@ -67,19 +67,6 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test _serialize buffer', function (t) {
-    t.plan(3)
-    var db = leveldown(testCommon.location())
-    db._approximateSize = function (start, end, callback) {
-      t.same(start, Buffer.from('start'))
-      t.same(end, Buffer.from('end'))
-      callback()
-    }
-    db.approximateSize(Buffer.from('start'), Buffer.from('end'), function (err, val) {
-      t.error(err)
-    })
-  })
-
   test('test custom _serialize*', function (t) {
     t.plan(3)
     var db = leveldown(testCommon.location())

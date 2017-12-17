@@ -191,19 +191,6 @@ module.exports.args = function (test) {
     t.end()
   })
 
-  test('test serialize buffer', function (t) {
-    var batch = db.batch()
-    var ops = collectBatchOps(batch)
-
-    batch
-      .put(Buffer.from('foo'), Buffer.from('bar'))
-      .del(Buffer.from('baz'))
-    t.equal(ops[0].key.toString(), 'foo')
-    t.equal(ops[0].value.toString(), 'bar')
-    t.equal(ops[1].key.toString(), 'baz')
-    t.end()
-  })
-
   test('test custom _serialize*', function (t) {
     var _db = Object.create(db)
     _db._serializeKey = _db._serializeValue = function (data) { return data }
