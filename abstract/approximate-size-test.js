@@ -103,14 +103,12 @@ module.exports.approximateSize = function (test) {
       return 'aaaaaaaaaa'
     }).join('')
 
-    db.batch(
-        Array.apply(null, Array(10)).map(function (x, i) {
-          return { type: 'put', key: 'foo' + i, value: data }
-        })
-      , function (err) {
+    db.batch(Array.apply(null, Array(10)).map(function (x, i) {
+      return { type: 'put', key: 'foo' + i, value: data }
+    }), function (err) {
       t.error(err)
 
-          // cycle open/close to ensure a pack to .sst
+      // cycle open/close to ensure a pack to .sst
 
       db.close(function (err) {
         t.error(err)

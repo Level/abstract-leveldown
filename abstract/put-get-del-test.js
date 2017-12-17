@@ -1,5 +1,3 @@
-/** ** SETUP & UTILITY STUFF ****/
-
 var db
 var testBuffer
 var test
@@ -92,8 +90,6 @@ function makeErrorKeyTest (type, key, expectedError) {
   makePutErrorTest(type, key, 'foo', expectedError)
 }
 
-/** ** SETUP ENVIRONMENT ****/
-
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
@@ -101,8 +97,6 @@ module.exports.setUp = function (leveldown, test, testCommon) {
     db.open(t.end.bind(t))
   })
 }
-
-/** ** TEST ERROR KEYS ****/
 
 module.exports.errorKeys = function (testFunc, BufferType) {
   if (!BufferType) { BufferType = Buffer }
@@ -113,8 +107,6 @@ module.exports.errorKeys = function (testFunc, BufferType) {
   makeErrorKeyTest('empty Buffer key', BufferType.alloc(0), /key cannot be an empty \w*Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
-
-/** ** TEST NON-ERROR KEYS ****/
 
 module.exports.nonErrorKeys = function (testFunc) {
   // valid falsey keys
@@ -138,8 +130,6 @@ module.exports.nonErrorKeys = function (testFunc) {
   // non-empty Array as a value
   makePutGetDelSuccessfulTest('Array value', 'foo', [1, 2, 3, 4])
 }
-
-/** ** TEST ERROR VALUES ****/
 
 module.exports.errorValues = function () {
 }
@@ -173,8 +163,6 @@ module.exports.nonErrorValues = function (testFunc, BufferType) {
   // non-empty Array as a key
   makePutGetDelSuccessfulTest('Array key', [1, 2, 3, 4], 'foo')
 }
-
-/** ** CLEANUP ENVIRONMENT ****/
 
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {

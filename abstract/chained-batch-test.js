@@ -216,8 +216,8 @@ module.exports.args = function (test) {
       .del({ bar: 'baz' })
 
     t.deepEqual(ops, [
-        { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } },
-       { type: 'del', key: { bar: 'baz' } }
+      { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } },
+      { type: 'del', key: { bar: 'baz' } }
     ])
 
     t.end()
@@ -226,43 +226,38 @@ module.exports.args = function (test) {
 
 module.exports.batch = function (test, testCommon) {
   test('test basic batch', function (t) {
-    db.batch(
-      [
-            { type: 'put', key: 'one', value: '1' },
-           { type: 'put', key: 'two', value: '2' },
-           { type: 'put', key: 'three', value: '3' }
-      ]
-      , function (err) {
+    db.batch([
+      { type: 'put', key: 'one', value: '1' },
+      { type: 'put', key: 'two', value: '2' },
+      { type: 'put', key: 'three', value: '3' }
+    ], function (err) {
       t.error(err)
-
       db.batch()
-            .put('1', 'one')
-            .del('2', 'two')
-            .put('3', 'three')
-            .clear()
-            .put('one', 'I')
-            .put('two', 'II')
-            .del('three')
-            .put('foo', 'bar')
-            .write(function (err) {
+        .put('1', 'one')
+        .del('2', 'two')
+        .put('3', 'three')
+        .clear()
+        .put('one', 'I')
+        .put('two', 'II')
+        .del('three')
+        .put('foo', 'bar')
+        .write(function (err) {
+          t.error(err)
+          testCommon.collectEntries(
+            db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
               t.error(err)
-              testCommon.collectEntries(
-                  db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
-                , function (err, data) {
-                  t.error(err)
-                  t.equal(data.length, 3, 'correct number of entries')
-                  var expected = [
-                        { key: 'foo', value: 'bar' },
-                       { key: 'one', value: 'I' },
-                       { key: 'two', value: 'II' }
-                  ]
-                  t.deepEqual(data, expected)
-                  t.end()
-                }
-              )
-            })
-    }
-    )
+              t.equal(data.length, 3, 'correct number of entries')
+              var expected = [
+                { key: 'foo', value: 'bar' },
+                { key: 'one', value: 'I' },
+                { key: 'two', value: 'II' }
+              ]
+              t.deepEqual(data, expected)
+              t.end()
+            }
+          )
+        })
+    })
   })
 }
 

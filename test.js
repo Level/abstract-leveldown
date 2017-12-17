@@ -11,7 +11,9 @@ function factory (location, opts) {
   return new AbstractLevelDOWN(location, opts)
 }
 
-/** * compatibility with basic LevelDOWN API ***/
+/**
+ * Compatibility with basic LevelDOWN API
+ */
 
 require('./abstract/leveldown-test').args(factory, test, testCommon)
 
@@ -48,7 +50,9 @@ require('./abstract/iterator-test').setUp(factory, test, testCommon)
 require('./abstract/iterator-test').args(test)
 require('./abstract/iterator-test').sequence(test)
 
-/** * extensibility ***/
+/**
+ * Extensibility
+ */
 
 test('test core extensibility', function (t) {
   function Test (location) {

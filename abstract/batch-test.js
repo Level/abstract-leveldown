@@ -188,10 +188,10 @@ module.exports.batch = function (test) {
 
   test('test multiple batch()', function (t) {
     db.batch([
-        { type: 'put', key: 'foobatch1', value: 'bar1' },
-       { type: 'put', key: 'foobatch2', value: 'bar2' },
-       { type: 'put', key: 'foobatch3', value: 'bar3' },
-       { type: 'del', key: 'foobatch2' }
+      { type: 'put', key: 'foobatch1', value: 'bar1' },
+      { type: 'put', key: 'foobatch2', value: 'bar2' },
+      { type: 'put', key: 'foobatch3', value: 'bar3' },
+      { type: 'del', key: 'foobatch2' }
     ], function (err) {
       t.error(err)
 
@@ -242,9 +242,9 @@ module.exports.atomic = function (test) {
     var async = false
 
     db.batch([
-        { type: 'put', key: 'foobah1', value: 'bar1' },
-       { type: 'put', value: 'bar2' },
-       { type: 'put', key: 'foobah3', value: 'bar3' }
+      { type: 'put', key: 'foobah1', value: 'bar1' },
+      { type: 'put', value: 'bar2' },
+      { type: 'put', key: 'foobah3', value: 'bar3' }
     ], function (err) {
       t.ok(err, 'should error')
       t.ok(async, 'callback is asynchronous')
