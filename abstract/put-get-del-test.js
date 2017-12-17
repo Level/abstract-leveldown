@@ -98,13 +98,12 @@ module.exports.setUp = function (leveldown, test, testCommon) {
   })
 }
 
-module.exports.errorKeys = function (testFunc, BufferType) {
-  if (!BufferType) { BufferType = Buffer }
+module.exports.errorKeys = function (testFunc) {
   test = testFunc
   makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest('empty Buffer key', BufferType.alloc(0), /key cannot be an empty \w*Buffer/)
+  makeErrorKeyTest('empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
   makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
 }
 
@@ -134,8 +133,7 @@ module.exports.nonErrorKeys = function (testFunc) {
 module.exports.errorValues = function () {
 }
 
-module.exports.nonErrorValues = function (testFunc, BufferType) {
-  if (!BufferType) BufferType = Buffer
+module.exports.nonErrorValues = function (testFunc) {
   // valid falsey values
   test = testFunc
   makePutGetDelSuccessfulTest('`false` value', 'foo false', false)
@@ -147,7 +145,7 @@ module.exports.nonErrorValues = function (testFunc, BufferType) {
   makePutGetDelSuccessfulTest('`null` value', 'foo null', null, '')
   makePutGetDelSuccessfulTest('`undefined` value', 'foo undefined', undefined, '')
   makePutGetDelSuccessfulTest('empty String value', 'foo', '', '')
-  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', BufferType.alloc(0), '')
+  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', Buffer.alloc(0), '')
   makePutGetDelSuccessfulTest('empty Array value', 'foo', [], '')
 
   // standard String value
@@ -170,13 +168,13 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, testFunc, testCommon, buffer, BufferType) {
+module.exports.all = function (leveldown, testFunc, testCommon, buffer) {
   testBuffer = buffer
   test = testFunc
   module.exports.setUp(leveldown, test, testCommon)
-  module.exports.errorKeys(test, BufferType)
+  module.exports.errorKeys(test)
   module.exports.nonErrorKeys(test)
-  module.exports.errorValues(test, BufferType)
-  module.exports.nonErrorValues(test, BufferType)
+  module.exports.errorValues(test)
+  module.exports.nonErrorValues(test)
   module.exports.tearDown(test, testCommon)
 }
