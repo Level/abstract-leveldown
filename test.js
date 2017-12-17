@@ -340,7 +340,6 @@ test('test chained batch() (array) extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var expectedOptions = { options: 1 }
-  var expectedArray = [ 1, 2 ]
   var test
 
   function Test (location) {
