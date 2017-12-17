@@ -15,7 +15,9 @@ AbstractChainedBatch.prototype._serializeValue = function (value) {
 }
 
 AbstractChainedBatch.prototype._checkWritten = function () {
-  if (this._written) { throw new Error('write() already called on this batch') }
+  if (this._written) {
+    throw new Error('write() already called on this batch')
+  }
 }
 
 AbstractChainedBatch.prototype.put = function (key, value) {
@@ -67,7 +69,9 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
 
   if (typeof options === 'function') { callback = options }
-  if (typeof callback !== 'function') { throw new Error('write() requires a callback argument') }
+  if (typeof callback !== 'function') {
+    throw new Error('write() requires a callback argument')
+  }
   if (typeof options !== 'object') { options = {} }
 
   this._written = true
