@@ -62,7 +62,7 @@ test('test core extensibility', function (t) {
   util.inherits(Test, AbstractLevelDOWN)
 
   var test = new Test('foobar')
-  t.equal(test.location, 'foobar', 'location set on `this`')
+  t.equal(test.location, 'foobar', 'location set on instance')
   t.end()
 })
 
@@ -416,7 +416,7 @@ test('test AbstractChainedBatch extensibility', function (t) {
   util.inherits(Test, AbstractChainedBatch)
 
   var test = new Test('foobar')
-  t.equal(test._db, 'foobar', 'db set on `this`')
+  t.equal(test._db, 'foobar', 'db set on instance')
   t.end()
 })
 
@@ -558,7 +558,7 @@ test('test AbstractIterator extensibility', function (t) {
   util.inherits(Test, AbstractIterator)
 
   var test = new Test('foobar')
-  t.equal(test.db, 'foobar', 'db set on `this`')
+  t.equal(test.db, 'foobar', 'db set on instance')
   t.end()
 })
 
