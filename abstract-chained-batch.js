@@ -27,7 +27,11 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   key = this._serializeKey(key)
   value = this._serializeValue(value)
 
-  if (typeof this._put === 'function') { this._put(key, value) } else { this._operations.push({ type: 'put', key: key, value: value }) }
+  if (typeof this._put === 'function') {
+    this._put(key, value)
+  } else {
+    this._operations.push({ type: 'put', key: key, value: value })
+  }
 
   return this
 }
@@ -36,11 +40,15 @@ AbstractChainedBatch.prototype.del = function (key) {
   this._checkWritten()
 
   var err = this._db._checkKey(key, 'key', this._db._isBuffer)
-  if (err) throw err
+  if (err) { throw err }
 
   key = this._serializeKey(key)
 
-  if (typeof this._del === 'function') { this._del(key) } else { this._operations.push({ type: 'del', key: key }) }
+  if (typeof this._del === 'function') {
+    this._del(key)
+  } else {
+    this._operations.push({ type: 'del', key: key })
+  }
 
   return this
 }
@@ -66,7 +74,9 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
 
   if (typeof this._write === 'function') { return this._write(callback) }
 
-  if (typeof this._db._batch === 'function') { return this._db._batch(this._operations, options, callback) }
+  if (typeof this._db._batch === 'function') {
+    return this._db._batch(this._operations, options, callback)
+  }
 
   process.nextTick(callback)
 }

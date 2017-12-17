@@ -5,7 +5,9 @@ function collectBatchOps (batch) {
     _del = batch._del,
     _operations = []
 
-  if (typeof _put !== 'function' || typeof _del !== 'function') { return batch._operations }
+  if (typeof _put !== 'function' || typeof _del !== 'function') {
+    return batch._operations
+  }
 
   batch._put = function (key, value) {
     _operations.push({ type: 'put', key: key, value: value })

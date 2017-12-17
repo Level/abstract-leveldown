@@ -101,7 +101,9 @@ module.exports.put = function (test) {
       db.get('foo', function (err, value) {
         t.error(err)
         var result = value.toString()
-        if (isTypedArray(value)) { result = String.fromCharCode.apply(null, new Uint16Array(value)) }
+        if (isTypedArray(value)) {
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        }
         t.equal(result, 'bar')
         t.end()
       })
