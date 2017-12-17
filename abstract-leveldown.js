@@ -73,17 +73,14 @@ AbstractLevelDOWN.prototype.close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
-  var err
-
   if (typeof options === 'function') { callback = options }
 
   if (typeof callback !== 'function') {
     throw new Error('get() requires a callback argument')
   }
 
-  if (err = this._checkKey(key, 'key')) {
-    return process.nextTick(callback, err)
-  }
+  var err = this._checkKey(key, 'key')
+  if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -99,17 +96,14 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
-  var err
-
   if (typeof options === 'function') { callback = options }
 
   if (typeof callback !== 'function') {
     throw new Error('put() requires a callback argument')
   }
 
-  if (err = this._checkKey(key, 'key')) {
-    return process.nextTick(callback, err)
-  }
+  var err = this._checkKey(key, 'key')
+  if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
   value = this._serializeValue(value)
@@ -124,17 +118,14 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
-  var err
-
   if (typeof options === 'function') { callback = options }
 
   if (typeof callback !== 'function') {
     throw new Error('del() requires a callback argument')
   }
 
-  if (err = this._checkKey(key, 'key')) {
-    return process.nextTick(callback, err)
-  }
+  var err = this._checkKey(key, 'key')
+  if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -172,15 +163,13 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     }
 
     var e = xtend(array[i])
-    var err
 
     if (e.type !== 'put' && e.type !== 'del') {
       return process.nextTick(callback, new Error("`type` must be 'put' or 'del'"))
     }
 
-    if (err = this._checkKey(e.key, 'key')) {
-      return process.nextTick(callback, err)
-    }
+    var err = this._checkKey(e.key, 'key')
+    if (err) return process.nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 
