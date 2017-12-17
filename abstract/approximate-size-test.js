@@ -1,6 +1,6 @@
-var db,
-  leveldown,
-  testCommon
+var db
+var leveldown
+var testCommon
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
   test('setUp common', _testCommon.setUp)
