@@ -87,7 +87,7 @@ module.exports.args = function (test) {
       callback()
     }
     db.open(function () {
-      db.put({ foo: 'bar' }, { beep: 'boop'}, function (err) {
+      db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
       })
     })
