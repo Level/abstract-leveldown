@@ -197,7 +197,7 @@ module.exports.batch = function (test) {
 
       var r = 0
       var done = function () {
-        if (++r == 3) { t.end() }
+        if (++r === 3) { t.end() }
       }
 
       db.get('foobatch1', function (err, value) {

@@ -28,7 +28,7 @@ var cleanup = function (callback) {
 
     list.forEach(function (f) {
       rimraf(path.join(__dirname, f), function (err) {
-        if (++ret == list.length) { callback() }
+        if (++ret === list.length) { callback() }
       })
     })
   })

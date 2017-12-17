@@ -52,7 +52,7 @@ function makePutErrorTest (type, key, value, expectedError) {
 }
 
 function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
-  var hasExpectedResult = arguments.length == 4
+  var hasExpectedResult = arguments.length === 4
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
       t.error(err)

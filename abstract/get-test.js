@@ -126,7 +126,7 @@ module.exports.get = function (test) {
       t.error(err)
       var r = 0
       var done = function () {
-        if (++r == 20) { t.end() }
+        if (++r === 20) { t.end() }
       }
       var i = 0
       var j = 0
