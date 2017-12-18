@@ -63,19 +63,6 @@ module.exports.args = function (test) {
     })
   })
 
-  test('test _serialize buffer', function (t) {
-    t.plan(3)
-    var db = leveldown(testCommon.location())
-    db._put = function (key, value, opts, callback) {
-      t.same(key, Buffer.from('key'))
-      t.same(value, Buffer.from('value'))
-      callback()
-    }
-    db.put(Buffer.from('key'), Buffer.from('value'), function (err, val) {
-      t.error(err)
-    })
-  })
-
   test('test custom _serialize*', function (t) {
     t.plan(3)
     var db = leveldown(testCommon.location())
