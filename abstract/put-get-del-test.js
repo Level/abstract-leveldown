@@ -1,9 +1,8 @@
 var db
 var testBuffer
-var test
 var verifyNotFoundError = require('./util').verifyNotFoundError
 
-function makeGetDelErrorTests (type, key, expectedError) {
+function makeGetDelErrorTests (test, type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
     var async = false
 
@@ -33,7 +32,7 @@ function makeGetDelErrorTests (type, key, expectedError) {
   })
 }
 
-function makePutErrorTest (type, key, value, expectedError) {
+function makePutErrorTest (test, type, key, value, expectedError) {
   test('test put() with ' + type + ' causes error', function (t) {
     var async = false
 
@@ -49,8 +48,8 @@ function makePutErrorTest (type, key, value, expectedError) {
   })
 }
 
-function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
-  var hasExpectedResult = arguments.length === 4
+function makePutGetDelSuccessfulTest (test, type, key, value, expectedResult) {
+  var hasExpectedResult = arguments.length === 5
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
       t.error(err)
@@ -85,9 +84,9 @@ function makePutGetDelSuccessfulTest (type, key, value, expectedResult) {
   })
 }
 
-function makeErrorKeyTest (type, key, expectedError) {
-  makeGetDelErrorTests(type, key, expectedError)
-  makePutErrorTest(type, key, 'foo', expectedError)
+function makeErrorKeyTest (test, type, key, expectedError) {
+  makeGetDelErrorTests(test, type, key, expectedError)
+  makePutErrorTest(test, type, key, 'foo', expectedError)
 }
 
 module.exports.setUp = function (leveldown, test, testCommon) {
@@ -98,68 +97,66 @@ module.exports.setUp = function (leveldown, test, testCommon) {
   })
 }
 
-module.exports.errorKeys = function (testFunc) {
-  test = testFunc
-  makeErrorKeyTest('null key', null, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest('undefined key', undefined, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest('empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest('empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
-  makeErrorKeyTest('empty Array key', [], /key cannot be an empty String/)
+module.exports.errorKeys = function (test) {
+  makeErrorKeyTest(test, 'null key', null, /key cannot be `null` or `undefined`/)
+  makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
+  makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
+  makeErrorKeyTest(test, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
+  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
 }
 
-module.exports.nonErrorKeys = function (testFunc) {
+module.exports.nonErrorKeys = function (test) {
   // valid falsey keys
-  test = testFunc
-  makePutGetDelSuccessfulTest('`false` key', false, 'foo false')
-  makePutGetDelSuccessfulTest('`0` key', 0, 'foo 0')
-  makePutGetDelSuccessfulTest('`NaN` key', NaN, 'foo NaN')
+  makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
+  makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
+  makePutGetDelSuccessfulTest(test, '`NaN` key', NaN, 'foo NaN')
 
   // standard String key
   makePutGetDelSuccessfulTest(
-      'long String key'
+      test
+    , 'long String key'
     , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
     , 'foo'
   )
 
   if (!process.browser) {
     // Buffer key
-    makePutGetDelSuccessfulTest('Buffer key', testBuffer, 'foo')
+    makePutGetDelSuccessfulTest(test, 'Buffer key', testBuffer, 'foo')
   }
 
   // non-empty Array as a value
-  makePutGetDelSuccessfulTest('Array value', 'foo', [1, 2, 3, 4])
+  makePutGetDelSuccessfulTest(test, 'Array value', 'foo', [1, 2, 3, 4])
 }
 
 module.exports.errorValues = function () {
 }
 
-module.exports.nonErrorValues = function (testFunc) {
+module.exports.nonErrorValues = function (test) {
   // valid falsey values
-  test = testFunc
-  makePutGetDelSuccessfulTest('`false` value', 'foo false', false)
-  makePutGetDelSuccessfulTest('`0` value', 'foo 0', 0)
-  makePutGetDelSuccessfulTest('`NaN` value', 'foo NaN', NaN)
+  makePutGetDelSuccessfulTest(test, '`false` value', 'foo false', false)
+  makePutGetDelSuccessfulTest(test, '`0` value', 'foo 0', 0)
+  makePutGetDelSuccessfulTest(test, '`NaN` value', 'foo NaN', NaN)
 
   // all of the following result in an empty-string value:
-
-  makePutGetDelSuccessfulTest('`null` value', 'foo null', null, '')
-  makePutGetDelSuccessfulTest('`undefined` value', 'foo undefined', undefined, '')
-  makePutGetDelSuccessfulTest('empty String value', 'foo', '', '')
-  makePutGetDelSuccessfulTest('empty Buffer value', 'foo', Buffer.alloc(0), '')
-  makePutGetDelSuccessfulTest('empty Array value', 'foo', [], '')
+  makePutGetDelSuccessfulTest(test, '`null` value', 'foo null', null, '')
+  makePutGetDelSuccessfulTest(test, '`undefined` value', 'foo undefined', undefined, '')
+  makePutGetDelSuccessfulTest(test, 'empty String value', 'foo', '', '')
+  makePutGetDelSuccessfulTest(test, 'empty Buffer value', 'foo', Buffer.alloc(0), '')
+  makePutGetDelSuccessfulTest(test, 'empty Array value', 'foo', [], '')
 
   // standard String value
   makePutGetDelSuccessfulTest(
-      'long String value'
+      test
+    , 'long String value'
     , 'foo'
     , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
   )
 
   // standard Buffer value
-  makePutGetDelSuccessfulTest('Buffer value', 'foo', testBuffer)
+  makePutGetDelSuccessfulTest(test, 'Buffer value', 'foo', testBuffer)
 
   // non-empty Array as a key
-  makePutGetDelSuccessfulTest('Array key', [1, 2, 3, 4], 'foo')
+  makePutGetDelSuccessfulTest(test, 'Array key', [1, 2, 3, 4], 'foo')
 }
 
 module.exports.tearDown = function (test, testCommon) {
@@ -168,9 +165,8 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, testFunc, testCommon, buffer) {
+module.exports.all = function (leveldown, test, testCommon, buffer) {
   testBuffer = buffer
-  test = testFunc
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.errorKeys(test)
   module.exports.nonErrorKeys(test)
