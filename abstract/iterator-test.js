@@ -760,8 +760,18 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     // Can't use buffers as query keys in indexeddb (I think :P)
     testIteratorCollectsFullDatabase(
         'test iterator with start as empty buffer'
+      , { gte: Buffer.alloc(0) }
+    )
+    // legacy
+    testIteratorCollectsFullDatabase(
+        'test iterator with start as empty buffer'
       , { start: Buffer.alloc(0) }
     )
+    testIteratorCollectsFullDatabase(
+        'test iterator with end as empty buffer'
+      , { lte: Buffer.alloc(0) }
+    )
+    // legacy
     testIteratorCollectsFullDatabase(
         'test iterator with end as empty buffer'
       , { end: Buffer.alloc(0) }
