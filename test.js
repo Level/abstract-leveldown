@@ -32,7 +32,6 @@ require('./abstract/put-get-del-test').setUp(factory, test, testCommon)
 require('./abstract/put-get-del-test').errorKeys(test)
 // require('./abstract/put-get-del-test').nonErrorKeys(test, testCommon)
 require('./abstract/put-get-del-test').errorValues(test)
-// require('./abstract/test/put-get-del-test').nonErrorKeys(test, testCommon)
 require('./abstract/put-get-del-test').tearDown(test, testCommon)
 
 require('./abstract/approximate-size-test').setUp(factory, test, testCommon)
