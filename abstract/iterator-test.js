@@ -448,19 +448,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // TODO identical to below
-  test('test iterator with gt a midway key and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50', reverse: true }), function (err, data) {
-      t.error(err)
-      t.equal(data.length, 49, 'correct number of entries')
-      var expected = sourceData.slice().reverse().slice(0, 49).map(transformSource)
-      t.deepEqual(data, expected)
-      t.end()
-    })
-  })
-
-  // TODO identical to above
-  test('test iterator with gt 50 key and reverse=true', function (t) {
+  test('test iterator with gt=50 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 49, 'correct number of entries')
