@@ -176,6 +176,19 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
+  function doTest (name, opts, expected) {
+    expected = expected || sourceData
+    opts.keyAsBuffer = false
+    opts.valueAsBuffer = false
+    test(name, function (t) {
+      collectEntries(db.iterator(opts), function (err, data) {
+        t.error(err)
+        t.same(data, expected)
+        t.end()
+      })
+    })
+  }
+
   test('test full data collection', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
       t.error(err)
@@ -628,70 +641,46 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  function testIteratorCollectsFullDatabase (name, iteratorOptions) {
-    iteratorOptions.keyAsBuffer = false
-    iteratorOptions.valueAsBuffer = false
-    test(name, function (t) {
-      collectEntries(db.iterator(iteratorOptions), function (err, data) {
-        t.error(err)
-        t.same(data, sourceData)
-        t.end()
-      })
+  if (!process.browser) {
+    // Can't use buffers as query keys in indexeddb (I think :P)
+    doTest('test iterator with gte as empty buffer', {
+      gte: Buffer.alloc(0)
+    })
+    doTest('test iterator with start as empty buffer - legacy', {
+      start: Buffer.alloc(0)
+    })
+    doTest('test iterator with lte as empty buffer', {
+      lte: Buffer.alloc(0)
+    })
+    doTest('test iterator with end as empty buffer - legacy', {
+      end: Buffer.alloc(0)
     })
   }
 
-  if (!process.browser) {
-    // Can't use buffers as query keys in indexeddb (I think :P)
-    testIteratorCollectsFullDatabase(
-        'test iterator with gte as empty buffer'
-      , { gte: Buffer.alloc(0) }
-    )
-    testIteratorCollectsFullDatabase(
-        'test iterator with start as empty buffer - legacy'
-      , { start: Buffer.alloc(0) }
-    )
-    testIteratorCollectsFullDatabase(
-        'test iterator with lte as empty buffer'
-      , { lte: Buffer.alloc(0) }
-    )
-    testIteratorCollectsFullDatabase(
-        'test iterator with end as empty buffer - legacy'
-      , { end: Buffer.alloc(0) }
-    )
-  }
-
-  testIteratorCollectsFullDatabase(
-      'test iterator with gte as empty string'
-    , { gte: '' }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with start as empty string - legacy'
-    , { start: '' }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with gte as null'
-    , { gte: null }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with start as null - legacy'
-    , { start: null }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with lte as empty string'
-    , { lte: '' }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with end as empty string - legacy'
-    , { end: '' }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with lte as null'
-    , { lte: null }
-  )
-  testIteratorCollectsFullDatabase(
-      'test iterator with end as null - legacy'
-    , { end: null }
-  )
+  doTest('test iterator with gte as empty string', {
+    gte: ''
+  })
+  doTest('test iterator with start as empty string - legacy', {
+    start: ''
+  })
+  doTest('test iterator with gte as null', {
+    gte: null
+  })
+  doTest('test iterator with start as null - legacy', {
+    start: null
+  })
+  doTest('test iterator with lte as empty string', {
+    lte: ''
+  })
+  doTest('test iterator with end as empty string - legacy', {
+    end: ''
+  })
+  doTest('test iterator with lte as null', {
+    lte: null
+  })
+  doTest('test iterator with end as null - legacy', {
+    end: null
+  })
 }
 
 module.exports.snapshot = function (leveldown, test, testCommon) {
