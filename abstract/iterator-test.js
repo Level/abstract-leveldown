@@ -66,8 +66,8 @@ module.exports.sequence = function (test) {
 
       iterator.end(function (err2) {
         t.ok(err2, 'returned error')
-        t.equal(err2.name, 'Error', 'correct error')
-        t.equal(err2.message, 'end() already called on iterator')
+        t.is(err2.name, 'Error', 'correct error')
+        t.is(err2.message, 'end() already called on iterator')
         t.ok(async, 'callback is asynchronous')
         t.end()
       })
@@ -85,8 +85,8 @@ module.exports.sequence = function (test) {
 
       iterator.next(function (err2) {
         t.ok(err2, 'returned error')
-        t.equal(err2.name, 'Error', 'correct error')
-        t.equal(err2.message, 'cannot call next() after end()', 'correct message')
+        t.is(err2.name, 'Error', 'correct error')
+        t.is(err2.message, 'cannot call next() after end()', 'correct message')
         t.ok(async, 'callback is asynchronous')
         t.end()
       })
@@ -109,8 +109,8 @@ module.exports.sequence = function (test) {
 
     iterator.next(function (err) {
       t.ok(err, 'returned error')
-      t.equal(err.name, 'Error', 'correct error')
-      t.equal(err.message, 'cannot call next() before previous next() has completed')
+      t.is(err.name, 'Error', 'correct error')
+      t.is(err.message, 'cannot call next() before previous next() has completed')
       t.ok(async, 'callback is asynchronous')
     })
 
@@ -135,15 +135,15 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
         if (key && value) {
           t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
           t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
-          t.equal(key.toString(), data[idx].key, 'correct key')
-          t.equal(value.toString(), data[idx].value, 'correct value')
+          t.is(key.toString(), data[idx].key, 'correct key')
+          t.is(value.toString(), data[idx].value, 'correct value')
           process.nextTick(next)
           idx++
         } else { // end
           t.ok(typeof err === 'undefined', 'err argument is undefined')
           t.ok(typeof key === 'undefined', 'key argument is undefined')
           t.ok(typeof value === 'undefined', 'value argument is undefined')
-          t.equal(idx, data.length, 'correct number of entries')
+          t.is(idx, data.length, 'correct number of entries')
           iterator.end(function () {
             t.end()
           })
@@ -511,8 +511,8 @@ module.exports.snapshot = function (leveldown, test, testCommon) {
       iterator.next(function (err, key, value) {
         t.error(err)
         t.ok(key, 'got a key')
-        t.equal(key.toString(), 'foobatch1', 'correct key')
-        t.equal(value.toString(), 'bar1', 'correct value')
+        t.is(key.toString(), 'foobatch1', 'correct key')
+        t.is(value.toString(), 'bar1', 'correct value')
         iterator.end(t.end.bind(t))
       })
     })
