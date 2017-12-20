@@ -19,9 +19,6 @@ var transformSource = function (d) {
   return { key: d.key, value: d.value }
 }
 
-module.exports.sourceData = sourceData
-module.exports.transformSource = transformSource
-
 module.exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
