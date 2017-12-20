@@ -23,10 +23,10 @@ module.exports.range = function (leveldown, test, testCommon, data) {
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
     test(name, function (t) {
-      collectEntries(db.iterator(opts), function (err, data) {
+      collectEntries(db.iterator(opts), function (err, result) {
         t.error(err)
-        t.is(data.length, expected.length, 'correct number of entries')
-        t.same(data, expected)
+        t.is(result.length, expected.length, 'correct number of entries')
+        t.same(result, expected)
         t.end()
       })
     })
