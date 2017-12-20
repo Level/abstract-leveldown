@@ -178,7 +178,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test full data collection', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -188,7 +187,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.slice().reverse().map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -198,7 +196,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=00', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '00' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -208,7 +205,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=00 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '00' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -218,7 +214,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=50', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -228,7 +223,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=50 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -238,7 +232,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=50 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -248,7 +241,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=50 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -258,7 +250,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=49.5 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49.5' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -268,7 +259,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=49.5 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -278,7 +268,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=49999 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49999' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -288,7 +277,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=49999 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49999' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -298,7 +286,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=49.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '49.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -308,7 +295,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lt=49.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '49.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -318,7 +304,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lt=50 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -328,7 +313,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=49.5 (midway) and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 50, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(50).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -338,7 +322,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=50', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -348,7 +331,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end=50 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -358,7 +340,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=50.5 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50.5' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -368,7 +349,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end=50.5 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -378,7 +358,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=50555 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50555' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -388,7 +367,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lt=50555 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50555' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -398,7 +376,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end=50555 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50555' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 51, 'correct number of entries')
       var expected = sourceData.slice(0, 51).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -408,7 +385,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=50.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '50.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 49, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(0, 49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -418,7 +394,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gt=50.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 49, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(0, 49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -428,7 +403,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end=50.5 (midway) and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 49, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(0, 49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -438,7 +412,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gt=50 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 49, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(0, 49).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -449,7 +422,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte=0', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '0' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -458,7 +431,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lt<0', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '0' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -467,7 +440,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end=0 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '0' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -475,7 +448,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=30 and lte=70', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '30', lte: '70' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice(30, 71).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -485,7 +457,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gt=29 and lt=71', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '29', lt: '71' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice(30, 71).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -495,7 +466,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=30 and end=70 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '30', end: '70' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice(30, 71).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -505,7 +475,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte=30 and lte=70 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '70', gte: '30', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(29, 70).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -515,7 +484,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gt=29 and lt=71 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '71', gt: '29', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(29, 70).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -525,7 +493,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start=70 and end=30 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '70', end: '30', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 41, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(29, 70).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -535,7 +502,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20 }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -545,7 +511,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20 and gte=20', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '20', limit: 20 }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(20, 40).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -555,7 +520,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20 and start=20 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '20', limit: 20 }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(20, 40).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -565,7 +529,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -575,7 +538,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20 and lte=79 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '79', limit: 20, reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(20, 40).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -585,7 +547,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=20 and start=79 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '79', limit: 20, reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice().reverse().slice(20, 40).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -596,7 +557,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=-1 should iterate over whole database', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: -1 }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -606,7 +566,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with limit=0 should not iterate over anything', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 0 }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -614,7 +574,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte after limit', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, lte: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -624,7 +583,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end after limit - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, end: '50' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -634,7 +592,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte before limit', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, lte: '19' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -644,7 +601,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with end before limit - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, end: '19' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 20, 'correct number of entries')
       var expected = sourceData.slice(0, 20).map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -654,7 +610,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gte after database end', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '9a' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -662,7 +618,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with gt after database end', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '9a' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -670,7 +626,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start after database end - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a' }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -678,7 +634,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte after database end and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '9a', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.slice().reverse().map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -688,7 +643,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start after database end and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, sourceData.length, 'correct number of entries')
       var expected = sourceData.slice().reverse().map(transformSource)
       t.deepEqual(data, expected)
       t.end()
@@ -698,7 +652,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lte and gte after database and reverse=true', function (t) {
     collectEntries(db.iterator({ lte: '9b', gte: '9a', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -706,7 +660,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with lt and gt after database and reverse=true', function (t) {
     collectEntries(db.iterator({ lt: '9b', gt: '9a', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -714,7 +668,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   test('test iterator with start and end after database and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ start: '9b', end: '9a', reverse: true }), function (err, data) {
       t.error(err)
-      t.equal(data.length, 0, 'correct number of entries')
+      t.deepEqual(data, [])
       t.end()
     })
   })
@@ -725,7 +679,6 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     test(name, function (t) {
       collectEntries(db.iterator(iteratorOptions), function (err, data) {
         t.error(err)
-        t.equal(data.length, 100, 'correct number of entries')
         var expected = sourceData.map(transformSource)
         t.deepEqual(data, expected)
         t.end()
