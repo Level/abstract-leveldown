@@ -182,6 +182,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     test(name, function (t) {
       collectEntries(db.iterator(opts), function (err, data) {
         t.error(err)
+        t.is(data.length, expected.length, 'correct number of entries')
         t.same(data, expected)
         t.end()
       })
