@@ -198,7 +198,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with gte=0', function (t) {
+  test('test iterator with gte=00', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '00' }), function (err, data) {
       t.error(err)
       t.equal(data.length, sourceData.length, 'correct number of entries')
@@ -208,8 +208,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start=0', function (t) {
+  test('test iterator with start=00 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '00' }), function (err, data) {
       t.error(err)
       t.equal(data.length, sourceData.length, 'correct number of entries')
@@ -229,8 +228,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start=50', function (t) {
+  test('test iterator with start=50 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -250,8 +248,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start=50 and reverse=true', function (t) {
+  test('test iterator with start=50 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -261,7 +258,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start being a midway key (49.5)', function (t) {
+  test('test iterator with gte=49.5 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49.5' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -271,8 +268,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start being a midway key (49.5)', function (t) {
+  test('test iterator with start=49.5 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -282,7 +278,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start being a midway key (49999)', function (t) {
+  test('test iterator with gte=49999 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49999' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -292,8 +288,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start being a midway key (49999)', function (t) {
+  test('test iterator with start=49999 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49999' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -303,7 +298,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start being a midway key and reverse=true', function (t) {
+  test('test iterator with lte=49.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '49.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -313,7 +308,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start being a midway key and reverse=true', function (t) {
+  test('test iterator with lt=49.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '49.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -323,7 +318,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start being a midway key and reverse=true', function (t) {
+  test('test iterator with lt=50 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -333,8 +328,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start being a midway key and reverse=true', function (t) {
+  test('test iterator with start=49.5 (midway) and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 50, 'correct number of entries')
@@ -344,7 +338,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end=50', function (t) {
+  test('test iterator with lte=50', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -354,8 +348,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end=50', function (t) {
+  test('test iterator with end=50 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -365,7 +358,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end being a midway key (50.5)', function (t) {
+  test('test iterator with lte=50.5 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50.5' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -375,8 +368,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end being a midway key (50.5)', function (t) {
+  test('test iterator with end=50.5 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -386,7 +378,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end being a midway key (50555)', function (t) {
+  test('test iterator with lte=50555 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50555' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -396,7 +388,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end being a midway key (50555)', function (t) {
+  test('test iterator with lt=50555 (midway)', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50555' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -406,8 +398,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end being a midway key (50555)', function (t) {
+  test('test iterator with end=50555 (midway) - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50555' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 51, 'correct number of entries')
@@ -417,7 +408,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end being a midway key and reverse=true', function (t) {
+  test('test iterator with gte=50.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '50.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 49, 'correct number of entries')
@@ -427,7 +418,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with gt a midway key and reverse=true', function (t) {
+  test('test iterator with gt=50.5 (midway) and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 49, 'correct number of entries')
@@ -437,8 +428,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end being a midway key and reverse=true', function (t) {
+  test('test iterator with end=50.5 (midway) and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 49, 'correct number of entries')
@@ -459,7 +449,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   })
 
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with end=0', function (t) {
+  test('test iterator with lte=0', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '0' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -468,7 +458,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   })
 
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with end<0', function (t) {
+  test('test iterator with lt<0', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '0' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -476,9 +466,8 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with end=0', function (t) {
+  test('test iterator with end=0 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '0' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -486,7 +475,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start=30 and end=70', function (t) {
+  test('test iterator with gte=30 and lte=70', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '30', lte: '70' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -496,7 +485,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start=30 and end=70', function (t) {
+  test('test iterator with gt=29 and lt=71', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '29', lt: '71' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -506,8 +495,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start=30 and end=70', function (t) {
+  test('test iterator with start=30 and end=70 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '30', end: '70' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -517,7 +505,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start=30 and end=70 and reverse=true', function (t) {
+  test('test iterator with gte=30 and lte=70 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '70', gte: '30', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -527,7 +515,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start=30 and end=70 and reverse=true', function (t) {
+  test('test iterator with gt=29 and lt=71 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '71', gt: '29', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -537,8 +525,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start=30 and end=70 and reverse=true', function (t) {
+  test('test iterator with start=70 and end=30 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '70', end: '30', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 41, 'correct number of entries')
@@ -558,7 +545,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with limit=20 and start=20', function (t) {
+  test('test iterator with limit=20 and gte=20', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '20', limit: 20 }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -568,8 +555,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with limit=20 and start=20', function (t) {
+  test('test iterator with limit=20 and start=20 - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '20', limit: 20 }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -589,7 +575,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with limit=20 and start=79 and reverse=true', function (t) {
+  test('test iterator with limit=20 and lte=79 and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '79', limit: 20, reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -599,8 +585,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with limit=20 and start=20 and reverse=true', function (t) {
+  test('test iterator with limit=20 and start=79 and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '79', limit: 20, reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -629,7 +614,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end after limit', function (t) {
+  test('test iterator with lte after limit', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, lte: '50' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -639,8 +624,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end after limit', function (t) {
+  test('test iterator with end after limit - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, end: '50' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -650,7 +634,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with end before limit', function (t) {
+  test('test iterator with lte before limit', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, lte: '19' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -660,8 +644,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with end before limit', function (t) {
+  test('test iterator with end before limit - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, end: '19' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 20, 'correct number of entries')
@@ -671,7 +654,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start after database end', function (t) {
+  test('test iterator with gte after database end', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '9a' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -679,7 +662,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start after database end', function (t) {
+  test('test iterator with gt after database end', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '9a' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -687,8 +670,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start after database end', function (t) {
+  test('test iterator with start after database end - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a' }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -696,7 +678,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start after database end and reverse=true', function (t) {
+  test('test iterator with lte after database end and reverse=true', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '9a', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, sourceData.length, 'correct number of entries')
@@ -706,8 +688,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start after database end and reverse=true', function (t) {
+  test('test iterator with start after database end and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, sourceData.length, 'correct number of entries')
@@ -717,7 +698,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with start and end after database and and reverse=true', function (t) {
+  test('test iterator with lte and gte after database and reverse=true', function (t) {
     collectEntries(db.iterator({ lte: '9b', gte: '9a', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -725,7 +706,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  test('test iterator with lt and gt after database and and reverse=true', function (t) {
+  test('test iterator with lt and gt after database and reverse=true', function (t) {
     collectEntries(db.iterator({ lt: '9b', gt: '9a', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -733,8 +714,7 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   })
 
-  // legacy
-  test('test iterator with start and end after database and and reverse=true', function (t) {
+  test('test iterator with start and end after database and reverse=true - legacy', function (t) {
     collectEntries(db.iterator({ start: '9b', end: '9a', reverse: true }), function (err, data) {
       t.error(err)
       t.equal(data.length, 0, 'correct number of entries')
@@ -759,59 +739,53 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
   if (!process.browser) {
     // Can't use buffers as query keys in indexeddb (I think :P)
     testIteratorCollectsFullDatabase(
-        'test iterator with start as empty buffer'
+        'test iterator with gte as empty buffer'
       , { gte: Buffer.alloc(0) }
     )
-    // legacy
     testIteratorCollectsFullDatabase(
-        'test iterator with start as empty buffer'
+        'test iterator with start as empty buffer - legacy'
       , { start: Buffer.alloc(0) }
     )
     testIteratorCollectsFullDatabase(
-        'test iterator with end as empty buffer'
+        'test iterator with lte as empty buffer'
       , { lte: Buffer.alloc(0) }
     )
-    // legacy
     testIteratorCollectsFullDatabase(
-        'test iterator with end as empty buffer'
+        'test iterator with end as empty buffer - legacy'
       , { end: Buffer.alloc(0) }
     )
   }
 
   testIteratorCollectsFullDatabase(
-      'test iterator with start as empty string'
+      'test iterator with gte as empty string'
     , { gte: '' }
   )
-  // legacy
   testIteratorCollectsFullDatabase(
-      'test iterator with start as empty string'
+      'test iterator with start as empty string - legacy'
     , { start: '' }
   )
   testIteratorCollectsFullDatabase(
-      'test iterator with start as null'
+      'test iterator with gte as null'
     , { gte: null }
   )
-  // legacy
   testIteratorCollectsFullDatabase(
-      'test iterator with start as null'
+      'test iterator with start as null - legacy'
     , { start: null }
   )
   testIteratorCollectsFullDatabase(
-      'test iterator with end as empty string'
+      'test iterator with lte as empty string'
     , { lte: '' }
   )
-  // legacy
   testIteratorCollectsFullDatabase(
-      'test iterator with end as empty string'
+      'test iterator with end as empty string - legacy'
     , { end: '' }
   )
   testIteratorCollectsFullDatabase(
-      'test iterator with end as null'
+      'test iterator with lte as null'
     , { lte: null }
   )
-  // legacy
   testIteratorCollectsFullDatabase(
-      'test iterator with end as null'
+      'test iterator with end as null - legacy'
     , { end: null }
   )
 }
