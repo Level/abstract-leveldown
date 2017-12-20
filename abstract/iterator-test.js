@@ -189,457 +189,269 @@ module.exports.iterator = function (leveldown, test, testCommon, collectEntries)
     })
   }
 
-  test('test full data collection', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData)
-      t.end()
-    })
+  doTest('test full data collection', {})
+
+  doTest('test iterator with reverse=true', {
+    reverse: true
+  }, sourceData.slice().reverse())
+
+  doTest('test iterator with gte=00', {
+    gte: '00'
   })
 
-  test('test iterator with reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse())
-      t.end()
-    })
+  doTest('test iterator with start=00 - legacy', {
+    start: '00'
   })
 
-  test('test iterator with gte=00', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '00' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData)
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=50', {
+    gte: '50'
+  }, sourceData.slice(50))
 
-  test('test iterator with start=00 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '00' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData)
-      t.end()
-    })
-  })
+  doTest('test iterator with start=50 - legacy', {
+    start: '50'
+  }, sourceData.slice(50))
 
-  test('test iterator with gte=50', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=50 and reverse=true', {
+    lte: '50',
+    reverse: true
+  }, sourceData.slice().reverse().slice(49))
 
-  test('test iterator with start=50 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=50 and reverse=true - legacy', {
+    start: '50',
+    reverse: true
+  }, sourceData.slice().reverse().slice(49))
 
-  test('test iterator with lte=50 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(49))
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=49.5 (midway)', {
+    gte: '49.5'
+  }, sourceData.slice(50))
 
-  test('test iterator with start=50 and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '50', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(49))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=49.5 (midway) - legacy', {
+    start: '49.5'
+  }, sourceData.slice(50))
 
-  test('test iterator with gte=49.5 (midway)', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49.5' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=49999 (midway)', {
+    gte: '49999'
+  }, sourceData.slice(50))
 
-  test('test iterator with start=49.5 (midway) - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=49999 (midway) - legacy', {
+    start: '49999'
+  }, sourceData.slice(50))
 
-  test('test iterator with gte=49999 (midway)', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '49999' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=49.5 (midway) and reverse=true', {
+    lte: '49.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(50))
 
-  test('test iterator with start=49999 (midway) - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49999' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with lt=49.5 (midway) and reverse=true', {
+    lt: '49.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(50))
 
-  test('test iterator with lte=49.5 (midway) and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '49.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with lt=50 and reverse=true', {
+    lt: '50',
+    reverse: true
+  }, sourceData.slice().reverse().slice(50))
 
-  test('test iterator with lt=49.5 (midway) and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '49.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=49.5 (midway) and reverse=true - legacy', {
+    start: '49.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(50))
 
-  test('test iterator with lt=50 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=50', {
+    lte: '50'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with start=49.5 (midway) and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '49.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(50))
-      t.end()
-    })
-  })
+  doTest('test iterator with end=50 - legacy', {
+    end: '50'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with lte=50', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=50.5 (midway)', {
+    lte: '50.5'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with end=50 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with end=50.5 (midway) - legacy', {
+    end: '50.5'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with lte=50.5 (midway)', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50.5' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=50555 (midway)', {
+    lte: '50555'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with end=50.5 (midway) - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with lt=50555 (midway)', {
+    lt: '50555'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with lte=50555 (midway)', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '50555' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with end=50555 (midway) - legacy', {
+    end: '50555'
+  }, sourceData.slice(0, 51))
 
-  test('test iterator with lt=50555 (midway)', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '50555' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=50.5 (midway) and reverse=true', {
+    gte: '50.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(0, 49))
 
-  test('test iterator with end=50555 (midway) - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50555' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 51))
-      t.end()
-    })
-  })
+  doTest('test iterator with gt=50.5 (midway) and reverse=true', {
+    gt: '50.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(0, 49))
 
-  test('test iterator with gte=50.5 (midway) and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '50.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(0, 49))
-      t.end()
-    })
-  })
+  doTest('test iterator with end=50.5 (midway) and reverse=true - legacy', {
+    end: '50.5',
+    reverse: true
+  }, sourceData.slice().reverse().slice(0, 49))
 
-  test('test iterator with gt=50.5 (midway) and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(0, 49))
-      t.end()
-    })
-  })
-
-  test('test iterator with end=50.5 (midway) and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '50.5', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(0, 49))
-      t.end()
-    })
-  })
-
-  test('test iterator with gt=50 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '50', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(0, 49))
-      t.end()
-    })
-  })
+  doTest('test iterator with gt=50 and reverse=true', {
+    gt: '50',
+    reverse: true
+  }, sourceData.slice().reverse().slice(0, 49))
 
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with lte=0', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '0' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with lte=0', {
+    lte: '0'
+  }, [])
 
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with lt<0', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '0' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with lt=0', {
+    lt: '0'
+  }, [])
 
   // end='0', starting key is actually '00' so it should avoid it
-  test('test iterator with end=0 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, end: '0' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with end=0 - legacy', {
+    end: '0'
+  }, [])
 
-  test('test iterator with gte=30 and lte=70', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '30', lte: '70' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(30, 71))
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=30 and lte=70', {
+    gte: '30',
+    lte: '70'
+  }, sourceData.slice(30, 71))
 
-  test('test iterator with gt=29 and lt=71', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '29', lt: '71' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(30, 71))
-      t.end()
-    })
-  })
+  doTest('test iterator with gt=29 and lt=71', {
+    gt: '29',
+    lt: '71'
+  }, sourceData.slice(30, 71))
 
-  test('test iterator with start=30 and end=70 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '30', end: '70' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(30, 71))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=30 and end=70 - legacy', {
+    start: '30',
+    end: '70'
+  }, sourceData.slice(30, 71))
 
-  test('test iterator with gte=30 and lte=70 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '70', gte: '30', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(29, 70))
-      t.end()
-    })
-  })
+  doTest('test iterator with gte=30 and lte=70 and reverse=true', {
+    lte: '70',
+    gte: '30',
+    reverse: true
+  }, sourceData.slice().reverse().slice(29, 70))
 
-  test('test iterator with gt=29 and lt=71 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lt: '71', gt: '29', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(29, 70))
-      t.end()
-    })
-  })
+  doTest('test iterator with gt=29 and lt=71 and reverse=true', {
+    lt: '71',
+    gt: '29',
+    reverse: true
+  }, sourceData.slice().reverse().slice(29, 70))
 
-  test('test iterator with start=70 and end=30 and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '70', end: '30', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(29, 70))
-      t.end()
-    })
-  })
+  doTest('test iterator with start=70 and end=30 and reverse=true - legacy', {
+    start: '70',
+    end: '30',
+    reverse: true
+  }, sourceData.slice().reverse().slice(29, 70))
 
-  test('test iterator with limit=20', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20 }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20', {
+    limit: 20
+  }, sourceData.slice(0, 20))
 
-  test('test iterator with limit=20 and gte=20', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '20', limit: 20 }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(20, 40))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20 and gte=20', {
+    limit: 20,
+    gte: '20'
+  }, sourceData.slice(20, 40))
 
-  test('test iterator with limit=20 and start=20 - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '20', limit: 20 }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(20, 40))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20 and start=20 - legacy', {
+    limit: 20,
+    start: '20'
+  }, sourceData.slice(20, 40))
 
-  test('test iterator with limit=20 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20 and reverse=true', {
+    limit: 20,
+    reverse: true
+  }, sourceData.slice().reverse().slice(0, 20))
 
-  test('test iterator with limit=20 and lte=79 and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '79', limit: 20, reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(20, 40))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20 and lte=79 and reverse=true', {
+    limit: 20,
+    lte: '79',
+    reverse: true
+  }, sourceData.slice().reverse().slice(20, 40))
 
-  test('test iterator with limit=20 and start=79 and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '79', limit: 20, reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse().slice(20, 40))
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=20 and start=79 and reverse=true - legacy', {
+    limit: 20,
+    start: '79',
+    reverse: true
+  }, sourceData.slice().reverse().slice(20, 40))
 
   // the default limit value from levelup is -1
-  test('test iterator with limit=-1 should iterate over whole database', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: -1 }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData)
-      t.end()
-    })
+  doTest('test iterator with limit=-1 should iterate over whole database', {
+    limit: -1
   })
 
-  test('test iterator with limit=0 should not iterate over anything', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 0 }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with limit=0 should not iterate over anything', {
+    limit: 0
+  }, [])
 
-  test('test iterator with lte after limit', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, lte: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte after limit', {
+    limit: 20,
+    lte: '50'
+  }, sourceData.slice(0, 20))
 
-  test('test iterator with end after limit - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 20, end: '50' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with end after limit - legacy', {
+    limit: 20,
+    end: '50'
+  }, sourceData.slice(0, 20))
 
-  test('test iterator with lte before limit', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, lte: '19' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with lte before limit', {
+    limit: 50,
+    lte: '19'
+  }, sourceData.slice(0, 20))
 
-  test('test iterator with end before limit - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, limit: 50, end: '19' }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice(0, 20))
-      t.end()
-    })
-  })
+  doTest('test iterator with end before limit - legacy', {
+    limit: 50,
+    end: '19'
+  }, sourceData.slice(0, 20))
 
-  test('test iterator with gte after database end', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gte: '9a' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with gte after database end', {
+    gte: '9a'
+  }, [])
 
-  test('test iterator with gt after database end', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, gt: '9a' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with gt after database end', {
+    gt: '9a'
+  }, [])
 
-  test('test iterator with start after database end - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a' }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with start after database end - legacy', {
+    start: '9a'
+  }, [])
 
-  test('test iterator with lte after database end and reverse=true', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, lte: '9a', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse())
-      t.end()
-    })
-  })
+  doTest('test iterator with lte after database end and reverse=true', {
+    lte: '9a',
+    reverse: true
+  }, sourceData.slice().reverse())
 
-  test('test iterator with start after database end and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ keyAsBuffer: false, valueAsBuffer: false, start: '9a', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, sourceData.slice().reverse())
-      t.end()
-    })
-  })
+  doTest('test iterator with start after database end and reverse=true - legacy', {
+    start: '9a',
+    reverse: true
+  }, sourceData.slice().reverse())
 
-  test('test iterator with lte and gte after database and reverse=true', function (t) {
-    collectEntries(db.iterator({ lte: '9b', gte: '9a', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with lte and gte after database and reverse=true', {
+    lte: '9b',
+    gte: '9a',
+    reverse: true
+  }, [])
 
-  test('test iterator with lt and gt after database and reverse=true', function (t) {
-    collectEntries(db.iterator({ lt: '9b', gt: '9a', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with lt and gt after database and reverse=true', {
+    lt: '9b',
+    gt: '9a',
+    reverse: true
+  }, [])
 
-  test('test iterator with start and end after database and reverse=true - legacy', function (t) {
-    collectEntries(db.iterator({ start: '9b', end: '9a', reverse: true }), function (err, data) {
-      t.error(err)
-      t.same(data, [])
-      t.end()
-    })
-  })
+  doTest('test iterator with start and end after database and reverse=true - legacy', {
+    start: '9b',
+    end: '9a',
+    reverse: true
+  }, [])
 
   if (!process.browser) {
     // Can't use buffers as query keys in indexeddb (I think :P)
