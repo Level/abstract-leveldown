@@ -216,7 +216,7 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = xtend(options)
 
   ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (options[o] && self._isBuffer(options[o]) && options[o].length === 0) {
+    if (self._isBuffer(options[o]) && options[o].length === 0) {
       delete options[o]
     }
   })
