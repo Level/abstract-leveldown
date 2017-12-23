@@ -78,7 +78,10 @@ module.exports.args = function (test) {
     db.open(function () {
       db.approximateSize({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
-        db.close(t.end.bind(t))
+        db.close(function (err) {
+          t.error(err)
+          t.end()
+        })
       })
     })
   })
