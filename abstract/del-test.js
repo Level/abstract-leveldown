@@ -42,16 +42,17 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    t.plan(2)
+    t.plan(3)
     var db = leveldown(testCommon.location())
     db._serializeKey = function (data) { return data }
     db._del = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
-      callback()
+      process.nextTick(callback)
     }
     db.open(function () {
       db.del({ foo: 'bar' }, function (err) {
         t.error(err)
+        db.close(t.error.bind(t))
       })
     })
   })
@@ -63,7 +64,7 @@ module.exports.del = function (test) {
       t.error(err)
       db.del('foo', function (err) {
         t.error(err)
-        db.get('foo', function (err) {
+        db.get('foo', function (err, value) {
           t.ok(err, 'entry propertly deleted')
           t.ok(typeof value === 'undefined', 'value is undefined')
           t.ok(verifyNotFoundError(err), 'NotFound error')

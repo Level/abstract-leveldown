@@ -3,7 +3,7 @@ var leveldown
 var testCommon
 
 module.exports.setUp = function (_leveldown, test, _testCommon) {
-  test('setUp common', _testCommon.setUp)
+  test('setUp common for approximate size', _testCommon.setUp)
   test('setUp db', function (t) {
     leveldown = _leveldown
     testCommon = _testCommon
@@ -68,7 +68,7 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    t.plan(3)
+    t.plan(4)
     var db = leveldown(testCommon.location())
     db._serializeKey = function (data) { return data }
     db._approximateSize = function (start, end, callback) {
@@ -79,6 +79,7 @@ module.exports.args = function (test) {
     db.open(function () {
       db.approximateSize({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
+        db.close(t.error.bind(t))
       })
     })
   })

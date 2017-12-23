@@ -43,16 +43,17 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    t.plan(2)
+    t.plan(3)
     var db = leveldown(testCommon.location())
     db._serializeKey = function (data) { return data }
     db._get = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
-      callback()
+      process.nextTick(callback)
     }
     db.open(function () {
       db.get({ foo: 'bar' }, function (err) {
         t.error(err)
+        db.close(t.error.bind(t))
       })
     })
   })
