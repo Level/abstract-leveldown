@@ -96,19 +96,6 @@ module.exports.put = function (test) {
       })
     })
   })
-
-  if (process.browser) {
-    test('test object value put()', function (t) {
-      db.put('dood', {pete: 'sampras'}, function (err) {
-        t.error(err)
-        db.get('dood', { asBuffer: false }, function (err, value) {
-          t.error(err)
-          t.equal(JSON.stringify(value), JSON.stringify({pete: 'sampras'}))
-          t.end()
-        })
-      })
-    })
-  }
 }
 
 module.exports.sync = function (test) {
