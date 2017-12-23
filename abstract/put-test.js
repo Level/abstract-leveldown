@@ -64,6 +64,7 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
+    t.plan(4)
     var db = leveldown(testCommon.location())
     db._serializeKey = db._serializeValue = function (data) { return data }
     db._put = function (key, value, options, callback) {
@@ -74,10 +75,7 @@ module.exports.args = function (test) {
     db.open(function () {
       db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
-        db.close(function (err) {
-          t.error(err)
-          t.end()
-        })
+        db.close(t.error.bind(t))
       })
     })
   })

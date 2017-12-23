@@ -43,6 +43,7 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
+    t.plan(3)
     var db = leveldown(testCommon.location())
     db._serializeKey = function (data) { return data }
     db._get = function (key, options, callback) {
@@ -52,10 +53,7 @@ module.exports.args = function (test) {
     db.open(function () {
       db.get({ foo: 'bar' }, function (err) {
         t.error(err)
-        db.close(function (err) {
-          t.error(err)
-          t.end()
-        })
+        db.close(t.error.bind(t))
       })
     })
   })
