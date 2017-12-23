@@ -211,12 +211,10 @@ AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
-  var self = this
-
   options = xtend(options)
 
   ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (self._isBuffer(options[o]) && options[o].length === 0) {
+    if (Buffer.isBuffer(options[o]) && options[o].length === 0) {
       delete options[o]
     }
   })
@@ -245,19 +243,13 @@ AbstractLevelDOWN.prototype._chainedBatch = function () {
   return new AbstractChainedBatch(this)
 }
 
-AbstractLevelDOWN.prototype._isBuffer = function (obj) {
-  return Buffer.isBuffer(obj)
-}
-
 AbstractLevelDOWN.prototype._serializeKey = function (key) {
-  return this._isBuffer(key)
-    ? key
-    : String(key)
+  return Buffer.isBuffer(key) ? key : String(key)
 }
 
 AbstractLevelDOWN.prototype._serializeValue = function (value) {
   if (value == null) return ''
-  return this._isBuffer(value) || process.browser ? value : String(value)
+  return Buffer.isBuffer(value) || process.browser ? value : String(value)
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
@@ -265,7 +257,7 @@ AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
     return new Error(type + ' cannot be `null` or `undefined`')
   }
 
-  if (this._isBuffer(obj) && obj.length === 0) {
+  if (Buffer.isBuffer(obj) && obj.length === 0) {
     return new Error(type + ' cannot be an empty Buffer')
   }
 
