@@ -66,7 +66,7 @@ module.exports.del = function (test) {
       t.error(err)
       db.del('foo', function (err) {
         t.error(err)
-        db.get('foo', function (err) {
+        db.get('foo', function (err, value) {
           t.ok(err, 'entry propertly deleted')
           t.ok(typeof value === 'undefined', 'value is undefined')
           t.ok(verifyNotFoundError(err), 'NotFound error')
