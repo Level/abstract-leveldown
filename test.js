@@ -34,9 +34,6 @@ require('./abstract/put-get-del-test').errorKeys(test)
 require('./abstract/put-get-del-test').errorValues(test)
 require('./abstract/put-get-del-test').tearDown(test, testCommon)
 
-require('./abstract/approximate-size-test').setUp(factory, test, testCommon)
-require('./abstract/approximate-size-test').args(test)
-
 require('./abstract/batch-test').setUp(factory, test, testCommon)
 require('./abstract/batch-test').args(test)
 
@@ -260,33 +257,6 @@ test('test put() extensibility', function (t) {
   t.equal(spy.getCall(1).args[1], expectedValue, 'got expected value argument')
   t.deepEqual(spy.getCall(1).args[2], expectedOptions, 'got blank options argument')
   t.equal(spy.getCall(1).args[3], expectedCb, 'got expected cb argument')
-  t.end()
-})
-
-test('test approximateSize() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedStart = 'a start'
-  var expectedEnd = 'an end'
-  var test
-
-  function Test (location) {
-    AbstractLevelDOWN.call(this, location)
-  }
-
-  util.inherits(Test, AbstractLevelDOWN)
-
-  Test.prototype._approximateSize = spy
-
-  test = new Test('foobar')
-  test.approximateSize(expectedStart, expectedEnd, expectedCb)
-
-  t.equal(spy.callCount, 1, 'got _approximateSize() call')
-  t.equal(spy.getCall(0).thisValue, test, '`this` on _approximateSize() was correct')
-  t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
-  t.equal(spy.getCall(0).args[0], expectedStart, 'got expected start argument')
-  t.equal(spy.getCall(0).args[1], expectedEnd, 'got expected end argument')
-  t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
   t.end()
 })
 
