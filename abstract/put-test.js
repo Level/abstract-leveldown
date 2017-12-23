@@ -56,7 +56,7 @@ module.exports.args = function (test) {
     db._put = function (key, value, opts, callback) {
       t.ok(key)
       t.ok(value)
-      callback()
+      process.nextTick(callback)
     }
     db.put({}, {}, function (err, val) {
       t.error(err)
@@ -64,17 +64,20 @@ module.exports.args = function (test) {
   })
 
   test('test custom _serialize*', function (t) {
-    t.plan(3)
     var db = leveldown(testCommon.location())
     db._serializeKey = db._serializeValue = function (data) { return data }
     db._put = function (key, value, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
       t.deepEqual(value, { beep: 'boop' })
-      callback()
+      process.nextTick(callback)
     }
     db.open(function () {
       db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {
         t.error(err)
+        db.close(function (err) {
+          t.error(err)
+          t.end()
+        })
       })
     })
   })
