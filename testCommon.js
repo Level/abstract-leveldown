@@ -13,7 +13,7 @@ var lastLocation = function () {
 }
 
 var cleanup = function (callback) {
-  if (process.browser) { return callback() }
+  if (process.browser) { return process.nextTick(callback) }
 
   fs.readdir(__dirname, function (err, list) {
     if (err) return callback(err)
