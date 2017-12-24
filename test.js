@@ -971,12 +971,27 @@ test('_setupIteratorOptions', function (t) {
   }
 
   t.test('deletes empty buffers', function (t) {
-    const options = setupOptions(function () {
-      return Buffer.from('')
-    })
+    const options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
+    })
+    testUndefinedKeys(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('deletes empty strings', function (t) {
+    const options = setupOptions(function () { return '' })
+    keys.forEach(function (key) {
+      t.is(typeof options[key], 'string', 'should be string')
+      t.is(options[key].length, 0, 'should be empty')
+    })
+    testUndefinedKeys(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('deletes null options', function (t) {
+    const options = setupOptions(function () { return null })
+    keys.forEach(function (key) {
+      t.same(options[key], null, 'should be null')
     })
     testUndefinedKeys(t, db._setupIteratorOptions(options))
   })
