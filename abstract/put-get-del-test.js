@@ -164,7 +164,9 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon, testBuffer) {
+module.exports.all = function (leveldown, test, testBuffer, testCommon) {
+  testBuffer = testBuffer || Buffer.from('testbuffer')
+  testCommon = testCommon || require('../testCommon')
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.errorKeys(test)
   module.exports.nonErrorKeys(test, testBuffer)

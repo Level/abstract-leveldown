@@ -166,6 +166,7 @@ module.exports.tearDown = function (test, testCommon) {
 }
 
 module.exports.all = function (leveldown, test, testCommon) {
+  testCommon = testCommon || require('../testCommon')
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.args(test)
   module.exports.get(test)
