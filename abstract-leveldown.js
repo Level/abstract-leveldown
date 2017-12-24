@@ -188,8 +188,14 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = xtend(options)
 
+  function shouldDeleteOption (o) {
+    if (Buffer.isBuffer(o) && o.length === 0) {
+      return true
+    }
+  }
+
   ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (Buffer.isBuffer(options[o]) && options[o].length === 0) {
+    if (shouldDeleteOption(options[o])) {
       delete options[o]
     }
   })
