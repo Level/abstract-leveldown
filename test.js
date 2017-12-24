@@ -950,3 +950,34 @@ test('.status', function (t) {
     })
   })
 })
+
+test('_setupIteratorOptions', function (t) {
+  const keys = 'start end gt gte lt lte'.split(' ')
+  const db = new AbstractLevelDOWN('foolocation')
+
+  function setupOptions (constrFn) {
+    const options = {}
+    keys.forEach(function (key) {
+      options[key] = constrFn()
+    })
+    return options
+  }
+
+  function testUndefinedKeys (t, options) {
+    keys.forEach(function (key) {
+      t.is(typeof options[key], 'undefined', 'property should be deleted')
+    })
+    t.end()
+  }
+
+  t.test('deletes empty buffers', function (t) {
+    const options = setupOptions(function () {
+      return Buffer.from('')
+    })
+    keys.forEach(function (key) {
+      t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
+      t.is(options[key].length, 0, 'should be empty')
+    })
+    testUndefinedKeys(t, db._setupIteratorOptions(options))
+  })
+})
