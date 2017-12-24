@@ -1,5 +1,6 @@
 var db
-var verifyNotFoundError = require('./util').verifyNotFoundError
+const verifyNotFoundError = require('./util').verifyNotFoundError
+const testBuffer = Buffer.from('testbuffer')
 
 function makeGetDelErrorTests (test, type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
@@ -104,7 +105,7 @@ module.exports.errorKeys = function (test) {
   makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
 }
 
-module.exports.nonErrorKeys = function (test, testBuffer) {
+module.exports.nonErrorKeys = function (test) {
   // valid falsey keys
   makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
@@ -130,7 +131,7 @@ module.exports.nonErrorKeys = function (test, testBuffer) {
 module.exports.errorValues = function () {
 }
 
-module.exports.nonErrorValues = function (test, testBuffer) {
+module.exports.nonErrorValues = function (test) {
   // valid falsey values
   makePutGetDelSuccessfulTest(test, '`false` value', 'foo false', false)
   makePutGetDelSuccessfulTest(test, '`0` value', 'foo 0', 0)
@@ -164,13 +165,12 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testBuffer, testCommon) {
-  testBuffer = testBuffer || Buffer.from('testbuffer')
+module.exports.all = function (leveldown, test, testCommon) {
   testCommon = testCommon || require('../testCommon')
   module.exports.setUp(leveldown, test, testCommon)
   module.exports.errorKeys(test)
-  module.exports.nonErrorKeys(test, testBuffer)
+  module.exports.nonErrorKeys(test)
   module.exports.errorValues(test)
-  module.exports.nonErrorValues(test, testBuffer)
+  module.exports.nonErrorValues(test)
   module.exports.tearDown(test, testCommon)
 }
