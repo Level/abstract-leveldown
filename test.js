@@ -963,7 +963,7 @@ test('_setupIteratorOptions', function (t) {
     return options
   }
 
-  function testUndefinedKeys (t, options) {
+  function verifyUndefinedOptions (t, options) {
     keys.forEach(function (key) {
       t.is(typeof options[key], 'undefined', 'property should be deleted')
     })
@@ -976,7 +976,7 @@ test('_setupIteratorOptions', function (t) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
     })
-    testUndefinedKeys(t, db._setupIteratorOptions(options))
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
   })
 
   t.test('deletes empty strings', function (t) {
@@ -985,7 +985,7 @@ test('_setupIteratorOptions', function (t) {
       t.is(typeof options[key], 'string', 'should be string')
       t.is(options[key].length, 0, 'should be empty')
     })
-    testUndefinedKeys(t, db._setupIteratorOptions(options))
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
   })
 
   t.test('deletes null options', function (t) {
@@ -993,6 +993,6 @@ test('_setupIteratorOptions', function (t) {
     keys.forEach(function (key) {
       t.same(options[key], null, 'should be null')
     })
-    testUndefinedKeys(t, db._setupIteratorOptions(options))
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
   })
 })

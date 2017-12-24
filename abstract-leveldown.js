@@ -189,9 +189,9 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = xtend(options)
 
   function shouldDeleteOption (o) {
-    if (Buffer.isBuffer(o) && o.length === 0) {
-      return true
-    }
+    if (Buffer.isBuffer(o) && o.length === 0) return true
+    if (typeof o === 'string' && o.length === 0) return true
+    if (o === null) return true
   }
 
   ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
