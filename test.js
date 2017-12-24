@@ -970,6 +970,37 @@ test('_setupIteratorOptions', function (t) {
     t.end()
   }
 
+  t.test('default options', function (t) {
+    t.same(db._setupIteratorOptions(), {
+      reverse: false,
+      keys: true,
+      values: true,
+      limit: -1,
+      keyAsBuffer: true,
+      valueAsBuffer: true
+    }, 'correct defaults')
+    t.end()
+  })
+
+  t.test('set options', function (t) {
+    t.same(db._setupIteratorOptions({
+      reverse: false,
+      keys: false,
+      values: false,
+      limit: 20,
+      keyAsBuffer: false,
+      valueAsBuffer: false
+    }), {
+      reverse: false,
+      keys: false,
+      values: false,
+      limit: 20,
+      keyAsBuffer: false,
+      valueAsBuffer: false
+    }, 'options set correctly')
+    t.end()
+  })
+
   t.test('deletes empty buffers', function (t) {
     const options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
