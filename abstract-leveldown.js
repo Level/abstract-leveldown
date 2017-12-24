@@ -185,31 +185,6 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
-// TODO: remove from here, not a necessary primitive
-AbstractLevelDOWN.prototype.approximateSize = function (start, end, callback) {
-  if (start == null ||
-      end == null ||
-      typeof start === 'function' ||
-      typeof end === 'function') {
-    throw new Error('approximateSize() requires valid `start`, `end` and `callback` arguments')
-  }
-
-  if (typeof callback !== 'function') {
-    throw new Error('approximateSize() requires a callback argument')
-  }
-
-  start = this._serializeKey(start)
-  end = this._serializeKey(end)
-
-  if (typeof this._approximateSize === 'function') {
-    return this._approximateSize(start, end, callback)
-  }
-
-  process.nextTick(function () {
-    callback(null, 0)
-  })
-}
-
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = xtend(options)
 
