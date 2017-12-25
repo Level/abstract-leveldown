@@ -1,8 +1,10 @@
 /* Copyright (c) 2017 Rod Vagg, MIT License */
 
-var xtend = require('xtend')
-var AbstractIterator = require('./abstract-iterator')
-var AbstractChainedBatch = require('./abstract-chained-batch')
+const xtend = require('xtend')
+const AbstractIterator = require('./abstract-iterator')
+const AbstractChainedBatch = require('./abstract-chained-batch')
+const hasOwnProperty = Object.prototype.hasOwnProperty
+const rangeOptions = 'start end gt gte lt lte'.split(' ')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined) {
@@ -186,28 +188,41 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
-  options = xtend(options)
+  var result = cleanRangeOptions(options)
 
-  function shouldDeleteOption (o) {
-    if (Buffer.isBuffer(o) && o.length === 0) return true
-    if (typeof o === 'string' && o.length === 0) return true
-    if (o === null) return true
+  result.reverse = !!result.reverse
+  result.keys = result.keys !== false
+  result.values = result.values !== false
+  result.limit = 'limit' in result ? result.limit : -1
+  result.keyAsBuffer = result.keyAsBuffer !== false
+  result.valueAsBuffer = result.valueAsBuffer !== false
+
+  return result
+}
+
+function cleanRangeOptions (options) {
+  var result = {}
+
+  for (var k in options) {
+    if (!hasOwnProperty.call(options, k)) continue
+    if (isRangeOption(k) && isEmptyRangeOption(options[k])) continue
+
+    result[k] = options[k]
   }
 
-  ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (shouldDeleteOption(options[o])) {
-      delete options[o]
-    }
-  })
+  return result
+}
 
-  options.reverse = !!options.reverse
-  options.keys = options.keys !== false
-  options.values = options.values !== false
-  options.limit = 'limit' in options ? options.limit : -1
-  options.keyAsBuffer = options.keyAsBuffer !== false
-  options.valueAsBuffer = options.valueAsBuffer !== false
+function isRangeOption (k) {
+  return rangeOptions.includes(k)
+}
 
-  return options
+function isEmptyRangeOption (v) {
+  return v === '' || v == null || isEmptyBuffer(v)
+}
+
+function isEmptyBuffer (v) {
+  return Buffer.isBuffer(v) && v.length === 0
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
