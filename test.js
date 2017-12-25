@@ -5,7 +5,6 @@ var testCommon = require('./testCommon')
 var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
-var isLevelDOWN = require('./').isLevelDOWN
 
 function factory (location, opts) {
   return new AbstractLevelDOWN(location, opts)
@@ -804,34 +803,6 @@ test('test serialization extensibility (batch array is not mutated)', function (
 
   t.equal(op.key, 'no', 'did not mutate input key')
   t.equal(op.value, 'nope', 'did not mutate input value')
-})
-
-test('isLevelDOWN', function (t) {
-  t.notOk(isLevelDOWN(), 'is not a leveldown')
-  t.notOk(isLevelDOWN(''), 'is not a leveldown')
-  t.notOk(isLevelDOWN({}), 'is not a leveldown')
-  t.notOk(isLevelDOWN({ put: function () {} }), 'is not a leveldown')
-  t.ok(isLevelDOWN(new AbstractLevelDOWN('location')), 'IS a leveldown')
-  t.ok(isLevelDOWN({
-    open: function () {},
-    close: function () {},
-    get: function () {},
-    put: function () {},
-    del: function () {},
-    batch: function () {},
-    iterator: function () {}
-  }), 'IS a leveldown')
-  t.ok(isLevelDOWN({
-    open: function () {},
-    close: function () {},
-    get: function () {},
-    put: function () {},
-    del: function () {},
-    batch: function () {},
-    approximateSize: function () {},
-    iterator: function () {}
-  }), 'IS also a leveldown')
-  t.end()
 })
 
 test('.status', function (t) {

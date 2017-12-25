@@ -144,10 +144,6 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### AbstractChainedBatch#_serializeKey(key)
 ### AbstractChainedBatch#_serializeValue(value)
 
-### isLevelDown(db)
-
-Returns `true` if `db` has the same public api as `abstract-leveldown`, otherwise `false`. This is a utility function and it's not part of the extensible api.
-
 <a name="contributing"></a>
 Contributing
 ------------
