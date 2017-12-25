@@ -214,7 +214,7 @@ function cleanRangeOptions (options) {
 }
 
 function isRangeOption (k) {
-  return rangeOptions.includes(k)
+  return rangeOptions.indexOf(k) !== -1
 }
 
 function isEmptyRangeOption (v) {
