@@ -188,16 +188,16 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
-  var result = cleanRangeOptions(options)
+  options = cleanRangeOptions(options)
 
-  result.reverse = !!result.reverse
-  result.keys = result.keys !== false
-  result.values = result.values !== false
-  result.limit = 'limit' in result ? result.limit : -1
-  result.keyAsBuffer = result.keyAsBuffer !== false
-  result.valueAsBuffer = result.valueAsBuffer !== false
+  options.reverse = !!options.reverse
+  options.keys = options.keys !== false
+  options.values = options.values !== false
+  options.limit = 'limit' in options ? options.limit : -1
+  options.keyAsBuffer = options.keyAsBuffer !== false
+  options.valueAsBuffer = options.valueAsBuffer !== false
 
-  return result
+  return options
 }
 
 function cleanRangeOptions (options) {
