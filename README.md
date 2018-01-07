@@ -114,6 +114,17 @@ By default a `batch()` operation without arguments returns a blank `AbstractChai
 
 By default an `iterator()` operation returns a blank `AbstractIterator` object. The prototype is available on the main exports for you to extend. If you want to implement iterator operations then you should extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
 
+The `iterator()` operation accepts the following range options:
+
+* `gt`
+* `gte`
+* `lt`
+* `lte`
+* `start` (legacy)
+* `end` (legacy)
+
+A range option that is either an empty buffer, an empty string or `null` will be ignored.
+
 `AbstractIterator` implements the basic state management found in LevelDOWN. It keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
 
 ### AbstractIterator(db)
