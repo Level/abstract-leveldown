@@ -145,8 +145,7 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### AbstractChainedBatch#_serializeValue(value)
 
 <a name="contributing"></a>
-Contributing
-------------
+## Contributing
 
 `abstract-leveldown` is an **OPEN Open Source Project**. This means that:
 
@@ -155,8 +154,7 @@ Contributing
 See the [contribution guide](https://github.com/Level/community/blob/master/CONTRIBUTING.md) for more details.
 
 <a name="license"></a>
-License &amp; Copyright
--------------------
+## License &amp; Copyright
 
 Copyright &copy; 2013-2017 `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
 
