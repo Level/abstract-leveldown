@@ -1,8 +1,10 @@
 /* Copyright (c) 2017 Rod Vagg, MIT License */
 
-var xtend = require('xtend')
-var AbstractIterator = require('./abstract-iterator')
-var AbstractChainedBatch = require('./abstract-chained-batch')
+const xtend = require('xtend')
+const AbstractIterator = require('./abstract-iterator')
+const AbstractChainedBatch = require('./abstract-chained-batch')
+const hasOwnProperty = Object.prototype.hasOwnProperty
+const rangeOptions = 'start end gt gte lt lte'.split(' ')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined) {
@@ -186,13 +188,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
-  options = xtend(options)
-
-  ;[ 'start', 'end', 'gt', 'gte', 'lt', 'lte' ].forEach(function (o) {
-    if (Buffer.isBuffer(options[o]) && options[o].length === 0) {
-      delete options[o]
-    }
-  })
+  options = cleanRangeOptions(options)
 
   options.reverse = !!options.reverse
   options.keys = options.keys !== false
@@ -202,6 +198,31 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options.valueAsBuffer = options.valueAsBuffer !== false
 
   return options
+}
+
+function cleanRangeOptions (options) {
+  var result = {}
+
+  for (var k in options) {
+    if (!hasOwnProperty.call(options, k)) continue
+    if (isRangeOption(k) && isEmptyRangeOption(options[k])) continue
+
+    result[k] = options[k]
+  }
+
+  return result
+}
+
+function isRangeOption (k) {
+  return rangeOptions.indexOf(k) !== -1
+}
+
+function isEmptyRangeOption (v) {
+  return v === '' || v == null || isEmptyBuffer(v)
+}
+
+function isEmptyBuffer (v) {
+  return Buffer.isBuffer(v) && v.length === 0
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {

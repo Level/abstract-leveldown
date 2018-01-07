@@ -950,3 +950,80 @@ test('.status', function (t) {
     })
   })
 })
+
+test('_setupIteratorOptions', function (t) {
+  const keys = 'start end gt gte lt lte'.split(' ')
+  const db = new AbstractLevelDOWN('foolocation')
+
+  function setupOptions (constrFn) {
+    const options = {}
+    keys.forEach(function (key) {
+      options[key] = constrFn()
+    })
+    return options
+  }
+
+  function verifyUndefinedOptions (t, options) {
+    keys.forEach(function (key) {
+      t.notOk(key in options, 'property should be deleted')
+    })
+    t.end()
+  }
+
+  t.test('default options', function (t) {
+    t.same(db._setupIteratorOptions(), {
+      reverse: false,
+      keys: true,
+      values: true,
+      limit: -1,
+      keyAsBuffer: true,
+      valueAsBuffer: true
+    }, 'correct defaults')
+    t.end()
+  })
+
+  t.test('set options', function (t) {
+    t.same(db._setupIteratorOptions({
+      reverse: false,
+      keys: false,
+      values: false,
+      limit: 20,
+      keyAsBuffer: false,
+      valueAsBuffer: false
+    }), {
+      reverse: false,
+      keys: false,
+      values: false,
+      limit: 20,
+      keyAsBuffer: false,
+      valueAsBuffer: false
+    }, 'options set correctly')
+    t.end()
+  })
+
+  t.test('deletes empty buffers', function (t) {
+    const options = setupOptions(function () { return Buffer.from('') })
+    keys.forEach(function (key) {
+      t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
+      t.is(options[key].length, 0, 'should be empty')
+    })
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('deletes empty strings', function (t) {
+    const options = setupOptions(function () { return '' })
+    keys.forEach(function (key) {
+      t.is(typeof options[key], 'string', 'should be string')
+      t.is(options[key].length, 0, 'should be empty')
+    })
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('deletes null options', function (t) {
+    const options = setupOptions(function () { return null })
+    keys.forEach(function (key) {
+      t.same(options[key], null, 'should be null')
+    })
+    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+  })
+})
