@@ -965,7 +965,7 @@ test('_setupIteratorOptions', function (t) {
 
   function verifyUndefinedOptions (t, options) {
     keys.forEach(function (key) {
-      t.is(typeof options[key], 'undefined', 'property should be deleted')
+      t.notOk(key in options, 'property should be deleted')
     })
     t.end()
   }
