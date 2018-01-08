@@ -64,23 +64,23 @@
 ### Changed
 ### Fixed
 ### Removed
-* [[`fd4ba39136`](https://github.com/level/abstract-leveldown/commit/fd4ba39136)] - 2.5.0 (Julian Gruber)
+* [[`fd4ba39136`](https://github.com/level/abstract-leveldown/commit/fd4ba39136)] - 2.5.0 (@juliangruber)
 * [[`b00f97f9ac`](https://github.com/level/abstract-leveldown/commit/b00f97f9ac)] - Merge pull request #85 from Level/remove/stringify-key-value (Lars-Magnus Skog)
-* [[`1138d6d993`](https://github.com/level/abstract-leveldown/commit/1138d6d993)] - make tests more specific (Julian Gruber)
-* [[`45289fc325`](https://github.com/level/abstract-leveldown/commit/45289fc325)] - fix serializing and add more tests (Julian Gruber)
-* [[`e71e727dfb`](https://github.com/level/abstract-leveldown/commit/e71e727dfb)] - remove .toBuffer, add ._serialize* (Julian Gruber)
-* [[`32aeebf2c1`](https://github.com/level/abstract-leveldown/commit/32aeebf2c1)] - make .toBuffer opt-in (Julian Gruber)
-* [[`7e48270d40`](https://github.com/level/abstract-leveldown/commit/7e48270d40)] - Remove stringification of keys and values. (Julian Gruber)
+* [[`1138d6d993`](https://github.com/level/abstract-leveldown/commit/1138d6d993)] - make tests more specific (@juliangruber)
+* [[`45289fc325`](https://github.com/level/abstract-leveldown/commit/45289fc325)] - fix serializing and add more tests (@juliangruber)
+* [[`e71e727dfb`](https://github.com/level/abstract-leveldown/commit/e71e727dfb)] - remove .toBuffer, add ._serialize* (@juliangruber)
+* [[`32aeebf2c1`](https://github.com/level/abstract-leveldown/commit/32aeebf2c1)] - make .toBuffer opt-in (@juliangruber)
+* [[`7e48270d40`](https://github.com/level/abstract-leveldown/commit/7e48270d40)] - Remove stringification of keys and values. (@juliangruber)
 * [[`da6d505f1f`](https://github.com/level/abstract-leveldown/commit/da6d505f1f)] - **readme**: fix minor typos (Tim Kuijsten)
 * [[`f61fbcd6f7`](https://github.com/level/abstract-leveldown/commit/f61fbcd6f7)] - Merge pull request #79 from Level/checkKey (Lars-Magnus Skog)
 * [[`25509f8bd6`](https://github.com/level/abstract-leveldown/commit/25509f8bd6)] - this._checkKey does not take three parameters (Lars-Magnus Skog)
-* [[`48579e078d`](https://github.com/level/abstract-leveldown/commit/48579e078d)] - Merge pull request #78 from watson/patch-1 (Julian Gruber)
+* [[`48579e078d`](https://github.com/level/abstract-leveldown/commit/48579e078d)] - Merge pull request #78 from watson/patch-1 (@juliangruber)
 * [[`59fd61fc8f`](https://github.com/level/abstract-leveldown/commit/59fd61fc8f)] - Only show build status for the master branch (Thomas Watson Steen)
-* [[`aef56c8f80`](https://github.com/level/abstract-leveldown/commit/aef56c8f80)] - Merge pull request #77 from Level/deps (Julian Gruber)
+* [[`aef56c8f80`](https://github.com/level/abstract-leveldown/commit/aef56c8f80)] - Merge pull request #77 from Level/deps (@juliangruber)
 * [[`b12d070f9f`](https://github.com/level/abstract-leveldown/commit/b12d070f9f)] - memdown url (Lars-Magnus Skog)
 * [[`72bdb6fb38`](https://github.com/level/abstract-leveldown/commit/72bdb6fb38)] - add dependency badge (Lars-Magnus Skog)
 * [[`ee16027126`](https://github.com/level/abstract-leveldown/commit/ee16027126)] - update dependencies + test on moar node verions (Lars-Magnus Skog)
-* [[`e5bdf0ed81`](https://github.com/level/abstract-leveldown/commit/e5bdf0ed81)] - Merge pull request #76 from Level/greenkeeper-tape-4.4.0 (Julian Gruber)
+* [[`e5bdf0ed81`](https://github.com/level/abstract-leveldown/commit/e5bdf0ed81)] - Merge pull request #76 from Level/greenkeeper-tape-4.4.0 (@juliangruber)
 * [[`1b4e38527f`](https://github.com/level/abstract-leveldown/commit/1b4e38527f)] - chore(package): update tape to version 4.4.0 (greenkeeperio-bot)
 
 ## [2.4.1] - 2015-08-29
@@ -89,8 +89,8 @@
 ### Changed
 ### Fixed
 ### Removed
-* [[`1259fc4b0a`](https://github.com/level/abstract-leveldown/commit/1259fc4b0a)] - 2.4.1 (Julian Gruber)
-* [[`7c7db6f96c`](https://github.com/level/abstract-leveldown/commit/7c7db6f96c)] - Merge pull request #72 from Level/remove-const (Julian Gruber)
+* [[`1259fc4b0a`](https://github.com/level/abstract-leveldown/commit/1259fc4b0a)] - 2.4.1 (@juliangruber)
+* [[`7c7db6f96c`](https://github.com/level/abstract-leveldown/commit/7c7db6f96c)] - Merge pull request #72 from Level/remove-const (@juliangruber)
 * [[`1cf77b9423`](https://github.com/level/abstract-leveldown/commit/1cf77b9423)] - (#71) - remove `const` (Nolan Lawson)
 
 ## [2.4.0] - 2015-05-19
@@ -99,10 +99,10 @@
 ### Changed
 ### Fixed
 ### Removed
-* [[`02e19475f6`](https://github.com/level/abstract-leveldown/commit/02e19475f6)] - 2.4.0 (Julian Gruber)
-* [[`f336523ec7`](https://github.com/level/abstract-leveldown/commit/f336523ec7)] - Merge pull request #68 from Level/add/open-states (Julian Gruber)
-* [[`c4ad1a0929`](https://github.com/level/abstract-leveldown/commit/c4ad1a0929)] - add missing t.error() calls to status tests (Julian Gruber)
-* [[`f5ac25da96`](https://github.com/level/abstract-leveldown/commit/f5ac25da96)] - add .status (Julian Gruber)
+* [[`02e19475f6`](https://github.com/level/abstract-leveldown/commit/02e19475f6)] - 2.4.0 (@juliangruber)
+* [[`f336523ec7`](https://github.com/level/abstract-leveldown/commit/f336523ec7)] - Merge pull request #68 from Level/add/open-states (@juliangruber)
+* [[`c4ad1a0929`](https://github.com/level/abstract-leveldown/commit/c4ad1a0929)] - add missing t.error() calls to status tests (@juliangruber)
+* [[`f5ac25da96`](https://github.com/level/abstract-leveldown/commit/f5ac25da96)] - add .status (@juliangruber)
 * [[`fed5f84e4b`](https://github.com/level/abstract-leveldown/commit/fed5f84e4b)] - update changelog (Lars-Magnus Skog)
 
 ## [2.3.1] - 2015-05-18
@@ -130,8 +130,8 @@ unction (Lars-Magnus Skog)
 ### Changed
 ### Fixed
 ### Removed
-* [[`4ff0a9bfbb`](https://github.com/level/abstract-leveldown/commit/4ff0a9bfbb)] - ***Revert*** "Merge pull request #60 from ralphtheninja/empty-location" (Julian Gruber)
-* [[`fab11e9e3b`](https://github.com/level/abstract-leveldown/commit/fab11e9e3b)] - use t.equal instead of t.ok(a === b) (Julian Gruber)
+* [[`4ff0a9bfbb`](https://github.com/level/abstract-leveldown/commit/4ff0a9bfbb)] - ***Revert*** "Merge pull request #60 from ralphtheninja/empty-location" (@juliangruber)
+* [[`fab11e9e3b`](https://github.com/level/abstract-leveldown/commit/fab11e9e3b)] - use t.equal instead of t.ok(a === b) (@juliangruber)
 
 ## [2.2.1] - 2015-05-12
 
@@ -150,8 +150,8 @@ unction (Lars-Magnus Skog)
 ### Changed
 ### Fixed
 ### Removed
-* [[`aa867b3760`](https://github.com/level/abstract-leveldown/commit/aa867b3760)] - Merge pull request #58 from Level/add/put-sync (Julian Gruber)
-* [[`234de997bb`](https://github.com/level/abstract-leveldown/commit/234de997bb)] - add sync put tests (Julian Gruber)
+* [[`aa867b3760`](https://github.com/level/abstract-leveldown/commit/aa867b3760)] - Merge pull request #58 from Level/add/put-sync (@juliangruber)
+* [[`234de997bb`](https://github.com/level/abstract-leveldown/commit/234de997bb)] - add sync put tests (@juliangruber)
 
 ## [2.1.4] - 2015-04-28
 
@@ -314,188 +314,190 @@ No change.
 
 ## [0.10.2] - 2013-09-06
 
-### Added
 ### Changed
-### Fixed
-### Removed
-* Refactor duplicated versions of isTypedArray into util.js (@rvagg)
-* Refactor duplicated versions of 'NotFound' checks into util.js, fixed too-strict version in get-test.js (@rvagg)
+- Refactor duplicated versions of `isTypedArray` into `abstract/util.js` (@rvagg)
+- Refactor duplicated versions of `'NotFound'` checks into `abstract/util.js`, fixed too-strict version in `get-test.js` (@rvagg)
 
 ## [0.10.1] - 2013-08-29
 
 ### Added
+- @substack to contributors (@rvagg)
+
 ### Changed
-### Fixed
-### Removed
-* Relax check for 'Not Found: ' in error message to be case insensitive in get-test.js (@rvagg)
+- Relax check for 'Not Found: ' in error message to be case insensitive in `get-test.js` (@rvagg)
 
 ## [0.10.0] - 2013-08-19
 
 ### Added
-### Changed
-### Fixed
-### Removed
-* Added test for gt, gte, lt, lte ranges (@dominictarr)
+* test for `gt`, `gte`, `lt` and `lte` ranges (Dominic Tarr)
 
 ## [0.9.0] - 2013-08-11
 
 ### Added
+- tests for simultaneous get's (@kesla)
+- tests for `AbstractChainedBatch` extendability (@kesla)
+
 ### Changed
+- make `AbstractChainedBatch` extendable (@kesla)
+- export `AbstractChainedBatch` from `abstract-leveldown.js` (@kesla)
+
 ### Fixed
-### Removed
+- broken test assert in `abstract/get-test.js` (@rvagg)
+- tests that weren't running properly (@kesla)
 
 ## [0.8.2] - 2013-08-02
 
-### Added
-### Changed
-### Fixed
-### Removed
+No changes. Merely published changes made in `0.8.1`.
 
 ## [0.8.1] - 2013-08-02
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- remove `const` in `testCommon.js` (@rvagg)
+
+**Historical Note** The version in `package.json` was changed from `0.7.4` to `0.8.1`. The `0.8.1` tag exists but this version was never published to npm.
 
 ## [0.8.0] - 2013-08-02
 
 ### Added
+- `BufferType` parameter to `abstract/put-get-del-test.js` for bops support (@rvagg)
+- `isTypedArray` function which checks `ArrayBuffer` or `Uint8Array` for bops support (@rvagg)
+
 ### Changed
+- use `process.browser` check instead of `process.title == 'browser'` (@rvagg)
+
 ### Fixed
-### Removed
+- problems with `cleanup` function not calling back when browserified (@rvagg)
+
+**Historical Note** It seems the version in `package.json` was never changed to `0.8.0` in the git history, even though the `0.8.0` tag exists. Most likely `package.json` was modified locally during `npm publish` but was never committed.
 
 ## [0.7.4] - 2013-08-02
 
-### Added
-### Changed
 ### Fixed
-### Removed
+- problems related to `browserify` and `rimraf` (@rvagg)
 
 ## [0.7.3] - 2013-07-26
 
 ### Added
-### Changed
-### Fixed
-### Removed
+- `@pgte` to contributors list (@rvagg)
+- test for iterator with `limit` set to `-1` (@kesla)
 
 ## [0.7.2] - 2013-07-08
 
 ### Added
+- `AbstractChainedBatch.prototype._checkWritten` (@rvagg)
+- test for delete on non-existent key (@rvagg)
+- test for iterator with `start` after database `end` (@juliangruber)
+
 ### Changed
+- chained batch state is frozen after `.write()` has been called (@rvagg)
+- `NotFound` error made case insensitive (@rvagg)
+- use `self` rather than binding functions to `this` (@juliangruber)
+
 ### Fixed
-### Removed
+- don't coerce values to strings in browser (@maxogden)
+- make tests work in node and browser (@maxogden)
 
 ## [0.7.1] - 2013-05-15
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- adjust tests to be browserable (@rvagg)
 
 ## [0.7.0] - 2013-05-14
 
 ### Added
-### Changed
-### Fixed
-### Removed
+- `AbstractChainedBatch.prototype.clear` (@rvagg)
 
 ## [0.6.1] - 2013-05-14
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
 
 ## [0.6.0] - 2013-05-14
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- split `t.deepEqual()` into multiple `t.equal()` in `abstract/iterator-test.js` (@rvagg)
+- `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
 
 ## [0.5.0] - 2013-05-14
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- `iterator.end(cb)` and `iterator.next(cb)` calls back with error instead of throws (@mcollina)
 
 ## [0.4.0-1] - 2013-05-14
 
 ### Changed
-- update contributors list (Rod Vagg)
+- update contributors list (@rvagg)
 
 ## [0.4.0] - 2013-05-14
 
 ### Added
-- `AbstractChainedBatch` (Rod Vagg)
-- `AbstractLevelDOWN.prototype._chainedBatch` (Rod Vagg)
-- `abstract/batch-test.js` and `abstract/chained-batch-test.js` (Rod Vagg)
+- `AbstractChainedBatch` (@rvagg)
+- `AbstractLevelDOWN.prototype._chainedBatch` (@rvagg)
+- `abstract/batch-test.js` and `abstract/chained-batch-test.js` (@rvagg)
 
 ### Changed
-- moved `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (Rod Vagg)
+- moved `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (@rvagg)
 
 ## [0.3.0] - 2013-05-04
 
 ### Added
-- put back test for opening database without options (Rod Vagg)
-- `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (Rod Vagg)
-- `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (Rod Vagg)
+- put back test for opening database without options (@rvagg)
+- `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (@rvagg)
+- `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (@rvagg)
 
 ### Changed
-- use `this._checkKeyValue()` instead of local function (Rod Vagg)
-- use `this._isBuffer()` instead of `Buffer.isBuffer()` (Rod Vagg)
+- use `this._checkKeyValue()` instead of local function (@rvagg)
+- use `this._isBuffer()` instead of `Buffer.isBuffer()` (@rvagg)
 
 ## [0.2.3] - 2013-05-04
 
 ### Removed
-- test for opening database without options (Rod Vagg)
+- test for opening database without options (@rvagg)
 
 ## [0.2.2] - 2013-05-04
 
 ### Changed
-- split up `.open()` tests into `.open()` and `.openAdvanced()` (Rod Vagg)
+- split up `.open()` tests into `.open()` and `.openAdvanced()` (@rvagg)
 
 ## [0.2.1] - 2013-05-04
 
 ### Changed
-- convert values to `string` in `abstract/put-get-del-test.js` if `Buffer` is `undefined` (Rod Vagg)
+- convert values to `string` in `abstract/put-get-del-test.js` if `Buffer` is `undefined` (@rvagg)
 
 ## [0.2.0] - 2013-05-04
 
 ### Added
-- `process.browser` check for `start` and `end` keys in browser (Max Ogden)
-- `levelup` contributors (Rod Vagg)
+- `process.browser` check for `start` and `end` keys in browser (@maxogden)
+- `levelup` contributors (@rvagg)
 
 ### Changed
-- convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (Rod Vagg)
-- don't stringify keys and values in `abstract/iterator-test.js` (Max Ogden)
+- convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (@rvagg)
+- don't stringify keys and values in `abstract/iterator-test.js` (@maxogden)
 
 ### Fixed
-- `tape` compatibility issues (Max Ogden)
+- `tape` compatibility issues (@maxogden)
 
 ## [0.1.0] - 2013-04-23
 
 ### Added
-- abstract tests from `leveldown` (Max Ogden)
+- abstract tests from `leveldown` (@maxogden)
 
 ### Fixed
-- clarifications in `README` (Rod Vagg)
+- clarifications in `README` (@rvagg)
 
 ## [0.0.2] - 2013-03-18
 
 ### Added
-- node 0.10 to travis (Rod Vagg)
-- `Buffer.isBuffer()` checks to keys and values (Rod Vagg)
+- node 0.10 to travis (@rvagg)
+- `Buffer.isBuffer()` checks to keys and values (@rvagg)
 
 ### Changed
-- export `checkKeyValue` (Rod Vagg)
+- export `checkKeyValue` (@rvagg)
 
 ## [0.0.1] - 2013-03-18
 
 ### Added
-- `checkKeyValue` function for more complete error checking (Rod Vagg)
+- `checkKeyValue` function for more complete error checking (@rvagg)
 
 ## 0.0.0 - 2013-03-15
 
