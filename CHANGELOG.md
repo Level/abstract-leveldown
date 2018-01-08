@@ -61,145 +61,113 @@
 ## [2.5.0] - 2016-05-01
 
 ### Added
+* dependency badge to `README` (@ralphtheninja)
+* `AbstractLevelDOWN#_serializeKey` (@juliangruber)
+* `AbstractLevelDOWN#_serializeValue` (@juliangruber)
+* `AbstractChainedBatch#_serializeKey` (@juliangruber)
+* `AbstractChainedBatch#_serializeValue` (@juliangruber)
+* tests for `_serialize` object and buffer (@juliangruber)
+
 ### Changed
+* Update dependencies and add more node versions to Travis (@ralphtheninja)
+
 ### Fixed
+* Update `memdown` url (@ralphtheninja)
+* `AbstractLevelDOWN#._checkKey` does not take three parameters (@ralphtheninja)
+* Only show build status for the master branch (@watson)
+* Fix minor typos in `README` (@timkuijsten)
+
 ### Removed
-* [[`fd4ba39136`](https://github.com/level/abstract-leveldown/commit/fd4ba39136)] - 2.5.0 (@juliangruber)
-* [[`b00f97f9ac`](https://github.com/level/abstract-leveldown/commit/b00f97f9ac)] - Merge pull request #85 from Level/remove/stringify-key-value (Lars-Magnus Skog)
-* [[`1138d6d993`](https://github.com/level/abstract-leveldown/commit/1138d6d993)] - make tests more specific (@juliangruber)
-* [[`45289fc325`](https://github.com/level/abstract-leveldown/commit/45289fc325)] - fix serializing and add more tests (@juliangruber)
-* [[`e71e727dfb`](https://github.com/level/abstract-leveldown/commit/e71e727dfb)] - remove .toBuffer, add ._serialize* (@juliangruber)
-* [[`32aeebf2c1`](https://github.com/level/abstract-leveldown/commit/32aeebf2c1)] - make .toBuffer opt-in (@juliangruber)
-* [[`7e48270d40`](https://github.com/level/abstract-leveldown/commit/7e48270d40)] - Remove stringification of keys and values. (@juliangruber)
-* [[`da6d505f1f`](https://github.com/level/abstract-leveldown/commit/da6d505f1f)] - **readme**: fix minor typos (Tim Kuijsten)
-* [[`f61fbcd6f7`](https://github.com/level/abstract-leveldown/commit/f61fbcd6f7)] - Merge pull request #79 from Level/checkKey (Lars-Magnus Skog)
-* [[`25509f8bd6`](https://github.com/level/abstract-leveldown/commit/25509f8bd6)] - this._checkKey does not take three parameters (Lars-Magnus Skog)
-* [[`48579e078d`](https://github.com/level/abstract-leveldown/commit/48579e078d)] - Merge pull request #78 from watson/patch-1 (@juliangruber)
-* [[`59fd61fc8f`](https://github.com/level/abstract-leveldown/commit/59fd61fc8f)] - Only show build status for the master branch (Thomas Watson Steen)
-* [[`aef56c8f80`](https://github.com/level/abstract-leveldown/commit/aef56c8f80)] - Merge pull request #77 from Level/deps (@juliangruber)
-* [[`b12d070f9f`](https://github.com/level/abstract-leveldown/commit/b12d070f9f)] - memdown url (Lars-Magnus Skog)
-* [[`72bdb6fb38`](https://github.com/level/abstract-leveldown/commit/72bdb6fb38)] - add dependency badge (Lars-Magnus Skog)
-* [[`ee16027126`](https://github.com/level/abstract-leveldown/commit/ee16027126)] - update dependencies + test on moar node verions (Lars-Magnus Skog)
-* [[`e5bdf0ed81`](https://github.com/level/abstract-leveldown/commit/e5bdf0ed81)] - Merge pull request #76 from Level/greenkeeper-tape-4.4.0 (@juliangruber)
-* [[`1b4e38527f`](https://github.com/level/abstract-leveldown/commit/1b4e38527f)] - chore(package): update tape to version 4.4.0 (greenkeeperio-bot)
+* Remove stringification of keys and values (@juliangruber)
+* Remove `.toBuffer` (@juliangruber)
 
 ## [2.4.1] - 2015-08-29
 
-### Added
-### Changed
 ### Fixed
-### Removed
-* [[`1259fc4b0a`](https://github.com/level/abstract-leveldown/commit/1259fc4b0a)] - 2.4.1 (@juliangruber)
-* [[`7c7db6f96c`](https://github.com/level/abstract-leveldown/commit/7c7db6f96c)] - Merge pull request #72 from Level/remove-const (@juliangruber)
-* [[`1cf77b9423`](https://github.com/level/abstract-leveldown/commit/1cf77b9423)] - (#71) - remove `const` (Nolan Lawson)
+* Remove `const`. Fixes (#71) (@nolanlawson)
 
 ## [2.4.0] - 2015-05-19
 
 ### Added
-### Changed
-### Fixed
-### Removed
-* [[`02e19475f6`](https://github.com/level/abstract-leveldown/commit/02e19475f6)] - 2.4.0 (@juliangruber)
-* [[`f336523ec7`](https://github.com/level/abstract-leveldown/commit/f336523ec7)] - Merge pull request #68 from Level/add/open-states (@juliangruber)
-* [[`c4ad1a0929`](https://github.com/level/abstract-leveldown/commit/c4ad1a0929)] - add missing t.error() calls to status tests (@juliangruber)
-* [[`f5ac25da96`](https://github.com/level/abstract-leveldown/commit/f5ac25da96)] - add .status (@juliangruber)
-* [[`fed5f84e4b`](https://github.com/level/abstract-leveldown/commit/fed5f84e4b)] - update changelog (Lars-Magnus Skog)
+* `.status` property to `AbstractLevelDOWN` (@juliangruber)
 
 ## [2.3.1] - 2015-05-18
 
 ### Added
-### Changed
+* link to `level/community` (@ralphtheninja)
+
 ### Fixed
+* Document `isLevelDown` function (@ralphtheninja)
+
 ### Removed
-* [[`393c781629`](https://github.com/level/abstract-leveldown/commit/393c781629)] - document isLevelDown() (Lars-Magnus Skog)
-* [[`fd899c49b9`](https://github.com/level/abstract-leveldown/commit/fd899c49b9)] - link to level/community (Lars-Magnus Skog)
+* Extract `Contributors` section from `README` into `level/community` (@ralphtheninja)
 
 ## [2.3.0] - 2015-05-18
 
 ### Added
+* `isLevelDOWN` function to `is-leveldown.js` (@ralphtheninja)
+
 ### Changed
-### Fixed
-### Removed
-* [[`9a976428e2`](https://github.com/level/abstract-leveldown/commit/9a976428e2)] - export from index.js and factor out into is-leveldown.js (Lars-Magnus Skog)
-* [[`8051f8f16c`](https://github.com/level/abstract-leveldown/commit/8051f8f16c)] - add isLevelDOWN() f
-unction (Lars-Magnus Skog)
+* Use `t.equal(a, b)` instead of `t.ok(a === b)` (@juliangruber)
+* Export API from `index.js` (@ralphtheninja)
 
 ## [2.2.2] - 2015-05-13
 
-### Added
-### Changed
 ### Fixed
-### Removed
-* [[`4ff0a9bfbb`](https://github.com/level/abstract-leveldown/commit/4ff0a9bfbb)] - ***Revert*** "Merge pull request #60 from ralphtheninja/empty-location" (@juliangruber)
-* [[`fab11e9e3b`](https://github.com/level/abstract-leveldown/commit/fab11e9e3b)] - use t.equal instead of t.ok(a === b) (@juliangruber)
+* Revert changes to location in `2.2.1` (@juliangruber)
 
 ## [2.2.1] - 2015-05-12
 
-### Added
-### Changed
 ### Fixed
-### Removed
-* [[`f5051090e4`](https://github.com/level/abstract-leveldown/commit/f5051090e4)] - merge location string checks into one if-statement (Lars-Magnus Skog)
-* [[`cd362b2b9f`](https://github.com/level/abstract-leveldown/commit/cd362b2b9f)] - empty location string throws (Lars-Magnus Skog)
-* [[`e6d1cb80ea`](https://github.com/level/abstract-leveldown/commit/e6d1cb80ea)] - .throws is different for tape (Lars-Magnus Skog)
-* [[`a6f29b62fa`](https://github.com/level/abstract-leveldown/commit/a6f29b62fa)] - copy paste error gave wrong test description (Lars-Magnus Skog)
+* Copy paste error gave wrong test description (@ralphtheninja)
+* `t.throws()` is different for `tape` (@ralphtheninja)
+* Empty location string throws (@ralphtheninja)
 
 ## [2.2.0] - 2015-05-10
 
 ### Added
-### Changed
-### Fixed
-### Removed
-* [[`aa867b3760`](https://github.com/level/abstract-leveldown/commit/aa867b3760)] - Merge pull request #58 from Level/add/put-sync (@juliangruber)
-* [[`234de997bb`](https://github.com/level/abstract-leveldown/commit/234de997bb)] - add sync put tests (@juliangruber)
+* tests to `abstract/put-test.js` using `{ sync: true }` (@juliangruber)
 
 ## [2.1.4] - 2015-04-28
 
-### Added
-### Changed
 ### Fixed
-### Removed
-* [[`969116d00f`](https://github.com/level/abstract-leveldown/commit/969116d00f)] - use t.equal() with tape (Lars-Magnus Skog)
+* Use `t.equal()` with `tape` (@ralphtheninja)
 
 ## [2.1.3] - 2015-04-28
 
-### Added
 ### Changed
-### Fixed
-### Removed
-* [[`68096e78cd`](https://github.com/level/abstract-leveldown/commit/68096e78cd)] - change from tap to tape (Lars-Magnus Skog)
+* Change from `tap` to `tape` (@ralphtheninja)
 
 ## [2.1.2] - 2015-04-27
 
-### Added
 ### Changed
-### Fixed
-### Removed
-* [[`d79c060c9d`](https://github.com/level/abstract-leveldown/commit/d79c060c9d)] - convert buffer to string so we can compare (Lars-Magnus Skog)
+* Convert buffer to string so we can compare (@ralphtheninja)
 
 ## [2.1.1] - 2015-04-27
 
 ### Added
+* @ralphtheninja to contributors (@ralphtheninja)
+* Add `0.12` and `iojs` to travis (@ralphtheninja)
+
 ### Changed
+* Update logo and copyright (@ralphtheninja)
+
 ### Fixed
-### Removed
-* [[`3881fc4290`](https://github.com/level/abstract-leveldown/commit/3881fc4290)] -**travis**: update npm so 0.8 works, add 0.12 and iojs (Lars-Magnus Skog)
-* [[`9f451e8f74`](https://github.com/level/abstract-leveldown/commit/9f451e8f74)] - rvagg/node- -> level/ (Lars-Magnus Skog)
-* [[`ecd41a72db`](https://github.com/level/abstract-leveldown/commit/ecd41a72db)] - fix typo (Hao-kang Den)
-* [[`20e91fd234`](https://github.com/level/abstract-leveldown/commit/20e91fd234)] - update logo and copyright (Lars-Magnus Skog)
-* [[`6ccf134874`](https://github.com/level/abstract-leveldown/commit/6ccf134874)] - added @watson to package.json (Rod Vagg)
+* `.nonErrorValues()` test did not run in `abstract/put-get-del-test.js` (@hden)
+* `rvagg/node-abstract-leveldown` moved to `level/abstract-leveldown` (@ralphtheninja)
+* Fix travis for `0.8` (@ralphtheninja)
 
 ## [2.1.0] - 2014-11-09
 
 ### Added
+* @watson to contributors (@rvagg)
+
 ### Changed
+* Use `setTimeout` instead of `process.nextTick`. (@bigeasy)
+
 ### Fixed
-### Removed
-* [[`7451cd15e6`](https://github.com/level/abstract-leveldown/commit/7451cd15e6)] - added @watson (Rod Vagg)
-* [[`f4a3346da7`](https://github.com/level/abstract-leveldown/commit/f4a3346da7)] - Use `error` test function when testing for errors (Thomas Watson Steen)
-* [[`24668c50e0`](https://github.com/level/abstract-leveldown/commit/24668c50e0)] - Don't fail if no value is returned by _get (Thomas Watson Steen)
-* [[`865ed9e777`](https://github.com/level/abstract-leveldown/commit/865ed9e777)] - Use `setTimeout` instead of `setImmediate`. (Alan Gutierrez)
-* [[`9e9069faed`](https://github.com/level/abstract-leveldown/commit/9e9069faed)] - 2.0.3 (Rod Vagg)
+* Don't fail if no value is returned by `._get` (@watson)
+* Use `error` test function when testing for errors (@watson)
 
 ## [2.0.3] - 2014-10-02
 
@@ -208,21 +176,17 @@ No change.
 ## [2.0.2] - 2014-10-02
 
 ### Added
-### Changed
-### Fixed
-### Removed
-* [[`78052c53eb`](https://github.com/level/abstract-leveldown/commit/78052c53eb)] - add test for atomic batch operations (Calvin Metcalf)
+* test for atomic batch operations (@calvinmetcalf)
 
 ## [2.0.1] - 2014-09-01
 
-### Added
 ### Changed
-### Fixed
+* Set default values for options to `.open`, `.get`, `.put`, `.del` and `.batch` (@watson)
+* Update pattern for setting default options for the iterator (@watson)
+* Allow boolean options to be falsy/truthy (@watson)
+
 ### Removed
-* [[`a0b36f6a18`](https://github.com/level/abstract-leveldown/commit/a0b36f6a18)] - Remove default options that's too LevelDOWN specific (Thomas Watson Steen)
-* [[`1d97993d0b`](https://github.com/level/abstract-leveldown/commit/1d97993d0b)] - Allow boolean options to be falsy/truthy (Thomas Watson Steen)
-* [[`fb3cf56da5`](https://github.com/level/abstract-leveldown/commit/fb3cf56da5)] - Set defaults for open, get, put, del and batch options (Thomas Watson Steen)
-* [[`5c2a629e2b`](https://github.com/level/abstract-leveldown/commit/5c2a629e2b)] - Update pattern for setting default options for the iterator (Thomas Watson Steen)
+* Remove default options that's too `LevelDOWN` specific (@watson)
 
 ## [2.0.0] - 2014-08-26
 
@@ -369,7 +333,7 @@ No changes. Merely published changes made in `0.8.1`.
 ## [0.7.3] - 2013-07-26
 
 ### Added
-* `@pgte` to contributors list (@rvagg)
+* @pgte to contributors (@rvagg)
 * test for iterator with `limit` set to `-1` (@kesla)
 
 ## [0.7.2] - 2013-07-08
@@ -416,8 +380,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.4.0-1] - 2013-05-14
 
-### Changed
-* update contributors list (@rvagg)
+### Added
+* @No9 and @mcollina to contributors (@rvagg)
 
 ## [0.4.0] - 2013-05-14
 
