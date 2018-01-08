@@ -226,12 +226,9 @@ No change.
 
 ## [2.0.0] - 2014-08-26
 
-### Added
 ### Changed
-### Fixed
-### Removed
-* Lots of stuff between 0.11.1 and now, omitted updating changelog
-* Switch to allowing writes of empty values: null, undefined, '', []
+* Switch to allowing writes of empty values, `null`, `undefined`, `''`, `[]` and empty buffer (@juliangruber)
+* Rename `AbstractLevelDOWN#_checkKeyValue` to `AbstractLevelDOWN#_checkKey` (@rvagg)
 
 ## [1.0.0] - 2014-08-24
 
@@ -304,7 +301,7 @@ No change.
 ## [0.11.0] - 2013-10-14
 
 ### Added
-* `AbstractLevelDOWN.prototype._setupIteratorOptions` method to fix options object prior to _iterator() call; makes working with range options a little easier (@rvagg)
+* `AbstractLevelDOWN#_setupIteratorOptions` method to fix options object prior to _iterator() call; makes working with range options a little easier (@rvagg)
 
 ## [0.10.2] - 2013-09-06
 
@@ -378,7 +375,7 @@ No changes. Merely published changes made in `0.8.1`.
 ## [0.7.2] - 2013-07-08
 
 ### Added
-* `AbstractChainedBatch.prototype._checkWritten` (@rvagg)
+* `AbstractChainedBatch#_checkWritten` (@rvagg)
 * test for delete on non-existent key (@rvagg)
 * test for iterator with `start` after database `end` (@juliangruber)
 
@@ -399,7 +396,7 @@ No changes. Merely published changes made in `0.8.1`.
 ## [0.7.0] - 2013-05-14
 
 ### Added
-* `AbstractChainedBatch.prototype.clear` (@rvagg)
+* `AbstractChainedBatch#clear` (@rvagg)
 
 ## [0.6.1] - 2013-05-14
 
@@ -426,7 +423,7 @@ No changes. Merely published changes made in `0.8.1`.
 
 ### Added
 * `AbstractChainedBatch` (@rvagg)
-* `AbstractLevelDOWN.prototype._chainedBatch` (@rvagg)
+* `AbstractLevelDOWN#_chainedBatch` (@rvagg)
 * `abstract/batch-test.js` and `abstract/chained-batch-test.js` (@rvagg)
 
 ### Changed
@@ -436,8 +433,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 ### Added
 * put back test for opening database without options (@rvagg)
-* `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (@rvagg)
-* `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (@rvagg)
+* `AbstractLevelDOWN#_isBuffer` so it can be overridden (@rvagg)
+* `AbstractLevelDOWN#_checkKeyValue` so it can be overridden (@rvagg)
 
 ### Changed
 * use `this._checkKeyValue()` instead of local function (@rvagg)
