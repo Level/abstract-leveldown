@@ -2,6 +2,38 @@
 
 ## [Unreleased]
 
+## [3.0.0] - 2017-11-04
+
+TODO
+
+## [2.7.2] - 2017-10-11
+
+TODO
+
+## [2.7.1] - 2017-09-30
+
+TODO
+
+## [2.7.0] - 2017-09-12
+
+TODO
+
+## [2.6.3] - 2017-09-05
+
+TODO
+
+## [2.6.2] - 2017-07-30
+
+TODO
+
+## [2.6.1] - 2016-09-12
+
+TODO
+
+## [2.6.0] - 2016-03-10
+
+TODO
+
 ## [2.5.0] - 2016-05-01
 
 * [[`fd4ba39136`](https://github.com/level/abstract-leveldown/commit/fd4ba39136)] - 2.5.0 (Julian Gruber)
@@ -113,6 +145,42 @@ No change.
 * Lots of stuff between 0.11.1 and now, omitted updating changelog
 * Switch to allowing writes of empty values: null, undefined, '', []
 
+## [1.0.0] - 2014-08-24
+
+TODO
+
+## [0.12.4] - 2014-08-20
+
+TODO
+
+## [0.12.3] - 2014-06-27
+
+TODO
+
+## [0.12.2] - 2014-04-26
+
+TODO
+
+## [0.12.1] - 2014-04-26
+
+TODO
+
+## [0.12.0] - 2014-03-12
+
+TODO
+
+## [0.11.4] - 2014-03-11
+
+TODO
+
+## [0.11.3] - 2014-01-26
+
+TODO
+
+## [0.11.2] - 2013-12-05
+
+TODO
+
 ## [0.11.1] - 2013-11-15
 
 * Adjust approximate-size-test.js to account for snappy compression
@@ -130,11 +198,79 @@ No change.
 
 * Relax check for 'Not Found: ' in error message to be case insensitive in get-test.js (@rvagg)
 
-## 0.10.0 - 2013-08-19
+## [0.10.0] - 2013-08-19
 
 * Added test for gt, gte, lt, lte ranges (@dominictarr)
 
+## [0.9.0] - 2013-08-11
+
+TODO
+
+## [0.8.2] - 2013-08-02
+
+TODO
+
+## [0.8.1] - 2013-08-02
+
+TODO
+
+## [0.8.0] - 2013-08-02
+
+TODO
+
+## [0.7.4] - 2013-08-02
+
+TODO
+
+## [0.7.3] - 2013-07-26
+
+TODO
+
+## [0.7.2] - 2013-07-08
+
+TODO
+
+## [0.7.1] - 2013-05-15
+
+TODO
+
+## [0.7.0] - 2013-05-14
+
+TODO
+
+## [0.6.1] - 2013-05-14
+
+TODO
+
+## [0.6.0] - 2013-05-14
+
+TODO
+
+## [0.5.0] - 2013-05-14
+
+TODO
+
+## [0.4.0] - 2013-05-14
+
+TODO
+
+## [0.3.0] - 2013-05-04
+
+TODO
+
+## 0.2.1 - 2013-05-04
+
+* First release.
+
 [Unreleased]: https://github.com/level/abstract-leveldown/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/level/abstract-leveldown/compare/v2.7.2...v3.0.0
+[2.7.2]: https://github.com/level/abstract-leveldown/compare/v2.7.1...v2.7.2
+[2.7.1]: https://github.com/level/abstract-leveldown/compare/v2.7.0...v2.7.1
+[2.7.0]: https://github.com/level/abstract-leveldown/compare/v2.6.3...v2.7.0
+[2.6.3]: https://github.com/level/abstract-leveldown/compare/v2.6.2...v2.6.3
+[2.6.2]: https://github.com/level/abstract-leveldown/compare/v2.6.1...v2.6.2
+[2.6.1]: https://github.com/level/abstract-leveldown/compare/v2.6.0...v2.6.1
+[2.6.0]: https://github.com/level/abstract-leveldown/compare/v2.5.0...v2.6.0
 [2.5.0]: https://github.com/level/abstract-leveldown/compare/v2.4.1...v2.5.0
 [2.4.1]: https://github.com/level/abstract-leveldown/compare/v2.4.0...v2.4.1
 [2.4.0]: https://github.com/level/abstract-leveldown/compare/v2.3.1...v2.4.0
@@ -151,8 +287,32 @@ No change.
 [2.0.3]: https://github.com/level/abstract-leveldown/compare/v2.0.2...v2.0.3
 [2.0.2]: https://github.com/level/abstract-leveldown/compare/v2.0.1...v2.0.2
 [2.0.1]: https://github.com/level/abstract-leveldown/compare/v2.0.0...v2.0.1
-[2.0.0]: https://github.com/level/abstract-leveldown/compare/0.11.1...v2.0.0
+[2.0.0]: https://github.com/level/abstract-leveldown/compare/v1.0.0...v2.0.0
+[1.0.0]: https://github.com/level/abstract-leveldown/compare/v0.12.4...v1.0.0
+[0.12.4]: https://github.com/level/abstract-leveldown/compare/v0.12.3...v0.12.4
+[0.12.3]: https://github.com/level/abstract-leveldown/compare/v0.12.2...v0.12.3
+[0.12.2]: https://github.com/level/abstract-leveldown/compare/v0.12.1...v0.12.2
+[0.12.1]: https://github.com/level/abstract-leveldown/compare/v0.12.0...v0.12.1
+[0.12.0]: https://github.com/level/abstract-leveldown/compare/v0.11.4...v0.12.0
+[0.11.4]: https://github.com/level/abstract-leveldown/compare/v0.11.3...v0.11.4
+[0.11.3]: https://github.com/level/abstract-leveldown/compare/v0.11.2...v0.11.3
+[0.11.2]: https://github.com/level/abstract-leveldown/compare/0.11.1...v0.11.2
 [0.11.1]: https://github.com/level/abstract-leveldown/compare/0.11.0...0.11.1
 [0.11.0]: https://github.com/level/abstract-leveldown/compare/0.10.2...0.11.0
 [0.10.2]: https://github.com/level/abstract-leveldown/compare/0.10.1...0.10.2
 [0.10.1]: https://github.com/level/abstract-leveldown/compare/0.10.0...0.10.1
+[0.10.0]: https://github.com/level/abstract-leveldown/compare/0.9.0...0.10.0
+[0.9.0]: https://github.com/level/abstract-leveldown/compare/0.8.2...0.9.0
+[0.8.2]: https://github.com/level/abstract-leveldown/compare/0.8.1...0.8.2
+[0.8.1]: https://github.com/level/abstract-leveldown/compare/0.8.0...0.8.1
+[0.8.0]: https://github.com/level/abstract-leveldown/compare/0.7.4...0.8.0
+[0.7.4]: https://github.com/level/abstract-leveldown/compare/0.7.3...0.7.4
+[0.7.3]: https://github.com/level/abstract-leveldown/compare/0.7.2...0.7.3
+[0.7.2]: https://github.com/level/abstract-leveldown/compare/0.7.1...0.7.2
+[0.7.1]: https://github.com/level/abstract-leveldown/compare/0.7.0...0.7.1
+[0.7.0]: https://github.com/level/abstract-leveldown/compare/0.6.1...0.7.0
+[0.6.1]: https://github.com/level/abstract-leveldown/compare/0.6.0...0.6.1
+[0.6.0]: https://github.com/level/abstract-leveldown/compare/0.5.0...0.6.0
+[0.5.0]: https://github.com/level/abstract-leveldown/compare/0.4.0...0.5.0
+[0.4.0]: https://github.com/level/abstract-leveldown/compare/0.3.0...0.4.0
+[0.3.0]: https://github.com/level/abstract-leveldown/compare/0.2.1...0.3.0
