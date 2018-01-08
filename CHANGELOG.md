@@ -484,7 +484,7 @@ No change.
 ### Fixed
 ### Removed
 
-## 0.0.0 - 2013-05-04
+## 0.0.0 - 2013-03-15
 
 * First release.
 
