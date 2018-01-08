@@ -298,33 +298,27 @@ No change.
 
 ## [0.11.1] - 2013-11-15
 
-### Added
 ### Changed
-### Fixed
-### Removed
 * Adjust approximate-size-test.js to account for snappy compression
 
 ## [0.11.0] - 2013-10-14
 
 ### Added
-### Changed
-### Fixed
-### Removed
-* Introduce _setupIteratorOptions() method to fix options object prior to _iterator() call; makes working with gt/gte/lt/lte options a little easier (@rvagg)
+* `AbstractLevelDOWN.prototype._setupIteratorOptions` method to fix options object prior to _iterator() call; makes working with range options a little easier (@rvagg)
 
 ## [0.10.2] - 2013-09-06
 
 ### Changed
-- Refactor duplicated versions of `isTypedArray` into `abstract/util.js` (@rvagg)
-- Refactor duplicated versions of `'NotFound'` checks into `abstract/util.js`, fixed too-strict version in `get-test.js` (@rvagg)
+* Refactor duplicated versions of `isTypedArray` into `abstract/util.js` (@rvagg)
+* Refactor duplicated versions of `'NotFound'` checks into `abstract/util.js`, fixed too-strict version in `get-test.js` (@rvagg)
 
 ## [0.10.1] - 2013-08-29
 
 ### Added
-- @substack to contributors (@rvagg)
+* @substack to contributors (@rvagg)
 
 ### Changed
-- Relax check for 'Not Found: ' in error message to be case insensitive in `get-test.js` (@rvagg)
+* Relax check for 'Not Found: ' in error message to be case insensitive in `get-test.js` (@rvagg)
 
 ## [0.10.0] - 2013-08-19
 
@@ -334,16 +328,16 @@ No change.
 ## [0.9.0] - 2013-08-11
 
 ### Added
-- tests for simultaneous get's (@kesla)
-- tests for `AbstractChainedBatch` extendability (@kesla)
+* tests for simultaneous get's (@kesla)
+* tests for `AbstractChainedBatch` extendability (@kesla)
 
 ### Changed
-- make `AbstractChainedBatch` extendable (@kesla)
-- export `AbstractChainedBatch` from `abstract-leveldown.js` (@kesla)
+* make `AbstractChainedBatch` extendable (@kesla)
+* export `AbstractChainedBatch` from `abstract-leveldown.js` (@kesla)
 
 ### Fixed
-- broken test assert in `abstract/get-test.js` (@rvagg)
-- tests that weren't running properly (@kesla)
+* broken test assert in `abstract/get-test.js` (@rvagg)
+* tests that weren't running properly (@kesla)
 
 ## [0.8.2] - 2013-08-02
 
@@ -352,152 +346,152 @@ No changes. Merely published changes made in `0.8.1`.
 ## [0.8.1] - 2013-08-02
 
 ### Changed
-- remove `const` in `testCommon.js` (@rvagg)
+* remove `const` in `testCommon.js` (@rvagg)
 
 **Historical Note** The version in `package.json` was changed from `0.7.4` to `0.8.1`. The `0.8.1` tag exists but this version was never published to npm.
 
 ## [0.8.0] - 2013-08-02
 
 ### Added
-- `BufferType` parameter to `abstract/put-get-del-test.js` for bops support (@rvagg)
-- `isTypedArray` function which checks `ArrayBuffer` or `Uint8Array` for bops support (@rvagg)
+* `BufferType` parameter to `abstract/put-get-del-test.js` for bops support (@rvagg)
+* `isTypedArray` function which checks `ArrayBuffer` or `Uint8Array` for bops support (@rvagg)
 
 ### Changed
-- use `process.browser` check instead of `process.title == 'browser'` (@rvagg)
+* use `process.browser` check instead of `process.title == 'browser'` (@rvagg)
 
 ### Fixed
-- problems with `cleanup` function not calling back when browserified (@rvagg)
+* problems with `cleanup` function not calling back when browserified (@rvagg)
 
 **Historical Note** It seems the version in `package.json` was never changed to `0.8.0` in the git history, even though the `0.8.0` tag exists. Most likely `package.json` was modified locally during `npm publish` but was never committed.
 
 ## [0.7.4] - 2013-08-02
 
 ### Fixed
-- problems related to `browserify` and `rimraf` (@rvagg)
+* problems related to `browserify` and `rimraf` (@rvagg)
 
 ## [0.7.3] - 2013-07-26
 
 ### Added
-- `@pgte` to contributors list (@rvagg)
-- test for iterator with `limit` set to `-1` (@kesla)
+* `@pgte` to contributors list (@rvagg)
+* test for iterator with `limit` set to `-1` (@kesla)
 
 ## [0.7.2] - 2013-07-08
 
 ### Added
-- `AbstractChainedBatch.prototype._checkWritten` (@rvagg)
-- test for delete on non-existent key (@rvagg)
-- test for iterator with `start` after database `end` (@juliangruber)
+* `AbstractChainedBatch.prototype._checkWritten` (@rvagg)
+* test for delete on non-existent key (@rvagg)
+* test for iterator with `start` after database `end` (@juliangruber)
 
 ### Changed
-- chained batch state is frozen after `.write()` has been called (@rvagg)
-- `NotFound` error made case insensitive (@rvagg)
-- use `self` rather than binding functions to `this` (@juliangruber)
+* chained batch state is frozen after `.write()` has been called (@rvagg)
+* `NotFound` error made case insensitive (@rvagg)
+* use `self` rather than binding functions to `this` (@juliangruber)
 
 ### Fixed
-- don't coerce values to strings in browser (@maxogden)
-- make tests work in node and browser (@maxogden)
+* don't coerce values to strings in browser (@maxogden)
+* make tests work in node and browser (@maxogden)
 
 ## [0.7.1] - 2013-05-15
 
 ### Changed
-- adjust tests to be browserable (@rvagg)
+* adjust tests to be browserable (@rvagg)
 
 ## [0.7.0] - 2013-05-14
 
 ### Added
-- `AbstractChainedBatch.prototype.clear` (@rvagg)
+* `AbstractChainedBatch.prototype.clear` (@rvagg)
 
 ## [0.6.1] - 2013-05-14
 
 ### Changed
-- `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
+* `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
 
 ## [0.6.0] - 2013-05-14
 
 ### Changed
-- split `t.deepEqual()` into multiple `t.equal()` in `abstract/iterator-test.js` (@rvagg)
-- `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
+* split `t.deepEqual()` into multiple `t.equal()` in `abstract/iterator-test.js` (@rvagg)
+* `AbstractIterator` calls back with error instead of throw on nexting and ending (@mcollina)
 
 ## [0.5.0] - 2013-05-14
 
 ### Changed
-- `iterator.end(cb)` and `iterator.next(cb)` calls back with error instead of throws (@mcollina)
+* `iterator.end(cb)` and `iterator.next(cb)` calls back with error instead of throws (@mcollina)
 
 ## [0.4.0-1] - 2013-05-14
 
 ### Changed
-- update contributors list (@rvagg)
+* update contributors list (@rvagg)
 
 ## [0.4.0] - 2013-05-14
 
 ### Added
-- `AbstractChainedBatch` (@rvagg)
-- `AbstractLevelDOWN.prototype._chainedBatch` (@rvagg)
-- `abstract/batch-test.js` and `abstract/chained-batch-test.js` (@rvagg)
+* `AbstractChainedBatch` (@rvagg)
+* `AbstractLevelDOWN.prototype._chainedBatch` (@rvagg)
+* `abstract/batch-test.js` and `abstract/chained-batch-test.js` (@rvagg)
 
 ### Changed
-- moved `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (@rvagg)
+* moved `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (@rvagg)
 
 ## [0.3.0] - 2013-05-04
 
 ### Added
-- put back test for opening database without options (@rvagg)
-- `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (@rvagg)
-- `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (@rvagg)
+* put back test for opening database without options (@rvagg)
+* `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (@rvagg)
+* `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (@rvagg)
 
 ### Changed
-- use `this._checkKeyValue()` instead of local function (@rvagg)
-- use `this._isBuffer()` instead of `Buffer.isBuffer()` (@rvagg)
+* use `this._checkKeyValue()` instead of local function (@rvagg)
+* use `this._isBuffer()` instead of `Buffer.isBuffer()` (@rvagg)
 
 ## [0.2.3] - 2013-05-04
 
 ### Removed
-- test for opening database without options (@rvagg)
+* test for opening database without options (@rvagg)
 
 ## [0.2.2] - 2013-05-04
 
 ### Changed
-- split up `.open()` tests into `.open()` and `.openAdvanced()` (@rvagg)
+* split up `.open()` tests into `.open()` and `.openAdvanced()` (@rvagg)
 
 ## [0.2.1] - 2013-05-04
 
 ### Changed
-- convert values to `string` in `abstract/put-get-del-test.js` if `Buffer` is `undefined` (@rvagg)
+* convert values to `string` in `abstract/put-get-del-test.js` if `Buffer` is `undefined` (@rvagg)
 
 ## [0.2.0] - 2013-05-04
 
 ### Added
-- `process.browser` check for `start` and `end` keys in browser (@maxogden)
-- `levelup` contributors (@rvagg)
+* `process.browser` check for `start` and `end` keys in browser (@maxogden)
+* `levelup` contributors (@rvagg)
 
 ### Changed
-- convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (@rvagg)
-- don't stringify keys and values in `abstract/iterator-test.js` (@maxogden)
+* convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (@rvagg)
+* don't stringify keys and values in `abstract/iterator-test.js` (@maxogden)
 
 ### Fixed
-- `tape` compatibility issues (@maxogden)
+* `tape` compatibility issues (@maxogden)
 
 ## [0.1.0] - 2013-04-23
 
 ### Added
-- abstract tests from `leveldown` (@maxogden)
+* abstract tests from `leveldown` (@maxogden)
 
 ### Fixed
-- clarifications in `README` (@rvagg)
+* clarifications in `README` (@rvagg)
 
 ## [0.0.2] - 2013-03-18
 
 ### Added
-- node 0.10 to travis (@rvagg)
-- `Buffer.isBuffer()` checks to keys and values (@rvagg)
+* node 0.10 to travis (@rvagg)
+* `Buffer.isBuffer()` checks to keys and values (@rvagg)
 
 ### Changed
-- export `checkKeyValue` (@rvagg)
+* export `checkKeyValue` (@rvagg)
 
 ## [0.0.1] - 2013-03-18
 
 ### Added
-- `checkKeyValue` function for more complete error checking (@rvagg)
+* `checkKeyValue` function for more complete error checking (@rvagg)
 
 ## 0.0.0 - 2013-03-15
 
