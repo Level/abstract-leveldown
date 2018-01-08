@@ -243,63 +243,54 @@ No change.
 ## [0.12.4] - 2014-08-20
 
 ### Added
+* test that `simple-iterator` returns buffers (@kesla)
+* test for implicit snapshots (@kesla)
+
 ### Changed
-### Fixed
-### Removed
+* license to plain MIT (@andrewrk)
 
 ## [0.12.3] - 2014-06-27
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* Update `xtend` dependency (@andrewrk)
 
 ## [0.12.2] - 2014-04-26
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* `isTypedArray` checks for existence of `ArrayBuffer` and `Uint8Array` constructors before usage (@rvagg)
 
 ## [0.12.1] - 2014-04-26
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* `BufferType` in `abstract/put-get-del-test.js` defaults to `Buffer` instead of `ArrayBuffer` (@maxogden)
 
 ## [0.12.0] - 2014-03-12
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* Revert to pure `Buffer` and remove usage of `Uint16Array` (@rvagg)
 
 ## [0.11.4] - 2014-03-11
 
-### Added
-### Changed
-### Fixed
 ### Removed
+* Remove duplicate call to `t.end()` (@maxogden)
 
 ## [0.11.3] - 2014-01-26
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* Less restrictive check for buffer type (@rvagg)
 
 ## [0.11.2] - 2013-12-05
 
 ### Added
-### Changed
+* npm badges (@rvagg)
+
 ### Fixed
-### Removed
+* broken iterator tests in `test.js` (@rvagg)
 
 ## [0.11.1] - 2013-11-15
 
 ### Changed
-* Adjust approximate-size-test.js to account for snappy compression
+* Adjust `abstract/approximate-size-test.js` to account for snappy compression (@rvagg)
 
 ## [0.11.0] - 2013-10-14
 
