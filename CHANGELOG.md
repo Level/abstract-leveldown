@@ -236,9 +236,18 @@ No change.
 ## [1.0.0] - 2014-08-24
 
 ### Added
+* test that error is thrown when location isn't a string (@calvinmetcalf)
+* test for opening and closing the store (@calvinmetcalf)
+* test for iterator with `limit` set to `0` (@watson)
+* tests to `abstract/batch-test.js` (@calvinmetcalf)
+* default values for iterator options (@watson)
+* `null` check for batch options (@calvinmetcalf)
+
 ### Changed
-### Fixed
+* Ensure `Boolean` iterator options are `Boolean` (@watson)
+
 ### Removed
+* Remove options.start hackery (@rvagg)
 
 ## [0.12.4] - 2014-08-20
 
