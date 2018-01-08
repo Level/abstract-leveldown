@@ -424,69 +424,77 @@ No change.
 ## [0.4.0] - 2013-05-14
 
 ### Added
+- `AbstractChainedBatch` (Rod Vagg)
+- `AbstractLevelDOWN.prototype._chainedBatch` (Rod Vagg)
+- `abstract/batch-test.js` and `abstract/chained-batch-test.js` (Rod Vagg)
+
 ### Changed
-### Fixed
-### Removed
+- moved `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (Rod Vagg)
 
 ## [0.3.0] - 2013-05-04
 
 ### Added
+- put back test for opening database without options (Rod Vagg)
+- `AbstractLevelDOWN.prototype._isBuffer` so it can be overridden (Rod Vagg)
+- `AbstractLevelDOWN.prototype._checkKeyValue` so it can be overridden (Rod Vagg)
+
 ### Changed
-### Fixed
-### Removed
+- use `this._checkKeyValue()` instead of local function (Rod Vagg)
+- use `this._isBuffer()` instead of `Buffer.isBuffer()` (Rod Vagg)
 
 ## [0.2.3] - 2013-05-04
 
-### Added
-### Changed
-### Fixed
 ### Removed
+- test for opening database without options (Rod Vagg)
 
 ## [0.2.2] - 2013-05-04
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- split up `.open()` tests into `.open()` and `.openAdvanced()` (Rod Vagg)
 
 ## [0.2.1] - 2013-05-04
 
-### Added
 ### Changed
-### Fixed
-### Removed
+- convert values to `string` in `abstract/put-get-del-test.js` if `Buffer` is `undefined` (Rod Vagg)
 
 ## [0.2.0] - 2013-05-04
 
 ### Added
+- `process.browser` check for `start` and `end` keys in browser (Max Ogden)
+- `levelup` contributors (Rod Vagg)
+
 ### Changed
+- convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (Rod Vagg)
+- don't stringify keys and values in `abstract/iterator-test.js` (Max Ogden)
+
 ### Fixed
-### Removed
+- `tape` compatibility issues (Max Ogden)
 
 ## [0.1.0] - 2013-04-23
 
 ### Added
-### Changed
+- abstract tests from `leveldown` (Max Ogden)
+
 ### Fixed
-### Removed
+- clarifications in `README` (Rod Vagg)
 
 ## [0.0.2] - 2013-03-18
 
 ### Added
+- node 0.10 to travis (Rod Vagg)
+- `Buffer.isBuffer()` checks to keys and values (Rod Vagg)
+
 ### Changed
-### Fixed
-### Removed
+- export `checkKeyValue` (Rod Vagg)
 
 ## [0.0.1] - 2013-03-18
 
 ### Added
-### Changed
-### Fixed
-### Removed
+- `checkKeyValue` function for more complete error checking (Rod Vagg)
 
 ## 0.0.0 - 2013-03-15
 
-* First release.
+First release. :seedling:
 
 [Unreleased]: https://github.com/level/abstract-leveldown/compare/v3.0.0...HEAD
 [3.0.0]: https://github.com/level/abstract-leveldown/compare/v2.7.2...v3.0.0
