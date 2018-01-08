@@ -435,7 +435,56 @@ No change.
 ### Fixed
 ### Removed
 
-## 0.2.1 - 2013-05-04
+## [0.2.3] - 2013-05-04
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.2.2] - 2013-05-04
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.2.1] - 2013-05-04
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.2.0] - 2013-05-04
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.1.0] - 2013-04-23
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.0.2] - 2013-03-18
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## [0.0.1] - 2013-03-18
+
+### Added
+### Changed
+### Fixed
+### Removed
+
+## 0.0.0 - 2013-05-04
 
 * First release.
 
@@ -493,3 +542,10 @@ No change.
 [0.5.0]: https://github.com/level/abstract-leveldown/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/level/abstract-leveldown/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/level/abstract-leveldown/compare/0.2.1...0.3.0
+[0.2.3]: https://github.com/level/abstract-leveldown/compare/0.2.2...0.2.3
+[0.2.2]: https://github.com/level/abstract-leveldown/compare/0.2.1...0.2.2
+[0.2.1]: https://github.com/level/abstract-leveldown/compare/0.2.0...0.2.1
+[0.2.0]: https://github.com/level/abstract-leveldown/compare/0.1.0...0.2.0
+[0.1.0]: https://github.com/level/abstract-leveldown/compare/0.0.2...0.1.0
+[0.0.2]: https://github.com/level/abstract-leveldown/compare/0.0.1...0.0.2
+[0.0.1]: https://github.com/level/abstract-leveldown/compare/0.0.0...0.0.1
