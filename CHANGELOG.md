@@ -4,38 +4,66 @@
 
 ## [3.0.0] - 2017-11-04
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.7.2] - 2017-10-11
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.7.1] - 2017-09-30
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.7.0] - 2017-09-12
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.6.3] - 2017-09-05
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.6.2] - 2017-07-30
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.6.1] - 2016-09-12
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.6.0] - 2016-03-10
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [2.5.0] - 2016-05-01
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`fd4ba39136`](https://github.com/level/abstract-leveldown/commit/fd4ba39136)] - 2.5.0 (Julian Gruber)
 * [[`b00f97f9ac`](https://github.com/level/abstract-leveldown/commit/b00f97f9ac)] - Merge pull request #85 from Level/remove/stringify-key-value (Lars-Magnus Skog)
 * [[`1138d6d993`](https://github.com/level/abstract-leveldown/commit/1138d6d993)] - make tests more specific (Julian Gruber)
@@ -57,12 +85,20 @@ TODO
 
 ## [2.4.1] - 2015-08-29
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`1259fc4b0a`](https://github.com/level/abstract-leveldown/commit/1259fc4b0a)] - 2.4.1 (Julian Gruber)
 * [[`7c7db6f96c`](https://github.com/level/abstract-leveldown/commit/7c7db6f96c)] - Merge pull request #72 from Level/remove-const (Julian Gruber)
 * [[`1cf77b9423`](https://github.com/level/abstract-leveldown/commit/1cf77b9423)] - (#71) - remove `const` (Nolan Lawson)
 
 ## [2.4.0] - 2015-05-19
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`02e19475f6`](https://github.com/level/abstract-leveldown/commit/02e19475f6)] - 2.4.0 (Julian Gruber)
 * [[`f336523ec7`](https://github.com/level/abstract-leveldown/commit/f336523ec7)] - Merge pull request #68 from Level/add/open-states (Julian Gruber)
 * [[`c4ad1a0929`](https://github.com/level/abstract-leveldown/commit/c4ad1a0929)] - add missing t.error() calls to status tests (Julian Gruber)
@@ -71,22 +107,38 @@ TODO
 
 ## [2.3.1] - 2015-05-18
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`393c781629`](https://github.com/level/abstract-leveldown/commit/393c781629)] - document isLevelDown() (Lars-Magnus Skog)
 * [[`fd899c49b9`](https://github.com/level/abstract-leveldown/commit/fd899c49b9)] - link to level/community (Lars-Magnus Skog)
 
 ## [2.3.0] - 2015-05-18
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`9a976428e2`](https://github.com/level/abstract-leveldown/commit/9a976428e2)] - export from index.js and factor out into is-leveldown.js (Lars-Magnus Skog)
 * [[`8051f8f16c`](https://github.com/level/abstract-leveldown/commit/8051f8f16c)] - add isLevelDOWN() f
 unction (Lars-Magnus Skog)
 
 ## [2.2.2] - 2015-05-13
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`4ff0a9bfbb`](https://github.com/level/abstract-leveldown/commit/4ff0a9bfbb)] - ***Revert*** "Merge pull request #60 from ralphtheninja/empty-location" (Julian Gruber)
 * [[`fab11e9e3b`](https://github.com/level/abstract-leveldown/commit/fab11e9e3b)] - use t.equal instead of t.ok(a === b) (Julian Gruber)
 
 ## [2.2.1] - 2015-05-12
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`f5051090e4`](https://github.com/level/abstract-leveldown/commit/f5051090e4)] - merge location string checks into one if-statement (Lars-Magnus Skog)
 * [[`cd362b2b9f`](https://github.com/level/abstract-leveldown/commit/cd362b2b9f)] - empty location string throws (Lars-Magnus Skog)
 * [[`e6d1cb80ea`](https://github.com/level/abstract-leveldown/commit/e6d1cb80ea)] - .throws is different for tape (Lars-Magnus Skog)
@@ -94,23 +146,43 @@ unction (Lars-Magnus Skog)
 
 ## [2.2.0] - 2015-05-10
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`aa867b3760`](https://github.com/level/abstract-leveldown/commit/aa867b3760)] - Merge pull request #58 from Level/add/put-sync (Julian Gruber)
 * [[`234de997bb`](https://github.com/level/abstract-leveldown/commit/234de997bb)] - add sync put tests (Julian Gruber)
 
 ## [2.1.4] - 2015-04-28
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`969116d00f`](https://github.com/level/abstract-leveldown/commit/969116d00f)] - use t.equal() with tape (Lars-Magnus Skog)
 
 ## [2.1.3] - 2015-04-28
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`68096e78cd`](https://github.com/level/abstract-leveldown/commit/68096e78cd)] - change from tap to tape (Lars-Magnus Skog)
 
 ## [2.1.2] - 2015-04-27
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`d79c060c9d`](https://github.com/level/abstract-leveldown/commit/d79c060c9d)] - convert buffer to string so we can compare (Lars-Magnus Skog)
 
 ## [2.1.1] - 2015-04-27
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`3881fc4290`](https://github.com/level/abstract-leveldown/commit/3881fc4290)] -**travis**: update npm so 0.8 works, add 0.12 and iojs (Lars-Magnus Skog)
 * [[`9f451e8f74`](https://github.com/level/abstract-leveldown/commit/9f451e8f74)] - rvagg/node- -> level/ (Lars-Magnus Skog)
 * [[`ecd41a72db`](https://github.com/level/abstract-leveldown/commit/ecd41a72db)] - fix typo (Hao-kang Den)
@@ -119,6 +191,10 @@ unction (Lars-Magnus Skog)
 
 ## [2.1.0] - 2014-11-09
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`7451cd15e6`](https://github.com/level/abstract-leveldown/commit/7451cd15e6)] - added @watson (Rod Vagg)
 * [[`f4a3346da7`](https://github.com/level/abstract-leveldown/commit/f4a3346da7)] - Use `error` test function when testing for errors (Thomas Watson Steen)
 * [[`24668c50e0`](https://github.com/level/abstract-leveldown/commit/24668c50e0)] - Don't fail if no value is returned by _get (Thomas Watson Steen)
@@ -131,10 +207,18 @@ No change.
 
 ## [2.0.2] - 2014-10-02
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`78052c53eb`](https://github.com/level/abstract-leveldown/commit/78052c53eb)] - add test for atomic batch operations (Calvin Metcalf)
 
 ## [2.0.1] - 2014-09-01
 
+### Added
+### Changed
+### Fixed
+### Removed
 * [[`a0b36f6a18`](https://github.com/level/abstract-leveldown/commit/a0b36f6a18)] - Remove default options that's too LevelDOWN specific (Thomas Watson Steen)
 * [[`1d97993d0b`](https://github.com/level/abstract-leveldown/commit/1d97993d0b)] - Allow boolean options to be falsy/truthy (Thomas Watson Steen)
 * [[`fb3cf56da5`](https://github.com/level/abstract-leveldown/commit/fb3cf56da5)] - Set defaults for open, get, put, del and batch options (Thomas Watson Steen)
@@ -142,121 +226,214 @@ No change.
 
 ## [2.0.0] - 2014-08-26
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Lots of stuff between 0.11.1 and now, omitted updating changelog
 * Switch to allowing writes of empty values: null, undefined, '', []
 
 ## [1.0.0] - 2014-08-24
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.12.4] - 2014-08-20
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.12.3] - 2014-06-27
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.12.2] - 2014-04-26
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.12.1] - 2014-04-26
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.12.0] - 2014-03-12
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.11.4] - 2014-03-11
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.11.3] - 2014-01-26
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.11.2] - 2013-12-05
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.11.1] - 2013-11-15
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Adjust approximate-size-test.js to account for snappy compression
 
 ## [0.11.0] - 2013-10-14
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Introduce _setupIteratorOptions() method to fix options object prior to _iterator() call; makes working with gt/gte/lt/lte options a little easier (@rvagg)
 
 ## [0.10.2] - 2013-09-06
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Refactor duplicated versions of isTypedArray into util.js (@rvagg)
 * Refactor duplicated versions of 'NotFound' checks into util.js, fixed too-strict version in get-test.js (@rvagg)
 
 ## [0.10.1] - 2013-08-29
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Relax check for 'Not Found: ' in error message to be case insensitive in get-test.js (@rvagg)
 
 ## [0.10.0] - 2013-08-19
 
+### Added
+### Changed
+### Fixed
+### Removed
 * Added test for gt, gte, lt, lte ranges (@dominictarr)
 
 ## [0.9.0] - 2013-08-11
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.8.2] - 2013-08-02
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.8.1] - 2013-08-02
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.8.0] - 2013-08-02
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.7.4] - 2013-08-02
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.7.3] - 2013-07-26
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.7.2] - 2013-07-08
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.7.1] - 2013-05-15
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.7.0] - 2013-05-14
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.6.1] - 2013-05-14
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.6.0] - 2013-05-14
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.5.0] - 2013-05-14
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.4.0] - 2013-05-14
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## [0.3.0] - 2013-05-04
 
-TODO
+### Added
+### Changed
+### Fixed
+### Removed
 
 ## 0.2.1 - 2013-05-04
 
