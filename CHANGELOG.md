@@ -329,7 +329,7 @@ No change.
 ## [0.10.0] - 2013-08-19
 
 ### Added
-* test for `gt`, `gte`, `lt` and `lte` ranges (Dominic Tarr)
+* test for `gt`, `gte`, `lt` and `lte` ranges (@dominictarr)
 
 ## [0.9.0] - 2013-08-11
 
