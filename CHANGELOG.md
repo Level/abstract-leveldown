@@ -5,58 +5,78 @@
 ## [3.0.0] - 2017-11-04
 
 ### Added
-### Changed
+* node version badge (@weevers)
+
 ### Fixed
+* Fix errors in `index.d.ts` (@sandersn)
+
 ### Removed
+* Drop support for `0.12`. Cause for new major version! (@weevers)
 
 ## [2.7.2] - 2017-10-11
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* Update `README` with new style (@ralphtheninja)
 
 ## [2.7.1] - 2017-09-30
 
-### Added
 ### Changed
-### Fixed
-### Removed
+* Refactor typings as es2015 module (@MeirionHughes)
 
 ## [2.7.0] - 2017-09-12
 
 ### Added
-### Changed
-### Fixed
-### Removed
+* `TypeScript` definitions to `index.d.ts` (@MeirionHughes)
 
 ## [2.6.3] - 2017-09-05
 
 ### Added
+* `GreenKeeper` (@ralphtheninja)
+* test for key/value serialization (@bigeasy)
+* test for `undefined` value serializing to empty string (@ralphtheninja)
+
 ### Changed
+* Update dependencies (@ralphtheninja)
+* Convert nullish values to empty strings (@bigeasy)
+* Use `t.equal(a, b)` instead of `t.ok(a === b)` (@bigeasy)
+* Relax tests for serializing object in `abstract/chained-batch-test.js` (@ralphtheninja)
+
 ### Fixed
+* Document `.status` property (@ralphtheninja)
+
 ### Removed
 
 ## [2.6.2] - 2017-07-30
 
 ### Added
+* tests for serialization extensibility (@juliangruber)
+
 ### Changed
+* Update dependencies and float `devDependencies` (@ralphtheninja)
+* Update copyright years (@ralphtheninja)
+* Update node versions on travis (@ralphtheninja)
+
 ### Fixed
-### Removed
+* Fix put test on object serialization (@juliangruber)
 
 ## [2.6.1] - 2016-09-12
 
-### Added
-### Changed
 ### Fixed
-### Removed
+* Fix null case in default value serializer (fixes problems in `2.6.0`) (@juliangruber)
 
 ## [2.6.0] - 2016-03-10
 
 ### Added
+* `collectBatchOps` function to buffer `_put` and `_del` inputs in `abstract/chained-batch-test.js` (@deanlandolt)
+
 ### Changed
-### Fixed
+* Use proto delegation to patch methods on db (@deanlandolt)
+* Allow serialization functions to return buffers (@deanlandolt)
+
 ### Removed
+* Remove unnecessary initialization hackery in `abstract/chained-batch-test.js` (@deanlandolt)
+
+**Historical Note** This release was a breaking change. See @juliangruber's [comment](https://github.com/Level/abstract-leveldown/pull/85#issuecomment-246980978) for more information.
 
 ## [2.5.0] - 2016-05-01
 
