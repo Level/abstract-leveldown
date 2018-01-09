@@ -2,6 +2,33 @@
 
 ## [Unreleased]
 
+### Added
+* `standard` for linting (#150) (@ralphtheninja)
+* tests to make sure callbacks are called async (@weevers)
+* tests for serialization extensibility (@weevers)
+
+### Changed
+* `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
+* Make `testCommon.js` the default value for `testCommon` parameter (@ralphtheninja)
+* Use `Buffer.isBuffer()` instead of `AbstractLevelDOWN#isBuffer` (@ralphtheninja)
+* Major cleanup of iterator tests (#161) (@ralphtheninja)
+* Pass on test function as a parameter instead of setting local global (@ralphtheninja)
+* Assert type is `'put'` or `'del'` in batch (@weevers)
+* Assert batch array elements are objects (@weevers)
+
+### Fixed
+* Ensure stores are closed properly (fixes problems on Windows) (@ralphtheninja)
+* Call back errors on next tick to avoid `zalgo` (@weevers)
+
+### Removed
+* Remove `isLevelDOWN` function and corresponding tests (@ralphtheninja)
+* Remove `AbstractLevelDOWN#approximateSize` method and corresponding tests (@ralphtheninja)
+* Remove `testBuffer` in `abstract/put-get-del-test.js` (@ralphtheninja)
+* Remove object value test in `abstract/put-test.js` (@weevers)
+* Remove serialize buffer tests (@weevers)
+* Remove serialize object tests (@weevers)
+* Remove `BufferType` parameter in `abstract/put-get-del-test.js`, use `Buffer` (@ralphtheninja)
+
 ## [3.0.0] - 2017-11-04
 
 ### Added
