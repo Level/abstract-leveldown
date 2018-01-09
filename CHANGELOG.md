@@ -4,8 +4,8 @@
 
 ### Added
 * `standard` for linting (#150) (@ralphtheninja)
-* tests to make sure callbacks are called async (@weevers)
-* tests for serialization extensibility (@weevers)
+* tests to make sure callbacks are called async (@vweevers)
+* tests for serialization extensibility (@vweevers)
 
 ### Changed
 * `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
@@ -13,32 +13,32 @@
 * Use `Buffer.isBuffer()` instead of `AbstractLevelDOWN#isBuffer` (@ralphtheninja)
 * Major cleanup of iterator tests (#161) (@ralphtheninja)
 * Pass on test function as a parameter instead of setting local global (@ralphtheninja)
-* Assert type is `'put'` or `'del'` in batch (@weevers)
-* Assert batch array elements are objects (@weevers)
+* Assert type is `'put'` or `'del'` in batch (@vweevers)
+* Assert batch array elements are objects (@vweevers)
 
 ### Fixed
 * Ensure stores are closed properly (fixes problems on Windows) (@ralphtheninja)
-* Call back errors on next tick to avoid `zalgo` (@weevers)
+* Call back errors on next tick to avoid `zalgo` (@vweevers)
 
 ### Removed
 * Remove `isLevelDOWN` function and corresponding tests (@ralphtheninja)
 * Remove `AbstractLevelDOWN#approximateSize` method and corresponding tests (@ralphtheninja)
 * Remove `testBuffer` in `abstract/put-get-del-test.js` (@ralphtheninja)
-* Remove object value test in `abstract/put-test.js` (@weevers)
-* Remove serialize buffer tests (@weevers)
-* Remove serialize object tests (@weevers)
+* Remove object value test in `abstract/put-test.js` (@vweevers)
+* Remove serialize buffer tests (@vweevers)
+* Remove serialize object tests (@vweevers)
 * Remove `BufferType` parameter in `abstract/put-get-del-test.js`, use `Buffer` (@ralphtheninja)
 
 ## [3.0.0] - 2017-11-04
 
 ### Added
-* node version badge (@weevers)
+* node version badge (@vweevers)
 
 ### Fixed
 * Fix errors in `index.d.ts` (@sandersn)
 
 ### Removed
-* Drop support for `0.12`. Cause for new major version! (@weevers)
+* Drop support for `0.12`. Cause for new major version! (@vweevers)
 
 ## [2.7.2] - 2017-10-11
 
