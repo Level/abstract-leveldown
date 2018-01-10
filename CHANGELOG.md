@@ -7,6 +7,7 @@
 * tests to make sure callbacks are called async (@vweevers)
 * tests for serialization extensibility (@vweevers)
 * @vweevers to contributors (@ralphtheninja)
+* `dont-break` to minimize dependent breakage (@ralphtheninja)
 
 ### Changed
 * `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
