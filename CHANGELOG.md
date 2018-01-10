@@ -6,6 +6,7 @@
 * `standard` for linting (#150) (@ralphtheninja)
 * tests to make sure callbacks are called async (@vweevers)
 * tests for serialization extensibility (@vweevers)
+* @vweevers to contributors (@ralphtheninja)
 
 ### Changed
 * `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
