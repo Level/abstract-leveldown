@@ -2,11 +2,9 @@
 
 ## v4
 
-#### `testCommon` parameter defaults
+#### default `testCommon` parameter
 
-The `testCommon` variable will now default to `testCommon.js` in `abstract-leveldown`. Unless your implementation needs a modified version, you can just omit the parameter.
-
-For instance, `leveldown` requires `testCommon.js` directly from `abstract-leveldown` and passes it in as a parameter, which makes for unnecessary boiler plate.
+The `testCommon` parameter will now default to `abstract-leveldown/testCommon.js`. You can omit this parameter, unless your implementation needs a custom version.
 
 If your code today looks something like:
 
@@ -31,9 +29,9 @@ abstract.all(leveldown, test)
 
 #### `testBuffer` parameter removed
 
-The `abstract/put-get-del-test.js` previously took a custom `testBuffer` parameter, which now has been removed. After an [analysis](https://github.com/Level/abstract-leveldown/pull/175#issuecomment-353867144) of different implementations we came to the conclusion that no implementation really needed this parameter. They basically just passed in a `Buffer` with a custom value which is more unnecessary boiler plate.
+The `abstract/put-get-del-test.js` previously took a custom `testBuffer` parameter. After an [analysis](https://github.com/Level/abstract-leveldown/pull/175#issuecomment-353867144) of various implementations we came to the conclusion that the parameter has no use.
 
-If your implementation are using this abstract test, change from:
+If your implementation is using this abstract test, change from:
 
 ```js
 const test = require('tape')
@@ -78,7 +76,7 @@ Also, the corresponding abstract tests have been removed, so your implementation
 
 #### `._isBuffer` method removed
 
-If you rely on this use `Buffer.isBuffer()` instead.
+Because `Buffer` is available in all environments nowadays, there is no need for alternatives like typed arrays. It is preferred to use `Buffer` and `Buffer.isBuffer()` directly.
 
 #### `isLevelDOWN` function removed
 
@@ -86,9 +84,9 @@ This was a legacy function and no implementation seems to use it.
 
 #### `ranges-test.js` renamed
 
-We have refactored a lot of the tests, specifically the iterator tests were split into two tests and in that process we renamed `ranges-test.js` to `iterator-range-test.js`.
+We have refactored a lot of the tests. Specifically the iterator tests were split in two and in that process we renamed `ranges-test.js` to `iterator-range-test.js`.
 
-If your implementation are using these tests then change from:
+If your implementation is using these tests then change from:
 
 ```js
 const abstract = require('abstract-leveldown/abstract/ranges-test')
