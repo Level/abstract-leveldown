@@ -2,11 +2,14 @@
 
 ## [Unreleased]
 
+## [4.0.0] - 2018-01-20
+
 ### Added
 * `standard` for linting (#150) (@ralphtheninja)
 * tests to make sure callbacks are called async (@vweevers)
 * tests for serialization extensibility (@vweevers)
 * @vweevers to contributors (@ralphtheninja)
+* upgrade guide in `UPGRADING.md` (@ralphtheninja)
 
 ### Changed
 * `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
@@ -506,7 +509,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[Unreleased]: https://github.com/level/abstract-leveldown/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/level/abstract-leveldown/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/level/abstract-leveldown/compare/v2.7.2...v3.0.0
 [2.7.2]: https://github.com/level/abstract-leveldown/compare/v2.7.1...v2.7.2
 [2.7.1]: https://github.com/level/abstract-leveldown/compare/v2.7.0...v2.7.1
