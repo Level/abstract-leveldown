@@ -10,6 +10,7 @@
 * tests for serialization extensibility (@vweevers)
 * @vweevers to contributors (@ralphtheninja)
 * upgrade guide in `UPGRADING.md` (@ralphtheninja)
+* node 9 to travis (@ralphtheninja)
 
 ### Changed
 * `AbstractLevelDOWN#_setupIteratorOptions` ignores empty range options (@ralphtheninja)
