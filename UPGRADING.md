@@ -1,5 +1,7 @@
 # Upgrade Guide
 
+This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the changelog.
+
 ## v4
 
 #### default `testCommon` parameter
@@ -68,9 +70,7 @@ abstract.all(leveldown, test)
 
 #### `.approximateSize` method removed
 
-The `.approximateSize` method has been removed. The rationale behind this is that it's a feature heavily related to `LevelDB` and not necessarily something that's used in other stores. If your store has implemented `._approximateSize` it will never be called by `abstract-leveldown`.
-
-If your implementation needs this, it must rename `._approximateSize` to `.approximateSize` and also take care of the initialization code, take a look at what `leveldown` has done if you need more details.
+The `.approximateSize` method has been removed from the public API. It is heavily related to `LevelDB` and more often than not, other stores lack the native primitives to implement this. If you did implement the internal `_approximateSize` method, that is now dead code. To preserve the method in your public API, rename it to `approximateSize` and also take care of the initialization code. Look to `leveldown` for inspiration.
 
 Also, the corresponding abstract tests have been removed, so your implementation can no longer require `abstract/approximate-size-test`.
 
@@ -80,7 +80,7 @@ Because `Buffer` is available in all environments nowadays, there is no need for
 
 #### `isLevelDOWN` function removed
 
-This was a legacy function and no implementation seems to use it.
+This was a legacy function.
 
 #### `ranges-test.js` renamed
 
