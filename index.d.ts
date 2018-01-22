@@ -19,8 +19,6 @@ interface AbstractLevelDOWN<K=any, V=any, O=any, PO=any, GO=any, DO=any, IO=any,
 
   iterator(options?: IO & AbstractIteratorOptions<K>): AbstractIterator<K, V>;
 
-  approximateSize(start: K, end: K, cb: (err: any, size: number) => void): void;
-
   [index: string]: any;
 }
 
@@ -42,7 +40,7 @@ export interface AbstractIteratorOptions<K=any> {
   values?: boolean;
 }
 
-export type Batch<K=any, V=any> = PutBatch<K, V> | DelBatch<K>
+export type Batch<K=any, V?=any> = PutBatch<K, V> | DelBatch<K>
 
 export interface PutBatch<K=any, V=any> {
   type: 'put',
@@ -56,6 +54,7 @@ export interface DelBatch<K=any, V=any> {
 }
 
 interface AbstractIterator<K=any, V=any> {
+  db: any;
   next(callback: (err: any, key: K, value: V) => void): void;
   end(callback: (err: any) => void): void;
 }
@@ -82,4 +81,3 @@ interface AbstractChainedBatchConstructor {
 export const AbstractLevelDOWN: AbstractLevelDOWNConstructor
 export const AbstractIterator: AbstractIteratorConstructor
 export const AbstractChainedBatch: AbstractChainedBatchConstructor
-export function isLevelDOWN(db: any): boolean;
