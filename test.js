@@ -6,15 +6,15 @@ var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
 
-function factory (location, opts) {
-  return new AbstractLevelDOWN(location, opts)
+function factory (location) {
+  return new AbstractLevelDOWN(location)
 }
 
 /**
  * Compatibility with basic LevelDOWN API
  */
 
-require('./abstract/leveldown-test').args(factory, test, testCommon)
+require('./abstract/leveldown-test').args(factory, test)
 
 require('./abstract/open-test').args(factory, test, testCommon)
 
@@ -30,7 +30,7 @@ require('./abstract/put-test').args(test)
 require('./abstract/put-get-del-test').setUp(factory, test, testCommon)
 require('./abstract/put-get-del-test').errorKeys(test)
 // require('./abstract/put-get-del-test').nonErrorKeys(test, testCommon)
-require('./abstract/put-get-del-test').errorValues(test)
+require('./abstract/put-get-del-test').errorValues()
 require('./abstract/put-get-del-test').tearDown(test, testCommon)
 
 require('./abstract/batch-test').setUp(factory, test, testCommon)
