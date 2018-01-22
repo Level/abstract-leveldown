@@ -1,3 +1,5 @@
+'use strict'
+
 var db
 const verifyNotFoundError = require('./util').verifyNotFoundError
 const testBuffer = Buffer.from('testbuffer')
