@@ -34,20 +34,19 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   options.createIfMissing = options.createIfMissing !== false
   options.errorIfExists = !!options.errorIfExists
 
-  if (typeof this._open === 'function') {
-    this.status = 'opening'
-    this._open(options, function (err) {
-      if (err) {
-        self.status = oldStatus
-        return callback(err)
-      }
-      self.status = 'open'
-      callback()
-    })
-  } else {
-    this.status = 'open'
-    process.nextTick(callback)
-  }
+  this.status = 'opening'
+  this._open(options, function (err) {
+    if (err) {
+      self.status = oldStatus
+      return callback(err)
+    }
+    self.status = 'open'
+    callback()
+  })
+}
+
+AbstractLevelDOWN.prototype._open = function (options, callback) {
+  process.nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
@@ -58,20 +57,19 @@ AbstractLevelDOWN.prototype.close = function (callback) {
     throw new Error('close() requires a callback argument')
   }
 
-  if (typeof this._close === 'function') {
-    this.status = 'closing'
-    this._close(function (err) {
-      if (err) {
-        self.status = oldStatus
-        return callback(err)
-      }
-      self.status = 'closed'
-      callback()
-    })
-  } else {
-    this.status = 'closed'
-    process.nextTick(callback)
-  }
+  this.status = 'closing'
+  this._close(function (err) {
+    if (err) {
+      self.status = oldStatus
+      return callback(err)
+    }
+    self.status = 'closed'
+    callback()
+  })
+}
+
+AbstractLevelDOWN.prototype._close = function (callback) {
+  process.nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
@@ -90,10 +88,10 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
   options.asBuffer = options.asBuffer !== false
 
-  if (typeof this._get === 'function') {
-    return this._get(key, options, callback)
-  }
+  this._get(key, options, callback)
+}
 
+AbstractLevelDOWN.prototype._get = function (key, options, callback) {
   process.nextTick(function () { callback(new Error('NotFound')) })
 }
 
@@ -112,10 +110,10 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 
   if (typeof options !== 'object') { options = {} }
 
-  if (typeof this._put === 'function') {
-    return this._put(key, value, options, callback)
-  }
+  this._put(key, value, options, callback)
+}
 
+AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
   process.nextTick(callback)
 }
 
@@ -133,10 +131,10 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 
   if (typeof options !== 'object') { options = {} }
 
-  if (typeof this._del === 'function') {
-    return this._del(key, options, callback)
-  }
+  this._del(key, options, callback)
+}
 
+AbstractLevelDOWN.prototype._del = function (key, options, callback) {
   process.nextTick(callback)
 }
 
@@ -180,10 +178,10 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     serialized[i] = e
   }
 
-  if (typeof this._batch === 'function') {
-    return this._batch(serialized, options, callback)
-  }
+  this._batch(serialized, options, callback)
+}
 
+AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
@@ -227,11 +225,11 @@ function isEmptyBuffer (v) {
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
   if (typeof options !== 'object') { options = {} }
-
   options = this._setupIteratorOptions(options)
+  return this._iterator(options)
+}
 
-  if (typeof this._iterator === 'function') { return this._iterator(options) }
-
+AbstractLevelDOWN.prototype._iterator = function (options) {
   return new AbstractIterator(this)
 }
 

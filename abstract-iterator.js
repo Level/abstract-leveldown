@@ -22,17 +22,14 @@ AbstractIterator.prototype.next = function (callback) {
   }
 
   self._nexting = true
-  if (typeof self._next === 'function') {
-    return self._next(function () {
-      self._nexting = false
-      callback.apply(null, arguments)
-    })
-  }
-
-  process.nextTick(function () {
+  self._next(function () {
     self._nexting = false
-    callback()
+    callback.apply(null, arguments)
   })
+}
+
+AbstractIterator.prototype._next = function (callback) {
+  process.nextTick(callback)
 }
 
 AbstractIterator.prototype.end = function (callback) {
@@ -45,9 +42,10 @@ AbstractIterator.prototype.end = function (callback) {
   }
 
   this._ended = true
+  this._end(callback)
+}
 
-  if (typeof this._end === 'function') { return this._end(callback) }
-
+AbstractIterator.prototype._end = function (callback) {
   process.nextTick(callback)
 }
 
