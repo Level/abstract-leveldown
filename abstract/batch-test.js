@@ -19,14 +19,22 @@ module.exports.args = function (test) {
   test('test batch() with missing `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1' }], function (err) {
       t.error(err)
-      t.end()
+      db.get('foo1', function (err, value) {
+        t.notOk(err, 'no error')
+        t.equal(value, null)
+        t.end()
+      })
     })
   })
 
   test('test batch() with null `value`', function (t) {
     db.batch([{ type: 'put', key: 'foo1', value: null }], function (err) {
       t.error(err)
-      t.end()
+      db.get('foo1', function (err, value) {
+        t.notOk(err, 'no error')
+        t.equal(value, null)
+        t.end()
+      })
     })
   })
 
