@@ -16,6 +16,8 @@ You add functionality by implementing the underscore versions of the operations.
 
 Additionally, all methods provide argument checking and sensible defaults for optional arguments. All bad-argument errors are compatible with `leveldown` (they pass the `leveldown` method arguments tests). For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
 
+**If you are upgrading:** please see [UPGRADING.md](UPGRADING.md).
+
 ## Example
 
 A simplistic in-memory `leveldown` replacement
