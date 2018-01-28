@@ -48,7 +48,9 @@
   },
   "scripts": {
     "test": "standard && node test.js && npm run test-ts",
-    "test-ts": "ts-node --type-check --no-cache test.js"
+    "test-ts": "npm run test-ts-types && npm run test-ts-suite",
+    "test-ts-types": "ts-node --type-check --no-cache test-types.ts",
+    "test-ts-suite": "ts-node --type-check --no-cache test.js"
   },
   "license": "MIT",
   "engines": {
