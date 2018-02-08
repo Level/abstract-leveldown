@@ -29,13 +29,13 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   key = this._serializeKey(key)
   value = this._serializeValue(value)
 
-  if (typeof this._put === 'function') {
-    this._put(key, value)
-  } else {
-    this._operations.push({ type: 'put', key: key, value: value })
-  }
+  this._put(key, value)
 
   return this
+}
+
+AbstractChainedBatch.prototype._put = function (key, value) {
+  this._operations.push({ type: 'put', key: key, value: value })
 }
 
 AbstractChainedBatch.prototype.del = function (key) {
@@ -45,25 +45,24 @@ AbstractChainedBatch.prototype.del = function (key) {
   if (err) { throw err }
 
   key = this._serializeKey(key)
-
-  if (typeof this._del === 'function') {
-    this._del(key)
-  } else {
-    this._operations.push({ type: 'del', key: key })
-  }
+  this._del(key)
 
   return this
+}
+
+AbstractChainedBatch.prototype._del = function (key) {
+  this._operations.push({ type: 'del', key: key })
 }
 
 AbstractChainedBatch.prototype.clear = function () {
   this._checkWritten()
-
   this._operations = []
-
-  if (typeof this._clear === 'function') { this._clear() }
+  this._clear()
 
   return this
 }
+
+AbstractChainedBatch.prototype._clear = function noop () {}
 
 AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
@@ -76,6 +75,7 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
 
   this._written = true
 
+  // @ts-ignore
   if (typeof this._write === 'function') { return this._write(callback) }
 
   if (typeof this._db._batch === 'function') {

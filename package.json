@@ -35,16 +35,22 @@
     "xtend": "~4.0.0"
   },
   "devDependencies": {
+    "@types/node": "^9.3.0",
     "rimraf": "^2.6.1",
     "sinon": "^4.0.0",
     "standard": "^10.0.3",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
   },
   "browser": {
     "rimraf": false
   },
   "scripts": {
-    "test": "standard && node test.js"
+    "test": "standard && node test.js && npm run test-ts",
+    "test-ts": "npm run test-ts-types && npm run test-ts-suite",
+    "test-ts-types": "ts-node --type-check --no-cache test-types.ts",
+    "test-ts-suite": "ts-node --type-check --no-cache test.js"
   },
   "license": "MIT",
   "engines": {
