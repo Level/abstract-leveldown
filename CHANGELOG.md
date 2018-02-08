@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+### Added
+* Run test suite in TypeScript in addition to Node.js (@vweevers)
+* Add TypeScript smoke test (@vweevers)
+* Add TypeScript readme section with stability badge (@vweevers)
+
+### Fixed
+* Update TypeScript typings for v4 (@vweevers)
+* Use ES6 classes in tests to please TypeScript (@vweevers)
+* Define default methods on prototype to please TypeScript (@vweevers)
+
+### Removed
+* Remove obsolete parameters from tests (@vweevers)
+
+**Historical Note** This was released as a patch because it only changed tests
+and TypeScript typings (which are marked experimental and don't follow semver).
+
 ## [4.0.0] - 2018-01-20
 
 ### Added
