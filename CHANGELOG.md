@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+* Fix `iterator#next` to return `this` (@vweevers)
+
 ## [4.0.1] - 2018-02-09
 
 ### Added
