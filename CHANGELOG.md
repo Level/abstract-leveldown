@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.0.2] - 2018-02-09
+
 ### Fixed
 * Fix `iterator#next` to return `this` (@vweevers)
 
@@ -531,7 +533,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.2...HEAD
+[4.0.2]: https://github.com/level/abstract-leveldown/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/level/abstract-leveldown/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/level/abstract-leveldown/compare/v3.0.0...v4.0.0
 [3.0.0]: https://github.com/level/abstract-leveldown/compare/v2.7.2...v3.0.0
