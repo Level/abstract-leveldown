@@ -55,7 +55,7 @@ export interface DelBatch<K=any, V=any> {
 
 interface AbstractIterator<K=any, V=any> {
   db: any;
-  next(callback: (err: any, key: K, value: V) => void): void;
+  next(callback: (err: any, key: K, value: V) => void): this;
   end(callback: (err: any) => void): void;
 }
 

@@ -40,6 +40,13 @@ module.exports.args = function (test) {
     )
     iterator.end(t.end.bind(t))
   })
+
+  test('test iterator#next returns this', function (t) {
+    var iterator = db.iterator()
+    var self = iterator.next(function () {})
+    t.ok(iterator === self)
+    iterator.end(t.end.bind(t))
+  })
 }
 
 module.exports.sequence = function (test) {

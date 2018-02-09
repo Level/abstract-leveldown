@@ -19,3 +19,8 @@ new AbstractLevelDOWN('loc').put(buf, false, (err: Error) => {})
 new AbstractLevelDOWN('loc').get(1, (err: Error, value: any) => {})
 new AbstractLevelDOWN('loc').get('key', (err: Error, value: any) => {})
 new AbstractLevelDOWN('loc').get(buf, (err: Error, value: any) => {})
+
+// Test that iterator.next() returns this
+const db = new AbstractLevelDOWN('loc')
+const iterator = db.iterator().next(function (err: Error, key: any, value: any) {})
+iterator.end(function (err: Error) {})

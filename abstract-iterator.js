@@ -14,11 +14,13 @@ AbstractIterator.prototype.next = function (callback) {
   }
 
   if (self._ended) {
-    return process.nextTick(callback, new Error('cannot call next() after end()'))
+    process.nextTick(callback, new Error('cannot call next() after end()'))
+    return self
   }
 
   if (self._nexting) {
-    return process.nextTick(callback, new Error('cannot call next() before previous next() has completed'))
+    process.nextTick(callback, new Error('cannot call next() before previous next() has completed'))
+    return self
   }
 
   self._nexting = true
@@ -26,6 +28,8 @@ AbstractIterator.prototype.next = function (callback) {
     self._nexting = false
     callback.apply(null, arguments)
   })
+
+  return self
 }
 
 AbstractIterator.prototype._next = function (callback) {
