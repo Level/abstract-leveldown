@@ -6,7 +6,7 @@ module.exports.args = function (leveldown, test, testCommon) {
   test('test database open no-arg throws', function (t) {
     var db = leveldown(testCommon.location())
     t.throws(
-        db.open.bind(db)
+      db.open.bind(db)
       , { name: 'Error', message: 'open() requires a callback argument' }
       , 'no-arg open() throws'
     )
@@ -16,7 +16,7 @@ module.exports.args = function (leveldown, test, testCommon) {
   test('test callback-less, 1-arg, open() throws', function (t) {
     var db = leveldown(testCommon.location())
     t.throws(
-        db.open.bind(db, {})
+      db.open.bind(db, {})
       , { name: 'Error', message: 'open() requires a callback argument' }
       , 'callback-less, 1-arg open() throws'
     )

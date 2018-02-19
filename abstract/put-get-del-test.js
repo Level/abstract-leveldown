@@ -115,7 +115,7 @@ module.exports.nonErrorKeys = function (test) {
 
   // standard String key
   makePutGetDelSuccessfulTest(
-      test
+    test
     , 'long String key'
     , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
     , 'foo'
@@ -148,7 +148,7 @@ module.exports.nonErrorValues = function (test) {
 
   // standard String value
   makePutGetDelSuccessfulTest(
-      test
+    test
     , 'long String value'
     , 'foo'
     , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'

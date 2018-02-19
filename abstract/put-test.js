@@ -16,7 +16,7 @@ module.exports.setUp = function (_leveldown, test, _testCommon) {
 module.exports.args = function (test) {
   test('test argument-less put() throws', function (t) {
     t.throws(
-        db.put.bind(db)
+      db.put.bind(db)
       , { name: 'Error', message: 'put() requires a callback argument' }
       , 'no-arg put() throws'
     )
@@ -25,7 +25,7 @@ module.exports.args = function (test) {
 
   test('test callback-less, 1-arg, put() throws', function (t) {
     t.throws(
-        db.put.bind(db, 'foo')
+      db.put.bind(db, 'foo')
       , { name: 'Error', message: 'put() requires a callback argument' }
       , 'callback-less, 1-arg put() throws'
     )
@@ -34,7 +34,7 @@ module.exports.args = function (test) {
 
   test('test callback-less, 2-arg, put() throws', function (t) {
     t.throws(
-        db.put.bind(db, 'foo', 'bar')
+      db.put.bind(db, 'foo', 'bar')
       , { name: 'Error', message: 'put() requires a callback argument' }
       , 'callback-less, 2-arg put() throws'
     )
@@ -43,7 +43,7 @@ module.exports.args = function (test) {
 
   test('test callback-less, 3-arg, put() throws', function (t) {
     t.throws(
-        db.put.bind(db, 'foo', 'bar', {})
+      db.put.bind(db, 'foo', 'bar', {})
       , { name: 'Error', message: 'put() requires a callback argument' }
       , 'callback-less, 3-arg put() throws'
     )
