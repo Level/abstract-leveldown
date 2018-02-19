@@ -1,7 +1,7 @@
 module.exports.args = function (leveldown, test) {
   test('test database creation no-arg throws', function (t) {
     t.throws(
-        leveldown
+      leveldown
       , { name: 'Error', message: 'constructor requires at least a location argument' }
       , 'no-arg leveldown() throws'
     )
@@ -9,9 +9,9 @@ module.exports.args = function (leveldown, test) {
   })
   test('test database creation non-string location throws', function (t) {
     t.throws(
-        function () {
-          leveldown({})
-        }
+      function () {
+        leveldown({})
+      }
       , { name: 'Error', message: 'constructor requires a location string argument' }
       , 'non-string location leveldown() throws'
     )

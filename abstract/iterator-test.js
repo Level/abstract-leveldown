@@ -12,7 +12,7 @@ module.exports.args = function (test) {
   test('test argument-less iterator#next() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
-        iterator.next.bind(iterator)
+      iterator.next.bind(iterator)
       , { name: 'Error', message: 'next() requires a callback argument' }
       , 'no-arg iterator#next() throws'
     )
@@ -23,7 +23,7 @@ module.exports.args = function (test) {
     var iterator = db.iterator()
     iterator.next(function () {
       t.throws(
-          iterator.end.bind(iterator)
+        iterator.end.bind(iterator)
         , { name: 'Error', message: 'end() requires a callback argument' }
         , 'no-arg iterator#end() throws'
       )
@@ -34,7 +34,7 @@ module.exports.args = function (test) {
   test('test argument-less iterator#end() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
-        iterator.end.bind(iterator)
+      iterator.end.bind(iterator)
       , { name: 'Error', message: 'end() requires a callback argument' }
       , 'no-arg iterator#end() throws'
     )
