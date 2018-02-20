@@ -40,7 +40,7 @@ export interface AbstractIteratorOptions<K=any> {
   values?: boolean;
 }
 
-export type Batch<K=any, V?=any> = PutBatch<K, V> | DelBatch<K>
+export type Batch<K=any, V=any> = PutBatch<K, V> | DelBatch<K>
 
 export interface PutBatch<K=any, V=any> {
   type: 'put',
