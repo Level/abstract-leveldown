@@ -230,6 +230,7 @@ test('test batch() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var expectedOptions = { options: 1 }
+  /** @type {Array<{ type: 'put', key, value } | { type: 'del', key }>} */
   var expectedArray = [
     { type: 'put', key: '1', value: '1' },
     { type: 'del', key: '2' }
@@ -676,6 +677,7 @@ test('test serialization extensibility (batch array is not mutated)', function (
 
   test = new Test('foobar')
 
+  /** @type { { type: 'put', key, value } } */
   var op = { type: 'put', key: 'no', value: 'nope' }
   test.batch([op], function () {})
 
