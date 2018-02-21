@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [4.0.3] - 2018-02-21
+
+### Changed
+* Update `ts-node` to `^5.0.0` (@zixia)
+* Update `standard` to `^11.0.0` (@ralphtheninja)
+
+### Fixed
+* Remove invalid TypeScript from `Batch` (@Tapppi)
+* Add JSDoc to incorrectly inferred TypeScript types (@Tapppi)
+
 ## [4.0.2] - 2018-02-09
 
 ### Fixed
@@ -533,7 +543,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.2...HEAD
+[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.3...HEAD
+[4.0.3]: https://github.com/level/abstract-leveldown/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/level/abstract-leveldown/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/level/abstract-leveldown/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/level/abstract-leveldown/compare/v3.0.0...v4.0.0
