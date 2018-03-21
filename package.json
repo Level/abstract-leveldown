@@ -37,7 +37,7 @@
   "devDependencies": {
     "@types/node": "^9.3.0",
     "rimraf": "^2.6.1",
-    "sinon": "^4.0.0",
+    "sinon": "^5.0.0",
     "standard": "^11.0.0",
     "tape": "^4.7.0",
     "ts-node": "^5.0.0",
