@@ -82,6 +82,10 @@ db.put('foo', 'bar', function (err) {
 
 See [`memdown`](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for `leveldown`.
 
+## Browser support
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://saucelabs.com/u/abstract-leveldown)
+
 ## Extensible API
 
 Remember that each of these methods, if you implement them, will receive exactly the number and order of arguments described. Optional arguments will be converted to sensible defaults.
@@ -160,6 +164,12 @@ Ships with TypeScript definitions that enable automatic inference of options and
 > Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit. This project is more like an open wiki than a standard guarded open source project.
 
 See the [contribution guide](https://github.com/Level/community/blob/master/CONTRIBUTING.md) for more details.
+
+## Big Thanks
+
+Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](https://saucelabs.com).
+
+[![Sauce Labs logo](./sauce-labs.svg)](https://saucelabs.com)
 
 <a name="license"></a>
 ## License
