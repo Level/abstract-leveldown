@@ -55,5 +55,12 @@
   "license": "MIT",
   "engines": {
     "node": ">=4"
+  },
+  "greenkeeper": {
+    "ignore": [
+      "@types/node",
+      "ts-node",
+      "typescript"
+    ]
   }
 }
