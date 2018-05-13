@@ -1,10 +1,10 @@
 /* Copyright (c) 2017 Rod Vagg, MIT License */
 
-const xtend = require('xtend')
-const AbstractIterator = require('./abstract-iterator')
-const AbstractChainedBatch = require('./abstract-chained-batch')
-const hasOwnProperty = Object.prototype.hasOwnProperty
-const rangeOptions = 'start end gt gte lt lte'.split(' ')
+var xtend = require('xtend')
+var AbstractIterator = require('./abstract-iterator')
+var AbstractChainedBatch = require('./abstract-chained-batch')
+var hasOwnProperty = Object.prototype.hasOwnProperty
+var rangeOptions = 'start end gt gte lt lte'.split(' ')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined) {

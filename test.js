@@ -709,11 +709,11 @@ test('.status', function (t) {
 })
 
 test('_setupIteratorOptions', function (t) {
-  const keys = 'start end gt gte lt lte'.split(' ')
-  const db = new AbstractLevelDOWN('foolocation')
+  var keys = 'start end gt gte lt lte'.split(' ')
+  var db = new AbstractLevelDOWN('foolocation')
 
   function setupOptions (constrFn) {
-    const options = {}
+    var options = {}
     keys.forEach(function (key) {
       options[key] = constrFn()
     })
@@ -759,7 +759,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('deletes empty buffers', function (t) {
-    const options = setupOptions(function () { return Buffer.from('') })
+    var options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
@@ -768,7 +768,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('deletes empty strings', function (t) {
-    const options = setupOptions(function () { return '' })
+    var options = setupOptions(function () { return '' })
     keys.forEach(function (key) {
       t.is(typeof options[key], 'string', 'should be string')
       t.is(options[key].length, 0, 'should be empty')
@@ -777,7 +777,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('deletes null options', function (t) {
-    const options = setupOptions(function () { return null })
+    var options = setupOptions(function () { return null })
     keys.forEach(function (key) {
       t.same(options[key], null, 'should be null')
     })
