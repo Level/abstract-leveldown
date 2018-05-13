@@ -86,8 +86,8 @@ See [`memdown`](https://github.com/Level/memdown/) if you are looking for a comp
 
 Remember that each of these methods, if you implement them, will receive exactly the number and order of arguments described. Optional arguments will be converted to sensible defaults.
 
-### AbstractLevelDOWN(location)
-### AbstractLevelDOWN#status
+### `AbstractLevelDOWN(location)`
+### `AbstractLevelDOWN#status`
 
 An `AbstractLevelDOWN` based database can be in one of the following states:
 
@@ -97,22 +97,22 @@ An `AbstractLevelDOWN` based database can be in one of the following states:
 * `'closing'` - waiting for the database to be closed
 * `'closed'` - database has been successfully closed, should not be used
 
-### AbstractLevelDOWN#_open(options, callback)
-### AbstractLevelDOWN#_close(callback)
-### AbstractLevelDOWN#_get(key, options, callback)
-### AbstractLevelDOWN#_put(key, value, options, callback)
-### AbstractLevelDOWN#_del(key, options, callback)
-### AbstractLevelDOWN#_batch(array, options, callback)
+### `AbstractLevelDOWN#_open(options, callback)`
+### `AbstractLevelDOWN#_close(callback)`
+### `AbstractLevelDOWN#_get(key, options, callback)`
+### `AbstractLevelDOWN#_put(key, value, options, callback)`
+### `AbstractLevelDOWN#_del(key, options, callback)`
+### `AbstractLevelDOWN#_batch(array, options, callback)`
 
 If `batch()` is called without arguments or with only an options object then it should return a `Batch` object with chainable methods. Otherwise it will invoke a classic batch operation.
 
-### AbstractLevelDOWN#_chainedBatch()
+### `AbstractLevelDOWN#_chainedBatch()`
 
 By default a `batch()` operation without arguments returns a blank `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
 
-### AbstractLevelDOWN#_serializeKey(key)
-### AbstractLevelDOWN#_serializeValue(value)
-### AbstractLevelDOWN#_iterator(options)
+### `AbstractLevelDOWN#_serializeKey(key)`
+### `AbstractLevelDOWN#_serializeValue(value)`
+### `AbstractLevelDOWN#_iterator(options)`
 
 By default an `iterator()` operation returns a blank `AbstractIterator` object. The prototype is available on the main exports for you to extend. If you want to implement iterator operations then you should extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
 
@@ -129,22 +129,22 @@ A range option that is either an empty buffer, an empty string or `null` will be
 
 `AbstractIterator` implements the basic state management found in LevelDOWN. It keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
 
-### AbstractIterator(db)
+### `AbstractIterator(db)`
 
 Provided with the current instance of `AbstractLevelDOWN` by default.
 
-### AbstractIterator#_next(callback)
-### AbstractIterator#_end(callback)
+### `AbstractIterator#_next(callback)`
+### `AbstractIterator#_end(callback)`
 
-### AbstractChainedBatch
+### `AbstractChainedBatch`
 Provided with the current instance of `AbstractLevelDOWN` by default.
 
-### AbstractChainedBatch#_put(key, value)
-### AbstractChainedBatch#_del(key)
-### AbstractChainedBatch#_clear()
-### AbstractChainedBatch#_write(options, callback)
-### AbstractChainedBatch#_serializeKey(key)
-### AbstractChainedBatch#_serializeValue(value)
+### `AbstractChainedBatch#_put(key, value)`
+### `AbstractChainedBatch#_del(key)`
+### `AbstractChainedBatch#_clear()`
+### `AbstractChainedBatch#_write(options, callback)`
+### `AbstractChainedBatch#_serializeKey(key)`
+### `AbstractChainedBatch#_serializeValue(value)`
 
 ## TypeScript
 
@@ -162,9 +162,9 @@ Ships with TypeScript definitions that enable automatic inference of options and
 See the [contribution guide](https://github.com/Level/community/blob/master/CONTRIBUTING.md) for more details.
 
 <a name="license"></a>
-## License &amp; Copyright
+## License
 
-Copyright &copy; 2013-2017 `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
+Copyright &copy; 2013-2018 `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
 
 `abstract-leveldown` is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
 
