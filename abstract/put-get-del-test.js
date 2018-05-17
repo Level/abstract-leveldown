@@ -1,8 +1,8 @@
 'use strict'
 
 var db
-const verifyNotFoundError = require('./util').verifyNotFoundError
-const testBuffer = Buffer.from('testbuffer')
+var verifyNotFoundError = require('./util').verifyNotFoundError
+var testBuffer = Buffer.from('testbuffer')
 
 function makeGetDelErrorTests (test, type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
