@@ -150,12 +150,6 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### `AbstractChainedBatch#_serializeKey(key)`
 ### `AbstractChainedBatch#_serializeValue(value)`
 
-## TypeScript
-
-[![experimental](https://img.shields.io/badge/stability-experimental-orange.svg)](https://nodejs.org/api/documentation.html#documentation_stability_index)
-
-Ships with TypeScript definitions that enable automatic inference of options and key-value types on a typed `abstract-leveldown` implementation.
-
 <a name="contributing"></a>
 ## Contributing
 
