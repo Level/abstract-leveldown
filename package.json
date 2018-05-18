@@ -30,7 +30,6 @@
     "levelup"
   ],
   "main": "index.js",
-  "typings": "index.d.ts",
   "dependencies": {
     "xtend": "~4.0.0"
   },
