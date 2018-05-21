@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [5.0.0] - 2018-05-21
+## [5.0.0] - 2018-05-22
 
 ### Added
 * Add node 10 to Travis (@ralphtheninja)
