@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [5.0.0] - 2018-05-22
+
+### Added
+* Add node 10 to Travis (@ralphtheninja)
+* Add `airtap` for browser tests (@vweevers)
+
+### Changed
+* Update `sinon` to `^5.0.0` (@ralphtheninja)
+* Tweak README (@ralphtheninja)
+* Replace `const` with `var` to support IE10 (@vweevers)
+
+### Removed
+* Remove node 4, 5 and 7 from Travis (@ralphtheninja)
+* Remove TypeScript tests (@vweevers)
+* Remove TypeScript typings (@ralphtheninja)
+
 ## [4.0.3] - 2018-02-21
 
 ### Changed
@@ -108,8 +124,6 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ### Fixed
 * Document `.status` property (@ralphtheninja)
-
-### Removed
 
 ## [2.6.2] - 2017-07-30
 
@@ -543,7 +557,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[Unreleased]: https://github.com/level/abstract-leveldown/compare/v4.0.3...HEAD
+[Unreleased]: https://github.com/level/abstract-leveldown/compare/v5.0.0...HEAD
+[5.0.0]: https://github.com/level/abstract-leveldown/compare/v4.0.3...v5.0.0
 [4.0.3]: https://github.com/level/abstract-leveldown/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/level/abstract-leveldown/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/level/abstract-leveldown/compare/v4.0.0...v4.0.1
