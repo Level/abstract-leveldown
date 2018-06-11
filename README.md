@@ -168,7 +168,7 @@ Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](http
 <a name="license"></a>
 ## License
 
-Copyright &copy; 2013-2018 `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
+Copyright &copy; 2013-present `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
 
 `abstract-leveldown` is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
 
