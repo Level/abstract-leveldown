@@ -36,7 +36,7 @@
   "devDependencies": {
     "airtap": "0.0.7",
     "rimraf": "^2.6.1",
-    "sinon": "^5.0.0",
+    "sinon": "^6.0.0",
     "standard": "^11.0.0",
     "tape": "^4.7.0"
   },
