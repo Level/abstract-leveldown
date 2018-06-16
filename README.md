@@ -138,6 +138,7 @@ A range option that is either an empty buffer, an empty string or `null` will be
 Provided with the current instance of `AbstractLevelDOWN` by default.
 
 ### `AbstractIterator#_next(callback)`
+### `AbstractIterator#_seek(target)`
 ### `AbstractIterator#_end(callback)`
 
 ### `AbstractChainedBatch`
