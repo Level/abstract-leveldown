@@ -54,6 +54,9 @@ require('./abstract/iterator-range-test').tearDown(test, testCommon)
 require('./abstract/iterator-snapshot-test').setUp(factory, test, testCommon)
 require('./abstract/iterator-snapshot-test').tearDown(test, testCommon)
 
+require('./abstract/iterator-no-snapshot-test').setUp(factory, test, testCommon)
+require('./abstract/iterator-no-snapshot-test').tearDown(test, testCommon)
+
 function implement (ctor, methods) {
   function Test () {
     ctor.apply(this, arguments)
