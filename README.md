@@ -151,6 +151,30 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 ### `AbstractChainedBatch#_serializeKey(key)`
 ### `AbstractChainedBatch#_serializeValue(value)`
 
+## Test Suite
+
+To prove that your implementation is `abstract-leveldown` compliant, include the test suite found in `abstract/`. For examples please see the test suites of implementations like [`leveldown`](https://github.com/Level/leveldown), [`level-js`](https://github.com/Level/level-js) or [`memdown`](https://github.com/Level/memdown).
+
+As not every implementation can be fully compliant due to limitations of its underlying storage, some tests may be skipped.
+
+| Test                   | Required | Skip if                                 |
+|:-----------------------|:---------|:----------------------------------------|
+| `leveldown`            | :x: | Constructor has no `location` argument       |
+| `open`                 | :heavy_check_mark: | -                             |
+| `put`                  | :heavy_check_mark: | -                             |
+| `del`                  | :heavy_check_mark: | -                             |
+| `get`                  | :heavy_check_mark: | -                             |
+| `put-get-del`          | :heavy_check_mark: | -                             |
+| `batch`                | :heavy_check_mark: | -                             |
+| `chained-batch`        | :heavy_check_mark: | -                             |
+| `close`                | :heavy_check_mark: | -                             |
+| `iterator`             | :heavy_check_mark: | -                             |
+| `iterator-range`       | :heavy_check_mark: | -                             |
+| `iterator-snapshot`    | :x: | Reads don't operate on a snapshot<br>Snapshots are created asynchronously |
+| `iterator-no-snapshot` | :x: | The `iterator-snapshot` test is included     |
+
+If snapshots are an optional feature of your implementation, both `iterator-snapshot` and `iterator-no-snapshot` may be included.
+
 <a name="contributing"></a>
 ## Contributing
 
