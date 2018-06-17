@@ -36,6 +36,22 @@ AbstractIterator.prototype._next = function (callback) {
   process.nextTick(callback)
 }
 
+AbstractIterator.prototype.seek = function (target) {
+  if (this._ended) {
+    throw new Error('cannot call seek() after end()')
+  }
+  if (this._nexting) {
+    throw new Error('cannot call seek() before next() has completed')
+  }
+
+  target = this.db._serializeKey(target)
+  this._seek(target)
+}
+
+AbstractIterator.prototype._seek = function (callback) {
+  process.nextTick(callback)
+}
+
 AbstractIterator.prototype.end = function (callback) {
   if (typeof callback !== 'function') {
     throw new Error('end() requires a callback argument')

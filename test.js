@@ -620,6 +620,31 @@ test('test serialization extensibility (batch array is not mutated)', function (
   t.equal(op.value, 'nope', 'did not mutate input value')
 })
 
+test('test serialization extensibility (iterator seek)', function (t) {
+  t.plan(3)
+
+  var spy = sinon.spy()
+  var TestIterator = implement(AbstractIterator, { _seek: spy })
+
+  var Test = implement(AbstractLevelDOWN, {
+    _iterator: function () {
+      return new TestIterator(this)
+    },
+    _serializeKey: function (key) {
+      t.equal(key, 'target')
+      return 'serialized'
+    }
+  })
+
+  var test = new Test('foobar')
+  var it = test.iterator()
+
+  it.seek('target')
+
+  t.equal(spy.callCount, 1, 'got _seek() call')
+  t.equal(spy.getCall(0).args[0], 'serialized', 'got expected target argument')
+})
+
 test('.status', function (t) {
   t.test('empty prototype', function (t) {
     var Test = implement(AbstractLevelDOWN)
