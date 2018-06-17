@@ -1,34 +1,85 @@
-var db
-
 exports.setUp = function (leveldown, test, testCommon) {
   test('setUp common', testCommon.setUp)
-  test('setUp db', function (t) {
-    db = leveldown(testCommon.location())
-    db.open(function () {
-      db.put('foobatch1', 'bar1', t.end.bind(t))
-    })
-  })
 }
 
 exports.snapshot = function (leveldown, test, testCommon) {
-  test('iterator create snapshot correctly', function (t) {
-    var iterator = db.iterator()
-    db.del('foobatch1', function () {
-      iterator.next(function (err, key, value) {
-        t.error(err)
+  function make (run) {
+    return function (t) {
+      var db = leveldown(testCommon.location())
+
+      db.open(function (err) {
+        t.ifError(err, 'no open error')
+
+        db.put('z', 'from snapshot', function (err) {
+          t.ifError(err, 'no put error')
+
+          // For this test it is important that we don't read eagerly.
+          // NOTE: highWaterMark is not an abstract option atm, but
+          // it is supported by leveldown, rocksdb and others.
+          var it = db.iterator({ highWaterMark: 0 })
+
+          run(t, db, it, function end (err) {
+            t.ifError(err, 'no run error')
+
+            it.end(function (err) {
+              t.ifError(err, 'no iterator end error')
+              db.close(t.end.bind(t))
+            })
+          })
+        })
+      })
+    }
+  }
+
+  test('delete key after snapshotting', make(function (t, db, it, end) {
+    db.del('z', function (err) {
+      t.ifError(err, 'no del error')
+
+      it.next(function (err, key, value) {
+        t.ifError(err, 'no next error')
         t.ok(key, 'got a key')
-        t.is(key.toString(), 'foobatch1', 'correct key')
-        t.is(value.toString(), 'bar1', 'correct value')
-        iterator.end(t.end.bind(t))
+        t.is(key.toString(), 'z', 'correct key')
+        t.is(value.toString(), 'from snapshot', 'correct value')
+
+        end()
       })
     })
-  })
+  }))
+
+  test('overwrite key after snapshotting', make(function (t, db, it, end) {
+    db.put('z', 'not from snapshot', function (err) {
+      t.ifError(err, 'no put error')
+
+      it.next(function (err, key, value) {
+        t.ifError(err, 'no next error')
+        t.ok(key, 'got a key')
+        t.is(key.toString(), 'z', 'correct key')
+        t.is(value.toString(), 'from snapshot', 'correct value')
+
+        end()
+      })
+    })
+  }))
+
+  test('add key after snapshotting that sorts first', make(function (t, db, it, end) {
+    db.put('a', 'not from snapshot', function (err) {
+      t.ifError(err, 'no put error')
+
+      it.next(function (err, key, value) {
+        t.ifError(err, 'no next error')
+
+        t.ok(key, 'got a key')
+        t.is(key.toString(), 'z', 'correct key')
+        t.is(value.toString(), 'from snapshot', 'correct value')
+
+        end()
+      })
+    })
+  }))
 }
 
 exports.tearDown = function (test, testCommon) {
-  test('tearDown', function (t) {
-    db.close(testCommon.tearDown.bind(null, t))
-  })
+  test('tearDown', testCommon.tearDown)
 }
 
 exports.all = function (leveldown, test, testCommon) {
