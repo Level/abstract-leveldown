@@ -46,6 +46,16 @@ require('./abstract/close-test').close(factory, test, testCommon)
 require('./abstract/iterator-test').setUp(factory, test, testCommon)
 require('./abstract/iterator-test').args(test)
 require('./abstract/iterator-test').sequence(test)
+require('./abstract/iterator-test').tearDown(test, testCommon)
+
+require('./abstract/iterator-range-test').setUp(factory, test, testCommon, [])
+require('./abstract/iterator-range-test').tearDown(test, testCommon)
+
+require('./abstract/iterator-snapshot-test').setUp(factory, test, testCommon)
+require('./abstract/iterator-snapshot-test').tearDown(test, testCommon)
+
+require('./abstract/iterator-no-snapshot-test').setUp(factory, test, testCommon)
+require('./abstract/iterator-no-snapshot-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
   function Test () {

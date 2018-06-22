@@ -152,27 +152,7 @@ module.exports.iterator = function (leveldown, test, testCommon) {
 }
 
 module.exports.snapshot = function (leveldown, test, testCommon) {
-  test('setUp #2', function (t) {
-    db.close(function () {
-      db = leveldown(testCommon.location())
-      db.open(function () {
-        db.put('foobatch1', 'bar1', t.end.bind(t))
-      })
-    })
-  })
-
-  test('iterator create snapshot correctly', function (t) {
-    var iterator = db.iterator()
-    db.del('foobatch1', function () {
-      iterator.next(function (err, key, value) {
-        t.error(err)
-        t.ok(key, 'got a key')
-        t.is(key.toString(), 'foobatch1', 'correct key')
-        t.is(value.toString(), 'bar1', 'correct value')
-        iterator.end(t.end.bind(t))
-      })
-    })
-  })
+  console.error('DEPRECATED: the snapshot test has moved to iterator-snapshot-test.js')
 }
 
 module.exports.tearDown = function (test, testCommon) {
@@ -187,6 +167,5 @@ module.exports.all = function (leveldown, test, testCommon) {
   module.exports.args(test)
   module.exports.sequence(test)
   module.exports.iterator(leveldown, test, testCommon)
-  module.exports.snapshot(leveldown, test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
