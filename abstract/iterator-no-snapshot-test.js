@@ -50,12 +50,12 @@ exports.noSnapshot = function (leveldown, test, testCommon) {
     })
   }
 
-  test('delete key after creating iterator', make(function (db, cb) {
-    db.del('b', cb)
+  test('delete key after creating iterator', make(function (db, done) {
+    db.del('b', done)
   }))
 
-  test('batch delete key after creating iterator', make(function (db, cb) {
-    db.batch([{ type: 'del', key: 'b' }], cb)
+  test('batch delete key after creating iterator', make(function (db, done) {
+    db.batch([{ type: 'del', key: 'b' }], done)
   }))
 }
 
