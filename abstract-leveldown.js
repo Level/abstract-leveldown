@@ -1,5 +1,3 @@
-/* Copyright (c) 2017 Rod Vagg, MIT License */
-
 var xtend = require('xtend')
 var AbstractIterator = require('./abstract-iterator')
 var AbstractChainedBatch = require('./abstract-chained-batch')

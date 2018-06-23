@@ -1,5 +1,3 @@
-/* Copyright (c) 2017 Rod Vagg, MIT License */
-
 function AbstractIterator (db) {
   this.db = db
   this._ended = false

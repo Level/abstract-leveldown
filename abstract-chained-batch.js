@@ -1,5 +1,3 @@
-/* Copyright (c) 2017 Rod Vagg, MIT License */
-
 function AbstractChainedBatch (db) {
   this._db = db
   this._operations = []
