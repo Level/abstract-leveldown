@@ -1,21 +1,22 @@
 var path = require('path')
 var fs = !process.browser && require('fs')
 var rimraf = !process.browser && require('rimraf')
+var dirname = !process.browser ? require('tempy').directory() : ''
 
 var dbidx = 0
 
 var location = function () {
-  return path.join(__dirname, '_leveldown_test_db_' + dbidx++)
+  return path.join(dirname, '_leveldown_test_db_' + dbidx++)
 }
 
 var lastLocation = function () {
-  return path.join(__dirname, '_leveldown_test_db_' + dbidx)
+  return path.join(dirname, '_leveldown_test_db_' + dbidx)
 }
 
 var cleanup = function (callback) {
   if (process.browser) { return process.nextTick(callback) }
 
-  fs.readdir(__dirname, function (err, list) {
+  fs.readdir(dirname, function (err, list) {
     if (err) return callback(err)
 
     list = list.filter(function (f) {
@@ -27,7 +28,7 @@ var cleanup = function (callback) {
     var ret = 0
 
     list.forEach(function (f) {
-      rimraf(path.join(__dirname, f), function (err) {
+      rimraf(path.join(dirname, f), function (err) {
         if (err) return callback(err)
         if (++ret === list.length) { callback() }
       })
