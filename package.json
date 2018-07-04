@@ -28,8 +28,8 @@
   },
   "scripts": {
     "test": "standard && node test.js",
-    "test-browsers": "airtap --sauce-connect --loopback airtap.local --no-coverage test.js",
-    "test-browser-local": "airtap --local --no-coverage test.js"
+    "test-browsers": "airtap --sauce-connect --loopback airtap.local test.js",
+    "test-browser-local": "airtap --local test.js"
   },
   "license": "MIT",
   "engines": {
