@@ -1,6 +1,7 @@
 var path = require('path')
 var fs = !process.browser && require('fs')
 var rimraf = !process.browser && require('rimraf')
+var collectEntries = require('level-concat-iterator')
 
 var dbidx = 0
 
@@ -44,23 +45,6 @@ var setUp = function (t) {
 
 var tearDown = function (t) {
   setUp(t) // same cleanup!
-}
-
-var collectEntries = function (iterator, callback) {
-  var data = []
-  var next = function () {
-    iterator.next(function (err, key, value) {
-      if (err) return callback(err)
-      if (!arguments.length) {
-        return iterator.end(function (err) {
-          callback(err, data)
-        })
-      }
-      data.push({ key: key, value: value })
-      setTimeout(next, 0)
-    })
-  }
-  next()
 }
 
 module.exports = {
