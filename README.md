@@ -101,6 +101,16 @@ See [`memdown`](https://github.com/Level/memdown/) if you are looking for a comp
 
 Constructors typically take a `location` argument pointing to a location on disk where the data will be stored. Since not all implementations are disk-based and some are non-persistent, implementors are free to take zero or more arguments in their constructor.
 
+### `db.status`
+
+A read-only property. An `abstract-leveldown` compliant store can be in one of the following states:
+
+* `'new'` - newly created, not opened or closed
+* `'opening'` - waiting for the store to be opened
+* `'open'` - successfully opened the store, available for use
+* `'closing'` - waiting for the store to be closed
+* `'closed'` - store has been successfully closed, should not be used.
+
 ### `db.open([options, ]callback)`
 ### `db.close(callback)`
 ### `db.get(key[, options], callback)`
@@ -108,6 +118,9 @@ Constructors typically take a `location` argument pointing to a location on disk
 ### `db.del(key[, options], callback)`
 ### `db.batch(operations[, options], callback)`
 ### `chainedBatch = db.batch()`
+
+If `batch()` is called without arguments ~~or with only an options object~~ then it will return a `chainedBatch` object with chainable methods.
+
 ### `iterator = db.iterator([options])`
 
 ### `chainedBatch`
@@ -127,38 +140,25 @@ Constructors typically take a `location` argument pointing to a location on disk
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults.
 
-### `AbstractLevelDOWN(location)`
+### `db = constructor(location)`
 
-Currently, the `AbstractLevelDOWN` constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
+Currently, the `abstract-leveldown` constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
 
-### `AbstractLevelDOWN#status`
+### `db._open(options, callback)`
+### `db._close(callback)`
+### `db._get(key, options, callback)`
+### `db._put(key, value, options, callback)`
+### `db._del(key, options, callback)`
+### `db._batch(array, options, callback)`
+### `chainedBatch = db._chainedBatch()`
 
-An `abstract-leveldown` compliant store can be in one of the following states:
+By default a `batch()` operation without arguments returns a functional `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations in a different manner then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
 
-* `'new'` - newly created, not opened or closed
-* `'opening'` - waiting for the store to be opened
-* `'open'` - successfully opened the store, available for use
-* `'closing'` - waiting for the store to be closed
-* `'closed'` - store has been successfully closed, should not be used.
+### `db._serializeKey(key)`
+### `db._serializeValue(value)`
+### `iterator = db._iterator(options)`
 
-### `AbstractLevelDOWN#_open(options, callback)`
-### `AbstractLevelDOWN#_close(callback)`
-### `AbstractLevelDOWN#_get(key, options, callback)`
-### `AbstractLevelDOWN#_put(key, value, options, callback)`
-### `AbstractLevelDOWN#_del(key, options, callback)`
-### `AbstractLevelDOWN#_batch(array, options, callback)`
-
-If `batch()` is called without arguments or with only an options object then it should return a `Batch` object with chainable methods. Otherwise it will invoke a classic batch operation.
-
-### `AbstractLevelDOWN#_chainedBatch()`
-
-By default a `batch()` operation without arguments returns a blank `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
-
-### `AbstractLevelDOWN#_serializeKey(key)`
-### `AbstractLevelDOWN#_serializeValue(value)`
-### `AbstractLevelDOWN#_iterator(options)`
-
-By default an `iterator()` operation returns a blank `AbstractIterator` object. The prototype is available on the main exports for you to extend. If you want to implement iterator operations then you should extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
+By default an `iterator()` operation returns a noop `AbstractIterator` object. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
 
 The `iterator()` operation accepts the following range options:
 
@@ -173,23 +173,24 @@ A range option that is either an empty buffer, an empty string or `null` will be
 
 `AbstractIterator` implements the basic state management found in LevelDOWN. It keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
 
-### `AbstractIterator(db)`
+### `iterator = AbstractIterator(db)`
 
-Provided with the current instance of `AbstractLevelDOWN` by default.
+Provided with the current instance of `abstract-leveldown` by default.
 
-### `AbstractIterator#_next(callback)`
-### `AbstractIterator#_seek(target)`
-### `AbstractIterator#_end(callback)`
+#### `iterator._next(callback)`
+#### `iterator._seek(target)`
+#### `iterator._end(callback)`
 
-### `AbstractChainedBatch`
-Provided with the current instance of `AbstractLevelDOWN` by default.
+### `chainedBatch = AbstractChainedBatch(db)`
 
-### `AbstractChainedBatch#_put(key, value)`
-### `AbstractChainedBatch#_del(key)`
-### `AbstractChainedBatch#_clear()`
-### `AbstractChainedBatch#_write(options, callback)`
-### `AbstractChainedBatch#_serializeKey(key)`
-### `AbstractChainedBatch#_serializeValue(value)`
+Provided with the current instance of `abstract-leveldown` by default.
+
+#### `chainedBatch._put(key, value)`
+#### `chainedBatch._del(key)`
+#### `chainedBatch._clear()`
+#### `chainedBatch._write(options, callback)`
+#### `chainedBatch._serializeKey(key)`
+#### `chainedBatch._serializeValue(value)`
 
 ## Test Suite
 
