@@ -21,62 +21,68 @@ Additionally, all methods provide argument checking and sensible defaults for op
 
 ## Example
 
-A simplistic in-memory `leveldown` replacement
+Let's implement a simplistic in-memory `leveldown` replacement:
 
 ```js
+var AbstractLevelDOWN = require('abstract-leveldown').AbstractLevelDOWN
 var util = require('util')
-var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 
-// constructor, passes through the 'location' argument to the AbstractLevelDOWN constructor
+// Constructor, passes location to the AbstractLevelDOWN constructor
 function FakeLevelDOWN (location) {
   AbstractLevelDOWN.call(this, location)
 }
 
-// our new prototype inherits from AbstractLevelDOWN
+// Our new prototype inherits from AbstractLevelDOWN
 util.inherits(FakeLevelDOWN, AbstractLevelDOWN)
 
-// implement some methods
-
 FakeLevelDOWN.prototype._open = function (options, callback) {
-  // initialise a memory storage object
+  // Initialize a memory storage object
   this._store = {}
-  // optional use of nextTick to be a nice async citizen
-  process.nextTick(function () { callback(null, this) }.bind(this))
+
+  // Use nextTick to be a nice async citizen
+  process.nextTick(callback, null, this)
+}
+
+FakeLevelDOWN.prototype._serializeKey = function (key) {
+  // Safety: avoid store['__proto__'] skullduggery.
+  // Below methods will receive serialized keys in their arguments.
+  return '!' + key
 }
 
 FakeLevelDOWN.prototype._put = function (key, value, options, callback) {
-  key = '_' + key // safety, to avoid key='__proto__'-type skullduggery
   this._store[key] = value
   process.nextTick(callback)
 }
 
 FakeLevelDOWN.prototype._get = function (key, options, callback) {
-  var value = this._store['_' + key]
   if (value === undefined) {
     // 'NotFound' error, consistent with LevelDOWN API
-    return process.nextTick(function () { callback(new Error('NotFound')) })
+    return process.nextTick(callback, new Error('NotFound'))
   }
-  process.nextTick(function () {
-    callback(null, value)
-  })
+
+  process.nextTick(callback, null, value)
 }
 
 FakeLevelDOWN.prototype._del = function (key, options, callback) {
-  delete this._store['_' + key]
+  delete this._store[key]
   process.nextTick(callback)
 }
+```
 
-// Now use it with levelup
+Now we can use our implementation with `levelup`:
 
+```js
 var levelup = require('levelup')
 
 var db = levelup(new FakeLevelDOWN('/who/cares'))
 
 db.put('foo', 'bar', function (err) {
   if (err) throw err
+
   db.get('foo', function (err, value) {
     if (err) throw err
-    console.log('Got foo =', value)
+
+    console.log(value) // 'bar'
   })
 })
 ```
