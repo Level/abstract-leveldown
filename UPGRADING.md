@@ -2,6 +2,18 @@
 
 This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the changelog.
 
+## Unreleased
+
+### Default `testCommon` is for disk-based, Node.js implementations only
+
+If your implementation or its target environment doesn't meet these criteria, you must implement a custom `testCommon`.
+
+### Default `testCommon` uses unique temporary directories
+
+This removes the need for cleanup before and/or after tests. As such the `cleanup` method has been removed from `testCommon`. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests. The `setUp` and `tearDown` methods became noops.
+
+Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
