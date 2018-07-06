@@ -29,6 +29,9 @@
     "test-browsers": "airtap --sauce-connect --loopback airtap.local test.js",
     "test-browser-local": "airtap --local -- test.js"
   },
+  "browser": {
+    "./testCommon.js": "./test-common-browser.js"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=6"
