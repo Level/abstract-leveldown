@@ -1,5 +1,5 @@
 module.exports.close = function (leveldown, test, testCommon) {
-  testCommon = testCommon || require('../testCommon')
+  testCommon = testCommon || require('../test-common')
   test('test close()', function (t) {
     var db = leveldown(testCommon.location())
 
