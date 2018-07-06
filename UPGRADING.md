@@ -8,6 +8,20 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 If your implementation or its target environment doesn't meet these criteria, you must implement a custom `testCommon`.
 
+### Default `testCommon` has moved
+
+If you previously did:
+
+```js
+const testCommon = require('abstract-leveldown/testCommon')
+```
+
+You must now do:
+
+```js
+const testCommon = require('abstract-leveldown/test-common')
+```
+
 ### Default `testCommon` uses unique temporary directories
 
 This removes the need for cleanup before and/or after tests. As such the `cleanup` method has been removed from `testCommon`. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests. The `setUp` and `tearDown` methods became noops.

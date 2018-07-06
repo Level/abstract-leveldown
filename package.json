@@ -30,7 +30,7 @@
     "test-browser-local": "airtap --local -- test.js"
   },
   "browser": {
-    "./testCommon.js": "./test-common-browser.js"
+    "./test-common.js": "./test-common-browser.js"
   },
   "license": "MIT",
   "engines": {
