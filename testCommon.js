@@ -1,6 +1,4 @@
 var path = require('path')
-var fs = !process.browser && require('fs')
-var rimraf = !process.browser && require('rimraf')
 var collectEntries = require('level-concat-iterator')
 
 var dbidx = 0
@@ -9,43 +7,16 @@ var location = function () {
   return path.join(__dirname, '_leveldown_test_db_' + dbidx++)
 }
 
-var cleanup = function (callback) {
-  if (process.browser) { return process.nextTick(callback) }
-
-  fs.readdir(__dirname, function (err, list) {
-    if (err) return callback(err)
-
-    list = list.filter(function (f) {
-      return (/^_leveldown_test_db_/).test(f)
-    })
-
-    if (!list.length) { return callback() }
-
-    var ret = 0
-
-    list.forEach(function (f) {
-      rimraf(path.join(__dirname, f), function (err) {
-        if (err) return callback(err)
-        if (++ret === list.length) { callback() }
-      })
-    })
-  })
-}
-
 var setUp = function (t) {
-  cleanup(function (err) {
-    t.error(err, 'cleanup returned an error')
-    t.end()
-  })
+  t.end()
 }
 
 var tearDown = function (t) {
-  setUp(t) // same cleanup!
+  t.end()
 }
 
 module.exports = {
   location: location,
-  cleanup: cleanup,
   setUp: setUp,
   tearDown: tearDown,
   collectEntries: collectEntries
