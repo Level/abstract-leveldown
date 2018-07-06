@@ -14,15 +14,15 @@
   ],
   "main": "index.js",
   "dependencies": {
+    "level-concat-iterator": "~2.0.0",
+    "tempy": "~0.2.1",
     "xtend": "~4.0.0"
   },
   "devDependencies": {
     "airtap": "0.0.9",
-    "level-concat-iterator": "^2.0.0",
     "sinon": "^6.0.0",
     "standard": "^11.0.0",
-    "tape": "^4.7.0",
-    "tempy": "~0.2.1"
+    "tape": "^4.7.0"
   },
   "scripts": {
     "test": "standard && node test.js",
