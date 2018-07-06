@@ -95,11 +95,42 @@ See [`memdown`](https://github.com/Level/memdown/) if you are looking for a comp
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://saucelabs.com/u/abstract-leveldown)
 
-## Extensible API
+## Public API for consumers
 
-Remember that each of these methods, if you implement them, will receive exactly the number and order of arguments described. Optional arguments will be converted to sensible defaults.
+### `db = constructor(..)`
+
+Constructors typically take a `location` argument pointing to a location on disk where the data will be stored. Since not all implementations are disk-based and some are non-persistent, implementors are free to take zero or more arguments in their constructor.
+
+### `db.open([options, ]callback)`
+### `db.close(callback)`
+### `db.get(key[, options], callback)`
+### `db.put(key, value[, options], callback)`
+### `db.del(key[, options], callback)`
+### `db.batch(operations[, options], callback)`
+### `chainedBatch = db.batch()`
+### `iterator = db.iterator([options])`
+
+### `chainedBatch`
+
+#### `chainedBatch.put(key, value)`
+#### `chainedBatch.del(key)`
+#### `chainedBatch.clear()`
+#### `chainedBatch.write([options, ]callback)`
+
+### `iterator`
+
+#### `iterator.next(callback)`
+#### `iterator.seek(target)`
+#### `iterator.end(callback)`
+
+## Private API for implementors
+
+Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults.
 
 ### `AbstractLevelDOWN(location)`
+
+Currently, the `AbstractLevelDOWN` constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
+
 ### `AbstractLevelDOWN#status`
 
 An `AbstractLevelDOWN` based database can be in one of the following states:
