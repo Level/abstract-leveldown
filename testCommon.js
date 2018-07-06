@@ -1,10 +1,8 @@
-var path = require('path')
 var collectEntries = require('level-concat-iterator')
-
-var dbidx = 0
+var tempy = require('tempy')
 
 var location = function () {
-  return path.join(__dirname, '_leveldown_test_db_' + dbidx++)
+  return tempy.directory()
 }
 
 var setUp = function (t) {

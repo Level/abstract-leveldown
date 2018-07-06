@@ -21,7 +21,8 @@
     "level-concat-iterator": "^2.0.0",
     "sinon": "^6.0.0",
     "standard": "^11.0.0",
-    "tape": "^4.7.0"
+    "tape": "^4.7.0",
+    "tempy": "~0.2.1"
   },
   "scripts": {
     "test": "standard && node test.js",
