@@ -19,13 +19,9 @@
   "devDependencies": {
     "airtap": "0.0.9",
     "level-concat-iterator": "^2.0.0",
-    "rimraf": "^2.6.1",
     "sinon": "^6.0.0",
     "standard": "^11.0.0",
     "tape": "^4.7.0"
-  },
-  "browser": {
-    "rimraf": false
   },
   "scripts": {
     "test": "standard && node test.js",
