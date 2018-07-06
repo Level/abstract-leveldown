@@ -9,10 +9,6 @@ var location = function () {
   return path.join(__dirname, '_leveldown_test_db_' + dbidx++)
 }
 
-var lastLocation = function () {
-  return path.join(__dirname, '_leveldown_test_db_' + dbidx)
-}
-
 var cleanup = function (callback) {
   if (process.browser) { return process.nextTick(callback) }
 
@@ -50,7 +46,6 @@ var tearDown = function (t) {
 module.exports = {
   location: location,
   cleanup: cleanup,
-  lastLocation: lastLocation,
   setUp: setUp,
   tearDown: tearDown,
   collectEntries: collectEntries
