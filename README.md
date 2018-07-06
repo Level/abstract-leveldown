@@ -11,11 +11,13 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 
-`abstract-leveldown` provides a simple, operational *noop* base prototype that's ready for extending. By default, all operations have sensible "noops" (operations that essentially do nothing). For example, simple operations such as `.open(callback)` and `.close(callback)` will simply invoke the callback (on a *next tick*). More complex operations  perform sensible actions, for example: `.get(key, callback)` will always return a `'NotFound'` `Error` on the callback.
+## Background
 
-You add functionality by implementing the underscore versions of the operations. For example, to implement a `put()` operation you add a `_put()` method to your object. Each of these underscore methods override the default *noop* operations and are always provided with **consistent arguments**, regardless of what is passed in by the client.
+`abstract-leveldown` provides a simple, operational base prototype that's ready for extending. All operations have sensible *noop* defaults (operations that essentially do nothing). For example, operations such as `.open(callback)` and `.close(callback)` will invoke `callback` on a next tick. Others perform sensible actions, like `.get(key, callback)` which will always yield a `'NotFound'` error.
 
-Additionally, all methods provide argument checking and sensible defaults for optional arguments. All bad-argument errors are compatible with `leveldown` (they pass the `leveldown` method arguments tests). For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
+You add functionality by implementing the "private" underscore versions of the operations. For example, to implement a public `put()` operation you add a private `_put()` method to your object. Each of these underscore methods override the default *noop* operations and are always provided with consistent arguments, regardless of what is passed in through the public API. All methods provide argument checking and sensible defaults for optional arguments.
+
+For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
 
 **If you are upgrading:** please see [UPGRADING.md](UPGRADING.md).
 
