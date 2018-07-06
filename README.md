@@ -133,13 +133,13 @@ Currently, the `AbstractLevelDOWN` constructor expects a location argument and t
 
 ### `AbstractLevelDOWN#status`
 
-An `AbstractLevelDOWN` based database can be in one of the following states:
+An `abstract-leveldown` compliant store can be in one of the following states:
 
 * `'new'` - newly created, not opened or closed
-* `'opening'` - waiting for the database to be opened
-* `'open'` - successfully opened the database, available for use
-* `'closing'` - waiting for the database to be closed
-* `'closed'` - database has been successfully closed, should not be used
+* `'opening'` - waiting for the store to be opened
+* `'open'` - successfully opened the store, available for use
+* `'closing'` - waiting for the store to be closed
+* `'closed'` - store has been successfully closed, should not be used.
 
 ### `AbstractLevelDOWN#_open(options, callback)`
 ### `AbstractLevelDOWN#_close(callback)`
