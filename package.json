@@ -20,14 +20,17 @@
   },
   "devDependencies": {
     "airtap": "0.1.0",
+    "coveralls": "~3.0.2",
+    "nyc": "~12.0.2",
     "sinon": "^6.0.0",
     "standard": "^11.0.0",
     "tape": "^4.7.0"
   },
   "scripts": {
-    "test": "standard && node test.js",
-    "test-browsers": "airtap --loopback airtap.local test.js",
-    "test-browser-local": "airtap --local test.js"
+    "test": "standard && nyc node test.js",
+    "test-browsers": "airtap --coverage --loopback airtap.local test.js",
+    "test-browser-local": "airtap --coverage --local test.js",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "browser": {
     "./test-common.js": "./test-common-browser.js"
