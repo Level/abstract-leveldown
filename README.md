@@ -205,11 +205,33 @@ After `write` has been called, no further operations are allowed.
 <a name="public-iterator"></a>
 ### `iterator`
 
+An iterator allows you to _iterate_ the entire store or a range. It operates on a snapshot of the store, created at the time `db.iterator()` was called. This means reads on the iterator are unaffected by simultaneous writes. Most but not all implementations can offer this guarantee.
+
 An iterator keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
 
 #### `iterator.next(callback)`
+
+Advance the iterator and yield the entry at that key. If an error occurs, the `callback` function will be called with an `Error`. Otherwise, the `callback` receives `null`, a `key` and a `value`. The type of `key` and `value` depends on the options passed to `db.iterator()`.
+
+If the iterator has reached its end, both `key` and `value` will be `undefined`. This happens in the following situations:
+
+- The end of the store has been reached
+- The end of the range has been reached
+- The last `iterator.seek()` was out of range.
+
+**Note:** Don't forget to call `iterator.end()`, even if you received an error.
+
 #### `iterator.seek(target)`
+
+Seek the iterator to a given key or the closest key. Subsequent calls to `iterator.next()` will yield entries with keys equal to or larger than `target`, or equal to or smaller than `target` if the `reverse` option passed to `db.iterator()` was true.
+
+If range options like `gt` were passed to `db.iterator()` and `target` does not fall within that range, the iterator will reach its end.
+
+**Note:** At the time of writing, `leveldown` is the only known implementation to support `seek()`. In other implementations, it is a noop.
+
 #### `iterator.end(callback)`
+
+End iteration and free up underlying resources. The `callback` function will be called with no arguments on success or with an `Error` if ending failed for any reason.
 
 ### Type Support
 
@@ -281,8 +303,16 @@ The `options` object will always have the following properties: `reverse`, `keys
 Provided with the current instance of `abstract-leveldown` by default.
 
 #### `iterator._next(callback)`
+
+Advance the iterator and yield the entry at that key. If nexting failed, call the `callback` function with an `Error`. Otherwise, call `callback` with `null`, a `key` and a `value`.
+
 #### `iterator._seek(target)`
+
+Seek the iterator to a given key or the closest key.
+
 #### `iterator._end(callback)`
+
+Free up underlying resources. This method is guaranteed to only be called once. If ending failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ### `chainedBatch = AbstractChainedBatch(db)`
 
