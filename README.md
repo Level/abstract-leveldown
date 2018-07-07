@@ -117,11 +117,11 @@ A read-only property. An `abstract-leveldown` compliant store can be in one of t
 ### `db.put(key, value[, options], callback)`
 ### `db.del(key[, options], callback)`
 ### `db.batch(operations[, options], callback)`
-### `chainedBatch = db.batch()`
+### `db.batch()`
 
-If `batch()` is called without arguments ~~or with only an options object~~ then it will return a `chainedBatch` object with chainable methods.
+Returns a [`chainedBatch`](#public-chained-batch).
 
-### `iterator = db.iterator([options])`
+### `db.iterator([options])`
 
 Returns an [iterator](#public-iterator). Accepts the following range options:
 
@@ -146,6 +146,7 @@ In addition to range options, `iterator()` takes the following options:
 
 Lastly, an implementation is free to add its own options.
 
+<a name="public-chained-batch"></a>
 ### `chainedBatch`
 
 #### `chainedBatch.put(key, value)`
@@ -176,15 +177,30 @@ Currently, the `abstract-leveldown` constructor expects a location argument and 
 ### `db._put(key, value, options, callback)`
 ### `db._del(key, options, callback)`
 ### `db._batch(array, options, callback)`
-### `chainedBatch = db._chainedBatch()`
+### `db._chainedBatch()`
 
-By default a `batch()` operation without arguments returns a functional `AbstractChainedBatch` object. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations in a different manner then you should extend the `AbstractChaindBatch` and return your object in the `_chainedBatch()` method.
+The default `_chainedBatch()` returns a functional `AbstractChainedBatch` instance that uses `db._batch(array, options, callback)` under the hood. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations in a different manner then you should extend `AbstractChainedBatch` and return an instance of this prototype in the `_chainedBatch()` method:
+
+```js
+var AbstractChainedBatch = require('abstract-leveldown').AbstractChainedBatch
+var inherits = require('util').inherits
+
+function ChainedBatch (db) {
+  AbstractChainedBatch.call(this, db)
+}
+
+inherits(ChainedBatch, AbstractChainedBatch)
+
+FakeLevelDOWN.prototype._chainedBatch = function () {
+  return new ChainedBatch(this)
+}
+```
 
 ### `db._serializeKey(key)`
 ### `db._serializeValue(value)`
-### `iterator = db._iterator(options)`
+### `db._iterator(options)`
 
-The default `_iterator()` returns a noop `AbstractIterator` object. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend the `AbstractIterator` and return an instance of this prototype in the `_iterator(options)` method.
+The default `_iterator()` returns a noop `AbstractIterator` instance. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend `AbstractIterator` and return an instance of this prototype in the `_iterator(options)` method.
 
 The `options` object will always have the following properties: `reverse`, `keys`, `values`, `limit`, `keyAsBuffer` and `valueAsBuffer`.
 
