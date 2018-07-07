@@ -123,6 +123,9 @@ The optional `options` argument may contain:
 Not all implementations support the above options.
 
 ### `db.close(callback)`
+
+Close the store. The `callback` function will be called with no arguments if the operation is successful or with a single `error` argument if closing failed for any reason.
+
 ### `db.get(key[, options], callback)`
 ### `db.put(key, value[, options], callback)`
 ### `db.del(key[, options], callback)`
@@ -183,9 +186,12 @@ The constructor expects a location argument and throws if one isn't given. If yo
 
 ### `db._open(options, callback)`
 
-Open the store. The `options` object will always have the following properties: `createIfMissing`, `errorIfExists`. If opening failed, you must call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+Open the store. The `options` object will always have the following properties: `createIfMissing`, `errorIfExists`. If opening failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ### `db._close(callback)`
+
+Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
 ### `db._get(key, options, callback)`
 ### `db._put(key, value, options, callback)`
 ### `db._del(key, options, callback)`
