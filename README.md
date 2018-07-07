@@ -112,6 +112,16 @@ A read-only property. An `abstract-leveldown` compliant store can be in one of t
 * `'closed'` - store has been successfully closed, should not be used.
 
 ### `db.open([options, ]callback)`
+
+Open the store. The `callback` function will be called with no arguments when the store has been successfully opened, or with a single error argument if the open operation failed for any reason.
+
+The optional `options` argument may contain:
+
+- `createIfMissing` _(boolean, default: `true`)_: If `true` and the store doesn't exist it will be created. If `false` and the store doesn't exist, `callback` will receive an error.
+- `errorIfExists` _(boolean, default: `false`)_: If `true` and the store exists, `callback` will receive an error.
+
+Not all implementations support the above options.
+
 ### `db.close(callback)`
 ### `db.get(key[, options], callback)`
 ### `db.put(key, value[, options], callback)`
@@ -172,6 +182,9 @@ Each of these methods will receive exactly the number and order of arguments des
 Currently, the `abstract-leveldown` constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
 
 ### `db._open(options, callback)`
+
+Open the store. The `options` object will always have the following properties: `createIfMissing`, `errorIfExists`. If opening failed, you must call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
 ### `db._close(callback)`
 ### `db._get(key, options, callback)`
 ### `db._put(key, value, options, callback)`
