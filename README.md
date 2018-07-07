@@ -187,7 +187,7 @@ An iterator keeps track of when a `next()` is in progress and when an `end()` ha
 
 ## Private API for implementors
 
-Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults.
+Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to call the callback in a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
 
 ### `db = AbstractLevelDOWN(location)`
 
