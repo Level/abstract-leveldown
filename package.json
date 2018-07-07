@@ -26,8 +26,8 @@
   },
   "scripts": {
     "test": "standard && node test.js",
-    "test-browsers": "airtap --sauce-connect --loopback airtap.local test.js",
-    "test-browser-local": "airtap --local -- test.js"
+    "test-browsers": "airtap --loopback airtap.local test.js",
+    "test-browser-local": "airtap --local test.js"
   },
   "browser": {
     "./test-common.js": "./test-common-browser.js"
