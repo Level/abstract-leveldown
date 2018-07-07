@@ -162,8 +162,6 @@ Returns an [iterator](#public-iterator). Accepts the following range options:
 - `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be iterated. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
 - `reverse` _(boolean, default: `false`)_: iterate entries in reverse order. Beware that a reverse seek can be slower than a forward seek.
 - `limit` _(number, default: `-1`)_: limit the number of entries collected by this iterator. This number represents a _maximum_ number of entries and may not be reached if you get to the end of the range first. A value of `-1` means there is no limit. When `reverse=true` the entries with the highest keys will be returned instead of the lowest keys.
-- `keys` _(boolean, default: `true`)_: whether the results should contain keys. If set to `false`, calls to `iterator.next(callback)` will yield keys with a value of `undefined`.
-- `values` _(boolean, default: `true`)_: whether the results should contain values. If set to `false`, calls to `iterator.next(callback)` will yield values with a value of `undefined`.
 
 Legacy options:
 
@@ -174,6 +172,8 @@ By default, a range option that is either an empty buffer, an empty string, `nul
 
 In addition to range options, `iterator()` takes the following options:
 
+- `keys` _(boolean, default: `true`)_: whether to return the key of each entry. If set to `false`, calls to `iterator.next(callback)` will yield keys with a value of `undefined`.
+- `values` _(boolean, default: `true`)_: whether to return the value of each entry. If set to `false`, calls to `iterator.next(callback)` will yield values with a value of `undefined`.
 - `keyAsBuffer` _(boolean, default: `true`)_: Whether to return the key of each entry as a Buffer. If `false`, the returned type depends on the implementation.
 - `valueAsBuffer` _(boolean, default: `true`)_: Whether to return the value of each entry as a Buffer.
 
