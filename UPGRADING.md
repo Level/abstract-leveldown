@@ -35,7 +35,7 @@ const testCommon = require('abstract-leveldown/testCommon')
 You must now do:
 
 ```js
-const testCommon = require('abstract-leveldown/test-common')
+const testCommon = require('abstract-leveldown/test/common')
 ```
 
 ### Default `testCommon` uses unique temporary directories

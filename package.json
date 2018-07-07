@@ -33,7 +33,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "browser": {
-    "./test-common.js": "./test-common-browser.js"
+    "./test/common.js": "./test/common-browser.js"
   },
   "license": "MIT",
   "engines": {
