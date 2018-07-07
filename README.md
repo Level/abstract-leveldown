@@ -135,6 +135,9 @@ Get a value from the store by `key`. The optional `options` object may contain:
 The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be the value.
 
 ### `db.put(key, value[, options], callback)`
+
+Store a new entry or overwrite an existing entry. There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the operation is successful or with an `Error` if putting failed for any reason.
+
 ### `db.del(key[, options], callback)`
 ### `db.batch(operations[, options], callback)`
 ### `db.batch()`
@@ -210,6 +213,9 @@ Close the store. If closing failed, call the `callback` function with an `Error`
 Get a value by `key`. The `options` object will always have the following properties: `asBuffer`. If the key does not exist, call the `callback` function with a `new Error('NotFound')`. Otherwise call `callback` with `null` as the first argument and the value as the second.
 
 ### `db._put(key, value, options, callback)`
+
+Store a new entry or overwrite an existing entry. There are no default options but `options` will always be an object. If putting failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
 ### `db._del(key, options, callback)`
 ### `db._batch(array, options, callback)`
 ### `db._chainedBatch()`
