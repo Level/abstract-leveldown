@@ -163,8 +163,8 @@ By default, a range option that is either an empty buffer, an empty string, `nul
 
 In addition to range options, `iterator()` takes the following options:
 
-- `keyAsBuffer` _(boolean, default: `true`)_: Used to determine whether to return the key of each entry as a string or a Buffer. Note that converting from a Buffer to a string incurs a cost so if you need a string (and the value can legitimately become a UTF8 string) then you should fetch it as one.
-- `valueAsBuffer` _(boolean, default: `true`)_: Used to determine whether to return the value of each entry as a string or a Buffer.
+- `keyAsBuffer` _(boolean, default: `true`)_: Whether to return the key of each entry as a Buffer. If `false`, the returned type depends on the implementation.
+- `valueAsBuffer` _(boolean, default: `true`)_: Whether to return the value of each entry as a Buffer.
 
 Lastly, an implementation is free to add its own options.
 
