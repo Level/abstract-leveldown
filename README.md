@@ -183,9 +183,24 @@ Lastly, an implementation is free to add its own options.
 ### `chainedBatch`
 
 #### `chainedBatch.put(key, value)`
+
+Queue a `put` operation on this batch. This may throw if `key` or `value` is invalid.
+
 #### `chainedBatch.del(key)`
+
+Queue a `del` operation on this batch. This may throw if `key` is invalid.
+
 #### `chainedBatch.clear()`
+
+Clear all queued operations on this batch.
+
 #### `chainedBatch.write([options, ]callback)`
+
+Commit the queued operations for this batch. All operations will be written atomically, that is, they will either all succeed or fail with no partial commits.
+
+There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the batch is successful or with an `Error` if the batch failed for any reason.
+
+After `write` has been called, no further operations are allowed.
 
 <a name="public-iterator"></a>
 ### `iterator`
@@ -274,9 +289,23 @@ Provided with the current instance of `abstract-leveldown` by default.
 Provided with the current instance of `abstract-leveldown` by default.
 
 #### `chainedBatch._put(key, value)`
+
+Queue a `put` operation on this batch.
+
 #### `chainedBatch._del(key)`
+
+Queue a `del` operation on this batch.
+
 #### `chainedBatch._clear()`
-#### `chainedBatch._write(options, callback)`
+
+Perform additional cleanup when `clear()` is called.
+
+#### `chainedBatch._write(callback)`
+
+If the `_write` method is defined on `chainedBatch`, it must atomically commit the queued operations. If this fails, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
+If the `_write` method is not defined, `db._batch` will be used instead.
+
 #### `chainedBatch._serializeKey(key)`
 #### `chainedBatch._serializeValue(value)`
 
