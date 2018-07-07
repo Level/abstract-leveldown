@@ -4,6 +4,22 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Unreleased
 
+### Abstract test suite has moved
+
+If you previously did:
+
+```js
+require('abstract-leveldown/abstract/get-test')
+require('abstract-leveldown/abstract/put-test') // etc
+```
+
+You must now do:
+
+```js
+require('abstract-leveldown/test/get-test')
+require('abstract-leveldown/test/put-test') // etc
+```
+
 ### Default `testCommon` is for disk-based, Node.js implementations only
 
 If your implementation or its target environment doesn't meet these criteria, you must implement a custom `testCommon`.
@@ -19,7 +35,7 @@ const testCommon = require('abstract-leveldown/testCommon')
 You must now do:
 
 ```js
-const testCommon = require('abstract-leveldown/test-common')
+const testCommon = require('abstract-leveldown/test/common')
 ```
 
 ### Default `testCommon` uses unique temporary directories

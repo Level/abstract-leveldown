@@ -83,7 +83,7 @@ exports.tearDown = function (test, testCommon) {
 }
 
 exports.all = function (leveldown, test, testCommon) {
-  testCommon = testCommon || require('../test-common')
+  testCommon = testCommon || require('./common')
   exports.setUp(leveldown, test, testCommon)
   exports.snapshot(leveldown, test, testCommon)
   exports.tearDown(test, testCommon)
