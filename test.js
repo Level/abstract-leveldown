@@ -16,46 +16,46 @@ function factory (location) {
  * Compatibility with basic LevelDOWN API
  */
 
-require('./abstract/leveldown-test').args(factory, test)
+require('./test/leveldown-test').args(factory, test)
 
-require('./abstract/open-test').args(factory, test, testCommon)
+require('./test/open-test').args(factory, test, testCommon)
 
-require('./abstract/del-test').setUp(factory, test, testCommon)
-require('./abstract/del-test').args(test)
+require('./test/del-test').setUp(factory, test, testCommon)
+require('./test/del-test').args(test)
 
-require('./abstract/get-test').setUp(factory, test, testCommon)
-require('./abstract/get-test').args(test)
+require('./test/get-test').setUp(factory, test, testCommon)
+require('./test/get-test').args(test)
 
-require('./abstract/put-test').setUp(factory, test, testCommon)
-require('./abstract/put-test').args(test)
+require('./test/put-test').setUp(factory, test, testCommon)
+require('./test/put-test').args(test)
 
-require('./abstract/put-get-del-test').setUp(factory, test, testCommon)
-require('./abstract/put-get-del-test').errorKeys(test)
-// require('./abstract/put-get-del-test').nonErrorKeys(test, testCommon)
-require('./abstract/put-get-del-test').errorValues()
-require('./abstract/put-get-del-test').tearDown(test, testCommon)
+require('./test/put-get-del-test').setUp(factory, test, testCommon)
+require('./test/put-get-del-test').errorKeys(test)
+// require('./test/put-get-del-test').nonErrorKeys(test, testCommon)
+require('./test/put-get-del-test').errorValues()
+require('./test/put-get-del-test').tearDown(test, testCommon)
 
-require('./abstract/batch-test').setUp(factory, test, testCommon)
-require('./abstract/batch-test').args(test)
+require('./test/batch-test').setUp(factory, test, testCommon)
+require('./test/batch-test').args(test)
 
-require('./abstract/chained-batch-test').setUp(factory, test, testCommon)
-require('./abstract/chained-batch-test').args(test)
+require('./test/chained-batch-test').setUp(factory, test, testCommon)
+require('./test/chained-batch-test').args(test)
 
-require('./abstract/close-test').close(factory, test, testCommon)
+require('./test/close-test').close(factory, test, testCommon)
 
-require('./abstract/iterator-test').setUp(factory, test, testCommon)
-require('./abstract/iterator-test').args(test)
-require('./abstract/iterator-test').sequence(test)
-require('./abstract/iterator-test').tearDown(test, testCommon)
+require('./test/iterator-test').setUp(factory, test, testCommon)
+require('./test/iterator-test').args(test)
+require('./test/iterator-test').sequence(test)
+require('./test/iterator-test').tearDown(test, testCommon)
 
-require('./abstract/iterator-range-test').setUp(factory, test, testCommon, [])
-require('./abstract/iterator-range-test').tearDown(test, testCommon)
+require('./test/iterator-range-test').setUp(factory, test, testCommon, [])
+require('./test/iterator-range-test').tearDown(test, testCommon)
 
-require('./abstract/iterator-snapshot-test').setUp(factory, test, testCommon)
-require('./abstract/iterator-snapshot-test').tearDown(test, testCommon)
+require('./test/iterator-snapshot-test').setUp(factory, test, testCommon)
+require('./test/iterator-snapshot-test').tearDown(test, testCommon)
 
-require('./abstract/iterator-no-snapshot-test').setUp(factory, test, testCommon)
-require('./abstract/iterator-no-snapshot-test').tearDown(test, testCommon)
+require('./test/iterator-no-snapshot-test').setUp(factory, test, testCommon)
+require('./test/iterator-no-snapshot-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
   function Test () {

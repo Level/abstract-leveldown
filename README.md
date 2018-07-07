@@ -154,7 +154,7 @@ Provided with the current instance of `AbstractLevelDOWN` by default.
 
 ## Test Suite
 
-To prove that your implementation is `abstract-leveldown` compliant, include the test suite found in `abstract/`. For examples please see the test suites of implementations like [`leveldown`](https://github.com/Level/leveldown), [`level-js`](https://github.com/Level/level-js) or [`memdown`](https://github.com/Level/memdown).
+To prove that your implementation is `abstract-leveldown` compliant, include the test suite found in `test/`. For examples please see the test suites of implementations like [`leveldown`](https://github.com/Level/leveldown), [`level-js`](https://github.com/Level/level-js) or [`memdown`](https://github.com/Level/memdown).
 
 As not every implementation can be fully compliant due to limitations of its underlying storage, some tests may be skipped.
 
