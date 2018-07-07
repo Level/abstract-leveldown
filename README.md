@@ -127,6 +127,15 @@ Not all implementations support the above options.
 Close the store. The `callback` function will be called with no arguments if the operation is successful or with a single `error` argument if closing failed for any reason.
 
 ### `db.get(key[, options], callback)`
+
+Get a value from the store by `key`. The `key` may not be `null`, `undefined`, a zero-length Buffer or zero-length string. Support of other types depends on the implementation.
+
+The optional `options` object may contain:
+
+* `asBuffer` _(boolean, default: `true`)_: Whether to return the `value` as a Buffer. If `false`, the returned type depends on the implementation.
+
+The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be the value.
+
 ### `db.put(key, value[, options], callback)`
 ### `db.del(key[, options], callback)`
 ### `db.batch(operations[, options], callback)`
@@ -193,6 +202,9 @@ Open the store. The `options` object will always have the following properties: 
 Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ### `db._get(key, options, callback)`
+
+Get a value by `key`. The `options` object will always have the following properties: `asBuffer`. If the key does not exist, call the `callback` function with a `new Error('NotFound')`. Otherwise call `callback` with `null` as the first argument and the value as the second.
+
 ### `db._put(key, value, options, callback)`
 ### `db._del(key, options, callback)`
 ### `db._batch(array, options, callback)`
