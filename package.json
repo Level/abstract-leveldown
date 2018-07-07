@@ -19,15 +19,15 @@
     "xtend": "~4.0.0"
   },
   "devDependencies": {
-    "airtap": "0.0.9",
+    "airtap": "0.1.0",
     "sinon": "^6.0.0",
     "standard": "^11.0.0",
     "tape": "^4.7.0"
   },
   "scripts": {
     "test": "standard && node test.js",
-    "test-browsers": "airtap --sauce-connect --loopback airtap.local test.js",
-    "test-browser-local": "airtap --local -- test.js"
+    "test-browsers": "airtap --loopback airtap.local test.js",
+    "test-browser-local": "airtap --local test.js"
   },
   "browser": {
     "./test-common.js": "./test-common-browser.js"
