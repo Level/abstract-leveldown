@@ -177,9 +177,9 @@ An iterator keeps track of when a `next()` is in progress and when an `end()` ha
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults.
 
-### `db = constructor(location)`
+### `db = AbstractLevelDOWN(location)`
 
-Currently, the `abstract-leveldown` constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
+The constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
 
 ### `db._open(options, callback)`
 
