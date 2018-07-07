@@ -123,6 +123,29 @@ If `batch()` is called without arguments ~~or with only an options object~~ then
 
 ### `iterator = db.iterator([options])`
 
+Returns an [iterator](#public-iterator). Accepts the following range options:
+
+- `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be iterated. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
+- `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be iterated. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
+- `reverse` _(boolean, default: `false`)_: iterate entries in reverse order. Beware that a reverse seek can be slower than a forward seek.
+- `limit` _(number, default: `-1`)_: limit the number of entries collected by this iterator. This number represents a _maximum_ number of entries and may not be reached if you get to the end of the range first. A value of `-1` means there is no limit. When `reverse=true` the entries with the highest keys will be returned instead of the lowest keys.
+- `keys` _(boolean, default: `true`)_: whether the results should contain keys. If set to `false`, calls to `iterator.next(callback)` will yield keys with a value of `undefined`.
+- `values` _(boolean, default: `true`)_: whether the results should contain values. If set to `false`, calls to `iterator.next(callback)` will yield values with a value of `undefined`.
+
+Legacy options:
+
+- `start`: instead use `gte`
+- `end`: instead use `lte`.
+
+By default, a range option that is either an empty buffer, an empty string, `null` or `undefined` will be ignored. Note that `null` and `undefined` are valid range options at a higher level. An `abstract-leveldown` implementation is expected to either *encode* nullish, *serialize* nullish, *delegate* to an underlying store, or finally, *ignore* nullish.
+
+In addition to range options, `iterator()` takes the following options:
+
+- `keyAsBuffer` _(boolean, default: `true`)_: Used to determine whether to return the key of each entry as a string or a Buffer. Note that converting from a Buffer to a string incurs a cost so if you need a string (and the value can legitimately become a UTF8 string) then you should fetch it as one.
+- `valueAsBuffer` _(boolean, default: `true`)_: Used to determine whether to return the value of each entry as a string or a Buffer.
+
+Lastly, an implementation is free to add its own options.
+
 ### `chainedBatch`
 
 #### `chainedBatch.put(key, value)`
@@ -130,7 +153,10 @@ If `batch()` is called without arguments ~~or with only an options object~~ then
 #### `chainedBatch.clear()`
 #### `chainedBatch.write([options, ]callback)`
 
+<a name="public-iterator"></a>
 ### `iterator`
+
+An iterator keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
 
 #### `iterator.next(callback)`
 #### `iterator.seek(target)`
@@ -158,20 +184,9 @@ By default a `batch()` operation without arguments returns a functional `Abstrac
 ### `db._serializeValue(value)`
 ### `iterator = db._iterator(options)`
 
-By default an `iterator()` operation returns a noop `AbstractIterator` object. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend the `AbstractIterator` and return your object in the `_iterator(options)` method.
+The default `_iterator()` returns a noop `AbstractIterator` object. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend the `AbstractIterator` and return an instance of this prototype in the `_iterator(options)` method.
 
-The `iterator()` operation accepts the following range options:
-
-* `gt`
-* `gte`
-* `lt`
-* `lte`
-* `start` (legacy)
-* `end` (legacy)
-
-A range option that is either an empty buffer, an empty string or `null` will be ignored.
-
-`AbstractIterator` implements the basic state management found in LevelDOWN. It keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
+The `options` object will always have the following properties: `reverse`, `keys`, `values`, `limit`, `keyAsBuffer` and `valueAsBuffer`.
 
 ### `iterator = AbstractIterator(db)`
 
