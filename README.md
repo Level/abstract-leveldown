@@ -143,6 +143,13 @@ Store a new entry or overwrite an existing entry. There are no `options` by defa
 Delete an entry. There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the operation is successful or with an `Error` if deletion failed for any reason.
 
 ### `db.batch(operations[, options], callback)`
+
+Perform multiple *put* and/or *del* operations in bulk. The `operations` argument must be an `Array` containing a list of operations to be executed sequentially, although as a whole they are performed as an atomic operation.
+
+Each operation is contained in an object having the following properties: `type`, `key`, `value`, where the `type` is either `'put'` or `'del'`. In the case of `'del'` the `value` property is ignored.
+
+There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the batch is successful or with an `Error` if the batch failed for any reason.
+
 ### `db.batch()`
 
 Returns a [`chainedBatch`](#public-chained-batch).
@@ -223,7 +230,10 @@ Store a new entry or overwrite an existing entry. There are no default options b
 
 Delete an entry. There are no default options but `options` will always be an object. If deletion failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
-### `db._batch(array, options, callback)`
+### `db._batch(operations, options, callback)`
+
+Perform multiple *put* and/or *del* operations in bulk. The `operations` argument is always an `Array` containing a list of operations to be executed sequentially, although as a whole they should be performed as an atomic operation. Each operation is guaranteed to have at least `type` and `key` properties. There are no default options but `options` will always be an object. If the batch failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
 ### `db._chainedBatch()`
 
 The default `_chainedBatch()` returns a functional `AbstractChainedBatch` instance that uses `db._batch(array, options, callback)` under the hood. The prototype is available on the main exports for you to extend. If you want to implement chainable batch operations in a different manner then you should extend `AbstractChainedBatch` and return an instance of this prototype in the `_chainedBatch()` method:
