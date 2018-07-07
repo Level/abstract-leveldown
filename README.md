@@ -139,6 +139,9 @@ The `callback` function will be called with an `Error` if the operation failed f
 Store a new entry or overwrite an existing entry. There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the operation is successful or with an `Error` if putting failed for any reason.
 
 ### `db.del(key[, options], callback)`
+
+Delete an entry. There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the operation is successful or with an `Error` if deletion failed for any reason.
+
 ### `db.batch(operations[, options], callback)`
 ### `db.batch()`
 
@@ -217,6 +220,9 @@ Get a value by `key`. The `options` object will always have the following proper
 Store a new entry or overwrite an existing entry. There are no default options but `options` will always be an object. If putting failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ### `db._del(key, options, callback)`
+
+Delete an entry. There are no default options but `options` will always be an object. If deletion failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
 ### `db._batch(array, options, callback)`
 ### `db._chainedBatch()`
 
