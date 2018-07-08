@@ -77,8 +77,8 @@ function implement (ctor, methods) {
 
 test('test core extensibility', function (t) {
   var Test = implement(AbstractLevelDOWN)
-  var test = new Test('foobar')
-  t.equal(test.location, 'foobar', 'location set on instance')
+  t.equal((new Test('foobar')).location, 'foobar', 'location set on instance')
+  t.equal((new Test()).location, '', 'location defaults to empty string')
   t.end()
 })
 
