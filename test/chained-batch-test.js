@@ -33,6 +33,11 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
+  test('test batch has _db', function (t) {
+    t.ok(db.batch()._db === db)
+    t.end()
+  })
+
   test('test batch#put() with missing `value`', function (t) {
     db.batch().put('foo1')
     t.end()

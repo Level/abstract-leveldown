@@ -8,14 +8,6 @@ function AbstractChainedBatch (db) {
   this._written = false
 }
 
-AbstractChainedBatch.prototype._serializeKey = function (key) {
-  return this._db._serializeKey(key)
-}
-
-AbstractChainedBatch.prototype._serializeValue = function (value) {
-  return this._db._serializeValue(value)
-}
-
 AbstractChainedBatch.prototype._checkWritten = function () {
   if (this._written) {
     throw new Error('write() already called on this batch')
@@ -28,8 +20,8 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   var err = this._db._checkKey(key, 'key')
   if (err) { throw err }
 
-  key = this._serializeKey(key)
-  value = this._serializeValue(value)
+  key = this._db._serializeKey(key)
+  value = this._db._serializeValue(value)
 
   this._put(key, value)
 
@@ -46,7 +38,7 @@ AbstractChainedBatch.prototype.del = function (key) {
   var err = this._db._checkKey(key, 'key')
   if (err) { throw err }
 
-  key = this._serializeKey(key)
+  key = this._db._serializeKey(key)
   this._del(key)
 
   return this
