@@ -5,7 +5,7 @@ var hasOwnProperty = Object.prototype.hasOwnProperty
 var rangeOptions = 'start end gt gte lt lte'.split(' ')
 
 function AbstractLevelDOWN (location) {
-  if (!arguments.length || location === undefined) {
+  if (location === undefined) {
     location = ''
   }
 
