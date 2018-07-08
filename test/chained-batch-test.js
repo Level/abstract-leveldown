@@ -199,22 +199,35 @@ exports.args = function (test, testCommon) {
   })
 
   test('test custom _serialize*', function (t) {
-    var _db = Object.create(db)
-    _db._serializeKey = _db._serializeValue = function (data) { return data }
+    t.plan(4)
 
+    var _db = Object.create(db)
     var batch = _db.batch()
     var ops = collectBatchOps(batch)
 
-    batch
-      .put({ foo: 'bar' }, { beep: 'boop' })
-      .del({ bar: 'baz' })
+    _db._serializeKey = function (key) {
+      t.same(key, { foo: 'bar' })
+      return 'key1'
+    }
+
+    _db._serializeValue = function (value) {
+      t.same(value, { beep: 'boop' })
+      return 'value1'
+    }
+
+    batch.put({ foo: 'bar' }, { beep: 'boop' })
+
+    _db._serializeKey = function (key) {
+      t.same(key, { bar: 'baz' })
+      return 'key2'
+    }
+
+    batch.del({ bar: 'baz' })
 
     t.deepEqual(ops, [
-      { type: 'put', key: { foo: 'bar' }, value: { beep: 'boop' } },
-      { type: 'del', key: { bar: 'baz' } }
+      { type: 'put', key: 'key1', value: 'value1' },
+      { type: 'del', key: 'key2' }
     ])
-
-    t.end()
   })
 }
 
