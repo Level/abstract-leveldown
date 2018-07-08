@@ -54,13 +54,14 @@ AbstractChainedBatch.prototype._del = function (key) {
 
 AbstractChainedBatch.prototype.clear = function () {
   this._checkWritten()
-  this._operations = []
   this._clear()
 
   return this
 }
 
-AbstractChainedBatch.prototype._clear = function noop () {}
+AbstractChainedBatch.prototype._clear = function () {
+  this._operations = []
+}
 
 AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
