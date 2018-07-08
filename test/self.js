@@ -350,11 +350,12 @@ test('test write() extensibility', function (t) {
 
   t.equal(spy.callCount, 1, 'got _write() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _write() was correct')
-  t.equal(spy.getCall(0).args.length, 1, 'got one argument')
+  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.same(spy.getCall(0).args[0], {}, 'got options')
   // awkward here cause of nextTick & an internal wrapped cb
-  t.equal(typeof spy.getCall(0).args[0], 'function', 'got a callback function')
+  t.equal(typeof spy.getCall(0).args[1], 'function', 'got a callback function')
   t.equal(spycb.callCount, 0, 'spycb not called')
-  spy.getCall(0).args[0]()
+  spy.getCall(0).args[1]()
   t.equal(spycb.callCount, 1, 'spycb called, i.e. was our cb argument')
   t.end()
 })

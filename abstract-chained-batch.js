@@ -73,15 +73,11 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
   if (typeof options !== 'object') { options = {} }
 
   this._written = true
+  this._write(options, callback)
+}
 
-  // @ts-ignore
-  if (typeof this._write === 'function') { return this._write(callback) }
-
-  if (typeof this._db._batch === 'function') {
-    return this._db._batch(this._operations, options, callback)
-  }
-
-  process.nextTick(callback)
+AbstractChainedBatch.prototype._write = function (options, callback) {
+  this._db._batch(this._operations, options, callback)
 }
 
 module.exports = AbstractChainedBatch
