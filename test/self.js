@@ -372,6 +372,18 @@ test('test write() extensibility with null options', function (t) {
   t.end()
 })
 
+test('test write() extensibility with options', function (t) {
+  var spy = sinon.spy()
+  var Test = implement(AbstractChainedBatch, { _write: spy })
+  var test = new Test('foobar')
+
+  test.write({ test: true }, function () {})
+
+  t.equal(spy.callCount, 1, 'got _write() call')
+  t.same(spy.getCall(0).args[0], { test: true }, 'got options')
+  t.end()
+})
+
 test('test put() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
