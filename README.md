@@ -11,6 +11,22 @@
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 
+## Table of Contents
+
+<details><summary>Click to expand</summary>
+
+- [Background](#background)
+- [Example](#example)
+- [Browser Support](#browser-support)
+- [Public API For Consumers](#public-api-for-consumers)
+- [Private API For Implementors](#private-api-for-implementors)
+- [Test Suite](#test-suite)
+- [Contributing](#contributing)
+- [Big Thanks](#big-thanks)
+- [License](#license)
+
+</details>
+
 ## Background
 
 `abstract-leveldown` provides a simple, operational base prototype that's ready for extending. All operations have sensible *noop* defaults (operations that essentially do nothing). For example, operations such as `.open(callback)` and `.close(callback)` will invoke `callback` on a next tick. Others perform sensible actions, like `.get(key, callback)` which will always yield a `'NotFound'` error.
@@ -91,11 +107,11 @@ db.put('foo', 'bar', function (err) {
 
 See [`memdown`](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for `leveldown`.
 
-## Browser support
+## Browser Support
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://saucelabs.com/u/abstract-leveldown)
 
-## Public API for consumers
+## Public API For Consumers
 
 ### `db = constructor(..)`
 
@@ -241,7 +257,7 @@ The following applies to any method above that takes a `value` argument or optio
 
 Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#private-serialize-key) and [`db._serializeValue`](#private-serialize-value).
 
-## Private API for implementors
+## Private API For Implementors
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to call the callback in a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
 
