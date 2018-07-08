@@ -70,7 +70,9 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
   if (typeof callback !== 'function') {
     throw new Error('write() requires a callback argument')
   }
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) {
+    options = {}
+  }
 
   this._written = true
   this._write(options, callback)
