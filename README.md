@@ -1,6 +1,6 @@
 # abstract-leveldown
 
-> An abstract prototype matching the [`leveldown`](https://github.com/level/leveldown/) API. Useful for extending [`levelup`](https://github.com/level/levelup) functionality by providing a replacement to `leveldown`.
+> An abstract prototype matching the [`leveldown`][leveldown] API. Useful for extending [`levelup`](https://github.com/level/levelup) functionality by providing a replacement to `leveldown`.
 
 [![level badge][level-badge]](https://github.com/level/awesome)
 [![npm](https://img.shields.io/npm/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
@@ -23,7 +23,7 @@ For example, if you call `.open()` without a callback argument you'll get an `Er
 
 ## Example
 
-Let's implement a simplistic in-memory `leveldown` replacement:
+Let's implement a simplistic in-memory [`leveldown`][leveldown] replacement:
 
 ```js
 var AbstractLevelDOWN = require('abstract-leveldown').AbstractLevelDOWN
@@ -168,7 +168,7 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-By default, a range option that is either an empty buffer, an empty string, `null` or `undefined` will be ignored. Note that `null` and `undefined` are valid range options at a higher level. An `abstract-leveldown` implementation is expected to either *encode* nullish, *serialize* nullish, *delegate* to an underlying store, or finally, *ignore* nullish.
+By default, a range option that is either an empty buffer, an empty string, `null` or `undefined` will be ignored. Note that `null` and `undefined` are valid range options at a higher level. An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] nullish, [*serialize*](#private-serialize-key) nullish, *delegate* to an underlying store, or finally, *ignore* nullish.
 
 In addition to range options, `iterator()` takes the following options:
 
@@ -227,7 +227,7 @@ Seek the iterator to a given key or the closest key. Subsequent calls to `iterat
 
 If range options like `gt` were passed to `db.iterator()` and `target` does not fall within that range, the iterator will reach its end.
 
-**Note:** At the time of writing, `leveldown` is the only known implementation to support `seek()`. In other implementations, it is a noop.
+**Note:** At the time of writing, [`leveldown`][leveldown] is the only known implementation to support `seek()`. In other implementations, it is a noop.
 
 #### `iterator.end(callback)`
 
@@ -235,9 +235,11 @@ End iteration and free up underlying resources. The `callback` function will be 
 
 ### Type Support
 
-The following applies to any method above that takes a `key` argument or option: all implementations *must* support a `key` of type String and *should* support a `key` of type Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer or zero-length string. Support of other key types depends on the implementation.
+The following applies to any method above that takes a `key` argument or option: all implementations *must* support a `key` of type String and *should* support a `key` of type Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer or zero-length string.
 
-The following applies to any method above that takes a `value` argument or option: all implementations *must* support a `value` of type String or Buffer. Values of type `null` and `undefined` are currently accepted but likely to be dropped in a next version. Support of other value types depends on the implementation.
+The following applies to any method above that takes a `value` argument or option: all implementations *must* support a `value` of type String or Buffer. Values of type `null` and `undefined` are currently accepted but likely to be dropped in a next version.
+
+Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#private-serialize-key) and [`db._serializeValue`](#private-serialize-value).
 
 ## Private API for implementors
 
@@ -254,6 +256,36 @@ Open the store. The `options` object will always have the following properties: 
 ### `db._close(callback)`
 
 Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
+<a name="private-serialize-key"></a>
+### `db._serializeKey(key)`
+
+Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option will receive serialized keys. For example, if `_serializeKey` is implemented as:
+
+```js
+FakeLevelDOWN.prototype._serializeKey = function (key) {
+  return Buffer.isBuffer(key) ? key : String(key)
+}
+```
+
+Then `db.get(2, callback)` will translate into `db._get('2', options, callback)`.
+
+If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike *encoding* as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
+
+**Note:** range options are not currently serialized ([#130](https://github.com/Level/abstract-leveldown/issues/130)).
+
+<a name="private-serialize-value"></a>
+### `db._serializeValue(value)`
+
+Convert a `value` to a type supported by the underlying storage. All methods below that take a `value` argument or option will receive serialized values. For example, if `_serializeValue` is implemented as:
+
+```js
+FakeLevelDOWN.prototype._serializeValue = function (value) {
+  return Buffer.isBuffer(value) ? value : String(value)
+}
+```
+
+Then `db.put(key, 2, callback)` will translate into `db._put(key, '2', options, callback)`.
 
 ### `db._get(key, options, callback)`
 
@@ -290,8 +322,6 @@ FakeLevelDOWN.prototype._chainedBatch = function () {
 }
 ```
 
-### `db._serializeKey(key)`
-### `db._serializeValue(value)`
 ### `db._iterator(options)`
 
 The default `_iterator()` returns a noop `AbstractIterator` instance. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend `AbstractIterator` and return an instance of this prototype in the `_iterator(options)` method.
@@ -337,7 +367,12 @@ If the `_write` method is defined on `chainedBatch`, it must atomically commit t
 If the `_write` method is not defined, `db._batch` will be used instead.
 
 #### `chainedBatch._serializeKey(key)`
+
+A proxy to [`db._serializeKey(key)`](#private-serialize-key).
+
 #### `chainedBatch._serializeValue(value)`
+
+A proxy to [`db._serializeValue(value)`](#private-serialize-value).
 
 ## Test Suite
 
@@ -386,3 +421,5 @@ Copyright &copy; 2013-present `abstract-leveldown` [contributors](https://github
 `abstract-leveldown` is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
 
 [level-badge]: http://leveldb.org/img/badge.svg
+[encoding-down]: https://github.com/Level/encoding-down
+[leveldown]: https://github.com/Level/leveldown
