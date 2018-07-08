@@ -335,16 +335,28 @@ test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
 
 test('test AbstractChainedBatch extensibility', function (t) {
   var Test = implement(AbstractChainedBatch)
-  var test = new Test('foobar')
-  t.equal(test._db, 'foobar', 'db set on instance')
+  var test = new Test({ test: true })
+  t.same(test._db, { test: true }, 'db set on instance')
   t.end()
+})
+
+test('test AbstractChainedBatch expects a db', function (t) {
+  t.plan(1)
+
+  var Test = implement(AbstractChainedBatch)
+
+  try {
+    Test()
+  } catch (err) {
+    t.is(err.message, 'First argument must be an abstract-leveldown compliant store')
+  }
 })
 
 test('test write() extensibility', function (t) {
   var spy = sinon.spy()
   var spycb = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test('foobar')
+  var test = new Test({ test: true })
 
   test.write(spycb)
 
@@ -363,7 +375,7 @@ test('test write() extensibility', function (t) {
 test('test write() extensibility with null options', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test('foobar')
+  var test = new Test({ test: true })
 
   test.write(null, function () {})
 
@@ -375,7 +387,7 @@ test('test write() extensibility with null options', function (t) {
 test('test write() extensibility with options', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test('foobar')
+  var test = new Test({ test: true })
 
   test.write({ test: true }, function () {})
 
