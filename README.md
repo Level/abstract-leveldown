@@ -172,7 +172,7 @@ Returns a [`chainedBatch`](#public-chained-batch).
 
 ### `db.iterator([options])`
 
-Returns an [iterator](#public-iterator). Accepts the following range options:
+Returns an [`iterator`](#public-iterator). Accepts the following range options:
 
 - `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be iterated. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
 - `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be iterated. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
