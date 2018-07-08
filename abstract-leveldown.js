@@ -6,7 +6,7 @@ var rangeOptions = 'start end gt gte lt lte'.split(' ')
 
 function AbstractLevelDOWN (location) {
   if (!arguments.length || location === undefined) {
-    throw new Error('constructor requires at least a location argument')
+    location = ''
   }
 
   if (typeof location !== 'string') {
