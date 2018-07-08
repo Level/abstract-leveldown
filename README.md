@@ -235,9 +235,9 @@ End iteration and free up underlying resources. The `callback` function will be 
 
 ### Type Support
 
-The following applies to any method above that takes a `key` argument or option: all implementations *should* support a `key` of type String or Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer or zero-length string. Support of other key types depends on the implementation.
+The following applies to any method above that takes a `key` argument or option: all implementations *must* support a `key` of type String and *should* support a `key` of type Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer or zero-length string. Support of other key types depends on the implementation.
 
-The following applies to any method above that takes a `value` argument or option: all implementations *should* support a `value` of type String or Buffer. Values of type `null` and `undefined` are currently accepted but likely to be dropped in a next version. Support of other value types depends on the implementation.
+The following applies to any method above that takes a `value` argument or option: all implementations *must* support a `value` of type String or Buffer. Values of type `null` and `undefined` are currently accepted but likely to be dropped in a next version. Support of other value types depends on the implementation.
 
 ## Private API for implementors
 
