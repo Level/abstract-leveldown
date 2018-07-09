@@ -4,6 +4,10 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Unreleased
 
+### Optional location
+
+Previously the `AbstractLevelDOWN` constructor threw if the `location` argument was missing or not a string. Now the `location` is optional and defaults to `''`. If your implementation doesn't have a location you can omit it.
+
 ### Abstract test suite has moved
 
 If you previously did:
