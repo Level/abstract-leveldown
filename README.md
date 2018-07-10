@@ -46,8 +46,7 @@ var AbstractLevelDOWN = require('abstract-leveldown').AbstractLevelDOWN
 var util = require('util')
 
 // Constructor
-function FakeLevelDOWN (location) {
-  this.location = location
+function FakeLevelDOWN () {
   AbstractLevelDOWN.call(this)
 }
 
@@ -93,7 +92,7 @@ Now we can use our implementation with `levelup`:
 ```js
 var levelup = require('levelup')
 
-var db = levelup(new FakeLevelDOWN('/who/cares'))
+var db = levelup(new FakeLevelDOWN())
 
 db.put('foo', 'bar', function (err) {
   if (err) throw err
