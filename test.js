@@ -8,8 +8,8 @@ var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
 
-function factory (location) {
-  return new AbstractLevelDOWN(location)
+function factory () {
+  return new AbstractLevelDOWN()
 }
 
 /**
@@ -77,8 +77,8 @@ function implement (ctor, methods) {
 
 test('test core extensibility', function (t) {
   var Test = implement(AbstractLevelDOWN)
-  var test = new Test('foobar')
-  t.equal(test.location, 'foobar', 'location set on instance')
+  var test = new Test()
+  t.equal(test.status, 'new', 'status is new')
   t.end()
 })
 
@@ -745,7 +745,7 @@ test('.status', function (t) {
 
 test('_setupIteratorOptions', function (t) {
   var keys = 'start end gt gte lt lte'.split(' ')
-  var db = new AbstractLevelDOWN('foolocation')
+  var db = new AbstractLevelDOWN()
 
   function setupOptions (constrFn) {
     var options = {}
