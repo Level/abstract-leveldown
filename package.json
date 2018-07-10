@@ -31,9 +31,6 @@
     "test-browser-local": "airtap --coverage --local test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
-  "browser": {
-    "./test/common.js": "./test/common-browser.js"
-  },
   "license": "MIT",
   "engines": {
     "node": ">=6"
