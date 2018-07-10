@@ -1,9 +1,10 @@
+var collectEntries = require('level-concat-iterator')
+
 exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
 }
 
-// TODO remove testCommon parameter
-exports.noSnapshot = function (factory, test, testCommon) {
+exports.noSnapshot = function (factory, test) {
   function make (run) {
     return function (t) {
       var db = factory()
@@ -35,7 +36,7 @@ exports.noSnapshot = function (factory, test, testCommon) {
 
   function verify (t, it, db) {
     // TODO remove testCommon and call level-concat-iterator directly?
-    testCommon.collectEntries(it, function (err, entries) {
+    collectEntries(it, function (err, entries) {
       t.ifError(err, 'no iterator error')
 
       var kv = entries.map(function (entry) {
@@ -68,6 +69,6 @@ exports.tearDown = function (test, testCommon) {
 exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
   exports.setUp(factory, test, testCommon)
-  exports.noSnapshot(factory, test, testCommon)
+  exports.noSnapshot(factory, test)
   exports.tearDown(test, testCommon)
 }

@@ -1,3 +1,5 @@
+var collectEntries = require('level-concat-iterator')
+
 var db
 
 module.exports.setUp = function (factory, test, testCommon, data) {
@@ -16,10 +18,7 @@ module.exports.setUp = function (factory, test, testCommon, data) {
   })
 }
 
-// TODO remove testCommon parameter, use level-concat-iterator directly
-module.exports.range = function (leveldown, test, testCommon, data) {
-  var collectEntries = testCommon.collectEntries
-
+module.exports.range = function (leveldown, test, data) {
   function rangeTest (name, opts, expected) {
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
@@ -373,6 +372,6 @@ module.exports.all = function (factory, test, testCommon) {
   }())
 
   module.exports.setUp(factory, test, testCommon, data)
-  module.exports.range(factory, test, testCommon, data)
+  module.exports.range(factory, test, data)
   module.exports.tearDown(test, testCommon)
 }
