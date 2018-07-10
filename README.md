@@ -47,7 +47,7 @@ var util = require('util')
 
 // Constructor
 function FakeLevelDOWN (location) {
-  this._location = location
+  this.location = location
   AbstractLevelDOWN.call(this)
 }
 
