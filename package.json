@@ -15,7 +15,6 @@
   "main": "index.js",
   "dependencies": {
     "level-concat-iterator": "~2.0.0",
-    "tempy": "~0.2.1",
     "xtend": "~4.0.0"
   },
   "devDependencies": {

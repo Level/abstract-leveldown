@@ -1,8 +1,4 @@
 module.exports = {
-  // TODO remove?
-  location: function () {
-    return ''
-  },
   setUp: function (t) {
     t.end()
   },
