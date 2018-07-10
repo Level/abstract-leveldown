@@ -91,10 +91,10 @@ function makeErrorKeyTest (test, type, key, expectedError) {
   makePutErrorTest(test, type, key, 'foo', expectedError)
 }
 
-module.exports.setUp = function (leveldown, test, testCommon) {
+module.exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = leveldown(testCommon.location())
+    db = factory()
     db.open(t.end.bind(t))
   })
 }
@@ -167,9 +167,9 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon) {
+module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(leveldown, test, testCommon)
+  module.exports.setUp(factory, test, testCommon)
   module.exports.errorKeys(test)
   module.exports.nonErrorKeys(test)
   module.exports.errorValues(test)

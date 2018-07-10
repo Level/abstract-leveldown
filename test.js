@@ -21,13 +21,13 @@ require('./test/leveldown-test').args(factory, test)
 require('./test/open-test').args(factory, test, testCommon)
 
 require('./test/del-test').setUp(factory, test, testCommon)
-require('./test/del-test').args(test)
+require('./test/del-test').args(factory, test)
 
 require('./test/get-test').setUp(factory, test, testCommon)
-require('./test/get-test').args(test)
+require('./test/get-test').args(factory, test)
 
 require('./test/put-test').setUp(factory, test, testCommon)
-require('./test/put-test').args(test)
+require('./test/put-test').args(factory, test)
 
 require('./test/put-get-del-test').setUp(factory, test, testCommon)
 require('./test/put-get-del-test').errorKeys(test)

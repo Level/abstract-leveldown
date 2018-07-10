@@ -1,9 +1,9 @@
 var db
 
-module.exports.setUp = function (leveldown, test, testCommon) {
+module.exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = leveldown(testCommon.location())
+    db = factory()
     db.open(t.end.bind(t))
   })
 }
@@ -111,7 +111,7 @@ module.exports.sequence = function (test) {
   })
 }
 
-module.exports.iterator = function (leveldown, test, testCommon) {
+module.exports.iterator = function (test) {
   test('test simple iterator()', function (t) {
     var data = [
       { type: 'put', key: 'foobatch1', value: 'bar1' },
@@ -151,7 +151,7 @@ module.exports.iterator = function (leveldown, test, testCommon) {
   })
 }
 
-module.exports.snapshot = function (leveldown, test, testCommon) {
+module.exports.snapshot = function () {
   console.error('DEPRECATED: the snapshot test has moved to iterator-snapshot-test.js')
 }
 
@@ -161,11 +161,11 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon) {
+module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(leveldown, test, testCommon)
+  module.exports.setUp(factory, test, testCommon)
   module.exports.args(test)
   module.exports.sequence(test)
-  module.exports.iterator(leveldown, test, testCommon)
+  module.exports.iterator(test)
   module.exports.tearDown(test, testCommon)
 }

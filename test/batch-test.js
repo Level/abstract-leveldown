@@ -2,10 +2,10 @@ var db
 var verifyNotFoundError = require('./util').verifyNotFoundError
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (leveldown, test, testCommon) {
+module.exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = leveldown(testCommon.location())
+    db = factory()
     db.open(t.end.bind(t))
   })
 }
@@ -266,9 +266,9 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon) {
+module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(leveldown, test, testCommon)
+  module.exports.setUp(factory, test, testCommon)
   module.exports.args(test)
   module.exports.batch(test)
   module.exports.atomic(test)

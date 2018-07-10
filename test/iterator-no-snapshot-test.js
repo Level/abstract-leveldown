@@ -1,11 +1,12 @@
-exports.setUp = function (leveldown, test, testCommon) {
+exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
 }
 
-exports.noSnapshot = function (leveldown, test, testCommon) {
+// TODO remove testCommon parameter
+exports.noSnapshot = function (factory, test, testCommon) {
   function make (run) {
     return function (t) {
-      var db = leveldown(testCommon.location())
+      var db = factory()
       var operations = [
         { type: 'put', key: 'a', value: 'a' },
         { type: 'put', key: 'b', value: 'b' },
@@ -33,6 +34,7 @@ exports.noSnapshot = function (leveldown, test, testCommon) {
   }
 
   function verify (t, it, db) {
+    // TODO remove testCommon and call level-concat-iterator directly?
     testCommon.collectEntries(it, function (err, entries) {
       t.ifError(err, 'no iterator error')
 
@@ -63,9 +65,9 @@ exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-exports.all = function (leveldown, test, testCommon) {
+exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  exports.setUp(leveldown, test, testCommon)
-  exports.noSnapshot(leveldown, test, testCommon)
+  exports.setUp(factory, test, testCommon)
+  exports.noSnapshot(factory, test, testCommon)
   exports.tearDown(test, testCommon)
 }
