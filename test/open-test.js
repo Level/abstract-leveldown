@@ -80,35 +80,6 @@ module.exports.openAdvanced = function (factory, test) {
 
     async = true
   })
-
-  // TODO this assumes location based backends, move out to respective
-  // implementation?
-  // test('test database open errorIfExists:true', function (t) {
-  //   var location = testCommon.location()
-  //   var db = leveldown(location)
-
-  //   // make a valid database first, then close and dispose
-  //   db.open({}, function (err) {
-  //     t.error(err)
-  //     db.close(function (err) {
-  //       t.error(err)
-
-  //       // open again with 'errorIfExists'
-  //       db = leveldown(location)
-
-  //       var async = false
-
-  //       db.open({ createIfMissing: false, errorIfExists: true }, function (err) {
-  //         t.ok(err, 'error')
-  //         t.ok(/exists/.test(err.message), 'error is about already existing')
-  //         t.ok(async, 'callback is asynchronous')
-  //         t.end()
-  //       })
-
-  //       async = true
-  //     })
-  //   })
-  // })
 }
 
 module.exports.tearDown = function (test, testCommon) {
