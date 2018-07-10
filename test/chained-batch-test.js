@@ -1,3 +1,5 @@
+var collectEntries = require('level-concat-iterator')
+
 var db
 
 function collectBatchOps (batch) {
@@ -211,7 +213,7 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.batch = function (test, testCommon) {
+module.exports.batch = function (test) {
   test('test basic batch', function (t) {
     db.batch([
       { type: 'put', key: 'one', value: '1' },
@@ -230,7 +232,7 @@ module.exports.batch = function (test, testCommon) {
         .put('foo', 'bar')
         .write(function (err) {
           t.error(err)
-          testCommon.collectEntries(
+          collectEntries(
             db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
               t.error(err)
               t.equal(data.length, 3, 'correct number of entries')
@@ -258,6 +260,6 @@ module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
   module.exports.setUp(factory, test, testCommon)
   module.exports.args(test)
-  module.exports.batch(test, testCommon)
+  module.exports.batch(test)
   module.exports.tearDown(test, testCommon)
 }
