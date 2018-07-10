@@ -35,7 +35,6 @@ exports.noSnapshot = function (factory, test) {
   }
 
   function verify (t, it, db) {
-    // TODO remove testCommon and call level-concat-iterator directly?
     collectEntries(it, function (err, entries) {
       t.ifError(err, 'no iterator error')
 
