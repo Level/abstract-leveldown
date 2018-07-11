@@ -8,8 +8,8 @@ var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
 
-function factory (location) {
-  return new AbstractLevelDOWN(location)
+function factory () {
+  return new AbstractLevelDOWN()
 }
 
 /**
@@ -21,13 +21,13 @@ require('./test/leveldown-test').args(factory, test)
 require('./test/open-test').args(factory, test, testCommon)
 
 require('./test/del-test').setUp(factory, test, testCommon)
-require('./test/del-test').args(test)
+require('./test/del-test').args(factory, test)
 
 require('./test/get-test').setUp(factory, test, testCommon)
-require('./test/get-test').args(test)
+require('./test/get-test').args(factory, test)
 
 require('./test/put-test').setUp(factory, test, testCommon)
-require('./test/put-test').args(test)
+require('./test/put-test').args(factory, test)
 
 require('./test/put-get-del-test').setUp(factory, test, testCommon)
 require('./test/put-get-del-test').errorKeys(test)
@@ -77,8 +77,8 @@ function implement (ctor, methods) {
 
 test('test core extensibility', function (t) {
   var Test = implement(AbstractLevelDOWN)
-  var test = new Test('foobar')
-  t.equal(test.location, 'foobar', 'location set on instance')
+  var test = new Test()
+  t.equal(test.status, 'new', 'status is new')
   t.end()
 })
 
@@ -745,7 +745,7 @@ test('.status', function (t) {
 
 test('_setupIteratorOptions', function (t) {
   var keys = 'start end gt gte lt lte'.split(' ')
-  var db = new AbstractLevelDOWN('foolocation')
+  var db = new AbstractLevelDOWN()
 
   function setupOptions (constrFn) {
     var options = {}

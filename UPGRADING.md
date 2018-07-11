@@ -4,6 +4,27 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Unreleased
 
+### `location` removed
+
+`AbstractLevelDOWN` is no longer associated with a `location`. It's up to the implementation to handle it if it's required.
+
+If you previously did:
+
+```js
+function YourDOWN (location) {
+  AbstractLevelDOWN.call(this, location)
+}
+```
+
+You must now do:
+
+```js
+function YourDOWN (location) {
+  this.location = location
+  AbstractLevelDOWN.call(this)
+}
+```
+
 ### Abstract test suite has moved
 
 If you previously did:

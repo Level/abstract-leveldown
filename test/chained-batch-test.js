@@ -1,3 +1,5 @@
+var collectEntries = require('level-concat-iterator')
+
 var db
 
 function collectBatchOps (batch) {
@@ -22,10 +24,10 @@ function collectBatchOps (batch) {
   return _operations
 }
 
-module.exports.setUp = function (leveldown, test, testCommon) {
+module.exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = leveldown(testCommon.location())
+    db = factory()
     db.open(t.end.bind(t))
   })
 }
@@ -211,7 +213,7 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.batch = function (test, testCommon) {
+module.exports.batch = function (test) {
   test('test basic batch', function (t) {
     db.batch([
       { type: 'put', key: 'one', value: '1' },
@@ -230,7 +232,7 @@ module.exports.batch = function (test, testCommon) {
         .put('foo', 'bar')
         .write(function (err) {
           t.error(err)
-          testCommon.collectEntries(
+          collectEntries(
             db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
               t.error(err)
               t.equal(data.length, 3, 'correct number of entries')
@@ -254,10 +256,10 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon) {
+module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(leveldown, test, testCommon)
+  module.exports.setUp(factory, test, testCommon)
   module.exports.args(test)
-  module.exports.batch(test, testCommon)
+  module.exports.batch(test)
   module.exports.tearDown(test, testCommon)
 }

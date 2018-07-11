@@ -45,9 +45,9 @@ Let's implement a simplistic in-memory [`leveldown`][leveldown] replacement:
 var AbstractLevelDOWN = require('abstract-leveldown').AbstractLevelDOWN
 var util = require('util')
 
-// Constructor, passes location to the AbstractLevelDOWN constructor
-function FakeLevelDOWN (location) {
-  AbstractLevelDOWN.call(this, location)
+// Constructor
+function FakeLevelDOWN () {
+  AbstractLevelDOWN.call(this)
 }
 
 // Our new prototype inherits from AbstractLevelDOWN
@@ -92,7 +92,7 @@ Now we can use our implementation with `levelup`:
 ```js
 var levelup = require('levelup')
 
-var db = levelup(new FakeLevelDOWN('/who/cares'))
+var db = levelup(new FakeLevelDOWN())
 
 db.put('foo', 'bar', function (err) {
   if (err) throw err
@@ -261,9 +261,9 @@ Support of other key and value types depends on the implementation as well as it
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to call the callback in a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
 
-### `db = AbstractLevelDOWN(location)`
+### `db = AbstractLevelDOWN()`
 
-The constructor expects a location argument and throws if one isn't given. If your implementation doesn't have a `location`, pass an empty string (`''`).
+The constructor takes no parameters. Sets the `.status` to `'new'`.
 
 ### `db._open(options, callback)`
 

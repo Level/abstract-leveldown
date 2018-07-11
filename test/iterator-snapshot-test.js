@@ -1,11 +1,11 @@
-exports.setUp = function (leveldown, test, testCommon) {
+exports.setUp = function (factory, test, testCommon) {
   test('setUp common', testCommon.setUp)
 }
 
-exports.snapshot = function (leveldown, test, testCommon) {
+exports.snapshot = function (factory, test) {
   function make (run) {
     return function (t) {
-      var db = leveldown(testCommon.location())
+      var db = factory()
 
       db.open(function (err) {
         t.ifError(err, 'no open error')
@@ -82,9 +82,9 @@ exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-exports.all = function (leveldown, test, testCommon) {
+exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  exports.setUp(leveldown, test, testCommon)
-  exports.snapshot(leveldown, test, testCommon)
+  exports.setUp(factory, test, testCommon)
+  exports.snapshot(factory, test)
   exports.tearDown(test, testCommon)
 }

@@ -1,19 +1,15 @@
 var db
-var leveldown
-var testCommon
 var verifyNotFoundError = require('./util').verifyNotFoundError
 
-module.exports.setUp = function (_leveldown, test, _testCommon) {
-  test('setUp common', _testCommon.setUp)
+module.exports.setUp = function (factory, test, testCommon) {
+  test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    leveldown = _leveldown
-    testCommon = _testCommon
-    db = leveldown(testCommon.location())
+    db = factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (test) {
+module.exports.args = function (factory, test) {
   test('test argument-less del() throws', function (t) {
     t.throws(
       db.del.bind(db)
@@ -43,7 +39,7 @@ module.exports.args = function (test) {
 
   test('test custom _serialize*', function (t) {
     t.plan(3)
-    var db = leveldown(testCommon.location())
+    var db = factory()
     db._serializeKey = function (data) { return data }
     db._del = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
@@ -88,10 +84,10 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (leveldown, test, testCommon) {
+module.exports.all = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(leveldown, test, testCommon)
-  module.exports.args(test)
+  module.exports.setUp(factory, test, testCommon)
+  module.exports.args(factory, test)
   module.exports.del(test)
   module.exports.tearDown(test, testCommon)
 }

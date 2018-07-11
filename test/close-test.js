@@ -1,7 +1,7 @@
-module.exports.close = function (leveldown, test, testCommon) {
+module.exports.close = function (factory, test, testCommon) {
   testCommon = testCommon || require('./common')
   test('test close()', function (t) {
-    var db = leveldown(testCommon.location())
+    var db = factory()
 
     db.open(function (err) {
       t.error(err)

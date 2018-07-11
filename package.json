@@ -15,7 +15,6 @@
   "main": "index.js",
   "dependencies": {
     "level-concat-iterator": "~2.0.0",
-    "tempy": "~0.2.1",
     "xtend": "~4.0.0"
   },
   "devDependencies": {
@@ -31,9 +30,6 @@
     "test-browsers": "airtap --coverage --loopback airtap.local test.js",
     "test-browser-local": "airtap --coverage --local test.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
-  },
-  "browser": {
-    "./test/common.js": "./test/common-browser.js"
   },
   "license": "MIT",
   "engines": {
