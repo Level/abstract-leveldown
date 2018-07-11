@@ -2,10 +2,10 @@ var collectEntries = require('level-concat-iterator')
 
 var db
 
-module.exports.setUp = function (factory, test, testCommon, data) {
+module.exports.setUp = function (test, testCommon, data) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(function () {
       db.batch(data.map(function (d) {
         return {
@@ -18,7 +18,7 @@ module.exports.setUp = function (factory, test, testCommon, data) {
   })
 }
 
-module.exports.range = function (leveldown, test, data) {
+module.exports.range = function (test, testCommon, data) {
   function rangeTest (name, opts, expected) {
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
@@ -354,7 +354,7 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
 
   var data = (function () {
@@ -371,7 +371,7 @@ module.exports.all = function (factory, test, testCommon) {
     return d
   }())
 
-  module.exports.setUp(factory, test, testCommon, data)
-  module.exports.range(factory, test, data)
+  module.exports.setUp(test, testCommon, data)
+  module.exports.range(test, testCommon, data)
   module.exports.tearDown(test, testCommon)
 }

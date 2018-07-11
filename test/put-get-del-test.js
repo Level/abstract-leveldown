@@ -91,15 +91,15 @@ function makeErrorKeyTest (test, type, key, expectedError) {
   makePutErrorTest(test, type, key, 'foo', expectedError)
 }
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.errorKeys = function (test) {
+module.exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
@@ -107,7 +107,7 @@ module.exports.errorKeys = function (test) {
   makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
 }
 
-module.exports.nonErrorKeys = function (test) {
+module.exports.nonErrorKeys = function (test, testCommon) {
   // valid falsey keys
   makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
@@ -130,10 +130,10 @@ module.exports.nonErrorKeys = function (test) {
   makePutGetDelSuccessfulTest(test, 'Array value', 'foo', [1, 2, 3, 4])
 }
 
-module.exports.errorValues = function () {
+module.exports.errorValues = function (test, testCommon) {
 }
 
-module.exports.nonErrorValues = function (test) {
+module.exports.nonErrorValues = function (test, testCommon) {
   // valid falsey values
   makePutGetDelSuccessfulTest(test, '`false` value', 'foo false', false)
   makePutGetDelSuccessfulTest(test, '`0` value', 'foo 0', 0)
@@ -167,12 +167,12 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.errorKeys(test)
-  module.exports.nonErrorKeys(test)
-  module.exports.errorValues(test)
-  module.exports.nonErrorValues(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.errorKeys(test, testCommon)
+  module.exports.nonErrorKeys(test, testCommon)
+  module.exports.errorValues(test, testCommon)
+  module.exports.nonErrorValues(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }

@@ -1,7 +1,7 @@
-module.exports.close = function (factory, test, testCommon) {
+module.exports.close = function (test, testCommon) {
   testCommon = testCommon || require('./common')
   test('test close()', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
 
     db.open(function (err) {
       t.error(err)

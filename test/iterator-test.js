@@ -1,14 +1,14 @@
 var db
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (test) {
+module.exports.args = function (test, testCommon) {
   test('test argument-less iterator#next() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
@@ -49,7 +49,7 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.sequence = function (test) {
+module.exports.sequence = function (test, testCommon) {
   test('test twice iterator#end() callback with error', function (t) {
     var iterator = db.iterator()
     iterator.end(function (err) {
@@ -111,7 +111,7 @@ module.exports.sequence = function (test) {
   })
 }
 
-module.exports.iterator = function (test) {
+module.exports.iterator = function (test, testCommon) {
   test('test simple iterator()', function (t) {
     var data = [
       { type: 'put', key: 'foobatch1', value: 'bar1' },
@@ -161,11 +161,11 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.args(test)
-  module.exports.sequence(test)
-  module.exports.iterator(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.args(test, testCommon)
+  module.exports.sequence(test, testCommon)
+  module.exports.iterator(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }

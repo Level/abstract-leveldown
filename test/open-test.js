@@ -2,9 +2,9 @@ module.exports.setUp = function (test, testCommon) {
   test('setUp', testCommon.setUp)
 }
 
-module.exports.args = function (factory, test) {
+module.exports.args = function (test, testCommon) {
   test('test database open no-arg throws', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
     t.throws(
       db.open.bind(db)
       , { name: 'Error', message: 'open() requires a callback argument' }
@@ -14,7 +14,7 @@ module.exports.args = function (factory, test) {
   })
 
   test('test callback-less, 1-arg, open() throws', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
     t.throws(
       db.open.bind(db, {})
       , { name: 'Error', message: 'open() requires a callback argument' }
@@ -24,9 +24,9 @@ module.exports.args = function (factory, test) {
   })
 }
 
-module.exports.open = function (factory, test) {
+module.exports.open = function (test, testCommon) {
   test('test database open, no options', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
 
     // default createIfMissing=true, errorIfExists=false
     db.open(function (err) {
@@ -38,7 +38,7 @@ module.exports.open = function (factory, test) {
   })
 
   test('test database open, options and callback', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
 
     // default createIfMissing=true, errorIfExists=false
     db.open({}, function (err) {
@@ -48,8 +48,9 @@ module.exports.open = function (factory, test) {
       })
     })
   })
+
   test('test database open, close and open', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
 
     db.open(function (err) {
       t.error(err)
@@ -66,9 +67,9 @@ module.exports.open = function (factory, test) {
   })
 }
 
-module.exports.openAdvanced = function (factory, test) {
+module.exports.openAdvanced = function (test, testCommon) {
   test('test database open createIfMissing:false', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
     var async = false
 
     db.open({ createIfMissing: false }, function (err) {
@@ -82,7 +83,7 @@ module.exports.openAdvanced = function (factory, test) {
   })
 
   test('test database open errorIfExists:true', function (t) {
-    var db = factory()
+    var db = testCommon.factory()
 
     db.open({}, function (err) {
       t.error(err)
@@ -108,11 +109,11 @@ module.exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
   module.exports.setUp(test, testCommon)
-  module.exports.args(factory, test)
-  module.exports.open(factory, test)
-  module.exports.openAdvanced(factory, test)
+  module.exports.args(test, testCommon)
+  module.exports.open(test, testCommon)
+  module.exports.openAdvanced(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }

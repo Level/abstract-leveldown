@@ -2,15 +2,15 @@ var db
 var verifyNotFoundError = require('./util').verifyNotFoundError
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (factory, test) {
+module.exports.args = function (test, testCommon) {
   test('test argument-less get() throws', function (t) {
     t.throws(
       db.get.bind(db)
@@ -40,7 +40,7 @@ module.exports.args = function (factory, test) {
 
   test('test custom _serialize*', function (t) {
     t.plan(3)
-    var db = factory()
+    var db = testCommon.factory()
     db._serializeKey = function (data) { return data }
     db._get = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
@@ -55,7 +55,7 @@ module.exports.args = function (factory, test) {
   })
 }
 
-module.exports.get = function (test) {
+module.exports.get = function (test, testCommon) {
   test('test simple get()', function (t) {
     db.put('foo', 'bar', function (err) {
       t.error(err)
@@ -161,10 +161,10 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.args(factory, test)
-  module.exports.get(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.args(test, testCommon)
+  module.exports.get(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }

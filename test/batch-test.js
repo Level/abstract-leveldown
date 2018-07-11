@@ -2,15 +2,15 @@ var db
 var verifyNotFoundError = require('./util').verifyNotFoundError
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (test) {
+module.exports.args = function (test, testCommon) {
   test('test callback-less, 2-arg, batch() throws', function (t) {
     t.throws(db.batch.bind(db, 'foo', {}), 'callback-less, 2-arg batch() throws')
     t.end()
@@ -159,7 +159,7 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.batch = function (test) {
+module.exports.batch = function (test, testCommon) {
   test('test batch() with empty array', function (t) {
     db.batch([], function (err) {
       t.error(err)
@@ -235,7 +235,7 @@ module.exports.batch = function (test) {
     })
   })
 }
-module.exports.atomic = function (test) {
+module.exports.atomic = function (test, testCommon) {
   test('test multiple batch()', function (t) {
     t.plan(4)
 
@@ -266,11 +266,11 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.args(test)
-  module.exports.batch(test)
-  module.exports.atomic(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.args(test, testCommon)
+  module.exports.batch(test, testCommon)
+  module.exports.atomic(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
