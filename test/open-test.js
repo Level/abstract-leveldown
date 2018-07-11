@@ -84,7 +84,6 @@ module.exports.openAdvanced = function (factory, test) {
   test('test database open errorIfExists:true', function (t) {
     var db = factory()
 
-    // make a valid database first, then close and dispose
     db.open({}, function (err) {
       t.error(err)
       db.close(function (err) {
@@ -92,7 +91,6 @@ module.exports.openAdvanced = function (factory, test) {
 
         var async = false
 
-        // open again with 'errorIfExists'
         db.open({ createIfMissing: false, errorIfExists: true }, function (err) {
           t.ok(err, 'error')
           t.ok(/exists/.test(err.message), 'error is about already existing')
