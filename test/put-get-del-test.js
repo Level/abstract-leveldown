@@ -130,9 +130,6 @@ module.exports.nonErrorKeys = function (test, testCommon) {
   makePutGetDelSuccessfulTest(test, 'Array value', 'foo', [1, 2, 3, 4])
 }
 
-module.exports.errorValues = function (test, testCommon) {
-}
-
 module.exports.nonErrorValues = function (test, testCommon) {
   // valid falsey values
   makePutGetDelSuccessfulTest(test, '`false` value', 'foo false', false)
@@ -172,7 +169,6 @@ module.exports.all = function (test, testCommon) {
   module.exports.setUp(test, testCommon)
   module.exports.errorKeys(test, testCommon)
   module.exports.nonErrorKeys(test, testCommon)
-  module.exports.errorValues(test, testCommon)
   module.exports.nonErrorValues(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
