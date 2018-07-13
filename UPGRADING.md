@@ -81,7 +81,7 @@ The `cleanup` method has been removed from `testCommon`. Because `testCommon.fac
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
 
-If your implementation is location based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `testCommon.factory()` your setup could now look something like:
+If your implementation is disk-based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `testCommon.factory()` your setup could now look something like:
 
 ```js
 const test = require('tape')
