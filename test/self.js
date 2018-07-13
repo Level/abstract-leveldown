@@ -855,12 +855,4 @@ test('_setupIteratorOptions', function (t) {
     })
     verifyUndefinedOptions(t, db._setupIteratorOptions(options))
   })
-
-  t.test('deletes null options', function (t) {
-    var options = setupOptions(function () { return null })
-    keys.forEach(function (key) {
-      t.same(options[key], null, 'should be null')
-    })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
-  })
 })

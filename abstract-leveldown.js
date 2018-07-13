@@ -205,7 +205,7 @@ function isRangeOption (k) {
 }
 
 function isEmptyRangeOption (v) {
-  return v === '' || v == null || isEmptyBuffer(v)
+  return v === '' || isEmptyBuffer(v)
 }
 
 function isEmptyBuffer (v) {

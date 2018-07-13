@@ -184,7 +184,7 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-By default, a range option that is either an empty buffer, an empty string, `null` or `undefined` will be ignored. Note that `null` and `undefined` are valid range options at a higher level. An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] nullish, [*serialize*](#private-serialize-key) nullish, *delegate* to an underlying store, or finally, *ignore* nullish.
+By default, a range option that is either an empty buffer or an empty string will be ignored. Note that `null` and `undefined` are valid range options. An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] nullish, [*serialize*](#private-serialize-key) nullish, *delegate* to an underlying store, or finally, *ignore* nullish.
 
 In addition to range options, `iterator()` takes the following options:
 
