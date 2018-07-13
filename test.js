@@ -3,14 +3,16 @@
 var test = require('tape')
 var sinon = require('sinon')
 var inherits = require('util').inherits
-var testCommon = require('./test/common')
 var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
 
-var factory = testCommon.factory = function () {
-  return new AbstractLevelDOWN()
-}
+var testCommon = require('./test/common')({
+  test: test,
+  factory: function () {
+    return new AbstractLevelDOWN()
+  }
+})
 
 /**
  * Compatibility with basic LevelDOWN API
@@ -362,7 +364,7 @@ test('test put() extensibility', function (t) {
   var expectedKey = 'key'
   var expectedValue = 'value'
   var Test = implement(AbstractChainedBatch, { _put: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.put(expectedKey, expectedValue)
 
   t.equal(spy.callCount, 1, 'got _put call')
@@ -378,7 +380,7 @@ test('test del() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
   var Test = implement(AbstractChainedBatch, { _del: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.del(expectedKey)
 
   t.equal(spy.callCount, 1, 'got _del call')
@@ -392,7 +394,7 @@ test('test del() extensibility', function (t) {
 test('test clear() extensibility', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _clear: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.clear()
 
   t.equal(spy.callCount, 1, 'got _clear call')
