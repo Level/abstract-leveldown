@@ -1,5 +1,35 @@
-module.exports = function (test, testCommon, options) {
-  options = options || {}
+var common = require('./common')
+
+/**
+ * Example usage:
+ *
+ * ```
+ * require('abstract-leveldown/test')({
+ *   test: require('tape'),
+ *   factory: function () {
+ *     return new MyAbstractLevelDOWN()
+ *   },
+ *   // If your implementation doesn't support snapshots
+ *   snapshots: false
+ * })
+ * ```
+ */
+module.exports = function (options) {
+  var test = options.test
+  var factory = options.factory
+
+  // TODO: consider renaming to "setup" and "teardown" (lowercase)
+  var setUp = options.setUp || common.setUp
+  var tearDown = options.tearDown || common.tearDown
+
+  if (!factory) throw new TypeError('factory function is required')
+  if (!test) throw new TypeError('test function is required')
+
+  var testCommon = {
+    factory: factory,
+    setUp: setUp,
+    tearDown: tearDown
+  }
 
   require('./leveldown-test').args(test, testCommon)
   require('./open-test').all(test, testCommon)
