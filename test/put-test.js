@@ -1,7 +1,7 @@
 var db
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -9,7 +9,7 @@ module.exports.setUp = function (test, testCommon) {
   })
 }
 
-module.exports.args = function (test, testCommon) {
+exports.args = function (test, testCommon) {
   test('test argument-less put() throws', function (t) {
     t.throws(
       db.put.bind(db)
@@ -77,7 +77,7 @@ module.exports.args = function (test, testCommon) {
   })
 }
 
-module.exports.put = function (test, testCommon) {
+exports.put = function (test, testCommon) {
   test('test simple put()', function (t) {
     db.put('foo', 'bar', function (err) {
       t.error(err)
@@ -94,7 +94,7 @@ module.exports.put = function (test, testCommon) {
   })
 }
 
-module.exports.sync = function (test, testCommon) {
+exports.sync = function (test, testCommon) {
   test('sync put', function (t) {
     db.put('foo', 'bar', { sync: true }, function (err) {
       t.error(err)
@@ -116,15 +116,15 @@ module.exports.sync = function (test, testCommon) {
   })
 }
 
-module.exports.tearDown = function (test, testCommon) {
+exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
   })
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.args(test, testCommon)
-  module.exports.put(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.args(test, testCommon)
+  exports.put(test, testCommon)
+  exports.tearDown(test, testCommon)
 }

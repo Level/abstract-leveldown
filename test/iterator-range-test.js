@@ -16,7 +16,7 @@ var data = (function () {
   return d
 }())
 
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -32,7 +32,7 @@ module.exports.setUp = function (test, testCommon) {
   })
 }
 
-module.exports.range = function (test, testCommon) {
+exports.range = function (test, testCommon) {
   function rangeTest (name, opts, expected) {
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
@@ -362,14 +362,14 @@ module.exports.range = function (test, testCommon) {
   }, data)
 }
 
-module.exports.tearDown = function (test, testCommon) {
+exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
   })
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.range(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.range(test, testCommon)
+  exports.tearDown(test, testCommon)
 }

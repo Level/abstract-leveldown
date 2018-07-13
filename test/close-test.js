@@ -1,4 +1,4 @@
-module.exports.close = function (test, testCommon) {
+exports.close = function (test, testCommon) {
   test('test close()', function (t) {
     var db = testCommon.factory()
 

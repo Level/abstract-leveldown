@@ -2,7 +2,7 @@ var db
 var verifyNotFoundError = require('./util').verifyNotFoundError
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -10,7 +10,7 @@ module.exports.setUp = function (test, testCommon) {
   })
 }
 
-module.exports.args = function (test, testCommon) {
+exports.args = function (test, testCommon) {
   test('test callback-less, 2-arg, batch() throws', function (t) {
     t.throws(db.batch.bind(db, 'foo', {}), 'callback-less, 2-arg batch() throws')
     t.end()
@@ -159,7 +159,7 @@ module.exports.args = function (test, testCommon) {
   })
 }
 
-module.exports.batch = function (test, testCommon) {
+exports.batch = function (test, testCommon) {
   test('test batch() with empty array', function (t) {
     db.batch([], function (err) {
       t.error(err)
@@ -235,7 +235,8 @@ module.exports.batch = function (test, testCommon) {
     })
   })
 }
-module.exports.atomic = function (test, testCommon) {
+
+exports.atomic = function (test, testCommon) {
   test('test multiple batch()', function (t) {
     t.plan(4)
 
@@ -260,16 +261,17 @@ module.exports.atomic = function (test, testCommon) {
     async = true
   })
 }
-module.exports.tearDown = function (test, testCommon) {
+
+exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
   })
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.args(test, testCommon)
-  module.exports.batch(test, testCommon)
-  module.exports.atomic(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.args(test, testCommon)
+  exports.batch(test, testCommon)
+  exports.atomic(test, testCommon)
+  exports.tearDown(test, testCommon)
 }

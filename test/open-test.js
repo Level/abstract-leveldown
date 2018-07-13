@@ -1,8 +1,8 @@
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp', testCommon.setUp)
 }
 
-module.exports.args = function (test, testCommon) {
+exports.args = function (test, testCommon) {
   test('test database open no-arg throws', function (t) {
     var db = testCommon.factory()
     t.throws(
@@ -24,7 +24,7 @@ module.exports.args = function (test, testCommon) {
   })
 }
 
-module.exports.open = function (test, testCommon) {
+exports.open = function (test, testCommon) {
   test('test database open, no options', function (t) {
     var db = testCommon.factory()
 
@@ -67,13 +67,13 @@ module.exports.open = function (test, testCommon) {
   })
 }
 
-module.exports.tearDown = function (test, testCommon) {
+exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.args(test, testCommon)
-  module.exports.open(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.args(test, testCommon)
+  exports.open(test, testCommon)
+  exports.tearDown(test, testCommon)
 }
