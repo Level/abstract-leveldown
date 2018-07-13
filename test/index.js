@@ -20,7 +20,7 @@ module.exports = function (options) {
 
   require('./leveldown-test').args(test, testCommon)
   require('./open-test').all(test, testCommon)
-  require('./close-test').close(test, testCommon)
+  require('./close-test').all(test, testCommon)
 
   if (options.createIfMissing !== false) {
     require('./open-create-if-missing-test').all(test, testCommon)
