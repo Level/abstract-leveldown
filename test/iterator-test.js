@@ -151,10 +151,6 @@ module.exports.iterator = function (test, testCommon) {
   })
 }
 
-module.exports.snapshot = function () {
-  console.error('DEPRECATED: the snapshot test has moved to iterator-snapshot-test.js')
-}
-
 module.exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
