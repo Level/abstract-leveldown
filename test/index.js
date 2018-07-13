@@ -2,19 +2,16 @@ module.exports = function (test, testCommon, options) {
   options = options || {}
 
   require('./leveldown-test').args(test, testCommon)
-
-  // TODO: move openAdvanced tests to separate files so they can be skipped.
   require('./open-test').all(test, testCommon)
-
-  // if (options.createIfMissing !== false) {
-  //   require('./open-create-if-missing-test').all(test, testCommon)
-  // }
-  //
-  // if (options.errorIfExists !== false) {
-  //   require('./open-error-if-exists-test').all(test, testCommon)
-  // }
-
   require('./close-test').close(test, testCommon)
+
+  if (options.createIfMissing !== false) {
+    require('./open-create-if-missing-test').all(test, testCommon)
+  }
+
+  if (options.errorIfExists !== false) {
+    require('./open-error-if-exists-test').all(test, testCommon)
+  }
 
   require('./put-test').all(test, testCommon)
   require('./get-test').all(test, testCommon)
