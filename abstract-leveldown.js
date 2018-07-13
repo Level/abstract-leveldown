@@ -175,7 +175,7 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
-  options = cleanRangeOptions(options)
+  options = cleanRangeOptions(this, options)
 
   options.reverse = !!options.reverse
   options.keys = options.keys !== false
@@ -187,14 +187,23 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   return options
 }
 
-function cleanRangeOptions (options) {
+function cleanRangeOptions (db, options) {
   var result = {}
 
   for (var k in options) {
     if (!hasOwnProperty.call(options, k)) continue
-    if (isRangeOption(k) && isEmptyRangeOption(options[k])) continue
 
-    result[k] = options[k]
+    var opt = options[k]
+
+    if (isRangeOption(k)) {
+      if (isEmptyRangeOption(opt)) continue
+
+      // Note that we don't reject null and undefined here. While those
+      // types are invalid as keys, they are valid as range options.
+      opt = db._serializeKey(opt)
+    }
+
+    result[k] = opt
   }
 
   return result
