@@ -4,7 +4,7 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Unreleased
 
-### `location` removed
+### `location` was removed
 
 `AbstractLevelDOWN` is no longer associated with a `location`. It's up to the implementation to handle it if it's required.
 
@@ -59,11 +59,43 @@ You must now do:
 const testCommon = require('abstract-leveldown/test/common')
 ```
 
-### Default `testCommon` uses unique temporary directories
+### Abstract test suite API changed
 
-This removes the need for cleanup before and/or after tests. As such the `cleanup` method has been removed from `testCommon`. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests. The `setUp` and `tearDown` methods became noops.
+All `.all()` methods now has the the following signature:
+
+```js
+exports.all = function (test, testCommon) {
+  // ..
+}
+```
+
+This goes for *most* sub tests as well with the exception of `.setUp()` and `.range()` in `test/iterator-range-test.js` which accepts an additional `data` parameter.
+
+### Default `testCommon` was rewritten to be unopinionated
+
+Now `testCommon` only implements two methods, `setUp` and `tearDown`, which became noops.
+
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `testCommon.factory()` which should return a fresh database instance. This allows implementations to pass options to their constructor.
+
+The `cleanup` method has been removed from `testCommon` and it's now up to implementations to handle this. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
+
+If your implementation is location based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `testCommon.factory()` your setup could now look something like:
+
+```js
+const test = require('tape')
+const tempy = require('tempy')
+const YourDOWN = require('.')
+const abstract = require('abstract-leveldown/abstract/get-test')
+const testCommon = require('abstract-leveldown/test/common')
+
+testCommon.factory = function () {
+  return new YourDOWN(tempy.directory())
+}
+
+abstract.all(test, testCommon)
+```
 
 ## v5
 
