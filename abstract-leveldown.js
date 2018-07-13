@@ -174,6 +174,7 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
+// TODO: in encoding-down, we need a way to first encode, then serialize.
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = cleanRangeOptions(this, options)
 
@@ -196,10 +197,8 @@ function cleanRangeOptions (db, options) {
     var opt = options[k]
 
     if (isRangeOption(k)) {
-      if (isEmptyRangeOption(opt)) continue
-
-      // Note that we don't reject null and undefined here. While those
-      // types are invalid as keys, they are valid as range options.
+      // Note that we don't reject nullish and empty options here. While
+      // those types are invalid as keys, they are valid as range options.
       opt = db._serializeKey(opt)
     }
 
@@ -211,14 +210,6 @@ function cleanRangeOptions (db, options) {
 
 function isRangeOption (k) {
   return rangeOptions.indexOf(k) !== -1
-}
-
-function isEmptyRangeOption (v) {
-  return v === '' || isEmptyBuffer(v)
-}
-
-function isEmptyBuffer (v) {
-  return Buffer.isBuffer(v) && v.length === 0
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {

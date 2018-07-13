@@ -816,9 +816,9 @@ test('_setupIteratorOptions', function (t) {
     return options
   }
 
-  function verifyUndefinedOptions (t, options) {
+  function verifyOptions (t, options) {
     keys.forEach(function (key) {
-      t.notOk(key in options, 'property should be deleted')
+      t.ok(key in options, 'property should not be deleted')
     })
     t.end()
   }
@@ -854,21 +854,37 @@ test('_setupIteratorOptions', function (t) {
     t.end()
   })
 
-  t.test('deletes empty buffers', function (t) {
+  t.test('does not delete empty buffers', function (t) {
     var options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
     })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+    verifyOptions(t, db._setupIteratorOptions(options))
   })
 
-  t.test('deletes empty strings', function (t) {
+  t.test('does not delete empty strings', function (t) {
     var options = setupOptions(function () { return '' })
     keys.forEach(function (key) {
       t.is(typeof options[key], 'string', 'should be string')
       t.is(options[key].length, 0, 'should be empty')
     })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+    verifyOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('does not delete null', function (t) {
+    var options = setupOptions(function () { return null })
+    keys.forEach(function (key) {
+      t.is(options[key], null, 'should be null')
+    })
+    verifyOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('does not delete undefined', function (t) {
+    var options = setupOptions(function () { return undefined })
+    keys.forEach(function (key) {
+      t.is(options[key], undefined, 'should be undefined')
+    })
+    verifyOptions(t, db._setupIteratorOptions(options))
   })
 })
