@@ -239,8 +239,12 @@ AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
     return new Error(type + ' cannot be `null` or `undefined`')
   }
 
-  if (Buffer.isBuffer(obj) && obj.length === 0) {
-    return new Error(type + ' cannot be an empty Buffer')
+  if (Buffer.isBuffer(obj)) {
+    if (obj.length === 0) {
+      return new Error(type + ' cannot be an empty Buffer')
+    }
+
+    return
   }
 
   if (String(obj) === '') {
