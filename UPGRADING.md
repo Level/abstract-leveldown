@@ -25,67 +25,88 @@ function YourDOWN (location) {
 }
 ```
 
-### Abstract test suite has moved
+### Abstract test suite has moved to a single entry point
 
-If you previously did:
-
-```js
-require('abstract-leveldown/abstract/get-test')
-require('abstract-leveldown/abstract/put-test') // etc
-```
-
-You must now do:
+With this move, `testCommon.js` is gone. If you previously did:
 
 ```js
-require('abstract-leveldown/test/get-test')
-require('abstract-leveldown/test/put-test') // etc
-```
-
-### Default `testCommon` has moved
-
-If you previously did:
-
-```js
+const test = require('tape')
 const testCommon = require('abstract-leveldown/testCommon')
+const YourDOWN = require('.')
+
+require('abstract-leveldown/abstract/get-test').all(YourDOWN, test, testCommon)
+require('abstract-leveldown/abstract/put-test').all(YourDOWN, test, testCommon)
+
+// etc
 ```
 
 You must now do:
 
 ```js
-const testCommon = require('abstract-leveldown/test/common')
+const test = require('tape')
+const YourDOWN = require('.')
+
+require('abstract-leveldown/test')({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
 ```
 
-### Default `testCommon` was rewritten to be unopinionated
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
 
-Now `testCommon` only implements two methods, `setUp` and `tearDown`, which became noops.
-
-As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `testCommon.factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
-
-The `cleanup` method has been removed from `testCommon`. Because `testCommon.factory()` returns a unique database instance, cleanup should no longer be necessary. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
+The `testCommon.cleanup` method has been removed. Because `factory()` returns a unique database instance, cleanup should no longer be necessary. The `testCommon.lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
 
-If your implementation is disk-based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `testCommon.factory()` your setup could now look something like:
+If your implementation is disk-based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `factory()` your setup could now look something like:
 
 ```js
 const test = require('tape')
 const tempy = require('tempy')
 const YourDOWN = require('.')
-const abstract = require('abstract-leveldown/abstract/get-test')
-const testCommon = require('abstract-leveldown/test/common')
 
-testCommon.factory = function () {
-  return new YourDOWN(tempy.directory())
-}
+require('abstract-leveldown/test')({
+  test: test,
+  factory: function () {
+    return new YourDOWN(tempy.directory())
+  }
+})
+```
 
-abstract.all(test, testCommon)
+### Setup and teardown have moved
+
+The `testCommon.setUp` and `testCommon.tearDown` methods have moved to test options. They are now noops by default:
+
+```js
+require('abstract-leveldown/test')({
+  setup: function (t) {
+    t.end()
+  },
+  teardown: function (t) {
+    t.end()
+  }
+})
+```
+
+### Optional tests have been separated
+
+If your implementation does not support snapshots, or the `createIfMissing` and `errorIfExists` options to `db.open`, the relevant tests may be skipped. To skip all three:
+
+```js
+require('abstract-leveldown/test')({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  },
+  snapshots: false,
+  createIfMissing: false,
+  errorIfExists: false
+})
 ```
 
 ### Empty `errorValues()` test was removed
-
-If your implementation tests were calling this directly, simply remove usage.
-
-### Deprecated `snapshot()` test was removed
 
 If your implementation tests were calling this directly, simply remove usage.
 
