@@ -355,8 +355,6 @@ module.exports.tearDown = function (test, testCommon) {
 }
 
 module.exports.all = function (test, testCommon) {
-  testCommon = testCommon || require('./common')
-
   var data = (function () {
     var d = []
     var i = 0

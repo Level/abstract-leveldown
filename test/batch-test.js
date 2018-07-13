@@ -267,7 +267,6 @@ module.exports.tearDown = function (test, testCommon) {
 }
 
 module.exports.all = function (test, testCommon) {
-  testCommon = testCommon || require('./common')
   module.exports.setUp(test, testCommon)
   module.exports.args(test, testCommon)
   module.exports.batch(test, testCommon)

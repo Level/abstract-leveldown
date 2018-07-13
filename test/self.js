@@ -3,57 +3,67 @@
 var test = require('tape')
 var sinon = require('sinon')
 var inherits = require('util').inherits
-var testCommon = require('./test/common')
-var AbstractLevelDOWN = require('./').AbstractLevelDOWN
-var AbstractIterator = require('./').AbstractIterator
-var AbstractChainedBatch = require('./').AbstractChainedBatch
+var AbstractLevelDOWN = require('../').AbstractLevelDOWN
+var AbstractIterator = require('../').AbstractIterator
+var AbstractChainedBatch = require('../').AbstractChainedBatch
 
-var factory = testCommon.factory = function () {
-  return new AbstractLevelDOWN()
-}
+var testCommon = require('./common')({
+  test: test,
+  factory: function () {
+    return new AbstractLevelDOWN()
+  }
+})
 
 /**
  * Compatibility with basic LevelDOWN API
  */
 
-require('./test/leveldown-test').args(test, testCommon)
+require('./leveldown-test').args(test, testCommon)
 
-require('./test/open-test').args(test, testCommon)
+require('./open-test').setUp(test, testCommon)
+require('./open-test').args(test, testCommon)
+require('./open-test').tearDown(test, testCommon)
 
-require('./test/del-test').setUp(test, testCommon)
-require('./test/del-test').args(test, testCommon)
+require('./open-create-if-missing-test').setUp(test, testCommon)
+require('./open-create-if-missing-test').tearDown(test, testCommon)
 
-require('./test/get-test').setUp(test, testCommon)
-require('./test/get-test').args(test, testCommon)
+require('./open-error-if-exists-test').setUp(test, testCommon)
+require('./open-error-if-exists-test').tearDown(test, testCommon)
 
-require('./test/put-test').setUp(test, testCommon)
-require('./test/put-test').args(test, testCommon)
+require('./del-test').setUp(test, testCommon)
+require('./del-test').args(test, testCommon)
 
-require('./test/put-get-del-test').setUp(test, testCommon)
-require('./test/put-get-del-test').errorKeys(test, testCommon)
-require('./test/put-get-del-test').tearDown(test, testCommon)
+require('./get-test').setUp(test, testCommon)
+require('./get-test').args(test, testCommon)
 
-require('./test/batch-test').setUp(test, testCommon)
-require('./test/batch-test').args(test, testCommon)
+require('./put-test').setUp(test, testCommon)
+require('./put-test').args(test, testCommon)
 
-require('./test/chained-batch-test').setUp(test, testCommon)
-require('./test/chained-batch-test').args(test, testCommon)
+require('./put-get-del-test').setUp(test, testCommon)
+require('./put-get-del-test').errorKeys(test, testCommon)
+require('./put-get-del-test').tearDown(test, testCommon)
 
-require('./test/close-test').close(test, testCommon)
+require('./batch-test').setUp(test, testCommon)
+require('./batch-test').args(test, testCommon)
 
-require('./test/iterator-test').setUp(test, testCommon)
-require('./test/iterator-test').args(test, testCommon)
-require('./test/iterator-test').sequence(test, testCommon)
-require('./test/iterator-test').tearDown(test, testCommon)
+require('./chained-batch-test').setUp(test, testCommon)
+require('./chained-batch-test').args(test, testCommon)
 
-require('./test/iterator-range-test').setUp(test, testCommon, [])
-require('./test/iterator-range-test').tearDown(test, testCommon)
+require('./close-test').close(test, testCommon)
 
-require('./test/iterator-snapshot-test').setUp(test, testCommon)
-require('./test/iterator-snapshot-test').tearDown(test, testCommon)
+require('./iterator-test').setUp(test, testCommon)
+require('./iterator-test').args(test, testCommon)
+require('./iterator-test').sequence(test, testCommon)
+require('./iterator-test').tearDown(test, testCommon)
 
-require('./test/iterator-no-snapshot-test').setUp(test, testCommon)
-require('./test/iterator-no-snapshot-test').tearDown(test, testCommon)
+require('./iterator-range-test').setUp(test, testCommon, [])
+require('./iterator-range-test').tearDown(test, testCommon)
+
+require('./iterator-snapshot-test').setUp(test, testCommon)
+require('./iterator-snapshot-test').tearDown(test, testCommon)
+
+require('./iterator-no-snapshot-test').setUp(test, testCommon)
+require('./iterator-no-snapshot-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
   function Test () {
@@ -354,7 +364,7 @@ test('test put() extensibility', function (t) {
   var expectedKey = 'key'
   var expectedValue = 'value'
   var Test = implement(AbstractChainedBatch, { _put: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.put(expectedKey, expectedValue)
 
   t.equal(spy.callCount, 1, 'got _put call')
@@ -370,7 +380,7 @@ test('test del() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
   var Test = implement(AbstractChainedBatch, { _del: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.del(expectedKey)
 
   t.equal(spy.callCount, 1, 'got _del call')
@@ -384,7 +394,7 @@ test('test del() extensibility', function (t) {
 test('test clear() extensibility', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _clear: spy })
-  var test = new Test(factory())
+  var test = new Test(testCommon.factory())
   var returnValue = test.clear()
 
   t.equal(spy.callCount, 1, 'got _clear call')
