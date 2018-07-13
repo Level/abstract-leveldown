@@ -17,8 +17,8 @@ AbstractChainedBatch.prototype._checkWritten = function () {
 AbstractChainedBatch.prototype.put = function (key, value) {
   this._checkWritten()
 
-  var err = this._db._checkKey(key, 'key')
-  if (err) { throw err }
+  var err = this._db._checkKey(key) || this._db._checkValue(value)
+  if (err) throw err
 
   key = this._db._serializeKey(key)
   value = this._db._serializeValue(value)
@@ -35,8 +35,8 @@ AbstractChainedBatch.prototype._put = function (key, value) {
 AbstractChainedBatch.prototype.del = function (key) {
   this._checkWritten()
 
-  var err = this._db._checkKey(key, 'key')
-  if (err) { throw err }
+  var err = this._db._checkKey(key)
+  if (err) throw err
 
   key = this._db._serializeKey(key)
   this._del(key)

@@ -68,7 +68,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
     throw new Error('get() requires a callback argument')
   }
 
-  var err = this._checkKey(key, 'key')
+  var err = this._checkKey(key)
   if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -91,7 +91,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
     throw new Error('put() requires a callback argument')
   }
 
-  var err = this._checkKey(key, 'key')
+  var err = this._checkKey(key) || this._checkValue(value)
   if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -113,7 +113,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
     throw new Error('del() requires a callback argument')
   }
 
-  var err = this._checkKey(key, 'key')
+  var err = this._checkKey(key)
   if (err) return process.nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -157,12 +157,17 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
       return process.nextTick(callback, new Error("`type` must be 'put' or 'del'"))
     }
 
-    var err = this._checkKey(e.key, 'key')
+    var err = this._checkKey(e.key)
     if (err) return process.nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 
-    if (e.type === 'put') { e.value = this._serializeValue(e.value) }
+    if (e.type === 'put') {
+      var valueErr = this._checkValue(e.value)
+      if (valueErr) return process.nextTick(callback, valueErr)
+
+      e.value = this._serializeValue(e.value)
+    }
 
     serialized[i] = e
   }
@@ -234,17 +239,23 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
   return value
 }
 
-AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
-  if (obj === null || obj === undefined) {
-    return new Error(type + ' cannot be `null` or `undefined`')
-  } else if (Buffer.isBuffer(obj)) {
-    if (obj.length === 0) {
-      return new Error(type + ' cannot be an empty Buffer')
+AbstractLevelDOWN.prototype._checkKey = function (key) {
+  if (key === null || key === undefined) {
+    return new Error('key cannot be `null` or `undefined`')
+  } else if (Buffer.isBuffer(key)) {
+    if (key.length === 0) {
+      return new Error('key cannot be an empty Buffer')
     }
-  } else if (obj === '') {
-    return new Error(type + ' cannot be an empty String')
-  } else if (Array.isArray(obj) && obj.length === 0) {
-    return new Error(type + ' cannot be an empty Array')
+  } else if (key === '') {
+    return new Error('key cannot be an empty String')
+  } else if (Array.isArray(key) && key.length === 0) {
+    return new Error('key cannot be an empty Array')
+  }
+}
+
+AbstractLevelDOWN.prototype._checkValue = function (value) {
+  if (value === null || value === undefined) {
+    return new Error('value cannot be `null` or `undefined`')
   }
 }
 

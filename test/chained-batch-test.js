@@ -39,13 +39,27 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#put() with missing `value`', function (t) {
-    db.batch().put('foo1')
-    t.end()
+    t.plan(1)
+
+    try {
+      db.batch().put('foo1')
+    } catch (err) {
+      t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+    }
   })
 
-  test('test batch#put() with null `value`', function (t) {
-    db.batch().put('foo1', null)
-    t.end()
+  test('test batch#put() with null or undefined `value`', function (t) {
+    var illegalValues = [null, undefined]
+
+    t.plan(illegalValues.length)
+
+    illegalValues.forEach(function (value) {
+      try {
+        db.batch().put('foo1', value)
+      } catch (err) {
+        t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+      }
+    })
   })
 
   test('test batch#put() with missing `key`', function (t) {
