@@ -1,4 +1,4 @@
-module.exports.args = function (test, testCommon) {
+exports.args = function (test, testCommon) {
   test('test database open method exists', function (t) {
     var db = testCommon.factory()
     t.ok(db, 'database object returned')

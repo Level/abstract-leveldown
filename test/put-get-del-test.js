@@ -91,7 +91,7 @@ function makeErrorKeyTest (test, type, key, expectedError) {
   makePutErrorTest(test, type, key, 'foo', expectedError)
 }
 
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -99,7 +99,7 @@ module.exports.setUp = function (test, testCommon) {
   })
 }
 
-module.exports.errorKeys = function (test, testCommon) {
+exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'null key', null, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
@@ -107,7 +107,7 @@ module.exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
 }
 
-module.exports.nonErrorKeys = function (test, testCommon) {
+exports.nonErrorKeys = function (test, testCommon) {
   // valid falsey keys
   makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
@@ -130,7 +130,7 @@ module.exports.nonErrorKeys = function (test, testCommon) {
   makePutGetDelSuccessfulTest(test, 'Array value', 'foo', [1, 2, 3, 4])
 }
 
-module.exports.nonErrorValues = function (test, testCommon) {
+exports.nonErrorValues = function (test, testCommon) {
   // valid falsey values
   makePutGetDelSuccessfulTest(test, '`false` value', 'foo false', false)
   makePutGetDelSuccessfulTest(test, '`0` value', 'foo 0', 0)
@@ -158,16 +158,16 @@ module.exports.nonErrorValues = function (test, testCommon) {
   makePutGetDelSuccessfulTest(test, 'Array key', [1, 2, 3, 4], 'foo')
 }
 
-module.exports.tearDown = function (test, testCommon) {
+exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
   })
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.errorKeys(test, testCommon)
-  module.exports.nonErrorKeys(test, testCommon)
-  module.exports.nonErrorValues(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.errorKeys(test, testCommon)
+  exports.nonErrorKeys(test, testCommon)
+  exports.nonErrorValues(test, testCommon)
+  exports.tearDown(test, testCommon)
 }

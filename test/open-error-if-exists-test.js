@@ -1,8 +1,8 @@
-module.exports.setUp = function (test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp', testCommon.setUp)
 }
 
-module.exports.errorIfExists = function (test, testCommon) {
+exports.errorIfExists = function (test, testCommon) {
   test('test database open errorIfExists:true', function (t) {
     var db = testCommon.factory()
 
@@ -26,12 +26,12 @@ module.exports.errorIfExists = function (test, testCommon) {
   })
 }
 
-module.exports.tearDown = function (test, testCommon) {
+exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-module.exports.all = function (test, testCommon) {
-  module.exports.setUp(test, testCommon)
-  module.exports.errorIfExists(test, testCommon)
-  module.exports.tearDown(test, testCommon)
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.errorIfExists(test, testCommon)
+  exports.tearDown(test, testCommon)
 }
