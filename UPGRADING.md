@@ -75,6 +75,21 @@ require('abstract-leveldown/test')({
 })
 ```
 
+### The `collectEntries` utility has moved
+
+The `testCommon.collectEntries` method has moved to the npm package  `level-concat-iterator`. If your (additional) tests depend on `collectEntries` and you previously did:
+
+```js
+testCommon.collectEntries(iterator, function (err, entries) {})
+```
+
+You must now do:
+
+```js
+const concat = require('level-concat-iterator')
+concat(iterator, function (err, entries) {})
+```
+
 ### Setup and teardown have moved
 
 The `testCommon.setUp` and `testCommon.tearDown` methods have moved to test options. They are now noops by default:
