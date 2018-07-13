@@ -57,15 +57,13 @@ const testCommon = require('abstract-leveldown/test/common')
 
 ### Abstract test suite API changed
 
-All `.all()` methods now have the following signature:
+All `.all()` methods and sub tests now have identical function signatures, e.g.:
 
 ```js
 exports.all = function (test, testCommon) {
   // ..
 }
 ```
-
-This goes for *most* sub tests as well with the exception of `.setUp()` and `.range()` in `test/iterator-range-test.js` which accepts an additional `data` parameter.
 
 ### Default `testCommon` was rewritten to be unopinionated
 
