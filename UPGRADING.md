@@ -110,6 +110,15 @@ require('abstract-leveldown/test')({
 
 If your implementation tests were calling this directly, simply remove usage.
 
+### Seeking became part of official API
+
+If your implementation previously defined the public `iterator.seek(target)`, it must now define the private `iterator._seek(target)`. The new public API is equal to the reference implementation of `leveldown` except for two differences:
+
+- The `target` argument is not type checked, this is up to the implementation.
+- The `target` argument is passed through `db._serializeKey`.
+
+Please see [README.md](README.md) for details.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
