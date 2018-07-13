@@ -49,7 +49,7 @@ require('./batch-test').args(test, testCommon)
 require('./chained-batch-test').setUp(test, testCommon)
 require('./chained-batch-test').args(test, testCommon)
 
-require('./close-test').close(test, testCommon)
+require('./close-test').all(test, testCommon)
 
 require('./iterator-test').setUp(test, testCommon)
 require('./iterator-test').args(test, testCommon)
