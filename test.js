@@ -31,8 +31,6 @@ require('./test/put-test').args(test, testCommon)
 
 require('./test/put-get-del-test').setUp(test, testCommon)
 require('./test/put-get-del-test').errorKeys(test, testCommon)
-// require('./test/put-get-del-test').nonErrorKeys(test, testCommon)
-require('./test/put-get-del-test').errorValues(test, testCommon)
 require('./test/put-get-del-test').tearDown(test, testCommon)
 
 require('./test/batch-test').setUp(test, testCommon)
