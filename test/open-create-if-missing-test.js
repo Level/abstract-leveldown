@@ -23,7 +23,6 @@ module.exports.tearDown = function (test, testCommon) {
 }
 
 module.exports.all = function (test, testCommon) {
-  testCommon = testCommon || require('./common')
   module.exports.setUp(test, testCommon)
   module.exports.createIfMissing(test, testCommon)
   module.exports.tearDown(test, testCommon)
