@@ -56,7 +56,7 @@ require('./iterator-test').args(test, testCommon)
 require('./iterator-test').sequence(test, testCommon)
 require('./iterator-test').tearDown(test, testCommon)
 
-require('./iterator-range-test').setUp(test, testCommon, [])
+require('./iterator-range-test').setUp(test, testCommon)
 require('./iterator-range-test').tearDown(test, testCommon)
 
 require('./iterator-snapshot-test').setUp(test, testCommon)
