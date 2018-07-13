@@ -97,6 +97,10 @@ abstract.all(test, testCommon)
 
 If your implementation tests were calling this directly, simply remove usage.
 
+### Deprecated `snapshot()` test was removed
+
+If your implementation tests were calling this directly, simply remove usage.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
