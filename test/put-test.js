@@ -1,15 +1,15 @@
 var db
 var isTypedArray = require('./util').isTypedArray
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (factory, test) {
+module.exports.args = function (test, testCommon) {
   test('test argument-less put() throws', function (t) {
     t.throws(
       db.put.bind(db)
@@ -48,7 +48,7 @@ module.exports.args = function (factory, test) {
 
   test('test _serialize object', function (t) {
     t.plan(3)
-    var db = factory()
+    var db = testCommon.factory()
     db._put = function (key, value, opts, callback) {
       t.ok(key)
       t.ok(value)
@@ -61,7 +61,7 @@ module.exports.args = function (factory, test) {
 
   test('test custom _serialize*', function (t) {
     t.plan(4)
-    var db = factory()
+    var db = testCommon.factory()
     db._serializeKey = db._serializeValue = function (data) { return data }
     db._put = function (key, value, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
@@ -77,7 +77,7 @@ module.exports.args = function (factory, test) {
   })
 }
 
-module.exports.put = function (test) {
+module.exports.put = function (test, testCommon) {
   test('test simple put()', function (t) {
     db.put('foo', 'bar', function (err) {
       t.error(err)
@@ -94,7 +94,7 @@ module.exports.put = function (test) {
   })
 }
 
-module.exports.sync = function (test) {
+module.exports.sync = function (test, testCommon) {
   test('sync put', function (t) {
     db.put('foo', 'bar', { sync: true }, function (err) {
       t.error(err)
@@ -122,10 +122,10 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.args(factory, test)
-  module.exports.put(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.args(test, testCommon)
+  module.exports.put(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }

@@ -8,7 +8,7 @@ var AbstractLevelDOWN = require('./').AbstractLevelDOWN
 var AbstractIterator = require('./').AbstractIterator
 var AbstractChainedBatch = require('./').AbstractChainedBatch
 
-function factory () {
+var factory = testCommon.factory = function () {
   return new AbstractLevelDOWN()
 }
 
@@ -16,45 +16,45 @@ function factory () {
  * Compatibility with basic LevelDOWN API
  */
 
-require('./test/leveldown-test').args(factory, test)
+require('./test/leveldown-test').args(test, testCommon)
 
-require('./test/open-test').args(factory, test, testCommon)
+require('./test/open-test').args(test, testCommon)
 
-require('./test/del-test').setUp(factory, test, testCommon)
-require('./test/del-test').args(factory, test)
+require('./test/del-test').setUp(test, testCommon)
+require('./test/del-test').args(test, testCommon)
 
-require('./test/get-test').setUp(factory, test, testCommon)
-require('./test/get-test').args(factory, test)
+require('./test/get-test').setUp(test, testCommon)
+require('./test/get-test').args(test, testCommon)
 
-require('./test/put-test').setUp(factory, test, testCommon)
-require('./test/put-test').args(factory, test)
+require('./test/put-test').setUp(test, testCommon)
+require('./test/put-test').args(test, testCommon)
 
-require('./test/put-get-del-test').setUp(factory, test, testCommon)
-require('./test/put-get-del-test').errorKeys(test)
+require('./test/put-get-del-test').setUp(test, testCommon)
+require('./test/put-get-del-test').errorKeys(test, testCommon)
 // require('./test/put-get-del-test').nonErrorKeys(test, testCommon)
-require('./test/put-get-del-test').errorValues()
+require('./test/put-get-del-test').errorValues(test, testCommon)
 require('./test/put-get-del-test').tearDown(test, testCommon)
 
-require('./test/batch-test').setUp(factory, test, testCommon)
-require('./test/batch-test').args(test)
+require('./test/batch-test').setUp(test, testCommon)
+require('./test/batch-test').args(test, testCommon)
 
-require('./test/chained-batch-test').setUp(factory, test, testCommon)
-require('./test/chained-batch-test').args(test)
+require('./test/chained-batch-test').setUp(test, testCommon)
+require('./test/chained-batch-test').args(test, testCommon)
 
-require('./test/close-test').close(factory, test, testCommon)
+require('./test/close-test').close(test, testCommon)
 
-require('./test/iterator-test').setUp(factory, test, testCommon)
-require('./test/iterator-test').args(test)
-require('./test/iterator-test').sequence(test)
+require('./test/iterator-test').setUp(test, testCommon)
+require('./test/iterator-test').args(test, testCommon)
+require('./test/iterator-test').sequence(test, testCommon)
 require('./test/iterator-test').tearDown(test, testCommon)
 
-require('./test/iterator-range-test').setUp(factory, test, testCommon, [])
+require('./test/iterator-range-test').setUp(test, testCommon, [])
 require('./test/iterator-range-test').tearDown(test, testCommon)
 
-require('./test/iterator-snapshot-test').setUp(factory, test, testCommon)
+require('./test/iterator-snapshot-test').setUp(test, testCommon)
 require('./test/iterator-snapshot-test').tearDown(test, testCommon)
 
-require('./test/iterator-no-snapshot-test').setUp(factory, test, testCommon)
+require('./test/iterator-no-snapshot-test').setUp(test, testCommon)
 require('./test/iterator-no-snapshot-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
@@ -356,7 +356,7 @@ test('test put() extensibility', function (t) {
   var expectedKey = 'key'
   var expectedValue = 'value'
   var Test = implement(AbstractChainedBatch, { _put: spy })
-  var test = new Test(factory('foobar'))
+  var test = new Test(factory())
   var returnValue = test.put(expectedKey, expectedValue)
 
   t.equal(spy.callCount, 1, 'got _put call')
@@ -372,7 +372,7 @@ test('test del() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
   var Test = implement(AbstractChainedBatch, { _del: spy })
-  var test = new Test(factory('foobar'))
+  var test = new Test(factory())
   var returnValue = test.del(expectedKey)
 
   t.equal(spy.callCount, 1, 'got _del call')
@@ -386,7 +386,7 @@ test('test del() extensibility', function (t) {
 test('test clear() extensibility', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _clear: spy })
-  var test = new Test(factory('foobar'))
+  var test = new Test(factory())
   var returnValue = test.clear()
 
   t.equal(spy.callCount, 1, 'got _clear call')

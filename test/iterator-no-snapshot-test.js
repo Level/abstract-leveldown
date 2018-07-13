@@ -1,13 +1,13 @@
 var collectEntries = require('level-concat-iterator')
 
-exports.setUp = function (factory, test, testCommon) {
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
 }
 
-exports.noSnapshot = function (factory, test) {
+exports.noSnapshot = function (test, testCommon) {
   function make (run) {
     return function (t) {
-      var db = factory()
+      var db = testCommon.factory()
       var operations = [
         { type: 'put', key: 'a', value: 'a' },
         { type: 'put', key: 'b', value: 'b' },
@@ -65,9 +65,9 @@ exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
 }
 
-exports.all = function (factory, test, testCommon) {
+exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  exports.setUp(factory, test, testCommon)
-  exports.noSnapshot(factory, test)
+  exports.setUp(test, testCommon)
+  exports.noSnapshot(test, testCommon)
   exports.tearDown(test, testCommon)
 }

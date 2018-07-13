@@ -24,15 +24,15 @@ function collectBatchOps (batch) {
   return _operations
 }
 
-module.exports.setUp = function (factory, test, testCommon) {
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
-    db = factory()
+    db = testCommon.factory()
     db.open(t.end.bind(t))
   })
 }
 
-module.exports.args = function (test) {
+module.exports.args = function (test, testCommon) {
   test('test batch#put() with missing `value`', function (t) {
     db.batch().put('foo1')
     t.end()
@@ -213,7 +213,7 @@ module.exports.args = function (test) {
   })
 }
 
-module.exports.batch = function (test) {
+module.exports.batch = function (test, testCommon) {
   test('test basic batch', function (t) {
     db.batch([
       { type: 'put', key: 'one', value: '1' },
@@ -256,10 +256,10 @@ module.exports.tearDown = function (test, testCommon) {
   })
 }
 
-module.exports.all = function (factory, test, testCommon) {
+module.exports.all = function (test, testCommon) {
   testCommon = testCommon || require('./common')
-  module.exports.setUp(factory, test, testCommon)
-  module.exports.args(test)
-  module.exports.batch(test)
+  module.exports.setUp(test, testCommon)
+  module.exports.args(test, testCommon)
+  module.exports.batch(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
