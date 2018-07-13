@@ -227,12 +227,11 @@ AbstractLevelDOWN.prototype._chainedBatch = function () {
 }
 
 AbstractLevelDOWN.prototype._serializeKey = function (key) {
-  return Buffer.isBuffer(key) ? key : String(key)
+  return key
 }
 
 AbstractLevelDOWN.prototype._serializeValue = function (value) {
-  if (value == null) return ''
-  return Buffer.isBuffer(value) || process.browser ? value : String(value)
+  return value
 }
 
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {

@@ -92,25 +92,12 @@ test('test core extensibility', function (t) {
 
 test('test key/value serialization', function (t) {
   var Test = implement(AbstractLevelDOWN)
-  var buffer = Buffer.alloc(0)
-  var test = new Test('foobar')
+  var test = new Test()
 
-  t.equal(test._serializeKey(1), '1', '_serializeKey converts to string')
-  t.ok(test._serializeKey(buffer) === buffer, '_serializeKey returns Buffer as is')
-
-  t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
-  t.equal(test._serializeValue(undefined), '', '_serializeValue converts undefined to empty string')
-
-  var browser = !!process.browser
-  process.browser = false
-
-  t.equal(test._serializeValue(1), '1', '_serializeValue converts to string')
-  t.ok(test._serializeValue(buffer) === buffer, '_serializeValue returns Buffer as is')
-
-  process.browser = true
-  t.equal(test._serializeValue(1), 1, '_serializeValue returns value as is when process.browser')
-
-  process.browser = browser
+  ;['', {}, null, undefined, Buffer.alloc(0)].forEach(function (v) {
+    t.ok(test._serializeKey(v) === v, '_serializeKey is an identity function')
+    t.ok(test._serializeValue(v) === v, '_serializeValue is an identity function')
+  })
 
   t.end()
 })
