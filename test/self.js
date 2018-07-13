@@ -662,6 +662,35 @@ test('test serialization extensibility (batch array is not mutated)', function (
   t.equal(op.value, 'nope', 'did not mutate input value')
 })
 
+test('test serialization extensibility (iterator range options)', function (t) {
+  t.plan(2)
+
+  function Test () {
+    AbstractLevelDOWN.call(this)
+  }
+
+  inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.is(key, 'input')
+    return 'output'
+  }
+
+  Test.prototype._iterator = function (options) {
+    return new Iterator(this, options)
+  }
+
+  function Iterator (db, options) {
+    AbstractIterator.call(this, db)
+    t.is(options.gt, 'output')
+  }
+
+  inherits(Iterator, AbstractIterator)
+
+  var test = new Test()
+  test.iterator({ gt: 'input' })
+})
+
 test('test serialization extensibility (iterator seek)', function (t) {
   t.plan(3)
 
