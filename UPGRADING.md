@@ -93,6 +93,10 @@ testCommon.factory = function () {
 abstract.all(test, testCommon)
 ```
 
+### Empty `errorValues()` test was removed
+
+If your implementation tests were calling this directly, simply remove usage.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
