@@ -26,9 +26,9 @@
     "tape": "^4.7.0"
   },
   "scripts": {
-    "test": "standard && nyc node test.js",
-    "test-browsers": "airtap --coverage --loopback airtap.local test.js",
-    "test-browser-local": "airtap --coverage --local test.js",
+    "test": "standard && nyc node test/self.js",
+    "test-browsers": "airtap --coverage --loopback airtap.local test/self.js",
+    "test-browser-local": "airtap --coverage --local test/self.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "license": "MIT",
