@@ -134,6 +134,12 @@ If your implementation previously defined the public `iterator.seek(target)`, it
 
 Please see [README.md](README.md) for details.
 
+### Chained batch has been refactored
+
+- The default `_clear` method is no longer a noop; instead it clears the operations queued by `_put` and/or `_del`
+- The `_write` method now takes an `options` object as its first argument
+- The `db` argument in the constructor became mandatory, as well the `_db` property on the instance.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
