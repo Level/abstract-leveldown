@@ -75,9 +75,9 @@ This goes for *most* sub tests as well with the exception of `.setUp()` and `.ra
 
 Now `testCommon` only implements two methods, `setUp` and `tearDown`, which became noops.
 
-As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `testCommon.factory()` which should return a unique database instance. This allows implementations to pass options to their constructor.
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `testCommon.factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
 
-The `cleanup` method has been removed from `testCommon` and it's now up to implementations to handle this. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
+The `cleanup` method has been removed from `testCommon`. Because `testCommon.factory()` returns a unique database instance, cleanup should no longer be necessary. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
 
