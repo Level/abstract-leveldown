@@ -2,7 +2,21 @@ var collectEntries = require('level-concat-iterator')
 
 var db
 
-module.exports.setUp = function (test, testCommon, data) {
+var data = (function () {
+  var d = []
+  var i = 0
+  var k
+  for (; i < 100; i++) {
+    k = (i < 10 ? '0' : '') + i
+    d.push({
+      key: k,
+      value: String(Math.random())
+    })
+  }
+  return d
+}())
+
+module.exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -18,7 +32,7 @@ module.exports.setUp = function (test, testCommon, data) {
   })
 }
 
-module.exports.range = function (test, testCommon, data) {
+module.exports.range = function (test, testCommon) {
   function rangeTest (name, opts, expected) {
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
@@ -355,21 +369,7 @@ module.exports.tearDown = function (test, testCommon) {
 }
 
 module.exports.all = function (test, testCommon) {
-  var data = (function () {
-    var d = []
-    var i = 0
-    var k
-    for (; i < 100; i++) {
-      k = (i < 10 ? '0' : '') + i
-      d.push({
-        key: k,
-        value: String(Math.random())
-      })
-    }
-    return d
-  }())
-
-  module.exports.setUp(test, testCommon, data)
-  module.exports.range(test, testCommon, data)
+  module.exports.setUp(test, testCommon)
+  module.exports.range(test, testCommon)
   module.exports.tearDown(test, testCommon)
 }
