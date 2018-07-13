@@ -174,7 +174,6 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
-// TODO: in encoding-down, we need a way to first encode, then serialize.
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = cleanRangeOptions(this, options)
 
