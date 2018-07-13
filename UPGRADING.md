@@ -41,10 +41,6 @@ require('abstract-leveldown/test/get-test')
 require('abstract-leveldown/test/put-test') // etc
 ```
 
-### Default `testCommon` is for disk-based, Node.js implementations only
-
-If your implementation or its target environment doesn't meet these criteria, you must implement a custom `testCommon`.
-
 ### Default `testCommon` has moved
 
 If you previously did:
