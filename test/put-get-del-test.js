@@ -104,7 +104,7 @@ exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
   makeErrorKeyTest(test, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
-  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
+  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty Array/)
 }
 
 exports.nonErrorKeys = function (test, testCommon) {

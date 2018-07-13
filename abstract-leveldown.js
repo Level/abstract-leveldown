@@ -226,6 +226,7 @@ AbstractLevelDOWN.prototype._chainedBatch = function () {
   return new AbstractChainedBatch(this)
 }
 
+// TODO: should we check for empty keys *after* serialization?
 AbstractLevelDOWN.prototype._serializeKey = function (key) {
   return key
 }
@@ -237,18 +238,14 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 AbstractLevelDOWN.prototype._checkKey = function (obj, type) {
   if (obj === null || obj === undefined) {
     return new Error(type + ' cannot be `null` or `undefined`')
-  }
-
-  if (Buffer.isBuffer(obj)) {
+  } else if (Buffer.isBuffer(obj)) {
     if (obj.length === 0) {
       return new Error(type + ' cannot be an empty Buffer')
     }
-
-    return
-  }
-
-  if (String(obj) === '') {
+  } else if (obj === '') {
     return new Error(type + ' cannot be an empty String')
+  } else if (Array.isArray(obj) && obj.length === 0) {
+    return new Error(type + ' cannot be an empty Array')
   }
 }
 
