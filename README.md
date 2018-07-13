@@ -362,7 +362,7 @@ Free up underlying resources. This method is guaranteed to only be called once. 
 
 ### `chainedBatch = AbstractChainedBatch(db)`
 
-Provided with the current instance of `abstract-leveldown` by default.
+The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `chainedBatch._db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
 
 #### `chainedBatch._put(key, value)`
 
@@ -374,21 +374,11 @@ Queue a `del` operation on this batch.
 
 #### `chainedBatch._clear()`
 
-Perform additional cleanup when `clear()` is called.
+Clear all queued operations on this batch.
 
-#### `chainedBatch._write(callback)`
+#### `chainedBatch._write(options, callback)`
 
-If the `_write` method is defined on `chainedBatch`, it must atomically commit the queued operations. If this fails, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
-
-If the `_write` method is not defined, `db._batch` will be used instead.
-
-#### `chainedBatch._serializeKey(key)`
-
-A proxy to [`db._serializeKey(key)`](#private-serialize-key).
-
-#### `chainedBatch._serializeValue(value)`
-
-A proxy to [`db._serializeValue(value)`](#private-serialize-value).
+The default `_write` method uses `db._batch`. If the `_write` method is overridden it must atomically commit the queued operations. There are no default options but `options` will always be an object. If committing fails, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ## Test Suite
 

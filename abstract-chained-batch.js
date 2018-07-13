@@ -1,15 +1,11 @@
 function AbstractChainedBatch (db) {
+  if (typeof db !== 'object' || db === null) {
+    throw new TypeError('First argument must be an abstract-leveldown compliant store')
+  }
+
   this._db = db
   this._operations = []
   this._written = false
-}
-
-AbstractChainedBatch.prototype._serializeKey = function (key) {
-  return this._db._serializeKey(key)
-}
-
-AbstractChainedBatch.prototype._serializeValue = function (value) {
-  return this._db._serializeValue(value)
 }
 
 AbstractChainedBatch.prototype._checkWritten = function () {
@@ -24,8 +20,8 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   var err = this._db._checkKey(key, 'key')
   if (err) { throw err }
 
-  key = this._serializeKey(key)
-  value = this._serializeValue(value)
+  key = this._db._serializeKey(key)
+  value = this._db._serializeValue(value)
 
   this._put(key, value)
 
@@ -42,7 +38,7 @@ AbstractChainedBatch.prototype.del = function (key) {
   var err = this._db._checkKey(key, 'key')
   if (err) { throw err }
 
-  key = this._serializeKey(key)
+  key = this._db._serializeKey(key)
   this._del(key)
 
   return this
@@ -54,13 +50,14 @@ AbstractChainedBatch.prototype._del = function (key) {
 
 AbstractChainedBatch.prototype.clear = function () {
   this._checkWritten()
-  this._operations = []
   this._clear()
 
   return this
 }
 
-AbstractChainedBatch.prototype._clear = function noop () {}
+AbstractChainedBatch.prototype._clear = function () {
+  this._operations = []
+}
 
 AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
@@ -69,18 +66,16 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
   if (typeof callback !== 'function') {
     throw new Error('write() requires a callback argument')
   }
-  if (typeof options !== 'object') { options = {} }
-
-  this._written = true
-
-  // @ts-ignore
-  if (typeof this._write === 'function') { return this._write(callback) }
-
-  if (typeof this._db._batch === 'function') {
-    return this._db._batch(this._operations, options, callback)
+  if (typeof options !== 'object' || options === null) {
+    options = {}
   }
 
-  process.nextTick(callback)
+  this._written = true
+  this._write(options, callback)
+}
+
+AbstractChainedBatch.prototype._write = function (options, callback) {
+  this._db._batch(this._operations, options, callback)
 }
 
 module.exports = AbstractChainedBatch

@@ -335,27 +335,64 @@ test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
 
 test('test AbstractChainedBatch extensibility', function (t) {
   var Test = implement(AbstractChainedBatch)
-  var test = new Test('foobar')
-  t.equal(test._db, 'foobar', 'db set on instance')
+  var test = new Test({ test: true })
+  t.same(test._db, { test: true }, 'db set on instance')
   t.end()
+})
+
+test('test AbstractChainedBatch expects a db', function (t) {
+  t.plan(1)
+
+  var Test = implement(AbstractChainedBatch)
+
+  try {
+    Test()
+  } catch (err) {
+    t.is(err.message, 'First argument must be an abstract-leveldown compliant store')
+  }
 })
 
 test('test write() extensibility', function (t) {
   var spy = sinon.spy()
   var spycb = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test('foobar')
+  var test = new Test({ test: true })
 
   test.write(spycb)
 
   t.equal(spy.callCount, 1, 'got _write() call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _write() was correct')
-  t.equal(spy.getCall(0).args.length, 1, 'got one argument')
+  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.same(spy.getCall(0).args[0], {}, 'got options')
   // awkward here cause of nextTick & an internal wrapped cb
-  t.equal(typeof spy.getCall(0).args[0], 'function', 'got a callback function')
+  t.equal(typeof spy.getCall(0).args[1], 'function', 'got a callback function')
   t.equal(spycb.callCount, 0, 'spycb not called')
-  spy.getCall(0).args[0]()
+  spy.getCall(0).args[1]()
   t.equal(spycb.callCount, 1, 'spycb called, i.e. was our cb argument')
+  t.end()
+})
+
+test('test write() extensibility with null options', function (t) {
+  var spy = sinon.spy()
+  var Test = implement(AbstractChainedBatch, { _write: spy })
+  var test = new Test({ test: true })
+
+  test.write(null, function () {})
+
+  t.equal(spy.callCount, 1, 'got _write() call')
+  t.same(spy.getCall(0).args[0], {}, 'got options')
+  t.end()
+})
+
+test('test write() extensibility with options', function (t) {
+  var spy = sinon.spy()
+  var Test = implement(AbstractChainedBatch, { _write: spy })
+  var test = new Test({ test: true })
+
+  test.write({ test: true }, function () {})
+
+  t.equal(spy.callCount, 1, 'got _write() call')
+  t.same(spy.getCall(0).args[0], { test: true }, 'got options')
   t.end()
 })
 
