@@ -55,16 +55,6 @@ You must now do:
 const testCommon = require('abstract-leveldown/test/common')
 ```
 
-### Abstract test suite API changed
-
-All `.all()` methods and sub tests now have identical function signatures, e.g.:
-
-```js
-exports.all = function (test, testCommon) {
-  // ..
-}
-```
-
 ### Default `testCommon` was rewritten to be unopinionated
 
 Now `testCommon` only implements two methods, `setUp` and `tearDown`, which became noops.
