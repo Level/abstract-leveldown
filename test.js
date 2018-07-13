@@ -18,7 +18,15 @@ var factory = testCommon.factory = function () {
 
 require('./test/leveldown-test').args(test, testCommon)
 
+require('./test/open-test').setUp(test, testCommon)
 require('./test/open-test').args(test, testCommon)
+require('./test/open-test').tearDown(test, testCommon)
+
+require('./test/open-create-if-missing-test').setUp(test, testCommon)
+require('./test/open-create-if-missing-test').tearDown(test, testCommon)
+
+require('./test/open-error-if-exists-test').setUp(test, testCommon)
+require('./test/open-error-if-exists-test').tearDown(test, testCommon)
 
 require('./test/del-test').setUp(test, testCommon)
 require('./test/del-test').args(test, testCommon)
