@@ -61,7 +61,7 @@ const testCommon = require('abstract-leveldown/test/common')
 
 ### Abstract test suite API changed
 
-All `.all()` methods now has the following signature:
+All `.all()` methods now have the following signature:
 
 ```js
 exports.all = function (test, testCommon) {
