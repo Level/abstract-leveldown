@@ -27,7 +27,7 @@ function YourDOWN (location) {
 
 ### Abstract test suite has moved to a single entry point
 
-With this move, `testCommon.js` is gone. If you previously did:
+With this move, `testCommon` is gone. If you previously did:
 
 ```js
 const test = require('tape')
