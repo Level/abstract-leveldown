@@ -20,7 +20,7 @@ module.exports = function (options) {
 
   require('./factory-test')(test, testCommon)
 
-  require('./leveldown-test').args(test, testCommon)
+  require('./leveldown-test')(test, testCommon)
   require('./open-test').all(test, testCommon)
   require('./close-test').all(test, testCommon)
 
