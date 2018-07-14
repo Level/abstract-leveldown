@@ -107,6 +107,11 @@ exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty Array/)
 }
 
+exports.errorValues = function (test, testCommon) {
+  makePutErrorTest(test, 'null value', 'key', null, /value cannot be `null` or `undefined`/)
+  makePutErrorTest(test, 'undefined value', 'key', undefined, /value cannot be `null` or `undefined`/)
+}
+
 exports.nonErrorKeys = function (test, testCommon) {
   // valid falsey keys
   makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
@@ -137,8 +142,6 @@ exports.nonErrorValues = function (test, testCommon) {
   makePutGetDelSuccessfulTest(test, '`NaN` value', 'foo NaN', NaN)
 
   // all of the following result in an empty-string value:
-  makePutGetDelSuccessfulTest(test, '`null` value', 'foo null', null, '')
-  makePutGetDelSuccessfulTest(test, '`undefined` value', 'foo undefined', undefined, '')
   makePutGetDelSuccessfulTest(test, 'empty String value', 'foo', '', '')
   makePutGetDelSuccessfulTest(test, 'empty Buffer value', 'foo', Buffer.alloc(0), '')
   makePutGetDelSuccessfulTest(test, 'empty Array value', 'foo', [], '')
@@ -167,6 +170,7 @@ exports.tearDown = function (test, testCommon) {
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
   exports.errorKeys(test, testCommon)
+  exports.errorValues(test, testCommon)
   exports.nonErrorKeys(test, testCommon)
   exports.nonErrorValues(test, testCommon)
   exports.tearDown(test, testCommon)
