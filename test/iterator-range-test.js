@@ -337,16 +337,6 @@ exports.range = function (test, testCommon) {
     start: ''
   }, data)
 
-  // TODO: should we remove this? The behavior depends on
-  // implementation-specific serialization and encoding.
-  // rangeTest('test iterator with gte as null', {
-  //   gte: null
-  // }, data)
-  //
-  // rangeTest('test iterator with start as null - legacy', {
-  //   start: null
-  // }, data)
-
   rangeTest('test iterator with lte as empty string', {
     lte: ''
   }, data)
@@ -354,16 +344,6 @@ exports.range = function (test, testCommon) {
   rangeTest('test iterator with end as empty string - legacy', {
     end: ''
   }, data)
-
-  // TODO: should we remove this? The behavior depends on
-  // implementation-specific serialization and encoding.
-  // rangeTest('test iterator with lte as null', {
-  //   lte: null
-  // }, data)
-  //
-  // rangeTest('test iterator with end as null - legacy', {
-  //   end: null
-  // }, data)
 }
 
 exports.tearDown = function (test, testCommon) {
