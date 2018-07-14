@@ -241,10 +241,8 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 AbstractLevelDOWN.prototype._checkKey = function (key) {
   if (key === null || key === undefined) {
     return new Error('key cannot be `null` or `undefined`')
-  } else if (Buffer.isBuffer(key)) {
-    if (key.length === 0) {
-      return new Error('key cannot be an empty Buffer')
-    }
+  } else if (Buffer.isBuffer(key) && key.length === 0) {
+    return new Error('key cannot be an empty Buffer')
   } else if (key === '') {
     return new Error('key cannot be an empty String')
   } else if (Array.isArray(key) && key.length === 0) {
