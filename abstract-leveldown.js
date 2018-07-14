@@ -230,7 +230,6 @@ AbstractLevelDOWN.prototype._chainedBatch = function () {
   return new AbstractChainedBatch(this)
 }
 
-// TODO: should we check for empty keys *after* serialization?
 AbstractLevelDOWN.prototype._serializeKey = function (key) {
   return key
 }
