@@ -18,6 +18,8 @@ module.exports = function (options) {
   var testCommon = common(options)
   var test = testCommon.test
 
+  require('./factory-test')(test, testCommon)
+
   require('./leveldown-test').args(test, testCommon)
   require('./open-test').all(test, testCommon)
   require('./close-test').all(test, testCommon)
