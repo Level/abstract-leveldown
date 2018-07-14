@@ -12,13 +12,13 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   var self = this
   var oldStatus = this.status
 
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') callback = options
 
   if (typeof callback !== 'function') {
     throw new Error('open() requires a callback argument')
   }
 
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
 
   options.createIfMissing = options.createIfMissing !== false
   options.errorIfExists = !!options.errorIfExists
@@ -62,7 +62,7 @@ AbstractLevelDOWN.prototype._close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') callback = options
 
   if (typeof callback !== 'function') {
     throw new Error('get() requires a callback argument')
@@ -73,7 +73,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
   key = this._serializeKey(key)
 
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
 
   options.asBuffer = options.asBuffer !== false
 
@@ -85,7 +85,7 @@ AbstractLevelDOWN.prototype._get = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') callback = options
 
   if (typeof callback !== 'function') {
     throw new Error('put() requires a callback argument')
@@ -97,7 +97,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   key = this._serializeKey(key)
   value = this._serializeValue(value)
 
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
 
   this._put(key, value, options, callback)
 }
@@ -107,7 +107,7 @@ AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') callback = options
 
   if (typeof callback !== 'function') {
     throw new Error('del() requires a callback argument')
@@ -118,7 +118,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 
   key = this._serializeKey(key)
 
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
 
   this._del(key, options, callback)
 }
@@ -128,11 +128,11 @@ AbstractLevelDOWN.prototype._del = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
-  if (!arguments.length) { return this._chainedBatch() }
+  if (!arguments.length) return this._chainedBatch()
 
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') callback = options
 
-  if (typeof array === 'function') { callback = array }
+  if (typeof array === 'function') callback = array
 
   if (typeof callback !== 'function') {
     throw new Error('batch(array) requires a callback argument')
@@ -142,7 +142,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     return process.nextTick(callback, new Error('batch(array) requires an array argument'))
   }
 
-  if (!options || typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
 
   var serialized = new Array(array.length)
 
@@ -217,7 +217,7 @@ function isRangeOption (k) {
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
-  if (typeof options !== 'object') { options = {} }
+  if (typeof options !== 'object' || options === null) options = {}
   options = this._setupIteratorOptions(options)
   return this._iterator(options)
 }
