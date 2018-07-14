@@ -136,6 +136,29 @@ Please see [README.md](README.md) for details.
 - The `_write` method now takes an `options` object as its first argument
 - The `db` argument in the constructor became mandatory, as well the `_db` property on the instance.
 
+### Nullish values are rejected
+
+In addition to rejecting `null` and `undefined` as *keys*, `abstract-leveldown` now also rejects these types as *values*, due to preexisting significance in streams and iterators.
+
+Before this, the behavior of these types depended on a large number of factors: `_serializeValue` and type support of the underlying storage, whether `get()`, `iterator()` or a stream was used to retrieve values, the `keys` and `asBuffer` options of `iterator()` and finally, which encoding was selected.
+
+### Default `_serializeKey` and `_serializeValue` became identity functions
+
+They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommendations.
+
+### Range options are serialized
+
+Previously, range options like `lt` were passed through as-is, unlike keys.
+
+### The rules for range options have been relaxed
+
+To support them being used as (encoded) lower and upper bounds, `null`, `undefined`, zero-length strings and zero-length buffers became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is *not* the same as `db.iterator({})`.
+
+### `_checkKey` does not coerce to string
+### Empty array keys are rejected
+### Remove range tests with null
+### No longer assumes that implementation supports boolean and `NaN` keys
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
