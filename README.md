@@ -184,7 +184,7 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-Note that `null`, `undefined`, zero-length strings and zero-length buffers are invalid as keys, yet valid as range options. These types are commonly used as lower and upper bounds in encodings like `bytewise`. An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] these range option types, [*serialize*](#private-serialize-key) them, *delegate* to an underlying store, or finally, *ignore* them.
+Note that `null`, `undefined`, zero-length strings, zero-length buffers and zero-length arrays are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] these range option types, [*serialize*](#private-serialize-key) them, *delegate* to an underlying store, or finally, *ignore* them.
 
 In addition to range options, `iterator()` takes the following options:
 
@@ -287,8 +287,6 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 Then `db.get(2, callback)` will translate into `db._get('2', options, callback)`.
 
 If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike *encoding* as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
-
-**Note:** range options are not currently serialized ([#130](https://github.com/Level/abstract-leveldown/issues/130)).
 
 <a name="private-serialize-value"></a>
 ### `db._serializeValue(value)`
