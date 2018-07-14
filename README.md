@@ -184,7 +184,7 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-Note that `null`, `undefined`, zero-length strings, zero-length buffers and zero-length arrays are invalid as keys, yet valid as range options. These types are significant in encodings like `bytewise` and `charwise`. An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] these range option types, [*serialize*](#private-serialize-key) them, *delegate* to an underlying store, or finally, *ignore* them.
+Note that `null`, `undefined`, zero-length strings, zero-length buffers and zero-length arrays are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] these range option types, [*serialize*](#private-serialize-key) them, *delegate* to an underlying store, or finally, *ignore* them.
 
 In addition to range options, `iterator()` takes the following options:
 
