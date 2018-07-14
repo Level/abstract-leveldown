@@ -117,7 +117,7 @@ exports.nonErrorKeys = function (test, testCommon) {
   makePutGetDelSuccessfulTest(
     test
     , 'long String key'
-    , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
+    , 'some long string that I\'m using as a key for this unit test, cross your fingers human, we\'re going in!'
     , 'foo'
   )
 
@@ -148,7 +148,7 @@ exports.nonErrorValues = function (test, testCommon) {
     test
     , 'long String value'
     , 'foo'
-    , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
+    , 'some long string that I\'m using as a key for this unit test, cross your fingers human, we\'re going in!'
   )
 
   // standard Buffer value
