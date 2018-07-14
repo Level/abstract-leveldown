@@ -2,6 +2,13 @@
 
 This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the changelog.
 
+## Table of Contents
+
+- [Unreleased](#unreleased)
+- [v5](#v5)
+- [v4](#v4)
+- [v3](#v3)
+
 ## Unreleased
 
 ### `location` was removed
