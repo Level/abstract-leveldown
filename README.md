@@ -288,8 +288,6 @@ Then `db.get(2, callback)` will translate into `db._get('2', options, callback)`
 
 If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike *encoding* as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
 
-**Note:** range options are not currently serialized ([#130](https://github.com/Level/abstract-leveldown/issues/130)).
-
 <a name="private-serialize-value"></a>
 ### `db._serializeValue(value)`
 
