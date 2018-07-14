@@ -72,7 +72,7 @@ function makePutGetDelSuccessfulTest (test, type, key, value, expectedResult) {
           var async = false
 
           db.get(key, function (err, value) {
-            t.ok(err, 'entry propertly deleted')
+            t.ok(err, 'entry properly deleted')
             t.ok(verifyNotFoundError(err), 'should have correct error message')
             t.equal(typeof value, 'undefined', 'value is undefined')
             t.ok(async, 'callback is asynchronous')
