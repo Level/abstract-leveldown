@@ -18,7 +18,7 @@ var testCommon = require('./common')({
  * Compatibility with basic LevelDOWN API
  */
 
-require('./leveldown-test').args(test, testCommon)
+require('./leveldown-test')(test, testCommon)
 
 require('./open-test').setUp(test, testCommon)
 require('./open-test').args(test, testCommon)
