@@ -121,10 +121,6 @@ require('abstract-leveldown/test')({
 })
 ```
 
-### Empty `errorValues()` test was removed
-
-If your implementation tests were calling this directly, simply remove usage.
-
 ### Seeking became part of official API
 
 If your implementation previously defined the public `iterator.seek(target)`, it must now define the private `iterator._seek(target)`. The new public API is equal to the reference implementation of `leveldown` except for two differences:
