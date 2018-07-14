@@ -114,9 +114,7 @@ exports.errorValues = function (test, testCommon) {
 
 exports.nonErrorKeys = function (test, testCommon) {
   // valid falsey keys
-  makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
-  makePutGetDelSuccessfulTest(test, '`NaN` key', NaN, 'foo NaN')
 
   // standard String key
   makePutGetDelSuccessfulTest(
