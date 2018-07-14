@@ -92,25 +92,12 @@ test('test core extensibility', function (t) {
 
 test('test key/value serialization', function (t) {
   var Test = implement(AbstractLevelDOWN)
-  var buffer = Buffer.alloc(0)
-  var test = new Test('foobar')
+  var test = new Test()
 
-  t.equal(test._serializeKey(1), '1', '_serializeKey converts to string')
-  t.ok(test._serializeKey(buffer) === buffer, '_serializeKey returns Buffer as is')
-
-  t.equal(test._serializeValue(null), '', '_serializeValue converts null to empty string')
-  t.equal(test._serializeValue(undefined), '', '_serializeValue converts undefined to empty string')
-
-  var browser = !!process.browser
-  process.browser = false
-
-  t.equal(test._serializeValue(1), '1', '_serializeValue converts to string')
-  t.ok(test._serializeValue(buffer) === buffer, '_serializeValue returns Buffer as is')
-
-  process.browser = true
-  t.equal(test._serializeValue(1), 1, '_serializeValue returns value as is when process.browser')
-
-  process.browser = browser
+  ;['', {}, null, undefined, Buffer.alloc(0)].forEach(function (v) {
+    t.ok(test._serializeKey(v) === v, '_serializeKey is an identity function')
+    t.ok(test._serializeValue(v) === v, '_serializeValue is an identity function')
+  })
 
   t.end()
 })
@@ -675,6 +662,35 @@ test('test serialization extensibility (batch array is not mutated)', function (
   t.equal(op.value, 'nope', 'did not mutate input value')
 })
 
+test('test serialization extensibility (iterator range options)', function (t) {
+  t.plan(2)
+
+  function Test () {
+    AbstractLevelDOWN.call(this)
+  }
+
+  inherits(Test, AbstractLevelDOWN)
+
+  Test.prototype._serializeKey = function (key) {
+    t.is(key, 'input')
+    return 'output'
+  }
+
+  Test.prototype._iterator = function (options) {
+    return new Iterator(this, options)
+  }
+
+  function Iterator (db, options) {
+    AbstractIterator.call(this, db)
+    t.is(options.gt, 'output')
+  }
+
+  inherits(Iterator, AbstractIterator)
+
+  var test = new Test()
+  test.iterator({ gt: 'input' })
+})
+
 test('test serialization extensibility (iterator seek)', function (t) {
   t.plan(3)
 
@@ -800,9 +816,9 @@ test('_setupIteratorOptions', function (t) {
     return options
   }
 
-  function verifyUndefinedOptions (t, options) {
+  function verifyOptions (t, options) {
     keys.forEach(function (key) {
-      t.notOk(key in options, 'property should be deleted')
+      t.ok(key in options, 'property should not be deleted')
     })
     t.end()
   }
@@ -838,29 +854,37 @@ test('_setupIteratorOptions', function (t) {
     t.end()
   })
 
-  t.test('deletes empty buffers', function (t) {
+  t.test('does not delete empty buffers', function (t) {
     var options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
     })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+    verifyOptions(t, db._setupIteratorOptions(options))
   })
 
-  t.test('deletes empty strings', function (t) {
+  t.test('does not delete empty strings', function (t) {
     var options = setupOptions(function () { return '' })
     keys.forEach(function (key) {
       t.is(typeof options[key], 'string', 'should be string')
       t.is(options[key].length, 0, 'should be empty')
     })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+    verifyOptions(t, db._setupIteratorOptions(options))
   })
 
-  t.test('deletes null options', function (t) {
+  t.test('does not delete null', function (t) {
     var options = setupOptions(function () { return null })
     keys.forEach(function (key) {
-      t.same(options[key], null, 'should be null')
+      t.is(options[key], null, 'should be null')
     })
-    verifyUndefinedOptions(t, db._setupIteratorOptions(options))
+    verifyOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('does not delete undefined', function (t) {
+    var options = setupOptions(function () { return undefined })
+    keys.forEach(function (key) {
+      t.is(options[key], undefined, 'should be undefined')
+    })
+    verifyOptions(t, db._setupIteratorOptions(options))
   })
 })

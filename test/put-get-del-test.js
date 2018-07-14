@@ -104,20 +104,23 @@ exports.errorKeys = function (test, testCommon) {
   makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
   makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
   makeErrorKeyTest(test, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
-  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty String/)
+  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty Array/)
+}
+
+exports.errorValues = function (test, testCommon) {
+  makePutErrorTest(test, 'null value', 'key', null, /value cannot be `null` or `undefined`/)
+  makePutErrorTest(test, 'undefined value', 'key', undefined, /value cannot be `null` or `undefined`/)
 }
 
 exports.nonErrorKeys = function (test, testCommon) {
   // valid falsey keys
-  makePutGetDelSuccessfulTest(test, '`false` key', false, 'foo false')
   makePutGetDelSuccessfulTest(test, '`0` key', 0, 'foo 0')
-  makePutGetDelSuccessfulTest(test, '`NaN` key', NaN, 'foo NaN')
 
   // standard String key
   makePutGetDelSuccessfulTest(
     test
     , 'long String key'
-    , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
+    , 'some long string that I\'m using as a key for this unit test, cross your fingers human, we\'re going in!'
     , 'foo'
   )
 
@@ -137,10 +140,10 @@ exports.nonErrorValues = function (test, testCommon) {
   makePutGetDelSuccessfulTest(test, '`NaN` value', 'foo NaN', NaN)
 
   // all of the following result in an empty-string value:
-  makePutGetDelSuccessfulTest(test, '`null` value', 'foo null', null, '')
-  makePutGetDelSuccessfulTest(test, '`undefined` value', 'foo undefined', undefined, '')
   makePutGetDelSuccessfulTest(test, 'empty String value', 'foo', '', '')
   makePutGetDelSuccessfulTest(test, 'empty Buffer value', 'foo', Buffer.alloc(0), '')
+
+  // note that an implementation may return the value as an array
   makePutGetDelSuccessfulTest(test, 'empty Array value', 'foo', [], '')
 
   // standard String value
@@ -148,7 +151,7 @@ exports.nonErrorValues = function (test, testCommon) {
     test
     , 'long String value'
     , 'foo'
-    , 'some long string that I\'m using as a key for this unit test, cross your fingers dude, we\'re going in!'
+    , 'some long string that I\'m using as a key for this unit test, cross your fingers human, we\'re going in!'
   )
 
   // standard Buffer value
@@ -167,6 +170,7 @@ exports.tearDown = function (test, testCommon) {
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
   exports.errorKeys(test, testCommon)
+  exports.errorValues(test, testCommon)
   exports.nonErrorKeys(test, testCommon)
   exports.nonErrorValues(test, testCommon)
   exports.tearDown(test, testCommon)

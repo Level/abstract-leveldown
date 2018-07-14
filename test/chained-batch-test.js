@@ -39,13 +39,13 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#put() with missing `value`', function (t) {
-    db.batch().put('foo1')
-    t.end()
-  })
+    t.plan(1)
 
-  test('test batch#put() with null `value`', function (t) {
-    db.batch().put('foo1', null)
-    t.end()
+    try {
+      db.batch().put('foo1')
+    } catch (err) {
+      t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+    }
   })
 
   test('test batch#put() with missing `key`', function (t) {
@@ -81,6 +81,19 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
+  test('test batch#put() with null or undefined `value`', function (t) {
+    var illegalValues = [null, undefined]
+    t.plan(illegalValues.length)
+
+    illegalValues.forEach(function (value) {
+      try {
+        db.batch().put('key', value)
+      } catch (err) {
+        t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+      }
+    })
+  })
+
   test('test batch#del() with missing `key`', function (t) {
     try {
       db.batch().del()
@@ -92,26 +105,17 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test batch#del() with null `key`', function (t) {
-    try {
-      db.batch().del(null)
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
-  })
+  test('test batch#del() with null or undefined `key`', function (t) {
+    var illegalKeys = [null, undefined]
+    t.plan(illegalKeys.length)
 
-  test('test batch#del() with null `key`', function (t) {
-    try {
-      db.batch().del(null)
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
+    illegalKeys.forEach(function (key) {
+      try {
+        db.batch().del(key)
+      } catch (err) {
+        t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+      }
+    })
   })
 
   test('test batch#clear() doesn\'t throw', function (t) {

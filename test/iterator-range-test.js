@@ -337,28 +337,12 @@ exports.range = function (test, testCommon) {
     start: ''
   }, data)
 
-  rangeTest('test iterator with gte as null', {
-    gte: null
-  }, data)
-
-  rangeTest('test iterator with start as null - legacy', {
-    start: null
-  }, data)
-
   rangeTest('test iterator with lte as empty string', {
     lte: ''
   }, data)
 
   rangeTest('test iterator with end as empty string - legacy', {
     end: ''
-  }, data)
-
-  rangeTest('test iterator with lte as null', {
-    lte: null
-  }, data)
-
-  rangeTest('test iterator with end as null - legacy', {
-    end: null
   }, data)
 }
 
