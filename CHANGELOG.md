@@ -2,6 +2,37 @@
 
 ## [Unreleased]
 
+### Changed
+* Upgrade `airtap` devDependency from `0.0.5` to `0.1.0` (@vweevers, @ralphtheninja, @greenkeeper)
+* Upgrade `sinon` devDependency from `^5.0.0` to `^6.0.0` (@ralphtheninja)
+* Tweak copyright years for less maintenance (@ralphtheninja)
+* Isolate snapshot test (#239) (@vweevers)
+* Use `level-concat-iterator` instead of `collectEntries` (@ralphtheninja)
+* Rename `abstract/` to `test/` (@vweevers)
+* Write API docs (#251) (@vweevers)
+* Rewrite `testCommon` functionality and force implementations to implement `testCommon.factory` (@ralphtheninja)
+* Internal test API methods have the same signature `(test, testCommon)` (@ralphtheninja)
+* Refactor chained batch (#257) (@vweevers)
+* Export test suite as a single function (@vweevers)
+* Rewrite serialization logic (#277) (@vweevers)
+
+### Added
+* Add `iterator.seek()` (#237) (@vweevers)
+* Add `nyc` and `coveralls` for code coverage (@vweevers)
+* Add `setUp` and `tearDown` to all sub tests (@ralphtheninja)
+* Test that each factory returns a unique db (@ralphtheninja)
+
+### Removed
+* Remove `contributors` from `package.json` (@ralphtheninja)
+* Remove copyright headers from code (@ralphtheninja)
+* Remove node 9 from Travis (@ralphtheninja)
+* Remove `location` (#258) (@ralphtheninja)
+* Remove deprecation warning on moved snapshot test (@ralphtheninja)
+
+### Fixed
+* Make sure all `t.throw` tests check error messages correctly (@ralphtheninja)
+* Check options objects properly for `null` (@ralphtheninja)
+
 ## [5.0.0] - 2018-05-22
 
 ### Changed
