@@ -142,6 +142,8 @@ exports.nonErrorValues = function (test, testCommon) {
   // all of the following result in an empty-string value:
   makePutGetDelSuccessfulTest(test, 'empty String value', 'foo', '', '')
   makePutGetDelSuccessfulTest(test, 'empty Buffer value', 'foo', Buffer.alloc(0), '')
+
+  // note that an implementation may return the value as an array
   makePutGetDelSuccessfulTest(test, 'empty Array value', 'foo', [], '')
 
   // standard String value
