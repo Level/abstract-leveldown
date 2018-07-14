@@ -6,9 +6,9 @@ exports.args = function (test, testCommon) {
   test('test database open no-arg throws', function (t) {
     var db = testCommon.factory()
     t.throws(
-      db.open.bind(db)
-      , { name: 'Error', message: 'open() requires a callback argument' }
-      , 'no-arg open() throws'
+      db.open.bind(db),
+      /Error: open\(\) requires a callback argument/,
+      'no-arg open() throws'
     )
     t.end()
   })
@@ -16,9 +16,9 @@ exports.args = function (test, testCommon) {
   test('test callback-less, 1-arg, open() throws', function (t) {
     var db = testCommon.factory()
     t.throws(
-      db.open.bind(db, {})
-      , { name: 'Error', message: 'open() requires a callback argument' }
-      , 'callback-less, 1-arg open() throws'
+      db.open.bind(db, {}),
+      /Error: open\(\) requires a callback argument/,
+      'callback-less, 1-arg open() throws'
     )
     t.end()
   })

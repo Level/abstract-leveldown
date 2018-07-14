@@ -12,27 +12,27 @@ exports.setUp = function (test, testCommon) {
 exports.args = function (test, testCommon) {
   test('test argument-less del() throws', function (t) {
     t.throws(
-      db.del.bind(db)
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'no-arg del() throws'
+      db.del.bind(db),
+      /Error: del\(\) requires a callback argument/,
+      'no-arg del() throws'
     )
     t.end()
   })
 
   test('test callback-less, 1-arg, del() throws', function (t) {
     t.throws(
-      db.del.bind(db, 'foo')
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'callback-less, 1-arg del() throws'
+      db.del.bind(db, 'foo'),
+      /Error: del\(\) requires a callback argument/,
+      'callback-less, 1-arg del() throws'
     )
     t.end()
   })
 
   test('test callback-less, 3-arg, del() throws', function (t) {
     t.throws(
-      db.del.bind(db, 'foo', {})
-      , { name: 'Error', message: 'del() requires a callback argument' }
-      , 'callback-less, 2-arg del() throws'
+      db.del.bind(db, 'foo', {}),
+      /Error: del\(\) requires a callback argument/,
+      'callback-less, 2-arg del() throws'
     )
     t.end()
   })

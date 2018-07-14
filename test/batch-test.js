@@ -12,7 +12,11 @@ exports.setUp = function (test, testCommon) {
 
 exports.args = function (test, testCommon) {
   test('test callback-less, 2-arg, batch() throws', function (t) {
-    t.throws(db.batch.bind(db, 'foo', {}), 'callback-less, 2-arg batch() throws')
+    t.throws(
+      db.batch.bind(db, 'foo', {}),
+      /Error: batch\(array\) requires a callback argument/,
+      'callback-less, 2-arg batch() throws'
+    )
     t.end()
   })
 

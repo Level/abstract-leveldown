@@ -12,9 +12,9 @@ exports.args = function (test, testCommon) {
   test('test argument-less iterator#next() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
-      iterator.next.bind(iterator)
-      , { name: 'Error', message: 'next() requires a callback argument' }
-      , 'no-arg iterator#next() throws'
+      iterator.next.bind(iterator),
+      /Error: next\(\) requires a callback argument/,
+      'no-arg iterator#next() throws'
     )
     iterator.end(t.end.bind(t))
   })
@@ -23,9 +23,9 @@ exports.args = function (test, testCommon) {
     var iterator = db.iterator()
     iterator.next(function () {
       t.throws(
-        iterator.end.bind(iterator)
-        , { name: 'Error', message: 'end() requires a callback argument' }
-        , 'no-arg iterator#end() throws'
+        iterator.end.bind(iterator),
+        /Error: end\(\) requires a callback argument/,
+        'no-arg iterator#end() throws'
       )
       iterator.end(t.end.bind(t))
     })
@@ -34,9 +34,9 @@ exports.args = function (test, testCommon) {
   test('test argument-less iterator#end() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
-      iterator.end.bind(iterator)
-      , { name: 'Error', message: 'end() requires a callback argument' }
-      , 'no-arg iterator#end() throws'
+      iterator.end.bind(iterator),
+      /Error: end\(\) requires a callback argument/,
+      'no-arg iterator#end() throws'
     )
     iterator.end(t.end.bind(t))
   })

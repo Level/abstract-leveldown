@@ -13,27 +13,27 @@ exports.setUp = function (test, testCommon) {
 exports.args = function (test, testCommon) {
   test('test argument-less get() throws', function (t) {
     t.throws(
-      db.get.bind(db)
-      , { name: 'Error', message: 'get() requires a callback argument' }
-      , 'no-arg get() throws'
+      db.get.bind(db),
+      /Error: get\(\) requires a callback argument/,
+      'no-arg get() throws'
     )
     t.end()
   })
 
   test('test callback-less, 1-arg, get() throws', function (t) {
     t.throws(
-      db.get.bind(db, 'foo')
-      , { name: 'Error', message: 'get() requires a callback argument' }
-      , 'callback-less, 1-arg get() throws'
+      db.get.bind(db, 'foo'),
+      /Error: get\(\) requires a callback argument/,
+      'callback-less, 1-arg get() throws'
     )
     t.end()
   })
 
   test('test callback-less, 3-arg, get() throws', function (t) {
     t.throws(
-      db.get.bind(db, 'foo', {})
-      , { name: 'Error', message: 'get() requires a callback argument' }
-      , 'callback-less, 2-arg get() throws'
+      db.get.bind(db, 'foo', {}),
+      /Error: get\(\) requires a callback argument/,
+      'callback-less, 2-arg get() throws'
     )
     t.end()
   })
