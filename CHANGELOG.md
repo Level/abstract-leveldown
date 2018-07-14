@@ -5,7 +5,7 @@
 ## [5.0.0] - 2018-05-22
 
 ### Changed
-* Update `sinon` to `^5.0.0` (@ralphtheninja)
+* Upgrade `sinon` to `^5.0.0` (@ralphtheninja)
 * Tweak README (@ralphtheninja)
 * Replace `const` with `var` to support IE10 (@vweevers)
 
@@ -21,8 +21,8 @@
 ## [4.0.3] - 2018-02-21
 
 ### Changed
-* Update `ts-node` to `^5.0.0` (@zixia)
-* Update `standard` to `^11.0.0` (@ralphtheninja)
+* Upgrade `ts-node` to `^5.0.0` (@zixia)
+* Upgrade `standard` to `^11.0.0` (@ralphtheninja)
 
 ### Fixed
 * Remove invalid TypeScript from `Batch` (@Tapppi)
@@ -112,7 +112,7 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 ## [2.6.3] - 2017-09-05
 
 ### Changed
-* Update dependencies (@ralphtheninja)
+* Upgrade dependencies (@ralphtheninja)
 * Convert nullish values to empty strings (@bigeasy)
 * Use `t.equal(a, b)` instead of `t.ok(a === b)` (@bigeasy)
 * Relax tests for serializing object in `abstract/chained-batch-test.js` (@ralphtheninja)
@@ -128,7 +128,7 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 ## [2.6.2] - 2017-07-30
 
 ### Changed
-* Update dependencies and float `devDependencies` (@ralphtheninja)
+* Upgrade dependencies and float `devDependencies` (@ralphtheninja)
 * Update copyright years (@ralphtheninja)
 * Update node versions on Travis (@ralphtheninja)
 
@@ -160,7 +160,7 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 ## [2.5.0] - 2016-05-01
 
 ### Changed
-* Update dependencies and add more node versions to Travis (@ralphtheninja)
+* Upgrade dependencies and add more node versions to Travis (@ralphtheninja)
 
 ### Added
 * Add dependency badge to `README` (@ralphtheninja)
@@ -321,7 +321,7 @@ No change.
 ## [0.12.3] - 2014-06-27
 
 ### Changed
-* Update `xtend` dependency (@andrewrk)
+* Upgrade `xtend` dependency (@andrewrk)
 
 ## [0.12.2] - 2014-04-26
 
