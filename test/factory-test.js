@@ -1,6 +1,8 @@
 var concat = require('level-concat-iterator')
 
 module.exports = function (test, testCommon) {
+  test('setUp common', testCommon.setUp)
+
   test('testCommon.factory() returns a unique database', function (t) {
     var db1 = testCommon.factory()
     var db2 = testCommon.factory()
@@ -30,4 +32,6 @@ module.exports = function (test, testCommon) {
       })
     })
   })
+
+  test('tearDown', testCommon.tearDown)
 }
