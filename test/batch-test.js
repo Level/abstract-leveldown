@@ -66,6 +66,28 @@ exports.args = function (test, testCommon) {
     })
   })
 
+  test('test batch() with empty `key`', function (t) {
+    var illegalKeys = [
+      { type: 'String', key: '' },
+      { type: 'Buffer', key: Buffer.alloc(0) },
+      { type: 'Array', key: [] }
+    ]
+
+    t.plan(illegalKeys.length * 3)
+
+    illegalKeys.forEach(function (item) {
+      var async = false
+
+      db.batch([{ type: 'put', key: item.key, value: 'foo1' }], function (err) {
+        t.ok(err, 'got error')
+        t.equal(err.message, 'key cannot be an empty ' + item.type, 'correct error message')
+        t.ok(async, 'callback is asynchronous')
+      })
+
+      async = true
+    })
+  })
+
   test('test batch() with missing `key` and `value`', function (t) {
     var async = false
 
