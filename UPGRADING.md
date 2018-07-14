@@ -144,7 +144,7 @@ Before this, the behavior of these types depended on a large number of factors: 
 
 ### Default `_serializeKey` and `_serializeValue` became identity functions
 
-They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommendations.
+They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommended behavior.
 
 ### Range options are serialized
 
@@ -152,12 +152,17 @@ Previously, range options like `lt` were passed through as-is, unlike keys.
 
 ### The rules for range options have been relaxed
 
-To support them being used as (encoded) lower and upper bounds, `null`, `undefined`, zero-length strings and zero-length buffers became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is *not* the same as `db.iterator({})`.
+Because `null`, `undefined`, zero-length strings and zero-length buffers are significant types in encodings like `bytewise` and `charwise`, they became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is not the same as `db.iterator({})`.
 
-### `_checkKey` does not coerce to string
-### Empty array keys are rejected
-### Remove range tests with null
-### No longer assumes that implementation supports boolean and `NaN` keys
+Furthermore, `abstract-leveldown` makes no assumptions about the meaning of these types. Range tests that assumed `null` meant "not defined" have been removed.
+
+### Zero-length array keys are rejected
+
+Though this was already the case because `_checkKey` stringified its input before checking the length, that behavior has been replaced with an explicit `Array.isArray()` check and a new error message.
+
+### No longer assumes support of boolean and `NaN` keys
+
+A test that asserted boolean and `NaN` keys were stringified has been removed.
 
 ## v5
 
