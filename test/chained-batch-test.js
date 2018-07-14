@@ -106,15 +106,17 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test batch#del() with null `key`', function (t) {
-    try {
-      db.batch().del(null)
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
+  test('test batch#del() with null or undefined `key`', function (t) {
+    var illegalKeys = [null, undefined]
+    t.plan(illegalKeys.length)
+
+    illegalKeys.forEach(function (key) {
+      try {
+        db.batch().del(key)
+      } catch (err) {
+        t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+      }
+    })
   })
 
   test('test batch#clear() doesn\'t throw', function (t) {
