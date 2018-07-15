@@ -94,28 +94,6 @@ exports.put = function (test, testCommon) {
   })
 }
 
-exports.sync = function (test, testCommon) {
-  test('sync put', function (t) {
-    db.put('foo', 'bar', { sync: true }, function (err) {
-      t.error(err)
-      db.get('foo', function (err, value) {
-        t.error(err)
-        t.equal(value.toString(), 'bar')
-        t.end()
-      })
-    })
-  })
-  test('sync put just before close', function (t) {
-    t.plan(2)
-    db.put('foo', 'bar', { sync: true }, function (err) {
-      t.error(err)
-    })
-    db.close(function (err) {
-      t.error(err)
-    })
-  })
-}
-
 exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(testCommon.tearDown.bind(null, t))
