@@ -87,13 +87,13 @@ const testCommon = suite.common({
 suite(testCommon)
 ```
 
-As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique and isolated database instance. This allows implementations to pass options to their constructor.
 
 The `testCommon.cleanup` method has been removed. Because `factory()` returns a unique database instance, cleanup should no longer be necessary. The `testCommon.lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
 
-If your implementation is disk-based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `factory()` your setup could now look something like:
+If your implementation is disk-based we recommend using [`tempy`](https://github.com/sindresorhus/tempy) (or similar) to create unique temporary directories. Together with `factory()` your setup could now look something like:
 
 ```js
 const test = require('tape')
