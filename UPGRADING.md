@@ -15,7 +15,7 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 `AbstractLevelDOWN` is no longer associated with a `location`. It's up to the implementation to handle it if it's required.
 
-If you previously did:
+If your implementation has a `location` and you previously did:
 
 ```js
 function YourDOWN (location) {
