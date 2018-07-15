@@ -2,13 +2,20 @@
 
 This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the changelog.
 
+## Table of Contents
+
+- [Unreleased](#unreleased)
+- [v5](#v5)
+- [v4](#v4)
+- [v3](#v3)
+
 ## Unreleased
 
-### `location` removed
+### `location` was removed
 
 `AbstractLevelDOWN` is no longer associated with a `location`. It's up to the implementation to handle it if it's required.
 
-If you previously did:
+If your implementation has a `location` and you previously did:
 
 ```js
 function YourDOWN (location) {
@@ -25,45 +32,169 @@ function YourDOWN (location) {
 }
 ```
 
-### Abstract test suite has moved
-
-If you previously did:
+Be sure to include appropriate type checks. If you relied on the default `AbstractLevelDOWN` behavior that would be:
 
 ```js
-require('abstract-leveldown/abstract/get-test')
-require('abstract-leveldown/abstract/put-test') // etc
+if (typeof location !== 'string') {
+  throw new Error('constructor requires a location string argument')
+}
 ```
 
-You must now do:
+### Abstract test suite has moved to a single entry point
+
+Instead of including test files individually, you can and should include the test suite with one `require()` statement. If you previously did:
 
 ```js
-require('abstract-leveldown/test/get-test')
-require('abstract-leveldown/test/put-test') // etc
-```
-
-### Default `testCommon` is for disk-based, Node.js implementations only
-
-If your implementation or its target environment doesn't meet these criteria, you must implement a custom `testCommon`.
-
-### Default `testCommon` has moved
-
-If you previously did:
-
-```js
+const test = require('tape')
 const testCommon = require('abstract-leveldown/testCommon')
+const YourDOWN = require('.')
+
+require('abstract-leveldown/abstract/get-test').all(YourDOWN, test, testCommon)
+require('abstract-leveldown/abstract/put-test').all(YourDOWN, test, testCommon)
+
+// etc
 ```
 
 You must now do:
 
 ```js
-const testCommon = require('abstract-leveldown/test/common')
+const test = require('tape')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+suite({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
 ```
 
-### Default `testCommon` uses unique temporary directories
+The input to the test suite is a new form of `testCommon`. Should you need to reuse `testCommon` for your own (additional) tests, use the included utility to create a `testCommon` with defaults:
 
-This removes the need for cleanup before and/or after tests. As such the `cleanup` method has been removed from `testCommon`. The `lastLocation` method has also been removed as there is no remaining use of it in abstract tests. The `setUp` and `tearDown` methods became noops.
+```js
+const test = require('tape')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+const testCommon = suite.common({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
+
+suite(testCommon)
+```
+
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
+
+The `testCommon.cleanup` method has been removed. Because `factory()` returns a unique database instance, cleanup should no longer be necessary. The `testCommon.lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
 Previously, implementations using the default `testCommon` had to include `rimraf` in their `devDependencies` and browser-based implementations had to exclude `rimraf` from browserify builds. This is no longer the case.
+
+If your implementation is disk-based we recommend using `tempy` (or similar) to create unique temporary directories. Together with `factory()` your setup could now look something like:
+
+```js
+const test = require('tape')
+const tempy = require('tempy')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+suite({
+  test: test,
+  factory: function () {
+    return new YourDOWN(tempy.directory())
+  }
+})
+```
+
+### The `collectEntries` utility has moved
+
+The `testCommon.collectEntries` method has moved to the npm package  `level-concat-iterator`. If your (additional) tests depend on `collectEntries` and you previously did:
+
+```js
+testCommon.collectEntries(iterator, function (err, entries) {})
+```
+
+You must now do:
+
+```js
+const concat = require('level-concat-iterator')
+concat(iterator, function (err, entries) {})
+```
+
+### Setup and teardown became noops
+
+Because cleanup is no longer necessary, the `testCommon.setUp` and `testCommon.tearDown` methods are now noops by default. If you do need to perform (a)synchronous work before or after each test, `setUp` and `tearDown` can be overridden:
+
+```js
+suite({
+  // ..
+  setUp: function (t) {
+    t.end()
+  },
+  tearDown: function (t) {
+    t.end()
+  }
+})
+```
+
+### Optional tests have been separated
+
+If your implementation does not support snapshots, or the `createIfMissing` and `errorIfExists` options to `db.open`, the relevant tests may be skipped. To skip all three:
+
+```js
+suite({
+  // ..
+  snapshots: false,
+  createIfMissing: false,
+  errorIfExists: false
+})
+```
+
+### Seeking became part of official API
+
+If your implementation previously defined the public `iterator.seek(target)`, it must now define the private `iterator._seek(target)`. The new public API is equal to the reference implementation of `leveldown` except for two differences:
+
+- The `target` argument is not type checked, this is up to the implementation.
+- The `target` argument is passed through `db._serializeKey`.
+
+Please see [README.md](README.md) for details.
+
+### Chained batch has been refactored
+
+- The default `_clear` method is no longer a noop; instead it clears the operations queued by `_put` and/or `_del`
+- The `_write` method now takes an `options` object as its first argument
+- The `db` argument in the constructor became mandatory, as well the `_db` property on the instance.
+
+### Nullish values are rejected
+
+In addition to rejecting `null` and `undefined` as *keys*, `abstract-leveldown` now also rejects these types as *values*, due to preexisting significance in streams and iterators.
+
+Before this, the behavior of these types depended on a large number of factors: `_serializeValue` and type support of the underlying storage, whether `get()`, `iterator()` or a stream was used to retrieve values, the `keys` and `asBuffer` options of `iterator()` and finally, which encoding was selected.
+
+### Default `_serializeKey` and `_serializeValue` became identity functions
+
+They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommended behavior.
+
+### Range options are serialized
+
+Previously, range options like `lt` were passed through as-is, unlike keys.
+
+### The rules for range options have been relaxed
+
+Because `null`, `undefined`, zero-length strings and zero-length buffers are significant types in encodings like `bytewise` and `charwise`, they became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is not the same as `db.iterator({})`.
+
+Furthermore, `abstract-leveldown` makes no assumptions about the meaning of these types. Range tests that assumed `null` meant "not defined" have been removed.
+
+### Zero-length array keys are rejected
+
+Though this was already the case because `_checkKey` stringified its input before checking the length, that behavior has been replaced with an explicit `Array.isArray()` check and a new error message.
+
+### No longer assumes support of boolean and `NaN` keys
+
+A test that asserted boolean and `NaN` keys were valid has been removed.
 
 ## v5
 
