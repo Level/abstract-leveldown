@@ -13,8 +13,11 @@ function testCommon (options) {
   return {
     test: test,
     factory: factory,
-    setUp: options.setUp || options.setup || noopTest(),
-    tearDown: options.tearDown || options.teardown || noopTest()
+    setUp: options.setUp || noopTest(),
+    tearDown: options.tearDown || noopTest(),
+    createIfMissing: options.createIfMissing !== false,
+    errorIfExists: options.errorIfExists !== false,
+    snapshots: options.snapshots !== false
   }
 }
 
