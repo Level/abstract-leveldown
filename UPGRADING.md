@@ -151,7 +151,7 @@ suite({
 })
 ```
 
-Please see the [README](README.md) for a list of options.
+Please see the [README](README.md) for a list of options. Note that some of these have replaced `process.browser` checks.
 
 ### Seeking became part of official API
 
