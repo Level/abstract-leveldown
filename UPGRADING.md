@@ -194,7 +194,7 @@ Though this was already the case because `_checkKey` stringified its input befor
 
 ### No longer assumes support of boolean and `NaN` keys
 
-A test that asserted boolean and `NaN` keys were stringified has been removed.
+A test that asserted boolean and `NaN` keys were valid has been removed.
 
 ## v5
 
