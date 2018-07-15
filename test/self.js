@@ -45,6 +45,7 @@ require('./batch-test').args(test, testCommon)
 
 require('./chained-batch-test').setUp(test, testCommon)
 require('./chained-batch-test').args(test, testCommon)
+require('./chained-batch-test').tearDown(test, testCommon)
 
 require('./close-test').all(test, testCommon)
 
