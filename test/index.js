@@ -1,20 +1,6 @@
 var common = require('./common')
 
-/**
- * Example usage:
- *
- * ```
- * require('abstract-leveldown/test')({
- *   test: require('tape'),
- *   factory: function () {
- *     return new MyAbstractLevelDOWN()
- *   },
- *   // If your implementation doesn't support snapshots
- *   snapshots: false
- * })
- * ```
- */
-module.exports = function (options) {
+function suite (options) {
   var testCommon = common(options)
   var test = testCommon.test
 
@@ -49,3 +35,6 @@ module.exports = function (options) {
     require('./iterator-no-snapshot-test').all(test, testCommon)
   }
 }
+
+suite.common = common
+module.exports = suite
