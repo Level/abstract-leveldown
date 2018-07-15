@@ -278,7 +278,7 @@ Close the store. If closing failed, call the `callback` function with an `Error`
 <a name="private-serialize-key"></a>
 ### `db._serializeKey(key)`
 
-Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option will receive serialized keys. For example, if `_serializeKey` is implemented as:
+Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option - as well as `_seek(target)` - will receive serialized keys. For example, if `_serializeKey` is implemented as:
 
 ```js
 FakeLevelDOWN.prototype._serializeKey = function (key) {
@@ -428,6 +428,8 @@ suite({
 
 This also serves as a signal to users of your implementation. The following options are available:
 
+- `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
+- `seek`: set to `false` if your `iterator` does not implement `_seek`
 - `snapshots`: set to `false` if any of the following is true:
   - Reads don't operate on a [snapshot](#public-iterator)
   - Snapshots are created asynchronously

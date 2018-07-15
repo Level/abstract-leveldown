@@ -310,8 +310,7 @@ exports.range = function (test, testCommon) {
     reverse: true
   }, [])
 
-  if (!process.browser) {
-    // Can't use buffers as query keys in indexeddb (I think :P)
+  if (testCommon.bufferKeys) {
     rangeTest('test iterator with gte as empty buffer', {
       gte: Buffer.alloc(0)
     }, data)
