@@ -20,7 +20,7 @@
 * Add `iterator.seek()` (#237) (@vweevers)
 * Add `nyc` and `coveralls` for code coverage (@vweevers)
 * Add `setUp` and `tearDown` to all sub tests (@ralphtheninja)
-* Test that each factory returns a unique db (@ralphtheninja)
+* Test that each `factory()` returns a unique db (@ralphtheninja)
 
 ### Removed
 * Remove `contributors` from `package.json` (@ralphtheninja)
