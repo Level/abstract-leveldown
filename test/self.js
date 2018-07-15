@@ -14,15 +14,12 @@ var testCommon = require('./common')({
   }
 })
 
-/**
- * Compatibility with basic LevelDOWN API
- */
+// Test the suite itself as well as the default implementation,
+// excluding noop operations that can't pass the test suite.
 
 require('./leveldown-test')(test, testCommon)
 
-require('./open-test').setUp(test, testCommon)
-require('./open-test').args(test, testCommon)
-require('./open-test').tearDown(test, testCommon)
+require('./open-test').all(test, testCommon)
 
 require('./open-create-if-missing-test').setUp(test, testCommon)
 require('./open-create-if-missing-test').tearDown(test, testCommon)
