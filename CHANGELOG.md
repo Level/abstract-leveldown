@@ -27,7 +27,6 @@
 * Remove copyright headers from code (@ralphtheninja)
 * Remove node 9 from Travis (@ralphtheninja)
 * Remove `location` (#258) (@ralphtheninja)
-* Remove deprecation warning on moved snapshot test (@ralphtheninja)
 
 ### Fixed
 * Make sure all `t.throw` tests check error messages correctly (@ralphtheninja)
