@@ -2,16 +2,46 @@
 
 ## [Unreleased]
 
+### Changed
+* Upgrade `airtap` devDependency from `0.0.5` to `0.1.0` (@vweevers, @ralphtheninja, @greenkeeper)
+* Upgrade `sinon` devDependency from `^5.0.0` to `^6.0.0` (@ralphtheninja)
+* Tweak copyright years for less maintenance (@ralphtheninja)
+* Isolate snapshot test (#239) (@vweevers)
+* Use `level-concat-iterator` instead of `collectEntries` (@ralphtheninja)
+* Rename `abstract/` to `test/` (@vweevers)
+* Write API docs (#251) (@vweevers)
+* Rewrite `testCommon` functionality (@vweevers, @ralphtheninja)
+* Internal test API methods have the same signature `(test, testCommon)` (@ralphtheninja)
+* Refactor chained batch (#257) (@vweevers)
+* Export test suite as a single function (@vweevers)
+* Rewrite serialization logic (#277) (@vweevers)
+
+### Added
+* Add `iterator.seek()` (#237) (@vweevers)
+* Add `nyc` and `coveralls` for code coverage (@vweevers)
+* Add `setUp` and `tearDown` to all sub tests (@ralphtheninja)
+* Test that each `factory()` returns a unique db (@ralphtheninja)
+
+### Removed
+* Remove `contributors` from `package.json` (@ralphtheninja)
+* Remove copyright headers from code (@ralphtheninja)
+* Remove node 9 from Travis (@ralphtheninja)
+* Remove `location` (#258) (@ralphtheninja)
+
+### Fixed
+* Make sure all `t.throw` tests check error messages correctly (@ralphtheninja)
+* Check options objects properly for `null` (@ralphtheninja)
+
 ## [5.0.0] - 2018-05-22
+
+### Changed
+* Upgrade `sinon` to `^5.0.0` (@ralphtheninja)
+* Tweak README (@ralphtheninja)
+* Replace `const` with `var` to support IE10 (@vweevers)
 
 ### Added
 * Add node 10 to Travis (@ralphtheninja)
 * Add `airtap` for browser tests (@vweevers)
-
-### Changed
-* Update `sinon` to `^5.0.0` (@ralphtheninja)
-* Tweak README (@ralphtheninja)
-* Replace `const` with `var` to support IE10 (@vweevers)
 
 ### Removed
 * Remove node 4, 5 and 7 from Travis (@ralphtheninja)
@@ -21,8 +51,8 @@
 ## [4.0.3] - 2018-02-21
 
 ### Changed
-* Update `ts-node` to `^5.0.0` (@zixia)
-* Update `standard` to `^11.0.0` (@ralphtheninja)
+* Upgrade `ts-node` to `^5.0.0` (@zixia)
+* Upgrade `standard` to `^11.0.0` (@ralphtheninja)
 
 ### Fixed
 * Remove invalid TypeScript from `Batch` (@Tapppi)
@@ -40,26 +70,18 @@
 * Add TypeScript smoke test (@vweevers)
 * Add TypeScript readme section with stability badge (@vweevers)
 
+### Removed
+* Remove obsolete parameters from tests (@vweevers)
+
 ### Fixed
 * Update TypeScript typings for v4 (@vweevers)
 * Use ES6 classes in tests to please TypeScript (@vweevers)
 * Define default methods on prototype to please TypeScript (@vweevers)
 
-### Removed
-* Remove obsolete parameters from tests (@vweevers)
-
 **Historical Note** This was released as a patch because it only changed tests
 and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [4.0.0] - 2018-01-20
-
-### Added
-* Add `standard` for linting (#150) (@ralphtheninja)
-* Test that callbacks are called asynchronously (@vweevers)
-* Test serialization extensibility (@vweevers)
-* Add @vweevers to contributors (@ralphtheninja)
-* Add upgrade guide in `UPGRADING.md` (@ralphtheninja)
-* Add node 9 to Travis (@ralphtheninja)
 
 ### Changed
 * Ignore empty range options in `AbstractLevelDOWN#_setupIteratorOptions` (@ralphtheninja)
@@ -70,9 +92,13 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 * Assert batch type is `'put'` or `'del'` (@vweevers)
 * Assert batch array elements are objects (@vweevers)
 
-### Fixed
-* Ensure stores are closed properly (fixes problems on Windows) (@ralphtheninja)
-* Call back errors on next tick to avoid `zalgo` (@vweevers)
+### Added
+* Add `standard` for linting (#150) (@ralphtheninja)
+* Test that callbacks are called asynchronously (@vweevers)
+* Test serialization extensibility (@vweevers)
+* Add @vweevers to contributors (@ralphtheninja)
+* Add upgrade guide in `UPGRADING.md` (@ralphtheninja)
+* Add node 9 to Travis (@ralphtheninja)
 
 ### Removed
 * Remove `isLevelDOWN` function and corresponding tests (@ralphtheninja)
@@ -83,16 +109,20 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 * Remove serialize object tests (@vweevers)
 * Remove `BufferType` parameter in `abstract/put-get-del-test.js`, use `Buffer` (@ralphtheninja)
 
+### Fixed
+* Ensure stores are closed properly (fixes problems on Windows) (@ralphtheninja)
+* Call back errors on next tick to avoid `zalgo` (@vweevers)
+
 ## [3.0.0] - 2017-11-04
 
 ### Added
 * Add node version badge (@vweevers)
 
-### Fixed
-* Fix errors in `index.d.ts` (@sandersn)
-
 ### Removed
 * Drop support for `0.12`. Cause for new major version! (@vweevers)
+
+### Fixed
+* Fix errors in `index.d.ts` (@sandersn)
 
 ## [2.7.2] - 2017-10-11
 
@@ -111,29 +141,29 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [2.6.3] - 2017-09-05
 
+### Changed
+* Upgrade dependencies (@ralphtheninja)
+* Convert nullish values to empty strings (@bigeasy)
+* Use `t.equal(a, b)` instead of `t.ok(a === b)` (@bigeasy)
+* Relax tests for serializing object in `abstract/chained-batch-test.js` (@ralphtheninja)
+
 ### Added
 * Add `GreenKeeper` (@ralphtheninja)
 * Test key/value serialization (@bigeasy)
 * Test `undefined` value serializing to empty string (@ralphtheninja)
-
-### Changed
-* Update dependencies (@ralphtheninja)
-* Convert nullish values to empty strings (@bigeasy)
-* Use `t.equal(a, b)` instead of `t.ok(a === b)` (@bigeasy)
-* Relax tests for serializing object in `abstract/chained-batch-test.js` (@ralphtheninja)
 
 ### Fixed
 * Document `.status` property (@ralphtheninja)
 
 ## [2.6.2] - 2017-07-30
 
-### Added
-* Test serialization extensibility (@juliangruber)
-
 ### Changed
-* Update dependencies and float `devDependencies` (@ralphtheninja)
+* Upgrade dependencies and float `devDependencies` (@ralphtheninja)
 * Update copyright years (@ralphtheninja)
 * Update node versions on Travis (@ralphtheninja)
+
+### Added
+* Test serialization extensibility (@juliangruber)
 
 ### Fixed
 * Fix put test on object serialization (@juliangruber)
@@ -145,12 +175,12 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [2.6.0] - 2016-03-10
 
-### Added
-* Add `collectBatchOps` function to buffer `_put` and `_del` inputs in `abstract/chained-batch-test.js` (@deanlandolt)
-
 ### Changed
 * Use proto delegation to patch methods on db (@deanlandolt)
 * Allow serialization functions to return buffers (@deanlandolt)
+
+### Added
+* Add `collectBatchOps` function to buffer `_put` and `_del` inputs in `abstract/chained-batch-test.js` (@deanlandolt)
 
 ### Removed
 * Remove unnecessary initialization hackery in `abstract/chained-batch-test.js` (@deanlandolt)
@@ -158,6 +188,9 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 **Historical Note** This release was a breaking change. See @juliangruber's [comment](https://github.com/Level/abstract-leveldown/pull/85#issuecomment-246980978) for more information.
 
 ## [2.5.0] - 2016-05-01
+
+### Changed
+* Upgrade dependencies and add more node versions to Travis (@ralphtheninja)
 
 ### Added
 * Add dependency badge to `README` (@ralphtheninja)
@@ -167,18 +200,15 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 * Add `AbstractChainedBatch#_serializeValue` (@juliangruber)
 * Test `_serialize` with object and buffer (@juliangruber)
 
-### Changed
-* Update dependencies and add more node versions to Travis (@ralphtheninja)
+### Removed
+* Remove stringification of keys and values (@juliangruber)
+* Remove `.toBuffer` (@juliangruber)
 
 ### Fixed
 * Update `memdown` url (@ralphtheninja)
 * `AbstractLevelDOWN#._checkKey` does not take three parameters (@ralphtheninja)
 * Only show build status for the master branch (@watson)
 * Fix minor typos in `README` (@timkuijsten)
-
-### Removed
-* Remove stringification of keys and values (@juliangruber)
-* Remove `.toBuffer` (@juliangruber)
 
 ## [2.4.1] - 2015-08-29
 
@@ -195,20 +225,20 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 ### Added
 * Link to `level/community` (@ralphtheninja)
 
-### Fixed
-* Document `isLevelDown` function (@ralphtheninja)
-
 ### Removed
 * Extract `Contributors` section from `README` into `level/community` (@ralphtheninja)
 
-## [2.3.0] - 2015-05-18
+### Fixed
+* Document `isLevelDown` function (@ralphtheninja)
 
-### Added
-* Import `isLevelDOWN` function to `is-leveldown.js` (@ralphtheninja)
+## [2.3.0] - 2015-05-18
 
 ### Changed
 * Use `t.equal(a, b)` instead of `t.ok(a === b)` (@juliangruber)
 * Export API from `index.js` (@ralphtheninja)
+
+### Added
+* Import `isLevelDOWN` function to `is-leveldown.js` (@ralphtheninja)
 
 ## [2.2.2] - 2015-05-13
 
@@ -244,12 +274,12 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [2.1.1] - 2015-04-27
 
+### Changed
+* Update logo and copyright (@ralphtheninja)
+
 ### Added
 * Add @ralphtheninja to contributors (@ralphtheninja)
 * Add `0.12` and `iojs` to Travis (@ralphtheninja)
-
-### Changed
-* Update logo and copyright (@ralphtheninja)
 
 ### Fixed
 * Include `.nonErrorValues()` test in `abstract/put-get-del-test.js` (@hden)
@@ -258,11 +288,11 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [2.1.0] - 2014-11-09
 
-### Added
-* Add @watson to contributors (@rvagg)
-
 ### Changed
 * Use `setTimeout` instead of `process.nextTick` (@bigeasy)
+
+### Added
+* Add @watson to contributors (@rvagg)
 
 ### Fixed
 * Don't fail if no value is returned by `._get` (@watson)
@@ -295,6 +325,9 @@ No change.
 
 ## [1.0.0] - 2014-08-24
 
+### Changed
+* Ensure `Boolean` iterator options are `Boolean` (@watson)
+
 ### Added
 * Test that an error is thrown when location isn't a string (@calvinmetcalf)
 * Test opening and closing the store (@calvinmetcalf)
@@ -303,25 +336,22 @@ No change.
 * Set default values of iterator options (@watson)
 * Account for batch options that are `null` (@calvinmetcalf)
 
-### Changed
-* Ensure `Boolean` iterator options are `Boolean` (@watson)
-
 ### Removed
 * Remove options.start hackery (@rvagg)
 
 ## [0.12.4] - 2014-08-20
 
+### Changed
+* Change license to plain MIT (@andrewrk)
+
 ### Added
 * Test that `simple-iterator` returns buffers (@kesla)
 * Test implicit snapshots (@kesla)
 
-### Changed
-* Change license to plain MIT (@andrewrk)
-
 ## [0.12.3] - 2014-06-27
 
 ### Changed
-* Update `xtend` dependency (@andrewrk)
+* Upgrade `xtend` dependency (@andrewrk)
 
 ## [0.12.2] - 2014-04-26
 
@@ -374,11 +404,11 @@ No change.
 
 ## [0.10.1] - 2013-08-29
 
-### Added
-* Add @substack to contributors (@rvagg)
-
 ### Changed
 * Relax check for `Not Found` error message to be case insensitive in `get-test.js` (@rvagg)
+
+### Added
+* Add @substack to contributors (@rvagg)
 
 ## [0.10.0] - 2013-08-19
 
@@ -387,13 +417,13 @@ No change.
 
 ## [0.9.0] - 2013-08-11
 
-### Added
-* Test simultaneous get's (@kesla)
-* Test `AbstractChainedBatch` extensibility (@kesla)
-
 ### Changed
 * Make `AbstractChainedBatch` extensible (@kesla)
 * Export `AbstractChainedBatch` from `abstract-leveldown.js` (@kesla)
+
+### Added
+* Test simultaneous get's (@kesla)
+* Test `AbstractChainedBatch` extensibility (@kesla)
 
 ### Fixed
 * Fix broken test assertion in `abstract/get-test.js` (@rvagg)
@@ -412,12 +442,12 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.8.0] - 2013-08-02
 
+### Changed
+* Use `process.browser` check instead of `process.title == 'browser'` (@rvagg)
+
 ### Added
 * Add `BufferType` parameter to `abstract/put-get-del-test.js` for `bops` support (@rvagg)
 * Add `isTypedArray` function which checks `ArrayBuffer` or `Uint8Array` for `bops` support (@rvagg)
-
-### Changed
-* Use `process.browser` check instead of `process.title == 'browser'` (@rvagg)
 
 ### Fixed
 * Fix `cleanup` function not calling back when browserified (@rvagg)
@@ -437,15 +467,15 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.7.2] - 2013-07-08
 
-### Added
-* Add `AbstractChainedBatch#_checkWritten` (@rvagg)
-* Test delete on non-existent key (@rvagg)
-* Test iterator with `start` after database `end` (@juliangruber)
-
 ### Changed
 * Freeze chained batch state after `.write()` has been called (@rvagg)
 * Make `NotFound` error case insensitive (@rvagg)
 * Use `self` rather than binding functions to `this` (@juliangruber)
+
+### Added
+* Add `AbstractChainedBatch#_checkWritten` (@rvagg)
+* Test delete on non-existent key (@rvagg)
+* Test iterator with `start` after database `end` (@juliangruber)
 
 ### Fixed
 * Don't coerce values to strings in browser (@maxogden)
@@ -484,24 +514,24 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.4.0] - 2013-05-14
 
+### Changed
+* Move `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (@rvagg)
+
 ### Added
 * Add `AbstractChainedBatch` (@rvagg)
 * Add `AbstractLevelDOWN#_chainedBatch` (@rvagg)
 * Add `abstract/batch-test.js` and `abstract/chained-batch-test.js` (@rvagg)
 
-### Changed
-* Move `AbstractIterator` from `abstract-leveldown.js` to `abstract-iterator.js` (@rvagg)
-
 ## [0.3.0] - 2013-05-04
+
+### Changed
+* Use `this._checkKeyValue()` instead of local function (@rvagg)
+* Use `this._isBuffer()` instead of `Buffer.isBuffer()` (@rvagg)
 
 ### Added
 * Restore test for opening the database without options (@rvagg)
 * Add `AbstractLevelDOWN#_isBuffer` so it can be overridden (@rvagg)
 * Add `AbstractLevelDOWN#_checkKeyValue` so it can be overridden (@rvagg)
-
-### Changed
-* Use `this._checkKeyValue()` instead of local function (@rvagg)
-* Use `this._isBuffer()` instead of `Buffer.isBuffer()` (@rvagg)
 
 ## [0.2.3] - 2013-05-04
 
@@ -520,13 +550,13 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.2.0] - 2013-05-04
 
-### Added
-* Add `process.browser` check for `start` and `end` keys in browser (@maxogden)
-* Add `levelup` contributors (@rvagg)
-
 ### Changed
 * Convert values to `string` in `abstract/get-test.js` if `Buffer` is `undefined` (@rvagg)
 * Don't stringify keys and values in `abstract/iterator-test.js` (@maxogden)
+
+### Added
+* Add `process.browser` check for `start` and `end` keys in browser (@maxogden)
+* Add `levelup` contributors (@rvagg)
 
 ### Fixed
 * Fix `tape` compatibility issues (@maxogden)
@@ -541,12 +571,12 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.0.2] - 2013-03-18
 
+### Changed
+* Export `checkKeyValue` (@rvagg)
+
 ### Added
 * Add node 0.10 to Travis (@rvagg)
 * Add `Buffer.isBuffer()` checks to keys and values (@rvagg)
-
-### Changed
-* Export `checkKeyValue` (@rvagg)
 
 ## [0.0.1] - 2013-03-18
 
