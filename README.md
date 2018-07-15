@@ -380,27 +380,109 @@ The default `_write` method uses `db._batch`. If the `_write` method is overridd
 
 ## Test Suite
 
-To prove that your implementation is `abstract-leveldown` compliant, include the test suite found in `test/`. For examples please see the test suites of implementations like [`leveldown`](https://github.com/Level/leveldown), [`level-js`](https://github.com/Level/level-js) or [`memdown`](https://github.com/Level/memdown).
+To prove that your implementation is `abstract-leveldown` compliant, include the abstract test suite in your `test.js` (or similar):
 
-As not every implementation can be fully compliant due to limitations of its underlying storage, some tests may be skipped.
+```js
+const test = require('tape')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
 
-| Test                   | Required | Skip if                                 |
-|:-----------------------|:---------|:----------------------------------------|
-| `leveldown`            | :x: | Constructor has no `location` argument       |
-| `open`                 | :heavy_check_mark: | -                             |
-| `put`                  | :heavy_check_mark: | -                             |
-| `del`                  | :heavy_check_mark: | -                             |
-| `get`                  | :heavy_check_mark: | -                             |
-| `put-get-del`          | :heavy_check_mark: | -                             |
-| `batch`                | :heavy_check_mark: | -                             |
-| `chained-batch`        | :heavy_check_mark: | -                             |
-| `close`                | :heavy_check_mark: | -                             |
-| `iterator`             | :heavy_check_mark: | -                             |
-| `iterator-range`       | :heavy_check_mark: | -                             |
-| `iterator-snapshot`    | :x: | Reads don't operate on a snapshot<br>Snapshots are created asynchronously |
-| `iterator-no-snapshot` | :x: | The `iterator-snapshot` test is included     |
+suite({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
+```
 
-If snapshots are an optional feature of your implementation, both `iterator-snapshot` and `iterator-no-snapshot` may be included.
+This is the most minimal setup. The `test` option *must* be a function that is API-compatible with `tape`. The `factory` option *must* be a function that returns a unique and isolated database instance. The factory will be called many times by the test suite.
+
+If your implementation is disk-based we recommend using [`tempy`](https://github.com/sindresorhus/tempy) (or similar) to create unique temporary directories. Your setup could look something like:
+
+```js
+const test = require('tape')
+const tempy = require('tempy')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+suite({
+  test: test,
+  factory: function () {
+    return new YourDOWN(tempy.directory())
+  }
+})
+```
+
+### Excluding tests
+
+As not every implementation can be fully compliant due to limitations of its underlying storage, some tests may be skipped. For example, to skip snapshot tests:
+
+```js
+suite({
+  // ..
+  snapshots: false
+})
+```
+
+This also serves as a signal to users of your implementation. The following options are available:
+
+- `snapshots`: set to `false` if any of the following is true:
+  - Reads don't operate on a [snapshot](#public-iterator)
+  - Snapshots are created asynchronously
+- `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
+
+### Setup and teardown
+
+To perform (a)synchronous work before or after each test, you may define `setUp` and `tearDown` functions:
+
+```js
+suite({
+  // ..
+  setUp: function (t) {
+    t.end()
+  },
+  tearDown: function (t) {
+    t.end()
+  }
+})
+```
+
+### Reusing `testCommon`
+
+The input to the test suite is a `testCommon` object. Should you need to reuse `testCommon` for your own (additional) tests, use the included utility to create a `testCommon` with defaults:
+
+```js
+const test = require('tape')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+const testCommon = suite.common({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
+
+suite(testCommon)
+```
+
+The `testCommon` object will have all the properties describe above: `test`, `factory`, `setUp`, `tearDown` and the skip options. You might use it like so:
+
+```js
+test('setUp', testCommon.setUp)
+
+test('custom test', function (t) {
+  var db = testCommon.factory()
+  // ..
+})
+
+test('another custom test', function (t) {
+  var db = testCommon.factory()
+  // ..
+})
+
+test('tearDown', testCommon.tearDown)
+```
 
 <a name="contributing"></a>
 ## Contributing
