@@ -21,6 +21,8 @@
 - [Public API For Consumers](#public-api-for-consumers)
 - [Private API For Implementors](#private-api-for-implementors)
 - [Test Suite](#test-suite)
+- [Spread The Word](#spread-the-word)
+- [Install](#install)
 - [Contributing](#contributing)
 - [Big Thanks](#big-thanks)
 - [License](#license)
@@ -482,6 +484,22 @@ test('another custom test', function (t) {
 })
 
 test('tearDown', testCommon.tearDown)
+```
+
+## Spread The Word
+
+If you'd like to share your awesome implementation with the world, here's what you might want to do:
+
+- Add an awesome badge to your `README`: `![level badge](http://leveldb.org/img/badge.svg)`
+- Publish your awesome module to [npm](https://npmjs.org)
+- Send a Pull Request to [Level/awesome](https://github.com/Level/awesome) to advertise your work!
+
+## Install
+
+With [npm](https://npmjs.org) do:
+
+```
+npm install abstract-leveldown
 ```
 
 <a name="contributing"></a>
