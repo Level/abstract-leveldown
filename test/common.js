@@ -15,9 +15,11 @@ function testCommon (options) {
     factory: factory,
     setUp: options.setUp || noopTest(),
     tearDown: options.tearDown || noopTest(),
+    bufferKeys: options.bufferKeys !== false,
     createIfMissing: options.createIfMissing !== false,
     errorIfExists: options.errorIfExists !== false,
-    snapshots: options.snapshots !== false
+    snapshots: options.snapshots !== false,
+    seek: options.seek !== false
   }
 }
 

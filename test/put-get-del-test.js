@@ -124,8 +124,7 @@ exports.nonErrorKeys = function (test, testCommon) {
     , 'foo'
   )
 
-  if (!process.browser) {
-    // Buffer key
+  if (testCommon.bufferKeys) {
     makePutGetDelSuccessfulTest(test, 'Buffer key', testBuffer, 'foo')
   }
 

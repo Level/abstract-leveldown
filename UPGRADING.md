@@ -142,16 +142,16 @@ suite({
 
 ### Optional tests have been separated
 
-If your implementation does not support snapshots, or the `createIfMissing` and `errorIfExists` options to `db.open`, the relevant tests may be skipped. To skip all three:
+If your implementation does not support snapshots or other optional features, the relevant tests may be skipped. For example:
 
 ```js
 suite({
   // ..
-  snapshots: false,
-  createIfMissing: false,
-  errorIfExists: false
+  snapshots: false
 })
 ```
+
+Please see the [README](README.md) for a list of options.
 
 ### Seeking became part of official API
 
@@ -160,7 +160,7 @@ If your implementation previously defined the public `iterator.seek(target)`, it
 - The `target` argument is not type checked, this is up to the implementation.
 - The `target` argument is passed through `db._serializeKey`.
 
-Please see [README.md](README.md) for details.
+Please see the [README](README.md) for details.
 
 ### Chained batch has been refactored
 
