@@ -14,7 +14,10 @@ function testCommon (options) {
     test: test,
     factory: factory,
     setUp: options.setUp || options.setup || noopTest(),
-    tearDown: options.tearDown || options.teardown || noopTest()
+    tearDown: options.tearDown || options.teardown || noopTest(),
+    createIfMissing: options.createIfMissing !== false,
+    errorIfExists: options.errorIfExists !== false,
+    snapshots: options.snapshots !== false
   }
 }
 
