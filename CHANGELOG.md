@@ -10,7 +10,7 @@
 * Use `level-concat-iterator` instead of `collectEntries` (@ralphtheninja)
 * Rename `abstract/` to `test/` (@vweevers)
 * Write API docs (#251) (@vweevers)
-* Rewrite `testCommon` functionality and force implementations to implement `testCommon.factory` (@ralphtheninja)
+* Rewrite `testCommon` functionality (@vweevers, @ralphtheninja)
 * Internal test API methods have the same signature `(test, testCommon)` (@ralphtheninja)
 * Refactor chained batch (#257) (@vweevers)
 * Export test suite as a single function (@vweevers)
