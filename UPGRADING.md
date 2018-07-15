@@ -32,6 +32,14 @@ function YourDOWN (location) {
 }
 ```
 
+Be sure to include appropriate type checks. If you relied on the default `AbstractLevelDOWN` behavior that would be:
+
+```js
+if (typeof location !== 'string') {
+  throw new Error('constructor requires a location string argument')
+}
+```
+
 ### Abstract test suite has moved to a single entry point
 
 With this move, `testCommon` is gone. If you previously did:
