@@ -42,7 +42,7 @@ if (typeof location !== 'string') {
 
 ### Abstract test suite has moved to a single entry point
 
-With this move, `testCommon` is gone. If you previously did:
+Instead of including test files individually, you can and should include the test suite with one `require()` statement. If you previously did:
 
 ```js
 const test = require('tape')
@@ -59,14 +59,32 @@ You must now do:
 
 ```js
 const test = require('tape')
+const suite = require('abstract-leveldown/test')
 const YourDOWN = require('.')
 
-require('abstract-leveldown/test')({
+suite({
   test: test,
   factory: function () {
     return new YourDOWN()
   }
 })
+```
+
+The input to the test suite is a new form of `testCommon`. Should you need to reuse `testCommon` for your own (additional) tests, use the included utility to create a `testCommon` with defaults:
+
+```js
+const test = require('tape')
+const suite = require('abstract-leveldown/test')
+const YourDOWN = require('.')
+
+const testCommon = suite.common({
+  test: test,
+  factory: function () {
+    return new YourDOWN()
+  }
+})
+
+suite(testCommon)
 ```
 
 As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique database instance. This allows implementations to pass options to their constructor.
@@ -80,9 +98,10 @@ If your implementation is disk-based we recommend using `tempy` (or similar) to 
 ```js
 const test = require('tape')
 const tempy = require('tempy')
+const suite = require('abstract-leveldown/test')
 const YourDOWN = require('.')
 
-require('abstract-leveldown/test')({
+suite({
   test: test,
   factory: function () {
     return new YourDOWN(tempy.directory())
@@ -105,16 +124,17 @@ const concat = require('level-concat-iterator')
 concat(iterator, function (err, entries) {})
 ```
 
-### Setup and teardown have moved
+### Setup and teardown became noops
 
-The `testCommon.setUp` and `testCommon.tearDown` methods have moved to test options. They are now noops by default:
+Because cleanup is no longer necessary, the `testCommon.setUp` and `testCommon.tearDown` methods are now noops by default. If you do need to perform (a)synchronous work before or after each test, `setUp` and `tearDown` can be overridden:
 
 ```js
-require('abstract-leveldown/test')({
-  setup: function (t) {
+suite({
+  // ..
+  setUp: function (t) {
     t.end()
   },
-  teardown: function (t) {
+  tearDown: function (t) {
     t.end()
   }
 })
@@ -125,11 +145,8 @@ require('abstract-leveldown/test')({
 If your implementation does not support snapshots, or the `createIfMissing` and `errorIfExists` options to `db.open`, the relevant tests may be skipped. To skip all three:
 
 ```js
-require('abstract-leveldown/test')({
-  test: test,
-  factory: function () {
-    return new YourDOWN()
-  },
+suite({
+  // ..
   snapshots: false,
   createIfMissing: false,
   errorIfExists: false
