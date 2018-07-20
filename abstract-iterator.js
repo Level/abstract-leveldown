@@ -46,9 +46,7 @@ AbstractIterator.prototype.seek = function (target) {
   this._seek(target)
 }
 
-AbstractIterator.prototype._seek = function (callback) {
-  process.nextTick(callback)
-}
+AbstractIterator.prototype._seek = function (target) {}
 
 AbstractIterator.prototype.end = function (callback) {
   if (typeof callback !== 'function') {
