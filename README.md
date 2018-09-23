@@ -186,7 +186,11 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-Note that `null`, `undefined`, zero-length strings, zero-length buffers and zero-length arrays are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). An `abstract-leveldown` implementation is expected to either [*encode*][encoding-down] these range option types, [*serialize*](#private-serialize-key) them, *delegate* to an underlying store, or finally, *ignore* them.
+**Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). Consumers of an implementation should assume that `{ gt: undefined }` is *not* the same as `{}`. An implementation can choose to:
+
+- [*Serialize*](#private-serialize-key) or [*encode*][encoding-down] these types to make them meaningful
+- Have no defined behavior (moving the concern to a higher level)
+- Delegate to an underlying store (moving the concern to a lower level).
 
 In addition to range options, `iterator()` takes the following options:
 
@@ -278,7 +282,7 @@ Close the store. If closing failed, call the `callback` function with an `Error`
 <a name="private-serialize-key"></a>
 ### `db._serializeKey(key)`
 
-Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option - as well as `_seek(target)` - will receive serialized keys. For example, if `_serializeKey` is implemented as:
+Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option - including `db._iterator()` with its range options and `iterator._seek()` with its `target` argument - will receive serialized keys. For example, if `_serializeKey` is implemented as:
 
 ```js
 FakeLevelDOWN.prototype._serializeKey = function (key) {
@@ -286,7 +290,7 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 }
 ```
 
-Then `db.get(2, callback)` will translate into `db._get('2', options, callback)`.
+Then `db.get(2, callback)` translates into `db._get('2', options, callback)`. Similarly, `db.iterator({ gt: 2 })` translates into `db._iterator({ gt: '2', ... })` and `iterator.seek(2)` translates into `iterator._seek('2')`.
 
 If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike *encoding* as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
 
@@ -301,7 +305,7 @@ FakeLevelDOWN.prototype._serializeValue = function (value) {
 }
 ```
 
-Then `db.put(key, 2, callback)` will translate into `db._put(key, '2', options, callback)`.
+Then `db.put(key, 2, callback)` translates into `db._put(key, '2', options, callback)`.
 
 ### `db._get(key, options, callback)`
 
