@@ -15,9 +15,10 @@
 * Refactor chained batch (#257) (@vweevers)
 * Export test suite as a single function (@vweevers)
 * Rewrite serialization logic (#277) (@vweevers)
+* Make `db` property mandatory and public on iterator and chained batch (#309) (@vweevers)
 
 ### Added
-* Add `iterator.seek()` (#237) (@vweevers)
+* Add `iterator.seek()` (#237, #307) (@vweevers)
 * Add `nyc` and `coveralls` for code coverage (@vweevers)
 * Add `setUp` and `tearDown` to all sub tests (@ralphtheninja)
 * Test that each `factory()` returns a unique db (@ralphtheninja)
