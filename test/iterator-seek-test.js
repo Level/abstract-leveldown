@@ -1,7 +1,7 @@
 module.exports = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
 
-  make('iterator is seekable', function (db, t, done) {
+  make('iterator#seek() to string target', function (db, t, done) {
     var ite = db.iterator()
     ite.seek('two')
     ite.next(function (err, key, value) {
@@ -17,7 +17,7 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  make('iterator is seekable with buffer', function (db, t, done) {
+  make('iterator#seek() to buffer target', function (db, t, done) {
     var ite = db.iterator()
     ite.seek(Buffer.from('two'))
     ite.next(function (err, key, value) {
@@ -33,7 +33,7 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  make('reverse seek in the middle', function (db, t, done) {
+  make('iterator#seek() on reverse iterator', function (db, t, done) {
     var ite = db.iterator({ reverse: true, limit: 1 })
     ite.seek('three!')
     ite.next(function (err, key, value) {
@@ -44,7 +44,7 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  make('iterator invalid seek', function (db, t, done) {
+  make('iterator#seek() to out of range target', function (db, t, done) {
     var ite = db.iterator()
     ite.seek('zzz')
     ite.next(function (err, key, value) {
@@ -55,7 +55,7 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  make('reverse seek from invalid range', function (db, t, done) {
+  make('iterator#seek() on reverse iterator to out of range target', function (db, t, done) {
     var ite = db.iterator({ reverse: true })
     ite.seek('zzz')
     ite.next(function (err, key, value) {
@@ -67,7 +67,7 @@ module.exports = function (test, testCommon) {
   })
 
   // TODO: include in own tests (self.js)
-  make('iterator seek before next has completed', function (db, t, done) {
+  make('iterator#seek() throws if next() has not completed', function (db, t, done) {
     var ite = db.iterator()
     var error
 
@@ -86,7 +86,7 @@ module.exports = function (test, testCommon) {
   })
 
   // TODO: include in own tests (self.js)
-  make('iterator seek after end', function (db, t, done) {
+  make('iterator#seek() throws after end()', function (db, t, done) {
     var ite = db.iterator()
     ite.next(function (err, key, value) {
       t.error(err, 'no error from next()')
@@ -106,7 +106,7 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  test('iterator seek respects range', function (t) {
+  test('iterator#seek() respects range', function (t) {
     var db = testCommon.factory()
 
     db.open(function (err) {
