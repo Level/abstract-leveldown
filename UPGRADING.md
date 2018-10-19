@@ -155,7 +155,7 @@ Please see the [README](README.md) for a list of options. Note that some of thes
 
 ### Iterator must have a `db` reference
 
-The `db` argument of the `AbstractIterator` constructor became mandatory, as well a public `db` property on the instance. Its existence is not new; the test suite now asserts that your implementation also has it.
+The `db` argument of the `AbstractIterator` constructor became mandatory, as well as a public `db` property on the instance. Its existence is not new; the test suite now asserts that your implementation also has it.
 
 ### Seeking became part of official API
 
@@ -170,7 +170,7 @@ Please see the [README](README.md) for details.
 
 - The default `_clear` method is no longer a noop; instead it clears the operations queued by `_put` and/or `_del`
 - The `_write` method now takes an `options` object as its first argument
-- The `db` argument of the `AbstractChainedBatch` constructor became mandatory, as well a public `db` property on the instance, which was previously named `_db`.
+- The `db` argument of the `AbstractChainedBatch` constructor became mandatory, as well as a public `db` property on the instance, which was previously named `_db`.
 
 ### Nullish values are rejected
 
