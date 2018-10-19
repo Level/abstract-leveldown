@@ -33,8 +33,8 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test batch has _db', function (t) {
-    t.ok(db.batch()._db === db)
+  test('test batch has db reference', function (t) {
+    t.ok(db.batch().db === db)
     t.end()
   })
 

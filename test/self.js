@@ -324,8 +324,9 @@ test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
 
 test('test AbstractChainedBatch extensibility', function (t) {
   var Test = implement(AbstractChainedBatch)
-  var test = new Test({ test: true })
-  t.same(test._db, { test: true }, 'db set on instance')
+  var db = {}
+  var test = new Test(db)
+  t.ok(test.db === db, 'instance has db reference')
   t.end()
 })
 
@@ -455,8 +456,9 @@ test('test iterator() extensibility', function (t) {
 
 test('test AbstractIterator extensibility', function (t) {
   var Test = implement(AbstractIterator)
-  var test = new Test('foobar')
-  t.equal(test.db, 'foobar', 'db set on instance')
+  var db = {}
+  var test = new Test(db)
+  t.ok(test.db === db, 'instance has db reference')
   t.end()
 })
 
@@ -464,7 +466,7 @@ test('test next() extensibility', function (t) {
   var spy = sinon.spy()
   var spycb = sinon.spy()
   var Test = implement(AbstractIterator, { _next: spy })
-  var test = new Test('foobar')
+  var test = new Test({})
 
   test.next(spycb)
 
@@ -483,7 +485,7 @@ test('test end() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var Test = implement(AbstractIterator, { _end: spy })
-  var test = new Test('foobar')
+  var test = new Test({})
 
   test.end(expectedCb)
 

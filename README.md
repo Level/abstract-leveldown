@@ -224,6 +224,10 @@ There are no `options` by default but implementations may add theirs. The `callb
 
 After `write` has been called, no further operations are allowed.
 
+#### `chainedBatch.db`
+
+A reference to the `db` that created this chained batch.
+
 <a name="public-iterator"></a>
 ### `iterator`
 
@@ -254,6 +258,10 @@ If range options like `gt` were passed to `db.iterator()` and `target` does not 
 #### `iterator.end(callback)`
 
 End iteration and free up underlying resources. The `callback` function will be called with no arguments on success or with an `Error` if ending failed for any reason.
+
+#### `iterator.db`
+
+A reference to the `db` that created this iterator.
 
 ### Type Support
 
@@ -350,7 +358,7 @@ The `options` object will always have the following properties: `reverse`, `keys
 
 ### `iterator = AbstractIterator(db)`
 
-Provided with the current instance of `abstract-leveldown` by default.
+The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `iterator.db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
 
 #### `iterator._next(callback)`
 
@@ -366,7 +374,7 @@ Free up underlying resources. This method is guaranteed to only be called once. 
 
 ### `chainedBatch = AbstractChainedBatch(db)`
 
-The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `chainedBatch._db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
+The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `chainedBatch.db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
 
 #### `chainedBatch._put(key, value)`
 

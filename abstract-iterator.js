@@ -1,4 +1,8 @@
 function AbstractIterator (db) {
+  if (typeof db !== 'object' || db === null) {
+    throw new TypeError('First argument must be an abstract-leveldown compliant store')
+  }
+
   this.db = db
   this._ended = false
   this._nexting = false

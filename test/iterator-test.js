@@ -9,6 +9,12 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
+  test('test iterator has db reference', function (t) {
+    var iterator = db.iterator()
+    t.ok(iterator.db === db)
+    iterator.end(t.end.bind(t))
+  })
+
   test('test argument-less iterator#next() throws', function (t) {
     var iterator = db.iterator()
     t.throws(
