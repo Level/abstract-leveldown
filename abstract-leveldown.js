@@ -183,6 +183,52 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
+AbstractLevelDOWN.prototype.clear = function (options, callback) {
+  if (typeof options === 'function') {
+    callback = options
+  } else if (typeof callback !== 'function') {
+    throw new Error('clear() requires a callback argument')
+  }
+
+  options = cleanRangeOptions(this, options)
+  options.reverse = !!options.reverse
+  options.limit = 'limit' in options ? options.limit : -1
+
+  this._clear(options, callback)
+}
+
+AbstractLevelDOWN.prototype._clear = function (options, callback) {
+  // Avoid setupIteratorOptions, would serialize range options a second time.
+  options.keys = true
+  options.values = false
+  options.keyAsBuffer = true
+  options.valueAsBuffer = true
+
+  var iterator = this._iterator(options)
+  var emptyOptions = {}
+  var self = this
+
+  var next = function (err) {
+    if (err) {
+      return iterator.end(function () {
+        callback(err)
+      })
+    }
+
+    iterator.next(function (err, key) {
+      if (err) return next(err)
+      if (key === undefined) return iterator.end(callback)
+
+      // This could be optimized by using a batch, but the default _clear
+      // is not meant to be fast. Implementations have more room to optimize
+      // if they override _clear. Note: using _del bypasses key serialization.
+      self._del(key, emptyOptions, next)
+    })
+  }
+
+  next()
+}
+
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = cleanRangeOptions(this, options)
 

@@ -205,6 +205,19 @@ In addition to range options, `iterator()` takes the following options:
 
 Lastly, an implementation is free to add its own options.
 
+### `db.clear([options, ]callback)`
+
+**This method is experimental. Not all implementations support it yet.**
+
+Delete all entries or a range. Not guaranteed to be atomic. Accepts the following range options (with the same rules as on iterators):
+
+- `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be deleted. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries deleted will be the same.
+- `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be deleted. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries deleted will be the same.
+- `reverse` _(boolean, default: `false`)_: delete entries in reverse order. Only effective in combination with `limit`, to remove the last N records.
+- `limit` _(number, default: `-1`)_: limit the number of entries to be deleted. This number represents a _maximum_ number of entries and may not be reached if you get to the end of the range first. A value of `-1` means there is no limit. When `reverse=true` the entries with the highest keys will be deleted instead of the lowest keys.
+
+If no options are provided, all entries will be deleted. The `callback` function will be called with no arguments if the operation was successful or with an `Error` if it failed for any reason.
+
 ### `chainedBatch`
 
 #### `chainedBatch.put(key, value)`
@@ -356,6 +369,18 @@ The default `_iterator()` returns a noop `AbstractIterator` instance. The protot
 
 The `options` object will always have the following properties: `reverse`, `keys`, `values`, `limit`, `keyAsBuffer` and `valueAsBuffer`.
 
+### `db._clear(options, callback)`
+
+**This method is experimental and optional for the time being. To enable its tests, set the [`clear` option of the test suite](#excluding-tests) to `true`.**
+
+Delete all entries or a range. Does not have to be atomic. It is recommended (and possibly mandatory in the future) to operate on a snapshot so that writes scheduled after a call to `clear()` will not be affected.
+
+The default `_clear()` uses `_iterator()` and `_del()` to provide a reasonable fallback, but requires binary key support. It is _recommended_ to implement `_clear()` with more performant primitives than `_iterator()` and `_del()` if the underlying storage has such primitives. Implementations that don't support binary keys _must_ implement their own `_clear()`.
+
+Implementations that wrap another `db` can typically forward the `_clear()` call to that `db`, having transformed range options if necessary.
+
+The `options` object will always have the following properties: `reverse` and `limit`.
+
 ### `iterator = AbstractIterator(db)`
 
 The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `iterator.db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
@@ -442,6 +467,7 @@ This also serves as a signal to users of your implementation. The following opti
 
 - `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
 - `seek`: set to `false` if your `iterator` does not implement `_seek`
+- `clear`: defaults to `false` until a next major release. Set to `true` if your implementation either implements `_clear()` itself or is suitable to use the default implementation of `_clear()` (which requires binary key support).
 - `snapshots`: set to `false` if any of the following is true:
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously

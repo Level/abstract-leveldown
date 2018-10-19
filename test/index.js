@@ -38,6 +38,10 @@ function suite (options) {
   } else {
     require('./iterator-no-snapshot-test').all(test, testCommon)
   }
+
+  if (testCommon.clear) {
+    // TODO
+  }
 }
 
 suite.common = common
