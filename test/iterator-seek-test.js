@@ -1,5 +1,103 @@
-module.exports = function (test, testCommon) {
+exports.all = function (test, testCommon) {
+  exports.setUp(test, testCommon)
+  exports.sequence(test, testCommon)
+  exports.seek(test, testCommon)
+  exports.tearDown(test, testCommon)
+}
+
+exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
+}
+
+exports.sequence = function (test, testCommon) {
+  function make (name, testFn) {
+    test(name, function (t) {
+      var db = testCommon.factory()
+      var done = function (err) {
+        t.error(err, 'no error from done()')
+
+        db.close(function (err) {
+          t.error(err, 'no error from close()')
+          t.end()
+        })
+      }
+
+      db.open(function (err) {
+        t.error(err, 'no error from open()')
+        testFn(db, t, done)
+      })
+    })
+  }
+
+  make('iterator#seek() throws if next() has not completed', function (db, t, done) {
+    var ite = db.iterator()
+    var error
+
+    ite.next(function (err, key, value) {
+      t.error(err, 'no error from next()')
+      ite.end(done)
+    })
+
+    try {
+      ite.seek('two')
+    } catch (err) {
+      error = err.message
+    }
+
+    t.is(error, 'cannot call seek() before next() has completed', 'got error')
+  })
+
+  make('iterator#seek() throws after end()', function (db, t, done) {
+    var ite = db.iterator()
+
+    // TODO: why call next? Can't we end immediately?
+    ite.next(function (err, key, value) {
+      t.error(err, 'no error from next()')
+
+      ite.end(function (err) {
+        t.error(err, 'no error from end()')
+        var error
+
+        try {
+          ite.seek('two')
+        } catch (err) {
+          error = err.message
+        }
+
+        t.is(error, 'cannot call seek() after end()', 'got error')
+        done()
+      })
+    })
+  })
+}
+
+exports.seek = function (test, testCommon) {
+  function make (name, testFn) {
+    test(name, function (t) {
+      var db = testCommon.factory()
+      var done = function (err) {
+        t.error(err, 'no error from done()')
+
+        db.close(function (err) {
+          t.error(err, 'no error from close()')
+          t.end()
+        })
+      }
+
+      db.open(function (err) {
+        t.error(err, 'no error from open()')
+
+        db.batch([
+          { type: 'put', key: 'one', value: '1' },
+          { type: 'put', key: 'two', value: '2' },
+          { type: 'put', key: 'three', value: '3' }
+        ], function (err) {
+          t.error(err, 'no error from batch()')
+          testFn(db, t, done)
+        })
+      })
+    })
+  }
 
   make('iterator#seek() to string target', function (db, t, done) {
     var ite = db.iterator()
@@ -63,46 +161,6 @@ module.exports = function (test, testCommon) {
       t.same(key.toString(), 'two')
       t.same(value.toString(), '2')
       ite.end(done)
-    })
-  })
-
-  // TODO: include in own tests (self.js)
-  make('iterator#seek() throws if next() has not completed', function (db, t, done) {
-    var ite = db.iterator()
-    var error
-
-    ite.next(function (err, key, value) {
-      t.error(err, 'no error from next()')
-      ite.end(done)
-    })
-
-    try {
-      ite.seek('two')
-    } catch (err) {
-      error = err.message
-    }
-
-    t.is(error, 'cannot call seek() before next() has completed', 'got error')
-  })
-
-  // TODO: include in own tests (self.js)
-  make('iterator#seek() throws after end()', function (db, t, done) {
-    var ite = db.iterator()
-    ite.next(function (err, key, value) {
-      t.error(err, 'no error from next()')
-      ite.end(function (err) {
-        t.error(err, 'no error from end()')
-        var error
-
-        try {
-          ite.seek('two')
-        } catch (err) {
-          error = err.message
-        }
-
-        t.is(error, 'cannot call seek() after end()', 'got error')
-        done()
-      })
     })
   })
 
@@ -210,33 +268,8 @@ module.exports = function (test, testCommon) {
       })
     })
   })
+}
 
+exports.tearDown = function (test, testCommon) {
   test('tearDown', testCommon.tearDown)
-
-  function make (name, testFn) {
-    test(name, function (t) {
-      var db = testCommon.factory()
-      var done = function (err) {
-        t.error(err, 'no error from done()')
-
-        db.close(function (err) {
-          t.error(err, 'no error from close()')
-          t.end()
-        })
-      }
-
-      db.open(function (err) {
-        t.error(err, 'no error from open()')
-
-        db.batch([
-          { type: 'put', key: 'one', value: '1' },
-          { type: 'put', key: 'two', value: '2' },
-          { type: 'put', key: 'three', value: '3' }
-        ], function (err) {
-          t.error(err, 'no error from batch()')
-          testFn(db, t, done)
-        })
-      })
-    })
-  }
 }

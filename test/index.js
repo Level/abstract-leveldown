@@ -30,7 +30,7 @@ function suite (options) {
   require('./iterator-range-test').all(test, testCommon)
 
   if (testCommon.seek) {
-    require('./iterator-seek-test')(test, testCommon)
+    require('./iterator-seek-test').all(test, testCommon)
   }
 
   if (testCommon.snapshots) {
