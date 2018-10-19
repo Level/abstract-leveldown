@@ -179,6 +179,62 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
   process.nextTick(callback)
 }
 
+AbstractLevelDOWN.prototype.clear = function (options, callback) {
+  if (typeof options === 'function') {
+    callback = options
+  } else if (typeof callback !== 'function') {
+    throw new Error('clear() requires a callback argument')
+  }
+
+  options = cleanRangeOptions(this, options)
+
+  // Because the returned records are the same, reverse only makes sense in
+  // combination with limit (e.g. to remove the last N records).
+  options.reverse = !!options.reverse
+  options.limit = 'limit' in options ? options.limit : -1
+
+  this._clear(options, callback)
+}
+
+AbstractLevelDOWN.prototype._clear = function (options, callback) {
+  // Avoid setupIteratorOptions, would serialize range options a second time.
+  options.keys = true
+  options.values = false
+
+  // If true, we can't support arbitrary types. If false, we can't support
+  // binary keys. The latter is more common, so implementations that support
+  // arbitrary types must implement their own _clear.
+  options.keyAsBuffer = true
+  options.valueAsBuffer = false
+
+  var iterator = this._iterator(options)
+  var emptyOptions = {}
+  var self = this
+
+  var next = function (err) {
+    if (err) {
+      return iterator.end(function () {
+        callback(err)
+      })
+    }
+
+    iterator.next(function (err, key) {
+      if (err) return next(err)
+      if (key === undefined) return iterator.end(callback)
+
+      // This could be optimized by using a batch, but the default _clear
+      // is not meant to be fast. Implementations have more room to optimize
+      // if they override _clear. Note: .del serializes the key.
+      self.del(key, emptyOptions, next)
+    })
+  }
+
+  next()
+}
+
+// TODO: should we still expose _setupIteratorOptions? If not, we can remove
+// the "if (typeof options !== 'object' || options === null)" check in
+// .iterator() and avoid allocating an unused object.
 AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
   options = cleanRangeOptions(this, options)
 
