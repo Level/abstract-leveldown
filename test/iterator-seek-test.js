@@ -106,96 +106,108 @@ module.exports = function (test, testCommon) {
     })
   })
 
-  // TODO: don't use make() for this test, we have our own batch
-  make('iterator seek respects range', function (db, t, done) {
-    // Can't use Array.fill() because IE
-    var ops = []
+  test('iterator seek respects range', function (t) {
+    var db = testCommon.factory()
 
-    for (var i = 0; i < 10; i++) {
-      ops.push({ type: 'put', key: String(i), value: String(i) })
-    }
+    db.open(function (err) {
+      t.error(err, 'no error from open()')
 
-    db.batch(ops, function (err) {
-      t.error(err, 'no error from batch()')
+      // Can't use Array.fill() because IE
+      var ops = []
 
-      var pending = 0
-
-      expect({ gt: '5' }, '4', undefined)
-      expect({ gt: '5' }, '5', undefined)
-      expect({ gt: '5' }, '6', '6')
-
-      expect({ gte: '5' }, '4', undefined)
-      expect({ gte: '5' }, '5', '5')
-      expect({ gte: '5' }, '6', '6')
-
-      expect({ start: '5' }, '4', undefined)
-      expect({ start: '5' }, '5', '5')
-      expect({ start: '5' }, '6', '6')
-
-      expect({ lt: '5' }, '4', '4')
-      expect({ lt: '5' }, '5', undefined)
-      expect({ lt: '5' }, '6', undefined)
-
-      expect({ lte: '5' }, '4', '4')
-      expect({ lte: '5' }, '5', '5')
-      expect({ lte: '5' }, '6', undefined)
-
-      expect({ end: '5' }, '4', '4')
-      expect({ end: '5' }, '5', '5')
-      expect({ end: '5' }, '6', undefined)
-
-      expect({ lt: '5', reverse: true }, '4', '4')
-      expect({ lt: '5', reverse: true }, '5', undefined)
-      expect({ lt: '5', reverse: true }, '6', undefined)
-
-      expect({ lte: '5', reverse: true }, '4', '4')
-      expect({ lte: '5', reverse: true }, '5', '5')
-      expect({ lte: '5', reverse: true }, '6', undefined)
-
-      expect({ start: '5', reverse: true }, '4', '4')
-      expect({ start: '5', reverse: true }, '5', '5')
-      expect({ start: '5', reverse: true }, '6', undefined)
-
-      expect({ gt: '5', reverse: true }, '4', undefined)
-      expect({ gt: '5', reverse: true }, '5', undefined)
-      expect({ gt: '5', reverse: true }, '6', '6')
-
-      expect({ gte: '5', reverse: true }, '4', undefined)
-      expect({ gte: '5', reverse: true }, '5', '5')
-      expect({ gte: '5', reverse: true }, '6', '6')
-
-      expect({ end: '5', reverse: true }, '4', undefined)
-      expect({ end: '5', reverse: true }, '5', '5')
-      expect({ end: '5', reverse: true }, '6', '6')
-
-      expect({ gt: '7', lt: '8' }, '7', undefined)
-      expect({ gte: '7', lt: '8' }, '7', '7')
-      expect({ gte: '7', lt: '8' }, '8', undefined)
-      expect({ gt: '7', lte: '8' }, '8', '8')
-
-      function expect (range, target, expected) {
-        pending++
-        var ite = db.iterator(range)
-
-        ite.seek(target)
-        ite.next(function (err, key, value) {
-          t.error(err, 'no error from next()')
-
-          var json = JSON.stringify(range)
-          var msg = 'seek(' + target + ') on ' + json + ' yields ' + expected
-
-          if (expected === undefined) {
-            t.equal(value, undefined, msg)
-          } else {
-            t.equal(value.toString(), expected, msg)
-          }
-
-          ite.end(function (err) {
-            t.error(err, 'no error from end()')
-            if (!--pending) done()
-          })
-        })
+      for (var i = 0; i < 10; i++) {
+        ops.push({ type: 'put', key: String(i), value: String(i) })
       }
+
+      db.batch(ops, function (err) {
+        t.error(err, 'no error from batch()')
+
+        var pending = 0
+
+        expect({ gt: '5' }, '4', undefined)
+        expect({ gt: '5' }, '5', undefined)
+        expect({ gt: '5' }, '6', '6')
+
+        expect({ gte: '5' }, '4', undefined)
+        expect({ gte: '5' }, '5', '5')
+        expect({ gte: '5' }, '6', '6')
+
+        expect({ start: '5' }, '4', undefined)
+        expect({ start: '5' }, '5', '5')
+        expect({ start: '5' }, '6', '6')
+
+        expect({ lt: '5' }, '4', '4')
+        expect({ lt: '5' }, '5', undefined)
+        expect({ lt: '5' }, '6', undefined)
+
+        expect({ lte: '5' }, '4', '4')
+        expect({ lte: '5' }, '5', '5')
+        expect({ lte: '5' }, '6', undefined)
+
+        expect({ end: '5' }, '4', '4')
+        expect({ end: '5' }, '5', '5')
+        expect({ end: '5' }, '6', undefined)
+
+        expect({ lt: '5', reverse: true }, '4', '4')
+        expect({ lt: '5', reverse: true }, '5', undefined)
+        expect({ lt: '5', reverse: true }, '6', undefined)
+
+        expect({ lte: '5', reverse: true }, '4', '4')
+        expect({ lte: '5', reverse: true }, '5', '5')
+        expect({ lte: '5', reverse: true }, '6', undefined)
+
+        expect({ start: '5', reverse: true }, '4', '4')
+        expect({ start: '5', reverse: true }, '5', '5')
+        expect({ start: '5', reverse: true }, '6', undefined)
+
+        expect({ gt: '5', reverse: true }, '4', undefined)
+        expect({ gt: '5', reverse: true }, '5', undefined)
+        expect({ gt: '5', reverse: true }, '6', '6')
+
+        expect({ gte: '5', reverse: true }, '4', undefined)
+        expect({ gte: '5', reverse: true }, '5', '5')
+        expect({ gte: '5', reverse: true }, '6', '6')
+
+        expect({ end: '5', reverse: true }, '4', undefined)
+        expect({ end: '5', reverse: true }, '5', '5')
+        expect({ end: '5', reverse: true }, '6', '6')
+
+        expect({ gt: '7', lt: '8' }, '7', undefined)
+        expect({ gte: '7', lt: '8' }, '7', '7')
+        expect({ gte: '7', lt: '8' }, '8', undefined)
+        expect({ gt: '7', lte: '8' }, '8', '8')
+
+        function expect (range, target, expected) {
+          pending++
+          var ite = db.iterator(range)
+
+          ite.seek(target)
+          ite.next(function (err, key, value) {
+            t.error(err, 'no error from next()')
+
+            var json = JSON.stringify(range)
+            var msg = 'seek(' + target + ') on ' + json + ' yields ' + expected
+
+            if (expected === undefined) {
+              t.equal(value, undefined, msg)
+            } else {
+              t.equal(value.toString(), expected, msg)
+            }
+
+            ite.end(function (err) {
+              t.error(err, 'no error from end()')
+              if (!--pending) done()
+            })
+          })
+        }
+
+        function done () {
+          db.close(function (err) {
+            t.error(err, 'no error from close()')
+            t.end()
+          })
+        }
+      })
     })
   })
 
