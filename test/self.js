@@ -63,6 +63,10 @@ require('./iterator-snapshot-test').tearDown(test, testCommon)
 require('./iterator-no-snapshot-test').setUp(test, testCommon)
 require('./iterator-no-snapshot-test').tearDown(test, testCommon)
 
+require('./iterator-seek-test').setUp(test, testCommon)
+require('./iterator-seek-test').sequence(test, testCommon)
+require('./iterator-seek-test').tearDown(test, testCommon)
+
 function implement (ctor, methods) {
   function Test () {
     ctor.apply(this, arguments)
