@@ -3,7 +3,7 @@ function AbstractChainedBatch (db) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
   }
 
-  this._db = db
+  this.db = db
   this._operations = []
   this._written = false
 }
@@ -17,11 +17,11 @@ AbstractChainedBatch.prototype._checkWritten = function () {
 AbstractChainedBatch.prototype.put = function (key, value) {
   this._checkWritten()
 
-  var err = this._db._checkKey(key) || this._db._checkValue(value)
+  var err = this.db._checkKey(key) || this.db._checkValue(value)
   if (err) throw err
 
-  key = this._db._serializeKey(key)
-  value = this._db._serializeValue(value)
+  key = this.db._serializeKey(key)
+  value = this.db._serializeValue(value)
 
   this._put(key, value)
 
@@ -35,10 +35,10 @@ AbstractChainedBatch.prototype._put = function (key, value) {
 AbstractChainedBatch.prototype.del = function (key) {
   this._checkWritten()
 
-  var err = this._db._checkKey(key)
+  var err = this.db._checkKey(key)
   if (err) throw err
 
-  key = this._db._serializeKey(key)
+  key = this.db._serializeKey(key)
   this._del(key)
 
   return this
@@ -75,7 +75,7 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
 }
 
 AbstractChainedBatch.prototype._write = function (options, callback) {
-  this._db._batch(this._operations, options, callback)
+  this.db._batch(this._operations, options, callback)
 }
 
 module.exports = AbstractChainedBatch

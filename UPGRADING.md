@@ -153,6 +153,10 @@ suite({
 
 Please see the [README](README.md) for a list of options. Note that some of these have replaced `process.browser` checks.
 
+### Iterator must have a `db` reference
+
+The `db` argument of the `AbstractIterator` constructor became mandatory, as well a public `db` property on the instance. Its existence is not new; the test suite now asserts that your implementation also has it.
+
 ### Seeking became part of official API
 
 If your implementation previously defined the public `iterator.seek(target)`, it must now define the private `iterator._seek(target)`. The new public API is equal to the reference implementation of `leveldown` except for two differences:
@@ -166,7 +170,7 @@ Please see the [README](README.md) for details.
 
 - The default `_clear` method is no longer a noop; instead it clears the operations queued by `_put` and/or `_del`
 - The `_write` method now takes an `options` object as its first argument
-- The `db` argument in the constructor became mandatory, as well the `_db` property on the instance.
+- The `db` argument of the `AbstractChainedBatch` constructor became mandatory, as well a public `db` property on the instance, which was previously named `_db`.
 
 ### Nullish values are rejected
 
