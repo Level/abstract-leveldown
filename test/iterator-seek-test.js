@@ -115,21 +115,23 @@ exports.seek = function (test, testCommon) {
     })
   })
 
-  make('iterator#seek() to buffer target', function (db, t, done) {
-    var ite = db.iterator()
-    ite.seek(Buffer.from('two'))
-    ite.next(function (err, key, value) {
-      t.error(err, 'no error from next()')
-      t.equal(key.toString(), 'two', 'key matches')
-      t.equal(value.toString(), '2', 'value matches')
+  if (testCommon.bufferKeys) {
+    make('iterator#seek() to buffer target', function (db, t, done) {
+      var ite = db.iterator()
+      ite.seek(Buffer.from('two'))
       ite.next(function (err, key, value) {
         t.error(err, 'no error from next()')
-        t.equal(key, undefined, 'end of iterator')
-        t.equal(value, undefined, 'end of iterator')
-        ite.end(done)
+        t.equal(key.toString(), 'two', 'key matches')
+        t.equal(value.toString(), '2', 'value matches')
+        ite.next(function (err, key, value) {
+          t.error(err, 'no error from next()')
+          t.equal(key, undefined, 'end of iterator')
+          t.equal(value, undefined, 'end of iterator')
+          ite.end(done)
+        })
       })
     })
-  })
+  }
 
   make('iterator#seek() on reverse iterator', function (db, t, done) {
     var ite = db.iterator({ reverse: true, limit: 1 })
