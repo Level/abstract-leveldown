@@ -32,11 +32,15 @@ exports.sequence = function (test, testCommon) {
   make('iterator#seek() throws if next() has not completed', function (db, t, done) {
     var ite = db.iterator()
     var error
+    var async = false
 
     ite.next(function (err, key, value) {
       t.error(err, 'no error from next()')
+      t.ok(async, 'next is asynchronous')
       ite.end(done)
     })
+
+    async = true
 
     try {
       ite.seek('two')
