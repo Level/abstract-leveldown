@@ -1,5 +1,3 @@
-var util = require('util')
-
 module.exports = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
 
@@ -183,9 +181,8 @@ module.exports = function (test, testCommon) {
         ite.next(function (err, key, value) {
           t.error(err, 'no error from next()')
 
-          // TODO: avoid util, for browserify build size
-          var tpl = 'seek(%s) on %s yields %s'
-          var msg = util.format(tpl, target, util.inspect(range), expected)
+          var json = JSON.stringify(range)
+          var msg = 'seek(' + target + ') on ' + json + ' yields ' + expected
 
           if (expected === undefined) {
             t.equal(value, undefined, msg)
