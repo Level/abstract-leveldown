@@ -3,9 +3,7 @@ browsers:
     version: latest
     platform: Windows 10
   - name: internet explorer
-    version:
-      - '10'
-      - '11'
+    version: '11'
   - name: firefox
     version: latest
     platform: Windows 10

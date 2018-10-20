@@ -200,6 +200,10 @@ Though this was already the case because `_checkKey` stringified its input befor
 
 A test that asserted boolean and `NaN` keys were valid has been removed.
 
+### Browser support
+
+IE10 has been dropped.
+
 ## v5
 
 Dropped support for node 4. No other breaking changes.
