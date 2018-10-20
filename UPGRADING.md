@@ -1,15 +1,21 @@
 # Upgrade Guide
 
-This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the changelog.
+This document describes breaking changes and how to upgrade. For a complete list of changes including minor and patch releases, please refer to the [changelog](CHANGELOG.md).
 
 ## Table of Contents
 
-- [Unreleased](#unreleased)
+<details><summary>Click to expand</summary>
+
+- [v6](#v6)
 - [v5](#v5)
 - [v4](#v4)
 - [v3](#v3)
 
-## Unreleased
+</details>
+
+## v6
+
+This release brings a major refactoring of the test suite, decouples `abstract-leveldown` from disk-based implementations and solves long-standing issues around serialization and type support.
 
 ### `location` was removed
 
@@ -87,7 +93,7 @@ const testCommon = suite.common({
 suite(testCommon)
 ```
 
-As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation *must* implement `factory()` which *must* return a unique and isolated database instance. This allows implementations to pass options to their constructor.
+As part of removing `location`, the abstract tests no longer use `testCommon.location()`. Instead an implementation _must_ implement `factory()` which _must_ return a unique and isolated database instance. This allows implementations to pass options to their constructor.
 
 The `testCommon.cleanup` method has been removed. Because `factory()` returns a unique database instance, cleanup should no longer be necessary. The `testCommon.lastLocation` method has also been removed as there is no remaining use of it in abstract tests.
 
@@ -174,7 +180,7 @@ Please see the [README](README.md) for details.
 
 ### Nullish values are rejected
 
-In addition to rejecting `null` and `undefined` as *keys*, `abstract-leveldown` now also rejects these types as *values*, due to preexisting significance in streams and iterators.
+In addition to rejecting `null` and `undefined` as _keys_, `abstract-leveldown` now also rejects these types as _values_, due to preexisting significance in streams and iterators.
 
 Before this, the behavior of these types depended on a large number of factors: `_serializeValue` and type support of the underlying storage, whether `get()`, `iterator()` or a stream was used to retrieve values, the `keys` and `asBuffer` options of `iterator()` and finally, which encoding was selected.
 
@@ -199,6 +205,10 @@ Though this was already the case because `_checkKey` stringified its input befor
 ### No longer assumes support of boolean and `NaN` keys
 
 A test that asserted boolean and `NaN` keys were valid has been removed.
+
+### Browser support
+
+IE10 has been dropped.
 
 ## v5
 

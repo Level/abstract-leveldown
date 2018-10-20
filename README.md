@@ -31,9 +31,9 @@
 
 ## Background
 
-`abstract-leveldown` provides a simple, operational base prototype that's ready for extending. All operations have sensible *noop* defaults (operations that essentially do nothing). For example, operations such as `.open(callback)` and `.close(callback)` will invoke `callback` on a next tick. Others perform sensible actions, like `.get(key, callback)` which will always yield a `'NotFound'` error.
+`abstract-leveldown` provides a simple, operational base prototype that's ready for extending. All operations have sensible _noop_ defaults (operations that essentially do nothing). For example, operations such as `.open(callback)` and `.close(callback)` will invoke `callback` on a next tick. Others perform sensible actions, like `.get(key, callback)` which will always yield a `'NotFound'` error.
 
-You add functionality by implementing the "private" underscore versions of the operations. For example, to implement a public `put()` operation you add a private `_put()` method to your object. Each of these underscore methods override the default *noop* operations and are always provided with consistent arguments, regardless of what is passed in through the public API. All methods provide argument checking and sensible defaults for optional arguments.
+You add functionality by implementing the "private" underscore versions of the operations. For example, to implement a public `put()` operation you add a private `_put()` method to your object. Each of these underscore methods override the default _noop_ operations and are always provided with consistent arguments, regardless of what is passed in through the public API. All methods provide argument checking and sensible defaults for optional arguments.
 
 For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
 
@@ -123,11 +123,11 @@ Constructors typically take a `location` argument pointing to a location on disk
 
 A read-only property. An `abstract-leveldown` compliant store can be in one of the following states:
 
-* `'new'` - newly created, not opened or closed
-* `'opening'` - waiting for the store to be opened
-* `'open'` - successfully opened the store, available for use
-* `'closing'` - waiting for the store to be closed
-* `'closed'` - store has been successfully closed, should not be used.
+- `'new'` - newly created, not opened or closed
+- `'opening'` - waiting for the store to be opened
+- `'open'` - successfully opened the store, available for use
+- `'closing'` - waiting for the store to be closed
+- `'closed'` - store has been successfully closed, should not be used.
 
 ### `db.open([options, ]callback)`
 
@@ -148,7 +148,7 @@ Close the store. The `callback` function will be called with no arguments if the
 
 Get a value from the store by `key`. The optional `options` object may contain:
 
-* `asBuffer` _(boolean, default: `true`)_: Whether to return the `value` as a Buffer. If `false`, the returned type depends on the implementation.
+- `asBuffer` _(boolean, default: `true`)_: Whether to return the `value` as a Buffer. If `false`, the returned type depends on the implementation.
 
 The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be the value.
 
@@ -162,7 +162,7 @@ Delete an entry. There are no `options` by default but implementations may add t
 
 ### `db.batch(operations[, options], callback)`
 
-Perform multiple *put* and/or *del* operations in bulk. The `operations` argument must be an `Array` containing a list of operations to be executed sequentially, although as a whole they are performed as an atomic operation.
+Perform multiple _put_ and/or _del_ operations in bulk. The `operations` argument must be an `Array` containing a list of operations to be executed sequentially, although as a whole they are performed as an atomic operation.
 
 Each operation is contained in an object having the following properties: `type`, `key`, `value`, where the `type` is either `'put'` or `'del'`. In the case of `'del'` the `value` property is ignored.
 
@@ -170,11 +170,11 @@ There are no `options` by default but implementations may add theirs. The `callb
 
 ### `db.batch()`
 
-Returns a [`chainedBatch`](#public-chained-batch).
+Returns a [`chainedBatch`](#chainedbatch).
 
 ### `db.iterator([options])`
 
-Returns an [`iterator`](#public-iterator). Accepts the following range options:
+Returns an [`iterator`](#iterator). Accepts the following range options:
 
 - `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be iterated. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
 - `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be iterated. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
@@ -186,9 +186,9 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-**Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). Consumers of an implementation should assume that `{ gt: undefined }` is *not* the same as `{}`. An implementation can choose to:
+**Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). Consumers of an implementation should assume that `{ gt: undefined }` is _not_ the same as `{}`. An implementation can choose to:
 
-- [*Serialize*](#private-serialize-key) or [*encode*][encoding-down] these types to make them meaningful
+- [_Serialize_](#db_serializekeykey) or [_encode_][encoding-down] these types to make them meaningful
 - Have no defined behavior (moving the concern to a higher level)
 - Delegate to an underlying store (moving the concern to a lower level).
 
@@ -201,7 +201,6 @@ In addition to range options, `iterator()` takes the following options:
 
 Lastly, an implementation is free to add its own options.
 
-<a name="public-chained-batch"></a>
 ### `chainedBatch`
 
 #### `chainedBatch.put(key, value)`
@@ -228,7 +227,6 @@ After `write` has been called, no further operations are allowed.
 
 A reference to the `db` that created this chained batch.
 
-<a name="public-iterator"></a>
 ### `iterator`
 
 An iterator allows you to _iterate_ the entire store or a range. It operates on a snapshot of the store, created at the time `db.iterator()` was called. This means reads on the iterator are unaffected by simultaneous writes. Most but not all implementations can offer this guarantee.
@@ -265,11 +263,11 @@ A reference to the `db` that created this iterator.
 
 ### Type Support
 
-The following applies to any method above that takes a `key` argument or option: all implementations *must* support a `key` of type String and *should* support a `key` of type Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer, zero-length string or zero-length array.
+The following applies to any method above that takes a `key` argument or option: all implementations _must_ support a `key` of type String and _should_ support a `key` of type Buffer. A `key` may not be `null`, `undefined`, a zero-length Buffer, zero-length string or zero-length array.
 
-The following applies to any method above that takes a `value` argument or option: all implementations *must* support a `value` of type String or Buffer. A `value` may not be `null` or `undefined` due to preexisting significance in streams and iterators.
+The following applies to any method above that takes a `value` argument or option: all implementations _must_ support a `value` of type String or Buffer. A `value` may not be `null` or `undefined` due to preexisting significance in streams and iterators.
 
-Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#private-serialize-key) and [`db._serializeValue`](#private-serialize-value).
+Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#db_serializekeykey) and [`db._serializeValue`](#db_serializevaluevalue).
 
 ## Private API For Implementors
 
@@ -287,7 +285,6 @@ Open the store. The `options` object will always have the following properties: 
 
 Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
-<a name="private-serialize-key"></a>
 ### `db._serializeKey(key)`
 
 Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option - including `db._iterator()` with its range options and `iterator._seek()` with its `target` argument - will receive serialized keys. For example, if `_serializeKey` is implemented as:
@@ -300,9 +297,8 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 
 Then `db.get(2, callback)` translates into `db._get('2', options, callback)`. Similarly, `db.iterator({ gt: 2 })` translates into `db._iterator({ gt: '2', ... })` and `iterator.seek(2)` translates into `iterator._seek('2')`.
 
-If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike *encoding* as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
+If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
 
-<a name="private-serialize-value"></a>
 ### `db._serializeValue(value)`
 
 Convert a `value` to a type supported by the underlying storage. All methods below that take a `value` argument or option will receive serialized values. For example, if `_serializeValue` is implemented as:
@@ -329,7 +325,7 @@ Delete an entry. There are no default options but `options` will always be an ob
 
 ### `db._batch(operations, options, callback)`
 
-Perform multiple *put* and/or *del* operations in bulk. The `operations` argument is always an `Array` containing a list of operations to be executed sequentially, although as a whole they should be performed as an atomic operation. Each operation is guaranteed to have at least `type` and `key` properties. There are no default options but `options` will always be an object. If the batch failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+Perform multiple _put_ and/or _del_ operations in bulk. The `operations` argument is always an `Array` containing a list of operations to be executed sequentially, although as a whole they should be performed as an atomic operation. Each operation is guaranteed to have at least `type` and `key` properties. There are no default options but `options` will always be an object. If the batch failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 ### `db._chainedBatch()`
 
@@ -409,7 +405,7 @@ suite({
 })
 ```
 
-This is the most minimal setup. The `test` option *must* be a function that is API-compatible with `tape`. The `factory` option *must* be a function that returns a unique and isolated database instance. The factory will be called many times by the test suite.
+This is the most minimal setup. The `test` option _must_ be a function that is API-compatible with `tape`. The `factory` option _must_ be a function that returns a unique and isolated database instance. The factory will be called many times by the test suite.
 
 If your implementation is disk-based we recommend using [`tempy`](https://github.com/sindresorhus/tempy) (or similar) to create unique temporary directories. Your setup could look something like:
 
@@ -443,7 +439,7 @@ This also serves as a signal to users of your implementation. The following opti
 - `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
 - `seek`: set to `false` if your `iterator` does not implement `_seek`
 - `snapshots`: set to `false` if any of the following is true:
-  - Reads don't operate on a [snapshot](#public-iterator)
+  - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
 - `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
 
@@ -516,7 +512,6 @@ With [npm](https://npmjs.org) do:
 npm install abstract-leveldown
 ```
 
-<a name="contributing"></a>
 ## Contributing
 
 `abstract-leveldown` is an **OPEN Open Source Project**. This means that:
@@ -531,13 +526,12 @@ Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](http
 
 [![Sauce Labs logo](./sauce-labs.svg)](https://saucelabs.com)
 
-<a name="license"></a>
 ## License
 
-Copyright &copy; 2013-present `abstract-leveldown` [contributors](https://github.com/level/community#contributors).
-
-`abstract-leveldown` is licensed under the MIT license. All rights not explicitly granted in the MIT license are reserved. See the included `LICENSE.md` file for more details.
+[MIT](LICENSE.md) © 2013-present Rod Vagg and [Contributors](CONTRIBUTORS.md).
 
 [level-badge]: http://leveldb.org/img/badge.svg
+
 [encoding-down]: https://github.com/Level/encoding-down
+
 [leveldown]: https://github.com/Level/leveldown
