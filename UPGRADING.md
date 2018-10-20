@@ -4,12 +4,14 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Table of Contents
 
-- [Unreleased](#unreleased)
+- [v6](#v6)
 - [v5](#v5)
 - [v4](#v4)
 - [v3](#v3)
 
-## Unreleased
+## v6
+
+This release brings a major refactoring of the test suite, decouples `abstract-leveldown` from disk-based implementations and solves long-standing issues around serialization and type support.
 
 ### `location` was removed
 
