@@ -170,11 +170,11 @@ There are no `options` by default but implementations may add theirs. The `callb
 
 ### `db.batch()`
 
-Returns a [`chainedBatch`](#public-chained-batch).
+Returns a [`chainedBatch`](#chainedbatch).
 
 ### `db.iterator([options])`
 
-Returns an [`iterator`](#public-iterator). Accepts the following range options:
+Returns an [`iterator`](#iterator). Accepts the following range options:
 
 - `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be iterated. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
 - `lt` (less than), `lte` (less than or equal) define the higher bound of the range to be iterated. Only entries where the key is less than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries iterated will be the same.
@@ -188,7 +188,7 @@ Legacy options:
 
 **Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). Consumers of an implementation should assume that `{ gt: undefined }` is _not_ the same as `{}`. An implementation can choose to:
 
-- [_Serialize_](#private-serialize-key) or [_encode_][encoding-down] these types to make them meaningful
+- [_Serialize_](#db_serializekeykey) or [_encode_][encoding-down] these types to make them meaningful
 - Have no defined behavior (moving the concern to a higher level)
 - Delegate to an underlying store (moving the concern to a lower level).
 
@@ -200,8 +200,6 @@ In addition to range options, `iterator()` takes the following options:
 - `valueAsBuffer` _(boolean, default: `true`)_: Whether to return the value of each entry as a Buffer.
 
 Lastly, an implementation is free to add its own options.
-
-<a name="public-chained-batch"></a>
 
 ### `chainedBatch`
 
@@ -228,8 +226,6 @@ After `write` has been called, no further operations are allowed.
 #### `chainedBatch.db`
 
 A reference to the `db` that created this chained batch.
-
-<a name="public-iterator"></a>
 
 ### `iterator`
 
@@ -271,7 +267,7 @@ The following applies to any method above that takes a `key` argument or option:
 
 The following applies to any method above that takes a `value` argument or option: all implementations _must_ support a `value` of type String or Buffer. A `value` may not be `null` or `undefined` due to preexisting significance in streams and iterators.
 
-Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#private-serialize-key) and [`db._serializeValue`](#private-serialize-value).
+Support of other key and value types depends on the implementation as well as its underlying storage. See also [`db._serializeKey`](#db_serializekeykey) and [`db._serializeValue`](#db_serializevaluevalue).
 
 ## Private API For Implementors
 
@@ -289,8 +285,6 @@ Open the store. The `options` object will always have the following properties: 
 
 Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
-<a name="private-serialize-key"></a>
-
 ### `db._serializeKey(key)`
 
 Convert a `key` to a type supported by the underlying storage. All methods below that take a `key` argument or option - including `db._iterator()` with its range options and `iterator._seek()` with its `target` argument - will receive serialized keys. For example, if `_serializeKey` is implemented as:
@@ -304,8 +298,6 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 Then `db.get(2, callback)` translates into `db._get('2', options, callback)`. Similarly, `db.iterator({ gt: 2 })` translates into `db._iterator({ gt: '2', ... })` and `iterator.seek(2)` translates into `iterator._seek('2')`.
 
 If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
-
-<a name="private-serialize-value"></a>
 
 ### `db._serializeValue(value)`
 
@@ -447,7 +439,7 @@ This also serves as a signal to users of your implementation. The following opti
 - `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
 - `seek`: set to `false` if your `iterator` does not implement `_seek`
 - `snapshots`: set to `false` if any of the following is true:
-  - Reads don't operate on a [snapshot](#public-iterator)
+  - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
 - `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
 
