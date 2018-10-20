@@ -2,37 +2,56 @@
 
 ## [Unreleased]
 
+## [6.0.0] - 2018-10-20
+
+*If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#v6).*
+
 ### Changed
-* Upgrade `airtap` devDependency from `0.0.5` to `0.1.0` (@vweevers, @ralphtheninja, @greenkeeper)
-* Upgrade `sinon` devDependency from `^5.0.0` to `^6.0.0` (@ralphtheninja)
-* Tweak copyright years for less maintenance (@ralphtheninja)
-* Isolate snapshot test (#239) (@vweevers)
-* Use `level-concat-iterator` instead of `collectEntries` (@ralphtheninja)
-* Rename `abstract/` to `test/` (@vweevers)
-* Write API docs (#251) (@vweevers)
-* Rewrite `testCommon` functionality (@vweevers, @ralphtheninja)
-* Internal test API methods have the same signature `(test, testCommon)` (@ralphtheninja)
-* Refactor chained batch (#257) (@vweevers)
-* Export test suite as a single function (@vweevers)
-* Rewrite serialization logic (#277) (@vweevers)
-* Make `db` property mandatory and public on iterator and chained batch (#309) (@vweevers)
+* Upgrade `airtap` devDependency from `0.0.5` to `0.1.0` (#229, #231, #245, 029f56a, #252) (@vweevers, @ralphtheninja)
+* Upgrade `sinon` devDependency from `^5.0.0` to `^6.0.0` (#232) (@ralphtheninja)
+* Upgrade `standard` devDependency from `^11.0.0` to `^12.0.0` (#303) (@ralphtheninja)
+* Reject nullish values (#277) (@vweevers)
+* Make default `_serializeKey` and `_serializeValue` identity functions (#277) (@vweevers)
+* Don't coerce keys to strings to check if they're empty, instead check arrays explicitly (#277) (@vweevers)
+* Make `db` property mandatory and public on iterator and chained batch (#257, #309) (@vweevers)
+* Align `AbstractChainedBatch#_clear` with `_put` and `_del` (#257) (@vweevers)
+* Add `AbstractChainedBatch#_write` with options (#257) (@vweevers)
+* Use `level-concat-iterator` instead of `collectEntries` (#246) (@ralphtheninja)
+* Document API and test suite (#251, #290, #295, #296, #305) (@vweevers)
+* Export test suite as a single function (#271, #293, #297) (@vweevers, @ralphtheninja)
+* Use factory function to create `db` instances in test suite (#258, #268, #282) (@ralphtheninja, @vweevers)
+* Isolate snapshot tests so that they can be skipped (#239, #274) (@vweevers, @ralphtheninja)
+* Isolate openAdvanced tests so that they can be skipped (#271) (@vweevers)
+* Rename `abstract/` to `test/` (#253) (@vweevers)
+* Refactor internal test methods to have the same signature `(test, testCommon)` (#268, #275) (@ralphtheninja)
+* Prefer `exports.*` over `module.exports.*` (#276) (@ralphtheninja)
+* Tweak copyright years for less maintenance (0b2949a) (@ralphtheninja)
 
 ### Added
-* Add `iterator.seek()` (#237, #307) (@vweevers)
-* Add `nyc` and `coveralls` for code coverage (@vweevers)
-* Add `setUp` and `tearDown` to all sub tests (@ralphtheninja)
-* Test that each `factory()` returns a unique db (@ralphtheninja)
+* Add `iterator#seek()` (#237, #302, #307) (@vweevers, @ralphtheninja)
+* Add `nyc` and `coveralls` devDependencies for code coverage (#253) (@vweevers)
+* Add `setUp` and `tearDown` to all sub tests (#279, #289) (@ralphtheninja)
+* Add test for implementations that cannot support snapshots (#239) (@vweevers)
+* Add `hallmark` devDependency for Markdown style and contributors (#312) (@vweevers)
 
 ### Removed
-* Remove `contributors` from `package.json` (@ralphtheninja)
-* Remove copyright headers from code (@ralphtheninja)
-* Remove node 9 from Travis (@ralphtheninja)
 * Remove `location` (#258) (@ralphtheninja)
-* Remove sync test from `test/put-test.js` (@ralphtheninja)
+* Remove `lastLocation`, `cleanup`, `rimraf` (#249) (@vweevers)
+* Remove IE10 from Sauce Labs test matrix (#312) (@vweevers)
+* Remove node 9 from Travis (0b52395) (@ralphtheninja)
+* Remove tests that assumed support of boolean and NaN keys (#277) (@vweevers)
+* Remove range tests that assumed `null` meant "not defined" (#277) (@vweevers)
+* Remove sync test from `test/put-test.js` (#300) (@ralphtheninja)
+* Remove empty `errorValues()` test (#273) (@ralphtheninja)
+* Remove default `testCommon` parameter (#264, #271) (@vweevers)
+* Remove `contributors` from `package.json` (542f350) (@ralphtheninja)
+* Remove copyright headers from code (a36c04f) (@ralphtheninja)
 
 ### Fixed
-* Make sure all `t.throw` tests check error messages correctly (@ralphtheninja)
-* Check options objects properly for `null` (@ralphtheninja)
+* Make sure all `t.throw` tests check error messages correctly (#286) (@ralphtheninja)
+* Check options objects properly for `null` (#257, #288) (@ralphtheninja, @vweevers)
+* Serialize range options same as keys (#277) (@vweevers)
+* Allow nullish and empty range options (#277) (@vweevers)
 
 ## [5.0.0] - 2018-05-22
 
@@ -589,7 +608,8 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[Unreleased]: https://github.com/level/abstract-leveldown/compare/v5.0.0...HEAD
+[Unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.0...HEAD
+[6.0.0]: https://github.com/level/abstract-leveldown/compare/v5.0.0...v6.0.0
 [5.0.0]: https://github.com/level/abstract-leveldown/compare/v4.0.3...v5.0.0
 [4.0.3]: https://github.com/level/abstract-leveldown/compare/v4.0.2...v4.0.3
 [4.0.2]: https://github.com/level/abstract-leveldown/compare/v4.0.1...v4.0.2
