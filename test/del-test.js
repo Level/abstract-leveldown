@@ -70,6 +70,21 @@ exports.del = function (test, testCommon) {
     })
   })
 
+  test('test del with numeric key', function(t) {
+    db.put(0, 'foo 0', function (err) {
+      t.error(err)
+      db.del(0, function (err) {
+        t.error(err)
+        db.get(0, function (err, value) {
+          t.ok(err, 'entry properly deleted')
+          t.ok(typeof value === 'undefined', 'value is undefined')
+          t.ok(verifyNotFoundError(err), 'NotFound error')
+          t.end()
+        })
+      })
+    })
+  })
+
   test('test del on non-existent key', function (t) {
     db.del('blargh', function (err) {
       t.error(err)
