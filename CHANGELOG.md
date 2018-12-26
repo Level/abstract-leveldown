@@ -2,6 +2,17 @@
 
 ## [Unreleased]
 
+## [6.0.1] - 2018-12-26
+
+### Changed
+
+- Upgrade `hallmark` devDependency from `0.0.2` to `0.1.0` ([#316](https://github.com/level/abstract-leveldown/issues/316)) ([**@vweevers**](https://github.com/vweevers))
+- Split v6 upgrade guide into sections for consumers and implementors ([**@vweevers**](https://github.com/vweevers))
+
+### Fixed
+
+- Remove range tests that assumed zero-length strings or Buffers meant "not defined" ([#319](https://github.com/level/abstract-leveldown/issues/319)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.0.0] - 2018-10-20
 
 _If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#v6)._
@@ -720,7 +731,9 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.0...HEAD
+[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.1...HEAD
+
+[6.0.1]: https://github.com/level/abstract-leveldown/compare/v6.0.0...v6.0.1
 
 [6.0.0]: https://github.com/level/abstract-leveldown/compare/v5.0.0...v6.0.0
 
