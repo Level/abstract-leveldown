@@ -309,40 +309,6 @@ exports.range = function (test, testCommon) {
     end: '9a',
     reverse: true
   }, [])
-
-  if (testCommon.bufferKeys) {
-    rangeTest('test iterator with gte as empty buffer', {
-      gte: Buffer.alloc(0)
-    }, data)
-
-    rangeTest('test iterator with start as empty buffer - legacy', {
-      start: Buffer.alloc(0)
-    }, data)
-
-    rangeTest('test iterator with lte as empty buffer', {
-      lte: Buffer.alloc(0)
-    }, data)
-
-    rangeTest('test iterator with end as empty buffer - legacy', {
-      end: Buffer.alloc(0)
-    }, data)
-  }
-
-  rangeTest('test iterator with gte as empty string', {
-    gte: ''
-  }, data)
-
-  rangeTest('test iterator with start as empty string - legacy', {
-    start: ''
-  }, data)
-
-  rangeTest('test iterator with lte as empty string', {
-    lte: ''
-  }, data)
-
-  rangeTest('test iterator with end as empty string - legacy', {
-    end: ''
-  }, data)
 }
 
 exports.tearDown = function (test, testCommon) {

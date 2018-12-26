@@ -186,11 +186,13 @@ Legacy options:
 - `start`: instead use `gte`
 - `end`: instead use `lte`.
 
-**Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise). Consumers of an implementation should assume that `{ gt: undefined }` is _not_ the same as `{}`. An implementation can choose to:
+**Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise) as well as some underlying stores like IndexedDB. Consumers of an implementation should assume that `{ gt: undefined }` is _not_ the same as `{}`. An implementation can choose to:
 
 - [_Serialize_](#db_serializekeykey) or [_encode_][encoding-down] these types to make them meaningful
 - Have no defined behavior (moving the concern to a higher level)
 - Delegate to an underlying store (moving the concern to a lower level).
+
+If you are an implementor, a final note: the [abstract test suite](#test-suite) does not test these types. Whether they are supported or how they sort is up to you; add custom tests accordingly.
 
 In addition to range options, `iterator()` takes the following options:
 
