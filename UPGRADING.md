@@ -15,9 +15,44 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## v6
 
-This release brings a major refactoring of the test suite, decouples `abstract-leveldown` from disk-based implementations and solves long-standing issues around serialization and type support.
+This release brings a major refactoring of the test suite, decouples `abstract-leveldown` from disk-based implementations and solves long-standing issues around serialization and type support. Because the changes are substantial, this guide has two sections:
 
-### `location` was removed
+1. **Changes to public API** - for consumers of any implementation.
+2. **Changes to private API** - intended for implementors.
+
+### Changes to public API
+
+#### Nullish values are rejected
+
+In addition to rejecting `null` and `undefined` as _keys_, `abstract-leveldown` now also rejects these types as _values_, due to preexisting significance in streams and iterators.
+
+Before this, the behavior of these types depended on a large number of factors: `_serializeValue` and type support of the underlying storage, whether `get()`, `iterator()` or a stream was used to retrieve values, the `keys` and `asBuffer` options of `iterator()` and finally, which encoding was selected.
+
+#### Range options are serialized
+
+Previously, range options like `lt` were passed through as-is, unlike keys.
+
+#### The rules for range options have been relaxed
+
+Because `null`, `undefined`, zero-length strings and zero-length buffers are significant types in encodings like `bytewise` and `charwise`, they became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is not the same as `db.iterator({})`.
+
+Furthermore, `abstract-leveldown` makes no assumptions about the meaning of these types. Range tests that assumed `null` meant "not defined" have been removed.
+
+#### Zero-length array keys are rejected
+
+Though this was already the case because `_checkKey` stringified its input before checking the length, that behavior has been replaced with an explicit `Array.isArray()` check and a new error message.
+
+#### No longer assumes support of boolean and `NaN` keys
+
+A test that asserted boolean and `NaN` keys were valid has been removed.
+
+#### Browser support
+
+IE10 has been dropped.
+
+### Changes to private API
+
+#### `location` was removed
 
 `AbstractLevelDOWN` is no longer associated with a `location`. It's up to the implementation to handle it if it's required.
 
@@ -46,7 +81,7 @@ if (typeof location !== 'string') {
 }
 ```
 
-### Abstract test suite has moved to a single entry point
+#### Abstract test suite has moved to a single entry point
 
 Instead of including test files individually, you can and should include the test suite with one `require()` statement. If you previously did:
 
@@ -115,7 +150,7 @@ suite({
 })
 ```
 
-### The `collectEntries` utility has moved
+#### The `collectEntries` utility has moved
 
 The `testCommon.collectEntries` method has moved to the npm package  `level-concat-iterator`. If your (additional) tests depend on `collectEntries` and you previously did:
 
@@ -130,7 +165,7 @@ const concat = require('level-concat-iterator')
 concat(iterator, function (err, entries) {})
 ```
 
-### Setup and teardown became noops
+#### Setup and teardown became noops
 
 Because cleanup is no longer necessary, the `testCommon.setUp` and `testCommon.tearDown` methods are now noops by default. If you do need to perform (a)synchronous work before or after each test, `setUp` and `tearDown` can be overridden:
 
@@ -146,7 +181,7 @@ suite({
 })
 ```
 
-### Optional tests have been separated
+#### Optional tests have been separated
 
 If your implementation does not support snapshots or other optional features, the relevant tests may be skipped. For example:
 
@@ -159,11 +194,11 @@ suite({
 
 Please see the [README](README.md) for a list of options. Note that some of these have replaced `process.browser` checks.
 
-### Iterator must have a `db` reference
+#### Iterator must have a `db` reference
 
 The `db` argument of the `AbstractIterator` constructor became mandatory, as well as a public `db` property on the instance. Its existence is not new; the test suite now asserts that your implementation also has it.
 
-### Seeking became part of official API
+#### Seeking became part of official API
 
 If your implementation previously defined the public `iterator.seek(target)`, it must now define the private `iterator._seek(target)`. The new public API is equal to the reference implementation of `leveldown` except for two differences:
 
@@ -172,43 +207,15 @@ If your implementation previously defined the public `iterator.seek(target)`, it
 
 Please see the [README](README.md) for details.
 
-### Chained batch has been refactored
+#### Chained batch has been refactored
 
 - The default `_clear` method is no longer a noop; instead it clears the operations queued by `_put` and/or `_del`
 - The `_write` method now takes an `options` object as its first argument
 - The `db` argument of the `AbstractChainedBatch` constructor became mandatory, as well as a public `db` property on the instance, which was previously named `_db`.
 
-### Nullish values are rejected
-
-In addition to rejecting `null` and `undefined` as _keys_, `abstract-leveldown` now also rejects these types as _values_, due to preexisting significance in streams and iterators.
-
-Before this, the behavior of these types depended on a large number of factors: `_serializeValue` and type support of the underlying storage, whether `get()`, `iterator()` or a stream was used to retrieve values, the `keys` and `asBuffer` options of `iterator()` and finally, which encoding was selected.
-
-### Default `_serializeKey` and `_serializeValue` became identity functions
+#### Default `_serializeKey` and `_serializeValue` became identity functions
 
 They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommended behavior.
-
-### Range options are serialized
-
-Previously, range options like `lt` were passed through as-is, unlike keys.
-
-### The rules for range options have been relaxed
-
-Because `null`, `undefined`, zero-length strings and zero-length buffers are significant types in encodings like `bytewise` and `charwise`, they became valid as range options. In fact, any type is now valid. This means `db.iterator({ gt: undefined })` is not the same as `db.iterator({})`.
-
-Furthermore, `abstract-leveldown` makes no assumptions about the meaning of these types. Range tests that assumed `null` meant "not defined" have been removed.
-
-### Zero-length array keys are rejected
-
-Though this was already the case because `_checkKey` stringified its input before checking the length, that behavior has been replaced with an explicit `Array.isArray()` check and a new error message.
-
-### No longer assumes support of boolean and `NaN` keys
-
-A test that asserted boolean and `NaN` keys were valid has been removed.
-
-### Browser support
-
-IE10 has been dropped.
 
 ## v5
 
