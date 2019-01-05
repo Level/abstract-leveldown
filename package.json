@@ -32,7 +32,7 @@
     "type": "git",
     "url": "https://github.com/Level/abstract-leveldown.git"
   },
-  "homepage": "https://github.com/level/abstract-leveldown",
+  "homepage": "https://github.com/Level/abstract-leveldown",
   "keywords": [
     "level",
     "leveldb",
