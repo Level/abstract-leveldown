@@ -1,12 +1,11 @@
 # abstract-leveldown
 
-> An abstract prototype matching the [`leveldown`][leveldown] API. Useful for extending [`levelup`](https://github.com/level/levelup) functionality by providing a replacement to `leveldown`.
+> An abstract prototype matching the [`leveldown`][leveldown] API. Useful for extending [`levelup`](https://github.com/Level/levelup) functionality by providing a replacement to `leveldown`.
 
-[![level badge][level-badge]](https://github.com/level/awesome)
+[![level badge][level-badge]](https://github.com/Level/awesome)
 [![npm](https://img.shields.io/npm/v/abstract-leveldown.svg?label=&logo=npm)](https://www.npmjs.com/package/abstract-leveldown)
 [![Node version](https://img.shields.io/node/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
-[![Travis](https://travis-ci.org/Level/abstract-leveldown.svg?branch=master)](http://travis-ci.org/Level/abstract-leveldown)
-[![david](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
+[![Travis](https://img.shields.io/travis/Level/abstract-leveldown.svg?logo=travis&label=)](https://travis-ci.org/Level/abstract-leveldown)
 [![Coverage Status](https://coveralls.io/repos/github/Level/abstract-leveldown/badge.svg)](https://coveralls.io/github/Level/abstract-leveldown)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 [![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg?label=dl)](https://www.npmjs.com/package/abstract-leveldown)
