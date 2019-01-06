@@ -3,13 +3,15 @@
 > An abstract prototype matching the [`leveldown`][leveldown] API. Useful for extending [`levelup`](https://github.com/level/levelup) functionality by providing a replacement to `leveldown`.
 
 [![level badge][level-badge]](https://github.com/level/awesome)
-[![npm](https://img.shields.io/npm/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
-![Node version](https://img.shields.io/node/v/abstract-leveldown.svg)
+[![npm](https://img.shields.io/npm/v/abstract-leveldown.svg?label=&logo=npm)](https://www.npmjs.com/package/abstract-leveldown)
+[![Node version](https://img.shields.io/node/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 [![Travis](https://travis-ci.org/Level/abstract-leveldown.svg?branch=master)](http://travis-ci.org/Level/abstract-leveldown)
 [![david](https://david-dm.org/Level/abstract-leveldown.svg)](https://david-dm.org/level/abstract-leveldown)
 [![Coverage Status](https://coveralls.io/repos/github/Level/abstract-leveldown/badge.svg)](https://coveralls.io/github/Level/abstract-leveldown)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
+[![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg?label=dl)](https://www.npmjs.com/package/abstract-leveldown)
+[![Backers on Open Collective](https://opencollective.com/level/backers/badge.svg?color=orange)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/level/sponsors/badge.svg?color=orange)](#sponsors)
 
 ## Table of Contents
 
@@ -527,6 +529,18 @@ See the [Contribution Guide](https://github.com/Level/community/blob/master/CONT
 Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](https://saucelabs.com).
 
 [![Sauce Labs logo](./sauce-labs.svg)](https://saucelabs.com)
+
+## Donate
+
+To sustain [`Level`](https://github.com/Level) and its activities, become a backer or sponsor on [Open Collective](https://opencollective.com/level). Your logo or avatar will be displayed on our 28+ [GitHub repositories](https://github.com/Level), [npm](https://www.npmjs.com/) packages and (soon) [our website](http://leveldb.org). 💖
+
+### Backers
+
+[![Open Collective backers](https://opencollective.com/level/backers.svg?width=890)](https://opencollective.com/level)
+
+### Sponsors
+
+[![Open Collective sponsors](https://opencollective.com/level/sponsors.svg?width=890)](https://opencollective.com/level)
 
 ## License
 
