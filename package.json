@@ -9,7 +9,9 @@
     "test-browsers": "airtap --coverage --loopback airtap.local test/self.js",
     "test-browser-local": "airtap --coverage --local test/self.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "hallmark": "hallmark --fix"
+    "hallmark": "hallmark --fix",
+    "dependency-check": "dependency-check . test/*.js",
+    "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
     "level-concat-iterator": "~2.0.0",
@@ -18,6 +20,7 @@
   "devDependencies": {
     "airtap": "^2.0.0",
     "coveralls": "~3.0.2",
+    "dependency-check": "^3.3.0",
     "hallmark": "^0.1.0",
     "level-community": "^3.0.0",
     "nyc": "~12.0.2",
