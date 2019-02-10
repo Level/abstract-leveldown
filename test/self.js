@@ -721,6 +721,8 @@ test('test serialization extensibility (iterator seek)', function (t) {
 })
 
 test('.status', function (t) {
+  t.plan(5)
+
   t.test('empty prototype', function (t) {
     var Test = implement(AbstractLevelDOWN)
     var test = new Test('foobar')
@@ -826,6 +828,8 @@ test('_setupIteratorOptions', function (t) {
     })
     t.end()
   }
+
+  t.plan(6)
 
   t.test('default options', function (t) {
     t.same(db._setupIteratorOptions(), {
