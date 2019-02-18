@@ -24,7 +24,7 @@
     "hallmark": "^0.1.0",
     "level-community": "^3.0.0",
     "nyc": "^13.2.0",
-    "sinon": "^6.0.0",
+    "sinon": "^7.2.4",
     "standard": "^12.0.0",
     "tape": "^4.10.0"
   },
