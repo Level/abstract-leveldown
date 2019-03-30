@@ -2,6 +2,19 @@
 
 ## [Unreleased][unreleased]
 
+## [6.0.2] - 2019-03-30
+
+### Changed
+
+- Upgrade `sinon` devDependency from `^6.0.0` to `^7.2.4` ([#330](https://github.com/Level/abstract-leveldown/issues/330)) ([**@ralphtheninja**](https://github.com/ralphtheninja))
+- Upgrade `nyc` devDependency from `^12.0.2` to `^13.2.0` ([#327](https://github.com/Level/abstract-leveldown/issues/327)) ([**@vweevers**](https://github.com/vweevers))
+- Upgrade `airtap` devDependency from `0.1.0` to `^2.0.0` ([#323](https://github.com/Level/abstract-leveldown/issues/323)) ([**@vweevers**](https://github.com/vweevers))
+- Apply common project tweaks ([#324](https://github.com/Level/abstract-leveldown/issues/324), [#325](https://github.com/Level/abstract-leveldown/issues/325)) ([**@vweevers**](https://github.com/vweevers))
+
+### Fixed
+
+- Fix subtests by adding `t.plan()` ([#329](https://github.com/Level/abstract-leveldown/issues/329)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.0.1] - 2018-12-27
 
 ### Changed
@@ -731,7 +744,9 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.1...HEAD
+[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.2...HEAD
+
+[6.0.2]: https://github.com/level/abstract-leveldown/compare/v6.0.1...v6.0.2
 
 [6.0.1]: https://github.com/level/abstract-leveldown/compare/v6.0.0...v6.0.1
 
