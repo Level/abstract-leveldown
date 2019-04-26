@@ -232,7 +232,7 @@ test('test put() extensibility', function (t) {
   t.end()
 })
 
-test('test batch() extensibility', function (t) {
+test('test batch([]) (array-form) extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var expectedOptions = { options: 1 }
@@ -272,7 +272,25 @@ test('test batch() extensibility', function (t) {
   t.end()
 })
 
-test('test chained batch() (array) extensibility', function (t) {
+test('test batch([]) (array-form) with empty array is asynchronous', function (t) {
+  var spy = sinon.spy()
+  var Test = implement(AbstractLevelDOWN, { _batch: spy })
+  var test = new Test()
+  var async = false
+
+  test.batch([], function (err) {
+    t.ifError(err, 'no error')
+    t.ok(async, 'callback is asynchronous')
+
+    // Assert that asynchronicity is provided by batch() rather than _batch()
+    t.is(spy.callCount, 0, '_batch() call was bypassed')
+    t.end()
+  })
+
+  async = true
+})
+
+test('test chained batch() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var expectedOptions = { options: 1 }
@@ -302,6 +320,20 @@ test('test chained batch() (array) extensibility', function (t) {
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
   t.end()
+})
+
+test('test chained batch() with no operations is asynchronous', function (t) {
+  var Test = implement(AbstractLevelDOWN, {})
+  var test = new Test()
+  var async = false
+
+  test.batch().write(function (err) {
+    t.ifError(err, 'no error')
+    t.ok(async, 'callback is asynchronous')
+    t.end()
+  })
+
+  async = true
 })
 
 test('test chained batch() (custom _chainedBatch) extensibility', function (t) {

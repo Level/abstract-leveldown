@@ -233,6 +233,18 @@ exports.args = function (test, testCommon) {
       { type: 'del', key: 'key2' }
     ])
   })
+
+  test('test batch#write() with no operations', function (t) {
+    var async = false
+
+    db.batch().write(function (err) {
+      t.ifError(err, 'no error from write()')
+      t.ok(async, 'callback is asynchronous')
+      t.end()
+    })
+
+    async = true
+  })
 }
 
 exports.batch = function (test, testCommon) {

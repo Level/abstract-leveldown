@@ -193,16 +193,21 @@ exports.args = function (test, testCommon) {
       async = true
     })
   })
+
+  test('test batch() with empty array', function (t) {
+    var async = false
+
+    db.batch([], function (err) {
+      t.error(err, 'no error from batch()')
+      t.ok(async, 'callback is asynchronous')
+      t.end()
+    })
+
+    async = true
+  })
 }
 
 exports.batch = function (test, testCommon) {
-  test('test batch() with empty array', function (t) {
-    db.batch([], function (err) {
-      t.error(err)
-      t.end()
-    })
-  })
-
   test('test simple batch()', function (t) {
     db.batch([{ type: 'put', key: 'foo', value: 'bar' }], function (err) {
       t.error(err)
