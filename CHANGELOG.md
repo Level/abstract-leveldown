@@ -2,6 +2,18 @@
 
 ## [Unreleased][unreleased]
 
+## [6.0.3] - 2019-04-26
+
+### Changed
+
+- Upgrade `nyc` devDependency from `^13.2.0` to `^14.0.0` ([#334](https://github.com/Level/abstract-leveldown/issues/334)) ([**@vweevers**](https://github.com/vweevers))
+
+### Fixed
+
+- Fix and test asynchronicity of empty batch ([#337](https://github.com/Level/abstract-leveldown/issues/337)) ([**@vweevers**](https://github.com/vweevers))
+- Fix Level badge ([`8993257`](https://github.com/Level/abstract-leveldown/commit/8993257)) ([**@vweevers**](https://github.com/vweevers))
+- Remove link to dead website ([`c0abe28`](https://github.com/Level/abstract-leveldown/commit/c0abe28)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.0.2] - 2019-03-30
 
 ### Changed
@@ -744,7 +756,9 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.2...HEAD
+[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.3...HEAD
+
+[6.0.3]: https://github.com/level/abstract-leveldown/compare/v6.0.2...v6.0.3
 
 [6.0.2]: https://github.com/level/abstract-leveldown/compare/v6.0.1...v6.0.2
 
