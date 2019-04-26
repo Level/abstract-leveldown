@@ -504,7 +504,7 @@ test('tearDown', testCommon.tearDown)
 
 If you'd like to share your awesome implementation with the world, here's what you might want to do:
 
-- Add an awesome badge to your `README`: `![level badge](http://leveldb.org/img/badge.svg)`
+- Add an awesome badge to your `README`: `![level badge](https://leveljs.org/img/badge.svg)`
 - Publish your awesome module to [npm](https://npmjs.org)
 - Send a Pull Request to [Level/awesome](https://github.com/Level/awesome) to advertise your work!
 
@@ -546,7 +546,7 @@ To sustain [`Level`](https://github.com/Level) and its activities, become a back
 
 [MIT](LICENSE.md) © 2013-present Rod Vagg and [Contributors](CONTRIBUTORS.md).
 
-[level-badge]: http://leveldb.org/img/badge.svg
+[level-badge]: https://leveljs.org/img/badge.svg
 
 [encoding-down]: https://github.com/Level/encoding-down
 
