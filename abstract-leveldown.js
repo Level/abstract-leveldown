@@ -142,6 +142,10 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
     return process.nextTick(callback, new Error('batch(array) requires an array argument'))
   }
 
+  if (array.length === 0) {
+    return process.nextTick(callback)
+  }
+
   if (typeof options !== 'object' || options === null) options = {}
 
   var serialized = new Array(array.length)
