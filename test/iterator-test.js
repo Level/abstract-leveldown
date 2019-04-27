@@ -18,39 +18,7 @@ exports.args = function (test, testCommon) {
     iterator.end(t.end.bind(t))
   })
 
-  test('test argument-less iterator#next() throws', function (t) {
-    const iterator = db.iterator()
-    t.throws(
-      iterator.next.bind(iterator),
-      /Error: next\(\) requires a callback argument/,
-      'no-arg iterator#next() throws'
-    )
-    iterator.end(t.end.bind(t))
-  })
-
-  test('test argument-less iterator#end() after next() throws', function (t) {
-    const iterator = db.iterator()
-    iterator.next(function () {
-      t.throws(
-        iterator.end.bind(iterator),
-        /Error: end\(\) requires a callback argument/,
-        'no-arg iterator#end() throws'
-      )
-      iterator.end(t.end.bind(t))
-    })
-  })
-
-  test('test argument-less iterator#end() throws', function (t) {
-    const iterator = db.iterator()
-    t.throws(
-      iterator.end.bind(iterator),
-      /Error: end\(\) requires a callback argument/,
-      'no-arg iterator#end() throws'
-    )
-    iterator.end(t.end.bind(t))
-  })
-
-  test('test iterator#next returns this', function (t) {
+  test('test iterator#next returns this in callback mode', function (t) {
     const iterator = db.iterator()
     const self = iterator.next(function () {})
     t.ok(iterator === self)

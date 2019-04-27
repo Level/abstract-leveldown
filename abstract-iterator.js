@@ -11,18 +11,29 @@ function AbstractIterator (db) {
 }
 
 AbstractIterator.prototype.next = function (callback) {
-  if (typeof callback !== 'function') {
+  // In callback mode, we return `this`
+  let ret = this
+
+  if (callback === undefined) {
+    ret = new Promise(function (resolve, reject) {
+      callback = function (err, key, value) {
+        if (err) reject(err)
+        else if (key === undefined && value === undefined) resolve()
+        else resolve([key, value])
+      }
+    })
+  } else if (typeof callback !== 'function') {
     throw new Error('next() requires a callback argument')
   }
 
   if (this._ended) {
     this._nextTick(callback, new Error('cannot call next() after end()'))
-    return this
+    return ret
   }
 
   if (this._nexting) {
     this._nextTick(callback, new Error('cannot call next() before previous next() has completed'))
-    return this
+    return ret
   }
 
   this._nexting = true
@@ -31,7 +42,7 @@ AbstractIterator.prototype.next = function (callback) {
     callback(err, ...rest)
   })
 
-  return this
+  return ret
 }
 
 AbstractIterator.prototype._next = function (callback) {
@@ -53,20 +64,44 @@ AbstractIterator.prototype.seek = function (target) {
 AbstractIterator.prototype._seek = function (target) {}
 
 AbstractIterator.prototype.end = function (callback) {
-  if (typeof callback !== 'function') {
+  let promise
+
+  if (callback === undefined) {
+    promise = new Promise(function (resolve, reject) {
+      callback = function (err) {
+        if (err) reject(err)
+        else resolve()
+      }
+    })
+  } else if (typeof callback !== 'function') {
     throw new Error('end() requires a callback argument')
   }
 
   if (this._ended) {
-    return this._nextTick(callback, new Error('end() already called on iterator'))
+    this._nextTick(callback, new Error('end() already called on iterator'))
+    return promise
   }
 
   this._ended = true
   this._end(callback)
+
+  return promise
 }
 
 AbstractIterator.prototype._end = function (callback) {
   this._nextTick(callback)
+}
+
+AbstractIterator.prototype[Symbol.asyncIterator] = async function * () {
+  try {
+    let kv
+
+    while ((kv = (await this.next())) !== undefined) {
+      yield kv
+    }
+  } finally {
+    if (!this._ended) await this.end()
+  }
 }
 
 // Expose browser-compatible nextTick for dependents
