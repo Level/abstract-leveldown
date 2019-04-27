@@ -9,20 +9,30 @@ function AbstractIterator (db) {
 }
 
 AbstractIterator.prototype.next = function (callback) {
+  // In callback mode, we return `this`
+  var ret = this
   var self = this
 
-  if (typeof callback !== 'function') {
+  if (callback === undefined) {
+    ret = new Promise(function (resolve, reject) {
+      callback = function (err, key, value) {
+        if (err) reject(err)
+        else if (key === undefined && value === undefined) resolve()
+        else resolve([key, value])
+      }
+    })
+  } else if (typeof callback !== 'function') {
     throw new Error('next() requires a callback argument')
   }
 
   if (self._ended) {
     process.nextTick(callback, new Error('cannot call next() after end()'))
-    return self
+    return ret
   }
 
   if (self._nexting) {
     process.nextTick(callback, new Error('cannot call next() before previous next() has completed'))
-    return self
+    return ret
   }
 
   self._nexting = true
@@ -31,7 +41,7 @@ AbstractIterator.prototype.next = function (callback) {
     callback.apply(null, arguments)
   })
 
-  return self
+  return ret
 }
 
 AbstractIterator.prototype._next = function (callback) {
@@ -53,20 +63,42 @@ AbstractIterator.prototype.seek = function (target) {
 AbstractIterator.prototype._seek = function (target) {}
 
 AbstractIterator.prototype.end = function (callback) {
-  if (typeof callback !== 'function') {
+  if (callback === undefined) {
+    var promise = new Promise(function (resolve, reject) {
+      callback = function (err) {
+        if (err) reject(err)
+        else resolve()
+      }
+    })
+  } else if (typeof callback !== 'function') {
     throw new Error('end() requires a callback argument')
   }
 
   if (this._ended) {
-    return process.nextTick(callback, new Error('end() already called on iterator'))
+    process.nextTick(callback, new Error('end() already called on iterator'))
+    return promise
   }
 
   this._ended = true
   this._end(callback)
+
+  return promise
 }
 
 AbstractIterator.prototype._end = function (callback) {
   process.nextTick(callback)
+}
+
+AbstractIterator.prototype[Symbol.asyncIterator] = async function * () {
+  try {
+    var kv
+
+    while ((kv = await this.next()) !== undefined) {
+      yield kv
+    }
+  } finally {
+    await this.end()
+  }
 }
 
 module.exports = AbstractIterator
