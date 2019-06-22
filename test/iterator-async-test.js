@@ -17,7 +17,6 @@ exports.asyncIterator = function (test, testCommon) {
   })
 
   test('test simple asyncIterator()', async function (t) {
-    
     var expected = [
       { key: 'foobatch1', value: 'bar1' },
       { key: 'foobatch2', value: 'bar2' },
