@@ -50,7 +50,7 @@ AbstractIterator.prototype.seek = function (target) {
   this._seek(target)
 }
 
-AbstractIterator.prototype._seek = function (target) {}
+AbstractIterator.prototype._seek = function (target) { }
 
 AbstractIterator.prototype.end = function (callback) {
   if (typeof callback !== 'function') {
@@ -67,6 +67,51 @@ AbstractIterator.prototype.end = function (callback) {
 
 AbstractIterator.prototype._end = function (callback) {
   process.nextTick(callback)
+}
+
+if (Symbol && Symbol['asyncIterator'] !== undefined) {
+  AbstractIterator.prototype[Symbol['asyncIterator']] = function () {
+    var self = this
+    var it = {
+      [Symbol['asyncIterator']]: function () {
+        return it
+      },
+      next: function () {
+        return new Promise(function (resolve, reject) {
+          self.next(function (err, key, value) {
+            if (err) {
+              reject(err)
+            } else if (key && value) {
+              resolve({
+                value: { key, value },
+                done: false
+              })
+            } else {
+              resolve({
+                value: null,
+                done: true
+              })
+            }
+          })
+        })
+      },
+      return: function () {
+        return new Promise(function (resolve, reject) {
+          self.end(function (err) {
+            err ? reject(err) : resolve()
+          })
+        })
+      },
+      error: function (err) {
+        return new Promise(function (resolve, reject) {
+          self.end(function (_err) {
+            reject(_err || err)
+          })
+        })
+      }
+    }
+    return it
+  }
 }
 
 module.exports = AbstractIterator
