@@ -594,7 +594,7 @@ test('test serialization extensibility (batch array put)', function (t) {
   })
 
   var test = new Test('foobar')
-  test.batch([ { type: 'put', key: 'no', value: 'nope' } ], function () {})
+  test.batch([{ type: 'put', key: 'no', value: 'nope' }], function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
   t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
@@ -641,7 +641,7 @@ test('test serialization extensibility (batch array del)', function (t) {
   })
 
   var test = new Test('foobar')
-  test.batch([ { type: 'del', key: 'no' } ], function () {})
+  test.batch([{ type: 'del', key: 'no' }], function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
   t.equal(spy.getCall(0).args[0][0].key, 'foo', 'got expected key')
