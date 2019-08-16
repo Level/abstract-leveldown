@@ -26,17 +26,19 @@ function suite (options) {
   require('./batch-test').all(test, testCommon)
   require('./chained-batch-test').all(test, testCommon)
 
-  require('./iterator-test').all(test, testCommon)
-  require('./iterator-range-test').all(test, testCommon)
+  if (testCommon.iterator) {
+    require('./iterator-test').all(test, testCommon)
+    require('./iterator-range-test').all(test, testCommon)
 
-  if (testCommon.seek) {
-    require('./iterator-seek-test').all(test, testCommon)
-  }
+    if (testCommon.seek) {
+      require('./iterator-seek-test').all(test, testCommon)
+    }
 
-  if (testCommon.snapshots) {
-    require('./iterator-snapshot-test').all(test, testCommon)
-  } else {
-    require('./iterator-no-snapshot-test').all(test, testCommon)
+    if (testCommon.snapshots) {
+      require('./iterator-snapshot-test').all(test, testCommon)
+    } else {
+      require('./iterator-no-snapshot-test').all(test, testCommon)
+    }
   }
 }
 

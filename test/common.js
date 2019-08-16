@@ -18,6 +18,7 @@ function testCommon (options) {
     bufferKeys: options.bufferKeys !== false,
     createIfMissing: options.createIfMissing !== false,
     errorIfExists: options.errorIfExists !== false,
+    iterator: options.iterator !== false,
     snapshots: options.snapshots !== false,
     seek: options.seek !== false
   }
