@@ -267,7 +267,7 @@ exports.batch = function (test, testCommon) {
         .write(function (err) {
           t.error(err)
 
-          if(!testCommon.iterator) return t.end()
+          if (!testCommon.iterator) return t.end()
 
           collectEntries(
             db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
