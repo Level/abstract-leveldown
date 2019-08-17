@@ -40,7 +40,9 @@ function suite (options) {
   }
 
   if (testCommon.clear) {
-    // TODO
+    require('./clear-test').all(test, testCommon)
+
+    // TODO: add clear-range-test
   }
 }
 

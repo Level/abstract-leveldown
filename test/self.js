@@ -9,10 +9,14 @@ var AbstractChainedBatch = require('../').AbstractChainedBatch
 
 var testCommon = require('./common')({
   test: test,
+  clear: true,
   factory: function () {
     return new AbstractLevelDOWN()
   }
 })
+
+var rangeOptions = ['gt', 'gte', 'lt', 'lte']
+var legacyRangeOptions = ['start', 'end']
 
 // Test the suite itself as well as the default implementation,
 // excluding noop operations that can't pass the test suite.
@@ -66,6 +70,10 @@ require('./iterator-no-snapshot-test').tearDown(test, testCommon)
 require('./iterator-seek-test').setUp(test, testCommon)
 require('./iterator-seek-test').sequence(test, testCommon)
 require('./iterator-seek-test').tearDown(test, testCommon)
+
+require('./clear-test').setUp(test, testCommon)
+require('./clear-test').args(test, testCommon)
+require('./clear-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
   function Test () {
@@ -374,7 +382,7 @@ test('test AbstractChainedBatch expects a db', function (t) {
   }
 })
 
-test('test write() extensibility', function (t) {
+test('test AbstractChainedBatch#write() extensibility', function (t) {
   var spy = sinon.spy()
   var spycb = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
@@ -394,7 +402,7 @@ test('test write() extensibility', function (t) {
   t.end()
 })
 
-test('test write() extensibility with null options', function (t) {
+test('test AbstractChainedBatch#write() extensibility with null options', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
   var test = new Test({ test: true })
@@ -406,7 +414,7 @@ test('test write() extensibility with null options', function (t) {
   t.end()
 })
 
-test('test write() extensibility with options', function (t) {
+test('test AbstractChainedBatch#write() extensibility with options', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _write: spy })
   var test = new Test({ test: true })
@@ -418,7 +426,7 @@ test('test write() extensibility with options', function (t) {
   t.end()
 })
 
-test('test put() extensibility', function (t) {
+test('test AbstractChainedBatch#put() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
   var expectedValue = 'value'
@@ -435,7 +443,7 @@ test('test put() extensibility', function (t) {
   t.end()
 })
 
-test('test del() extensibility', function (t) {
+test('test AbstractChainedBatch#del() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedKey = 'key'
   var Test = implement(AbstractChainedBatch, { _del: spy })
@@ -450,7 +458,7 @@ test('test del() extensibility', function (t) {
   t.end()
 })
 
-test('test clear() extensibility', function (t) {
+test('test AbstractChainedBatch#clear() extensibility', function (t) {
   var spy = sinon.spy()
   var Test = implement(AbstractChainedBatch, { _clear: spy })
   var test = new Test(testCommon.factory())
@@ -479,8 +487,8 @@ test('test iterator() extensibility', function (t) {
 
   test.iterator({ options: 1 })
 
-  t.equal(spy.callCount, 1, 'got _close() call')
-  t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
+  t.equal(spy.callCount, 1, 'got _iterator() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _iterator() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
   t.deepEqual(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
   t.end()
@@ -494,7 +502,7 @@ test('test AbstractIterator extensibility', function (t) {
   t.end()
 })
 
-test('test next() extensibility', function (t) {
+test('test AbstractIterator#next() extensibility', function (t) {
   var spy = sinon.spy()
   var spycb = sinon.spy()
   var Test = implement(AbstractIterator, { _next: spy })
@@ -513,7 +521,7 @@ test('test next() extensibility', function (t) {
   t.end()
 })
 
-test('test end() extensibility', function (t) {
+test('test AbstractIterator#end() extensibility', function (t) {
   var spy = sinon.spy()
   var expectedCb = function () {}
   var Test = implement(AbstractIterator, { _end: spy })
@@ -525,6 +533,35 @@ test('test end() extensibility', function (t) {
   t.equal(spy.getCall(0).thisValue, test, '`this` on _end() was correct')
   t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
   t.equal(spy.getCall(0).args[0], expectedCb, 'got expected cb argument')
+  t.end()
+})
+
+test('test clear() extensibility', function (t) {
+  var spy = sinon.spy()
+  var Test = implement(AbstractLevelDOWN, { _clear: spy })
+  var db = new Test()
+  var callback = function () {}
+
+  call([callback], { reverse: false, limit: -1 })
+  call([null, callback], { reverse: false, limit: -1 })
+  call([undefined, callback], { reverse: false, limit: -1 })
+  call([{ custom: 1 }, callback], { custom: 1, reverse: false, limit: -1 })
+  call([{ reverse: true, limit: 0 }, callback], { reverse: true, limit: 0 })
+  call([{ reverse: 1 }, callback], { reverse: true, limit: -1 })
+  call([{ reverse: null }, callback], { reverse: false, limit: -1 })
+
+  function call (args, expectedOptions) {
+    db.clear.apply(db, args)
+
+    t.is(spy.callCount, 1, 'got _clear() call')
+    t.is(spy.getCall(0).thisValue, db, '`this` on _clear() was correct')
+    t.is(spy.getCall(0).args.length, 2, 'got two arguments')
+    t.same(spy.getCall(0).args[0], expectedOptions, 'got expected options argument')
+    t.is(spy.getCall(0).args[1], callback, 'got expected callback argument')
+
+    spy.resetHistory()
+  }
+
   t.end()
 })
 
@@ -752,6 +789,53 @@ test('test serialization extensibility (iterator seek)', function (t) {
   t.equal(spy.getCall(0).args[0], 'serialized', 'got expected target argument')
 })
 
+test('test serialization extensibility (clear range options)', function (t) {
+  t.plan(rangeOptions.length * 2)
+
+  rangeOptions.forEach(function (key) {
+    var Test = implement(AbstractLevelDOWN, {
+      _serializeKey: function (key) {
+        t.is(key, 'input')
+        return 'output'
+      },
+      _clear: function (options, callback) {
+        t.is(options[key], 'output')
+      }
+    })
+
+    var db = new Test()
+    var options = {}
+
+    options[key] = 'input'
+    db.clear(options, function () {})
+  })
+})
+
+test('clear() does not delete empty or nullish range options', function (t) {
+  var rangeValues = [Buffer.alloc(0), '', null, undefined]
+
+  t.plan(rangeOptions.length * rangeValues.length)
+
+  rangeValues.forEach(function (value) {
+    var Test = implement(AbstractLevelDOWN, {
+      _clear: function (options, callback) {
+        rangeOptions.forEach(function (key) {
+          t.ok(key in options, key + ' option should not be deleted')
+        })
+      }
+    })
+
+    var db = new Test()
+    var options = {}
+
+    rangeOptions.forEach(function (key) {
+      options[key] = value
+    })
+
+    db.clear(options, function () {})
+  })
+})
+
 test('.status', function (t) {
   t.plan(5)
 
@@ -843,7 +927,7 @@ test('.status', function (t) {
 })
 
 test('_setupIteratorOptions', function (t) {
-  var keys = 'start end gt gte lt lte'.split(' ')
+  var keys = legacyRangeOptions.concat(rangeOptions)
   var db = new AbstractLevelDOWN()
 
   function setupOptions (constrFn) {
@@ -856,7 +940,7 @@ test('_setupIteratorOptions', function (t) {
 
   function verifyOptions (t, options) {
     keys.forEach(function (key) {
-      t.ok(key in options, 'property should not be deleted')
+      t.ok(key in options, key + ' option should not be deleted')
     })
     t.end()
   }
