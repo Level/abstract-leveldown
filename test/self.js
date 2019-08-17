@@ -75,6 +75,9 @@ require('./clear-test').setUp(test, testCommon)
 require('./clear-test').args(test, testCommon)
 require('./clear-test').tearDown(test, testCommon)
 
+require('./clear-range-test').setUp(test, testCommon)
+require('./clear-range-test').tearDown(test, testCommon)
+
 function implement (ctor, methods) {
   function Test () {
     ctor.apply(this, arguments)

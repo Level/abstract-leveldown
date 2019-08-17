@@ -41,8 +41,7 @@ function suite (options) {
 
   if (testCommon.clear) {
     require('./clear-test').all(test, testCommon)
-
-    // TODO: add clear-range-test
+    require('./clear-range-test').all(test, testCommon)
   }
 }
 
