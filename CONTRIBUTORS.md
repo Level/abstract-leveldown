@@ -18,11 +18,11 @@
 | **Mathias Buus**           | [**@mafintosh**](https://github.com/mafintosh)         | [**@mafintosh@twitter**](https://twitter.com/mafintosh)                  |
 | **Andrew Kelley**          | [**@andrewrk**](https://github.com/andrewrk)           |                                                                          |
 | **Huan LI**                | [**@zixia**](https://github.com/zixia)                 | [**@zixia@twitter**](https://twitter.com/zixia)                          |
-| **Nathan Shively-Sanders** | [**@sandersn**](https://github.com/sandersn)           |                                                                          |
-| **Tim Kuijsten**           | [**@timkuijsten**](https://github.com/timkuijsten)     | [**@timkuijsten@mastodon.social**](https://mastodon.social/@timkuijsten) |
 | **Nolan Lawson**           | [**@nolanlawson**](https://github.com/nolanlawson)     | [**@nolan@toot.cafe**](https://toot.cafe/@nolan)                         |
-| **Hao-kang Den**           |                                                        |                                                                          |
+| **Tim Kuijsten**           | [**@timkuijsten**](https://github.com/timkuijsten)     | [**@timkuijsten@mastodon.social**](https://mastodon.social/@timkuijsten) |
 | **Raynos (Jake Verbaten)** |                                                        |                                                                          |
+| **Nathan Shively-Sanders** | [**@sandersn**](https://github.com/sandersn)           |                                                                          |
 | **Kyle Robinson Young**    | [**@shama**](https://github.com/shama)                 | [**@shamakry@twitter**](https://twitter.com/shamakry)                    |
 | **Tim Oxley**              | [**@timoxley**](https://github.com/timoxley)           | [**@secoif@twitter**](https://twitter.com/secoif)                        |
 | **Dominic Tarr**           | [**@dominictarr**](https://github.com/dominictarr)     | [**@dominictarr@twitter**](https://twitter.com/dominictarr)              |
+| **Hao-kang Den**           |                                                        |                                                                          |

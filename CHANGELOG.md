@@ -2,6 +2,19 @@
 
 ## [Unreleased][unreleased]
 
+## [6.1.0] - 2019-08-18
+
+### Changed
+
+- Upgrade `hallmark` devDependency from `^0.1.0` to `^1.0.0` ([#343](https://github.com/Level/abstract-leveldown/issues/343)) ([**@vweevers**](https://github.com/vweevers))
+- Upgrade `standard` devDependency from `^12.0.0` to `^13.0.1` ([#341](https://github.com/Level/abstract-leveldown/issues/341)) ([**@vweevers**](https://github.com/vweevers))
+
+### Added
+
+- Add `clear()` method to delete all entries or a range ([#310](https://github.com/Level/abstract-leveldown/issues/310)) ([**@vweevers**](https://github.com/vweevers)).
+
+**Historical Note** The `clear()` method is experimental and optional for the time being. Please see the [README](https://github.com/Level/abstract-leveldown) for details.
+
 ## [6.0.3] - 2019-04-26
 
 ### Changed
@@ -756,7 +769,9 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.0.3...HEAD
+[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.1.0...HEAD
+
+[6.1.0]: https://github.com/level/abstract-leveldown/compare/v6.0.3...v6.1.0
 
 [6.0.3]: https://github.com/level/abstract-leveldown/compare/v6.0.2...v6.0.3
 
