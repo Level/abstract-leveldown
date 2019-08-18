@@ -38,6 +38,11 @@ function suite (options) {
   } else {
     require('./iterator-no-snapshot-test').all(test, testCommon)
   }
+
+  if (testCommon.clear) {
+    require('./clear-test').all(test, testCommon)
+    require('./clear-range-test').all(test, testCommon)
+  }
 }
 
 suite.common = common
