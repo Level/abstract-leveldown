@@ -2,6 +2,12 @@
 
 ## [Unreleased][unreleased]
 
+## [6.1.1] - 2019-08-18
+
+### Fixed
+
+- Remove `process.emitWarning` because it breaks AppVeyor builds ([`8e963c3`](https://github.com/Level/abstract-leveldown/commit/8e963c3)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.1.0] - 2019-08-18
 
 ### Changed
@@ -769,7 +775,9 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.1.0...HEAD
+[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.1.1...HEAD
+
+[6.1.1]: https://github.com/level/abstract-leveldown/compare/v6.1.0...v6.1.1
 
 [6.1.0]: https://github.com/level/abstract-leveldown/compare/v6.0.3...v6.1.0
 
