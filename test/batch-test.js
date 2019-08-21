@@ -147,7 +147,7 @@ exports.args = function (test, testCommon) {
   test('test batch() with undefined array', function (t) {
     var async = false
 
-    db.batch(void 0, function (err) {
+    db.batch(undefined, function (err) {
       t.ok(err, 'got error')
       t.equal(err.message, 'batch(array) requires an array argument', 'correct error message')
       t.ok(async, 'callback is asynchronous')
