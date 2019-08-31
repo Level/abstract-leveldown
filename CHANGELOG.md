@@ -679,12 +679,6 @@ No changes. Merely published changes made in `0.8.1`.
 
 - Make `iterator.end(cb)` and `iterator.next(cb)` call back with an error instead of throwing ([**@mcollina**](https://github.com/mcollina))
 
-## [0.4.0-1] - 2013-05-14
-
-### Added
-
-- Add [**@No9**](https://github.com/No9) and [**@mcollina**](https://github.com/mcollina) to contributors ([**@rvagg**](https://github.com/rvagg))
-
 ## [0.4.0] - 2013-05-14
 
 ### Changed
@@ -696,6 +690,12 @@ No changes. Merely published changes made in `0.8.1`.
 - Add `AbstractChainedBatch` ([**@rvagg**](https://github.com/rvagg))
 - Add `AbstractLevelDOWN#_chainedBatch` ([**@rvagg**](https://github.com/rvagg))
 - Add `abstract/batch-test.js` and `abstract/chained-batch-test.js` ([**@rvagg**](https://github.com/rvagg))
+
+## [0.4.0-1] - 2013-05-14
+
+### Added
+
+- Add [**@No9**](https://github.com/No9) and [**@mcollina**](https://github.com/mcollina) to contributors ([**@rvagg**](https://github.com/rvagg))
 
 ## [0.3.0] - 2013-05-04
 
@@ -775,148 +775,148 @@ No changes. Merely published changes made in `0.8.1`.
 
 First release. :seedling:
 
-[unreleased]: https://github.com/level/abstract-leveldown/compare/v6.1.1...HEAD
+[unreleased]: https://github.com/Level/abstract-leveldown/compare/v6.1.1...HEAD
 
-[6.1.1]: https://github.com/level/abstract-leveldown/compare/v6.1.0...v6.1.1
+[6.1.1]: https://github.com/Level/abstract-leveldown/compare/v6.1.0...v6.1.1
 
-[6.1.0]: https://github.com/level/abstract-leveldown/compare/v6.0.3...v6.1.0
+[6.1.0]: https://github.com/Level/abstract-leveldown/compare/v6.0.3...v6.1.0
 
-[6.0.3]: https://github.com/level/abstract-leveldown/compare/v6.0.2...v6.0.3
+[6.0.3]: https://github.com/Level/abstract-leveldown/compare/v6.0.2...v6.0.3
 
-[6.0.2]: https://github.com/level/abstract-leveldown/compare/v6.0.1...v6.0.2
+[6.0.2]: https://github.com/Level/abstract-leveldown/compare/v6.0.1...v6.0.2
 
-[6.0.1]: https://github.com/level/abstract-leveldown/compare/v6.0.0...v6.0.1
+[6.0.1]: https://github.com/Level/abstract-leveldown/compare/v6.0.0...v6.0.1
 
-[6.0.0]: https://github.com/level/abstract-leveldown/compare/v5.0.0...v6.0.0
+[6.0.0]: https://github.com/Level/abstract-leveldown/compare/v5.0.0...v6.0.0
 
-[5.0.0]: https://github.com/level/abstract-leveldown/compare/v4.0.3...v5.0.0
+[5.0.0]: https://github.com/Level/abstract-leveldown/compare/v4.0.3...v5.0.0
 
-[4.0.3]: https://github.com/level/abstract-leveldown/compare/v4.0.2...v4.0.3
+[4.0.3]: https://github.com/Level/abstract-leveldown/compare/v4.0.2...v4.0.3
 
-[4.0.2]: https://github.com/level/abstract-leveldown/compare/v4.0.1...v4.0.2
+[4.0.2]: https://github.com/Level/abstract-leveldown/compare/v4.0.1...v4.0.2
 
-[4.0.1]: https://github.com/level/abstract-leveldown/compare/v4.0.0...v4.0.1
+[4.0.1]: https://github.com/Level/abstract-leveldown/compare/v4.0.0...v4.0.1
 
-[4.0.0]: https://github.com/level/abstract-leveldown/compare/v3.0.0...v4.0.0
+[4.0.0]: https://github.com/Level/abstract-leveldown/compare/v3.0.0...v4.0.0
 
-[3.0.0]: https://github.com/level/abstract-leveldown/compare/v2.7.2...v3.0.0
+[3.0.0]: https://github.com/Level/abstract-leveldown/compare/v2.7.2...v3.0.0
 
-[2.7.2]: https://github.com/level/abstract-leveldown/compare/v2.7.1...v2.7.2
+[2.7.2]: https://github.com/Level/abstract-leveldown/compare/v2.7.1...v2.7.2
 
-[2.7.1]: https://github.com/level/abstract-leveldown/compare/v2.7.0...v2.7.1
+[2.7.1]: https://github.com/Level/abstract-leveldown/compare/v2.7.0...v2.7.1
 
-[2.7.0]: https://github.com/level/abstract-leveldown/compare/v2.6.3...v2.7.0
+[2.7.0]: https://github.com/Level/abstract-leveldown/compare/v2.6.3...v2.7.0
 
-[2.6.3]: https://github.com/level/abstract-leveldown/compare/v2.6.2...v2.6.3
+[2.6.3]: https://github.com/Level/abstract-leveldown/compare/v2.6.2...v2.6.3
 
-[2.6.2]: https://github.com/level/abstract-leveldown/compare/v2.6.1...v2.6.2
+[2.6.2]: https://github.com/Level/abstract-leveldown/compare/v2.6.1...v2.6.2
 
-[2.6.1]: https://github.com/level/abstract-leveldown/compare/v2.6.0...v2.6.1
+[2.6.1]: https://github.com/Level/abstract-leveldown/compare/v2.6.0...v2.6.1
 
-[2.6.0]: https://github.com/level/abstract-leveldown/compare/v2.5.0...v2.6.0
+[2.6.0]: https://github.com/Level/abstract-leveldown/compare/v2.5.0...v2.6.0
 
-[2.5.0]: https://github.com/level/abstract-leveldown/compare/v2.4.1...v2.5.0
+[2.5.0]: https://github.com/Level/abstract-leveldown/compare/v2.4.1...v2.5.0
 
-[2.4.1]: https://github.com/level/abstract-leveldown/compare/v2.4.0...v2.4.1
+[2.4.1]: https://github.com/Level/abstract-leveldown/compare/v2.4.0...v2.4.1
 
-[2.4.0]: https://github.com/level/abstract-leveldown/compare/v2.3.1...v2.4.0
+[2.4.0]: https://github.com/Level/abstract-leveldown/compare/v2.3.1...v2.4.0
 
-[2.3.1]: https://github.com/level/abstract-leveldown/compare/v2.3.0...v2.3.1
+[2.3.1]: https://github.com/Level/abstract-leveldown/compare/v2.3.0...v2.3.1
 
-[2.3.0]: https://github.com/level/abstract-leveldown/compare/v2.2.2...v2.3.0
+[2.3.0]: https://github.com/Level/abstract-leveldown/compare/v2.2.2...v2.3.0
 
-[2.2.2]: https://github.com/level/abstract-leveldown/compare/v2.2.1...v2.2.2
+[2.2.2]: https://github.com/Level/abstract-leveldown/compare/v2.2.1...v2.2.2
 
-[2.2.1]: https://github.com/level/abstract-leveldown/compare/v2.2.0...v2.2.1
+[2.2.1]: https://github.com/Level/abstract-leveldown/compare/v2.2.0...v2.2.1
 
-[2.2.0]: https://github.com/level/abstract-leveldown/compare/v2.1.4...v2.2.0
+[2.2.0]: https://github.com/Level/abstract-leveldown/compare/v2.1.4...v2.2.0
 
-[2.1.4]: https://github.com/level/abstract-leveldown/compare/v2.1.3...v2.1.4
+[2.1.4]: https://github.com/Level/abstract-leveldown/compare/v2.1.3...v2.1.4
 
-[2.1.3]: https://github.com/level/abstract-leveldown/compare/v2.1.2...v2.1.3
+[2.1.3]: https://github.com/Level/abstract-leveldown/compare/v2.1.2...v2.1.3
 
-[2.1.2]: https://github.com/level/abstract-leveldown/compare/v2.1.1...v2.1.2
+[2.1.2]: https://github.com/Level/abstract-leveldown/compare/v2.1.1...v2.1.2
 
-[2.1.1]: https://github.com/level/abstract-leveldown/compare/v2.1.0...v2.1.1
+[2.1.1]: https://github.com/Level/abstract-leveldown/compare/v2.1.0...v2.1.1
 
-[2.1.0]: https://github.com/level/abstract-leveldown/compare/v2.0.3...v2.1.0
+[2.1.0]: https://github.com/Level/abstract-leveldown/compare/v2.0.3...v2.1.0
 
-[2.0.3]: https://github.com/level/abstract-leveldown/compare/v2.0.2...v2.0.3
+[2.0.3]: https://github.com/Level/abstract-leveldown/compare/v2.0.2...v2.0.3
 
-[2.0.2]: https://github.com/level/abstract-leveldown/compare/v2.0.1...v2.0.2
+[2.0.2]: https://github.com/Level/abstract-leveldown/compare/v2.0.1...v2.0.2
 
-[2.0.1]: https://github.com/level/abstract-leveldown/compare/v2.0.0...v2.0.1
+[2.0.1]: https://github.com/Level/abstract-leveldown/compare/v2.0.0...v2.0.1
 
-[2.0.0]: https://github.com/level/abstract-leveldown/compare/v1.0.0...v2.0.0
+[2.0.0]: https://github.com/Level/abstract-leveldown/compare/v1.0.0...v2.0.0
 
-[1.0.0]: https://github.com/level/abstract-leveldown/compare/v0.12.4...v1.0.0
+[1.0.0]: https://github.com/Level/abstract-leveldown/compare/v0.12.4...v1.0.0
 
-[0.12.4]: https://github.com/level/abstract-leveldown/compare/v0.12.3...v0.12.4
+[0.12.4]: https://github.com/Level/abstract-leveldown/compare/v0.12.3...v0.12.4
 
-[0.12.3]: https://github.com/level/abstract-leveldown/compare/v0.12.2...v0.12.3
+[0.12.3]: https://github.com/Level/abstract-leveldown/compare/v0.12.2...v0.12.3
 
-[0.12.2]: https://github.com/level/abstract-leveldown/compare/v0.12.1...v0.12.2
+[0.12.2]: https://github.com/Level/abstract-leveldown/compare/v0.12.1...v0.12.2
 
-[0.12.1]: https://github.com/level/abstract-leveldown/compare/v0.12.0...v0.12.1
+[0.12.1]: https://github.com/Level/abstract-leveldown/compare/v0.12.0...v0.12.1
 
-[0.12.0]: https://github.com/level/abstract-leveldown/compare/v0.11.4...v0.12.0
+[0.12.0]: https://github.com/Level/abstract-leveldown/compare/v0.11.4...v0.12.0
 
-[0.11.4]: https://github.com/level/abstract-leveldown/compare/v0.11.3...v0.11.4
+[0.11.4]: https://github.com/Level/abstract-leveldown/compare/v0.11.3...v0.11.4
 
-[0.11.3]: https://github.com/level/abstract-leveldown/compare/v0.11.2...v0.11.3
+[0.11.3]: https://github.com/Level/abstract-leveldown/compare/v0.11.2...v0.11.3
 
-[0.11.2]: https://github.com/level/abstract-leveldown/compare/0.11.1...v0.11.2
+[0.11.2]: https://github.com/Level/abstract-leveldown/compare/0.11.1...v0.11.2
 
-[0.11.1]: https://github.com/level/abstract-leveldown/compare/0.11.0...0.11.1
+[0.11.1]: https://github.com/Level/abstract-leveldown/compare/0.11.0...0.11.1
 
-[0.11.0]: https://github.com/level/abstract-leveldown/compare/0.10.2...0.11.0
+[0.11.0]: https://github.com/Level/abstract-leveldown/compare/0.10.2...0.11.0
 
-[0.10.2]: https://github.com/level/abstract-leveldown/compare/0.10.1...0.10.2
+[0.10.2]: https://github.com/Level/abstract-leveldown/compare/0.10.1...0.10.2
 
-[0.10.1]: https://github.com/level/abstract-leveldown/compare/0.10.0...0.10.1
+[0.10.1]: https://github.com/Level/abstract-leveldown/compare/0.10.0...0.10.1
 
-[0.10.0]: https://github.com/level/abstract-leveldown/compare/0.9.0...0.10.0
+[0.10.0]: https://github.com/Level/abstract-leveldown/compare/0.9.0...0.10.0
 
-[0.9.0]: https://github.com/level/abstract-leveldown/compare/0.8.2...0.9.0
+[0.9.0]: https://github.com/Level/abstract-leveldown/compare/0.8.2...0.9.0
 
-[0.8.2]: https://github.com/level/abstract-leveldown/compare/0.8.1...0.8.2
+[0.8.2]: https://github.com/Level/abstract-leveldown/compare/0.8.1...0.8.2
 
-[0.8.1]: https://github.com/level/abstract-leveldown/compare/0.8.0...0.8.1
+[0.8.1]: https://github.com/Level/abstract-leveldown/compare/0.8.0...0.8.1
 
-[0.8.0]: https://github.com/level/abstract-leveldown/compare/0.7.4...0.8.0
+[0.8.0]: https://github.com/Level/abstract-leveldown/compare/0.7.4...0.8.0
 
-[0.7.4]: https://github.com/level/abstract-leveldown/compare/0.7.3...0.7.4
+[0.7.4]: https://github.com/Level/abstract-leveldown/compare/0.7.3...0.7.4
 
-[0.7.3]: https://github.com/level/abstract-leveldown/compare/0.7.2...0.7.3
+[0.7.3]: https://github.com/Level/abstract-leveldown/compare/0.7.2...0.7.3
 
-[0.7.2]: https://github.com/level/abstract-leveldown/compare/0.7.1...0.7.2
+[0.7.2]: https://github.com/Level/abstract-leveldown/compare/0.7.1...0.7.2
 
-[0.7.1]: https://github.com/level/abstract-leveldown/compare/0.7.0...0.7.1
+[0.7.1]: https://github.com/Level/abstract-leveldown/compare/0.7.0...0.7.1
 
-[0.7.0]: https://github.com/level/abstract-leveldown/compare/0.6.1...0.7.0
+[0.7.0]: https://github.com/Level/abstract-leveldown/compare/0.6.1...0.7.0
 
-[0.6.1]: https://github.com/level/abstract-leveldown/compare/0.6.0...0.6.1
+[0.6.1]: https://github.com/Level/abstract-leveldown/compare/0.6.0...0.6.1
 
-[0.6.0]: https://github.com/level/abstract-leveldown/compare/0.5.0...0.6.0
+[0.6.0]: https://github.com/Level/abstract-leveldown/compare/0.5.0...0.6.0
 
-[0.5.0]: https://github.com/level/abstract-leveldown/compare/0.4.0-1...0.5.0
+[0.5.0]: https://github.com/Level/abstract-leveldown/compare/0.4.0...0.5.0
 
-[0.4.0-1]: https://github.com/level/abstract-leveldown/compare/0.4.0...0.4.0-1
+[0.4.0]: https://github.com/Level/abstract-leveldown/compare/0.4.0-1...0.4.0
 
-[0.4.0]: https://github.com/level/abstract-leveldown/compare/0.3.0...0.4.0
+[0.4.0-1]: https://github.com/Level/abstract-leveldown/compare/0.3.0...0.4.0-1
 
-[0.3.0]: https://github.com/level/abstract-leveldown/compare/0.2.1...0.3.0
+[0.3.0]: https://github.com/Level/abstract-leveldown/compare/0.2.3...0.3.0
 
-[0.2.3]: https://github.com/level/abstract-leveldown/compare/0.2.2...0.2.3
+[0.2.3]: https://github.com/Level/abstract-leveldown/compare/0.2.2...0.2.3
 
-[0.2.2]: https://github.com/level/abstract-leveldown/compare/0.2.1...0.2.2
+[0.2.2]: https://github.com/Level/abstract-leveldown/compare/0.2.1...0.2.2
 
-[0.2.1]: https://github.com/level/abstract-leveldown/compare/0.2.0...0.2.1
+[0.2.1]: https://github.com/Level/abstract-leveldown/compare/0.2.0...0.2.1
 
-[0.2.0]: https://github.com/level/abstract-leveldown/compare/0.1.0...0.2.0
+[0.2.0]: https://github.com/Level/abstract-leveldown/compare/0.1.0...0.2.0
 
-[0.1.0]: https://github.com/level/abstract-leveldown/compare/0.0.2...0.1.0
+[0.1.0]: https://github.com/Level/abstract-leveldown/compare/0.0.2...0.1.0
 
-[0.0.2]: https://github.com/level/abstract-leveldown/compare/0.0.1...0.0.2
+[0.0.2]: https://github.com/Level/abstract-leveldown/compare/0.0.1...0.0.2
 
-[0.0.1]: https://github.com/level/abstract-leveldown/compare/0.0.0...0.0.1
+[0.0.1]: https://github.com/Level/abstract-leveldown/compare/0.0.0...0.0.1
