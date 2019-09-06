@@ -1,7 +1,5 @@
 # Changelog
 
-## [Unreleased][unreleased]
-
 ## [6.1.1] - 2019-08-18
 
 ### Fixed
@@ -774,8 +772,6 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
-
-[unreleased]: https://github.com/Level/abstract-leveldown/compare/v6.1.1...HEAD
 
 [6.1.1]: https://github.com/Level/abstract-leveldown/compare/v6.1.0...v6.1.1
 
