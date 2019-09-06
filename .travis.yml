@@ -17,6 +17,8 @@ matrix:
       hosts:
         - airtap.local
 
+before_script: git fetch --tags
+
 script:
   - DEBUG=airtap:* npm run $CMD
 
