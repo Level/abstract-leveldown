@@ -33,11 +33,13 @@
 
 ## Background
 
-`abstract-leveldown` provides a simple, operational base prototype that's ready for extending. All operations have sensible _noop_ defaults (operations that essentially do nothing). For example, operations such as `.open(callback)` and `.close(callback)` will invoke `callback` on a next tick. Others perform sensible actions, like `.get(key, callback)` which will always yield a `'NotFound'` error.
+This module provides a simple base prototype for a key-value store. It has a public API for consumers and a private API for implementors. To implement a `abstract-leveldown` compliant store, extend its prototype and override the private underscore versions of the methods. For example, to implement `put()`, override `_put()` on your prototype.
 
-You add functionality by implementing the "private" underscore versions of the operations. For example, to implement a public `put()` operation you add a private `_put()` method to your object. Each of these underscore methods override the default _noop_ operations and are always provided with consistent arguments, regardless of what is passed in through the public API. All methods provide argument checking and sensible defaults for optional arguments.
+Where possible, the default private methods have sensible _noop_ defaults that essentially do nothing. For example, `_open(callback)` will invoke `callback` on a next tick. Other methods like `_clear(..)` have functional defaults. Each method listed below documents whether implementing it is mandatory.
 
-For example, if you call `.open()` without a callback argument you'll get an `Error('open() requires a callback argument')`. Where optional arguments are involved, your underscore methods will receive sensible defaults. A `.get(key, callback)` will pass through to a `._get(key, options, callback)` where the `options` argument is an empty object.
+The private methods are always provided with consistent arguments, regardless of what is passed in through the public API. All public methods provide argument checking: if a consumer calls `open()` without a callback argument they'll get an `Error('open() requires a callback argument')`.
+
+Where optional arguments are involved, private methods receive sensible defaults: a `get(key, callback)` call translates to `_get(key, options, callback)` where the `options` argument is an empty object. These arguments are documented below.
 
 **If you are upgrading:** please see [UPGRADING.md](UPGRADING.md).
 
@@ -62,11 +64,11 @@ FakeLevelDOWN.prototype._open = function (options, callback) {
   this._store = {}
 
   // Use nextTick to be a nice async citizen
-  process.nextTick(callback, null, this)
+  process.nextTick(callback)
 }
 
 FakeLevelDOWN.prototype._serializeKey = function (key) {
-  // Safety: avoid store['__proto__'] skullduggery.
+  // As an example, prefix all input keys with an exclamation mark.
   // Below methods will receive serialized keys in their arguments.
   return '!' + key
 }
@@ -77,6 +79,8 @@ FakeLevelDOWN.prototype._put = function (key, value, options, callback) {
 }
 
 FakeLevelDOWN.prototype._get = function (key, options, callback) {
+  var value = this._store[key]
+
   if (value === undefined) {
     // 'NotFound' error, consistent with LevelDOWN API
     return process.nextTick(callback, new Error('NotFound'))
@@ -288,7 +292,7 @@ Support of other key and value types depends on the implementation as well as it
 
 ## Private API For Implementors
 
-Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to call the callback in a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
+Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
 
 ### `db = AbstractLevelDOWN()`
 
@@ -298,9 +302,13 @@ The constructor takes no parameters. Sets the `.status` to `'new'`.
 
 Open the store. The `options` object will always have the following properties: `createIfMissing`, `errorIfExists`. If opening failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
+The default `_open()` is a sensible noop and invokes `callback` on a next tick.
+
 ### `db._close(callback)`
 
 Close the store. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
+The default `_close()` is a sensible noop and invokes `callback` on a next tick.
 
 ### `db._serializeKey(key)`
 
@@ -314,7 +322,9 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 
 Then `db.get(2, callback)` translates into `db._get('2', options, callback)`. Similarly, `db.iterator({ gt: 2 })` translates into `db._iterator({ gt: '2', ... })` and `iterator.seek(2)` translates into `iterator._seek('2')`.
 
-If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function. Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
+If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function (returning the key as-is). Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
+
+The default `_serializeKey()` is an identity function.
 
 ### `db._serializeValue(value)`
 
@@ -328,21 +338,31 @@ FakeLevelDOWN.prototype._serializeValue = function (value) {
 
 Then `db.put(key, 2, callback)` translates into `db._put(key, '2', options, callback)`.
 
+The default `_serializeValue()` is an identity function.
+
 ### `db._get(key, options, callback)`
 
 Get a value by `key`. The `options` object will always have the following properties: `asBuffer`. If the key does not exist, call the `callback` function with a `new Error('NotFound')`. Otherwise call `callback` with `null` as the first argument and the value as the second.
+
+The default `_get()` invokes `callback` on a next tick with a `NotFound` error. It must be overridden.
 
 ### `db._put(key, value, options, callback)`
 
 Store a new entry or overwrite an existing entry. There are no default options but `options` will always be an object. If putting failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
+The default `_put()` invokes `callback` on a next tick. It must be overridden.
+
 ### `db._del(key, options, callback)`
 
 Delete an entry. There are no default options but `options` will always be an object. If deletion failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
+The default `_del()` invokes `callback` on a next tick. It must be overridden.
+
 ### `db._batch(operations, options, callback)`
 
 Perform multiple _put_ and/or _del_ operations in bulk. The `operations` argument is always an `Array` containing a list of operations to be executed sequentially, although as a whole they should be performed as an atomic operation. Each operation is guaranteed to have at least `type` and `key` properties. There are no default options but `options` will always be an object. If the batch failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
+The default `_batch()` invokes `callback` on a next tick. It must be overridden.
 
 ### `db._chainedBatch()`
 
@@ -365,7 +385,7 @@ FakeLevelDOWN.prototype._chainedBatch = function () {
 
 ### `db._iterator(options)`
 
-The default `_iterator()` returns a noop `AbstractIterator` instance. The prototype is available on the main exports for you to extend. To implement iterator operations you must extend `AbstractIterator` and return an instance of this prototype in the `_iterator(options)` method.
+The default `_iterator()` returns a noop `AbstractIterator` instance. It must be overridden, by extending `AbstractIterator` (available on the main module exports) and returning an instance of this prototype in the `_iterator(options)` method.
 
 The `options` object will always have the following properties: `reverse`, `keys`, `values`, `limit`, `keyAsBuffer` and `valueAsBuffer`.
 
@@ -389,13 +409,17 @@ The first argument to this constructor must be an instance of your `AbstractLeve
 
 Advance the iterator and yield the entry at that key. If nexting failed, call the `callback` function with an `Error`. Otherwise, call `callback` with `null`, a `key` and a `value`.
 
+The default `_next()` invokes `callback` on a next tick. It must be overridden.
+
 #### `iterator._seek(target)`
 
-Seek the iterator to a given key or the closest key.
+Seek the iterator to a given key or the closest key. This method is optional.
 
 #### `iterator._end(callback)`
 
 Free up underlying resources. This method is guaranteed to only be called once. If ending failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+
+The default `_end()` invokes `callback` on a next tick. Overriding is optional.
 
 ### `chainedBatch = AbstractChainedBatch(db)`
 
