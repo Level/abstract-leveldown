@@ -13,8 +13,12 @@ function testCommon (options) {
   return {
     test: test,
     factory: factory,
+
+    // TODO (next major): remove
     setUp: options.setUp || noopTest(),
     tearDown: options.tearDown || noopTest(),
+
+    // TODO (next major): use db.supports instead
     bufferKeys: options.bufferKeys !== false,
     createIfMissing: options.createIfMissing !== false,
     errorIfExists: options.errorIfExists !== false,

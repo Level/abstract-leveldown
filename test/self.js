@@ -22,7 +22,7 @@ var legacyRangeOptions = ['start', 'end']
 // excluding noop operations that can't pass the test suite.
 
 require('./leveldown-test')(test, testCommon)
-
+require('./manifest-test')(test, testCommon)
 require('./open-test').all(test, testCommon)
 
 require('./open-create-if-missing-test').setUp(test, testCommon)
