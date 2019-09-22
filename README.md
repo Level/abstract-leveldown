@@ -135,6 +135,20 @@ A read-only property. An `abstract-leveldown` compliant store can be in one of t
 - `'closing'` - waiting for the store to be closed
 - `'closed'` - store has been successfully closed, should not be used.
 
+### `db.supports`
+
+A read-only [manifest](https://github.com/Level/supports). Might be used like so:
+
+```js
+if (!db.supports.permanence) {
+  throw new Error('Persistent storage is required')
+}
+
+if (db.supports.bufferKeys && db.supports.promises) {
+  await db.put(Buffer.from('key'), 'value')
+}
+```
+
 ### `db.open([options, ]callback)`
 
 Open the store. The `callback` function will be called with no arguments when the store has been successfully opened, or with a single error argument if the open operation failed for any reason.
