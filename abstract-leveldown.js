@@ -1,54 +1,16 @@
 var xtend = require('xtend')
+var supports = require('level-supports')
 var AbstractIterator = require('./abstract-iterator')
 var AbstractChainedBatch = require('./abstract-chained-batch')
 var hasOwnProperty = Object.prototype.hasOwnProperty
 var rangeOptions = 'start end gt gte lt lte'.split(' ')
 
-function AbstractLevelDOWN (supports) {
-  // TODO (next major): make this mandatory
-  if (!supports || typeof supports !== 'object') supports = {}
-
+function AbstractLevelDOWN (manifest) {
   this.status = 'new'
 
-  // TODO (after review): move this to a module for reuse by levelup
-  this.supports = xtend(supports, {
-    // Features of abstract-leveldown
-    bufferKeys: !!supports.bufferKeys,
-    snapshots: !!supports.snapshots,
-    permanence: !!supports.permanence,
-    seek: !!supports.seek,
-
-    // Features of abstract-leveldown that levelup doesn't have
-    status: !!supports.status,
-
-    // Experimental features
-    clear: !!supports.clear,
-    type: !!supports.type,
-
-    // Features of disk-based implementations
-    createIfMissing: !!supports.createIfMissing,
-    errorIfExists: !!supports.errorIfExists,
-
-    // Features of level(up) that abstract-leveldown doesn't have yet
-    deferredOpen: !!supports.deferredOpen,
-    openCallback: !!supports.openCallback,
-    promises: !!supports.promises,
-    streams: !!supports.streams,
-    encodings: !!supports.encodings,
-
-    // Methods that are not part of abstract-leveldown or levelup
-    additionalMethods: supports.additionalMethods || {
-      // Example
-      // approximateSize: {
-      //   sync: false,
-      //   callback: true,
-      //   promise: false
-      // },
-      // createWriteStream: {
-      //   sync: true,
-      //   writable: true
-      // }
-    }
+  // TODO (next major): make this mandatory
+  this.supports = supports(manifest, {
+    status: true
   })
 }
 
