@@ -308,9 +308,17 @@ Support of other key and value types depends on the implementation as well as it
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
 
-### `db = AbstractLevelDOWN()`
+### `db = AbstractLevelDOWN([manifest])`
 
-The constructor takes no parameters. Sets the `.status` to `'new'`.
+The constructor. Sets the `.status` to `'new'`. Optionally takes a [manifest](https://github.com/Level/supports) object which `abstract-leveldown` will enrich:
+
+```js
+AbstractLevelDOWN.call(this, {
+  bufferKeys: true,
+  snapshots: true,
+  // ..
+})
+```
 
 ### `db._open(options, callback)`
 
@@ -510,6 +518,8 @@ This also serves as a signal to users of your implementation. The following opti
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
 - `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
+
+This metadata will be moved to manifests (`db.supports`) in the future.
 
 ### Setup and teardown
 
