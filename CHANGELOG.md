@@ -1,5 +1,19 @@
 # Changelog
 
+_**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
+
+## [6.2.0] - 2019-09-30
+
+### Changed
+
+- Upgrade `hallmark` devDependency from `^1.0.0` to `^2.0.0` ([#349](https://github.com/Level/abstract-leveldown/issues/349)) ([**@vweevers**](https://github.com/vweevers))
+- Upgrade `standard` devDependency from `^13.0.1` to `^14.0.0` ([#348](https://github.com/Level/abstract-leveldown/issues/348)) ([**@vweevers**](https://github.com/vweevers))
+
+### Added
+
+- Add manifest ([Level/community#83](https://github.com/Level/community/issues/83)) ([#351](https://github.com/Level/abstract-leveldown/issues/351)) ([**@vweevers**](https://github.com/vweevers))
+- Document mandatory methods ([#350](https://github.com/Level/abstract-leveldown/issues/350)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.1.1] - 2019-08-18
 
 ### Fixed
@@ -772,6 +786,8 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
+
+[6.2.0]: https://github.com/Level/abstract-leveldown/compare/v6.1.1...v6.2.0
 
 [6.1.1]: https://github.com/Level/abstract-leveldown/compare/v6.1.0...v6.1.1
 
