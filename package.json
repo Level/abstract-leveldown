@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "level-concat-iterator": "~2.0.0",
+    "level-supports": "~1.0.0",
     "xtend": "~4.0.0"
   },
   "devDependencies": {

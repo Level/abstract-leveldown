@@ -5,6 +5,7 @@ function suite (options) {
   var test = testCommon.test
 
   require('./factory-test')(test, testCommon)
+  require('./manifest-test')(test, testCommon)
 
   require('./leveldown-test')(test, testCommon)
   require('./open-test').all(test, testCommon)

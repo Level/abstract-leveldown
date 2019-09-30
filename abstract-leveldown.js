@@ -1,11 +1,17 @@
 var xtend = require('xtend')
+var supports = require('level-supports')
 var AbstractIterator = require('./abstract-iterator')
 var AbstractChainedBatch = require('./abstract-chained-batch')
 var hasOwnProperty = Object.prototype.hasOwnProperty
 var rangeOptions = 'start end gt gte lt lte'.split(' ')
 
-function AbstractLevelDOWN () {
+function AbstractLevelDOWN (manifest) {
   this.status = 'new'
+
+  // TODO (next major): make this mandatory
+  this.supports = supports(manifest, {
+    status: true
+  })
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
