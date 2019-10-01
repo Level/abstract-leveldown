@@ -1,6 +1,6 @@
 {
   "name": "abstract-leveldown",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "An abstract prototype matching the LevelDOWN API",
   "license": "MIT",
   "main": "index.js",
