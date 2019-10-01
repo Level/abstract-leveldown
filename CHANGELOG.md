@@ -2,6 +2,12 @@
 
 _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
+## [6.2.1] - 2019-10-01
+
+### Fixed
+
+- Fix `manifest-test` to open & close its db ([#352](https://github.com/Level/abstract-leveldown/issues/352)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.2.0] - 2019-09-30
 
 ### Changed
@@ -786,6 +792,8 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
+
+[6.2.1]: https://github.com/Level/abstract-leveldown/compare/v6.2.0...v6.2.1
 
 [6.2.0]: https://github.com/Level/abstract-leveldown/compare/v6.1.1...v6.2.0
 
