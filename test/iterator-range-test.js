@@ -1,4 +1,5 @@
 var collectEntries = require('level-concat-iterator')
+var xtend = require('xtend')
 
 var db
 
@@ -44,6 +45,30 @@ exports.range = function (test, testCommon) {
         t.end()
       })
     })
+
+    // Test the documented promise that in reverse mode,
+    // "the returned entries are the same, but in reverse".
+    if (!opts.reverse && !('limit' in opts)) {
+      var reverseOpts = xtend(opts, { reverse: true })
+
+      // Swap start & end options
+      if (('start' in opts) && ('end' in opts)) {
+        reverseOpts.end = opts.start
+        reverseOpts.start = opts.end
+      } else if ('start' in opts) {
+        reverseOpts.end = opts.start
+        delete reverseOpts.start
+      } else if ('end' in opts) {
+        reverseOpts.start = opts.end
+        delete reverseOpts.end
+      }
+
+      rangeTest(
+        name + ' (flipped)',
+        reverseOpts,
+        expected.slice().reverse()
+      )
+    }
   }
 
   rangeTest('test full data collection', {}, data)
@@ -291,6 +316,38 @@ exports.range = function (test, testCommon) {
     start: '9a',
     reverse: true
   }, data.slice().reverse())
+
+  rangeTest('test iterator with lt after database end', {
+    lt: 'a'
+  }, data.slice())
+
+  rangeTest('test iterator with end after database end - legacy', {
+    end: 'a'
+  }, data.slice())
+
+  rangeTest('test iterator with lt at database end', {
+    lt: data[data.length - 1].key
+  }, data.slice(0, -1))
+
+  rangeTest('test iterator with lte at database end', {
+    lte: data[data.length - 1].key
+  }, data.slice())
+
+  rangeTest('test iterator with end at database end - legacy', {
+    end: data[data.length - 1].key
+  }, data.slice())
+
+  rangeTest('test iterator with lt before database end', {
+    lt: data[data.length - 2].key
+  }, data.slice(0, -2))
+
+  rangeTest('test iterator with lte before database end', {
+    lte: data[data.length - 2].key
+  }, data.slice(0, -1))
+
+  rangeTest('test iterator with end before database end - legacy', {
+    end: data[data.length - 2].key
+  }, data.slice(0, -1))
 
   rangeTest('test iterator with lte and gte after database and reverse=true', {
     lte: '9b',
