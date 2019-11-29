@@ -1,5 +1,6 @@
 var xtend = require('xtend')
 var supports = require('level-supports')
+var Buffer = require('buffer').Buffer
 var AbstractIterator = require('./abstract-iterator')
 var AbstractChainedBatch = require('./abstract-chained-batch')
 var hasOwnProperty = Object.prototype.hasOwnProperty
