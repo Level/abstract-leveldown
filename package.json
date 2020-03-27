@@ -14,6 +14,7 @@
     "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
+    "buffer": "^5.5.0",
     "level-concat-iterator": "~2.0.0",
     "level-supports": "~1.0.0",
     "xtend": "~4.0.0"
