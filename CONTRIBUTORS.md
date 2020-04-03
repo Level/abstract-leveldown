@@ -18,6 +18,8 @@
 | **Tapani Moilanen**        | [**@Tapppi**](https://github.com/Tapppi)               |                                                                          |
 | **Dominic Tarr**           | [**@dominictarr**](https://github.com/dominictarr)     | [**@dominictarr@twitter**](https://twitter.com/dominictarr)              |
 | **Hao-kang Den**           |                                                        |                                                                          |
+| **Hugo Dias**              |                                                        |                                                                          |
+| **Jake Verbaten**          | [**@Raynos**](https://github.com/Raynos)               | [**@raynos@twitter**](https://twitter.com/raynos)                        |
 | **Kyle Robinson Young**    | [**@shama**](https://github.com/shama)                 | [**@shamakry@twitter**](https://twitter.com/shamakry)                    |
 | **Nathan Shively-Sanders** | [**@sandersn**](https://github.com/sandersn)           |                                                                          |
 | **Nolan Lawson**           | [**@nolanlawson**](https://github.com/nolanlawson)     | [**@nolan@toot.cafe**](https://toot.cafe/@nolan)                         |

@@ -2,6 +2,16 @@
 
 _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
+## [6.2.3] - 2020-04-03
+
+### Changed
+
+- Upgrade `airtap` devDependency from `^2.0.0` to `^3.0.0` ([#360](https://github.com/Level/abstract-leveldown/issues/360)) ([**@vweevers**](https://github.com/vweevers))
+
+### Fixed
+
+- Add `buffer` and `immediate` for browsers ([#355](https://github.com/Level/abstract-leveldown/issues/355), [#362](https://github.com/Level/abstract-leveldown/issues/362), [#363](https://github.com/Level/abstract-leveldown/issues/363)) ([**@Raynos**](https://github.com/Raynos), [**@hugomrdias**](https://github.com/hugomrdias), [**@vweevers**](https://github.com/vweevers))
+
 ## [6.2.2] - 2019-10-21
 
 ### Added
@@ -798,6 +808,8 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
+
+[6.2.3]: https://github.com/Level/abstract-leveldown/compare/v6.2.2...v6.2.3
 
 [6.2.2]: https://github.com/Level/abstract-leveldown/compare/v6.2.1...v6.2.2
 
