@@ -4,6 +4,9 @@
   "description": "An abstract prototype matching the LevelDOWN API",
   "license": "MIT",
   "main": "index.js",
+  "browser": {
+    "./next-tick.js": "./next-tick.browser.js"
+  },
   "scripts": {
     "test": "standard && hallmark && nyc node test/self.js",
     "test-browsers": "airtap --coverage --loopback airtap.local test/self.js",
@@ -14,6 +17,8 @@
     "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
+    "buffer": "^5.5.0",
+    "immediate": "^3.2.3",
     "level-concat-iterator": "~2.0.0",
     "level-supports": "~1.0.0",
     "xtend": "~4.0.0"

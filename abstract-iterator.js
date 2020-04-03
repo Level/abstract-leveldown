@@ -1,3 +1,4 @@
+var nextTick = require('./next-tick')
 function AbstractIterator (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -16,12 +17,12 @@ AbstractIterator.prototype.next = function (callback) {
   }
 
   if (self._ended) {
-    process.nextTick(callback, new Error('cannot call next() after end()'))
+    nextTick(callback, new Error('cannot call next() after end()'))
     return self
   }
 
   if (self._nexting) {
-    process.nextTick(callback, new Error('cannot call next() before previous next() has completed'))
+    nextTick(callback, new Error('cannot call next() before previous next() has completed'))
     return self
   }
 
@@ -35,7 +36,7 @@ AbstractIterator.prototype.next = function (callback) {
 }
 
 AbstractIterator.prototype._next = function (callback) {
-  process.nextTick(callback)
+  nextTick(callback)
 }
 
 AbstractIterator.prototype.seek = function (target) {
@@ -58,7 +59,7 @@ AbstractIterator.prototype.end = function (callback) {
   }
 
   if (this._ended) {
-    return process.nextTick(callback, new Error('end() already called on iterator'))
+    return nextTick(callback, new Error('end() already called on iterator'))
   }
 
   this._ended = true
@@ -66,7 +67,7 @@ AbstractIterator.prototype.end = function (callback) {
 }
 
 AbstractIterator.prototype._end = function (callback) {
-  process.nextTick(callback)
+  nextTick(callback)
 }
 
 module.exports = AbstractIterator
