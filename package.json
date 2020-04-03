@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "index.js",
   "browser": {
-    "./next-tick.js": "./next-tick.browser.js"
+    "./next-tick.js": "./next-tick-browser.js"
   },
   "scripts": {
     "test": "standard && hallmark && nyc node test/self.js",

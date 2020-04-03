@@ -314,4 +314,7 @@ AbstractLevelDOWN.prototype._checkValue = function (value) {
   }
 }
 
+// Expose browser-compatible nextTick for dependents
+AbstractLevelDOWN.prototype._nextTick = nextTick
+
 module.exports = AbstractLevelDOWN
