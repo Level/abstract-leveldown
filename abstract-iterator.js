@@ -1,4 +1,5 @@
 var nextTick = require('./next-tick')
+
 function AbstractIterator (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -69,5 +70,8 @@ AbstractIterator.prototype.end = function (callback) {
 AbstractIterator.prototype._end = function (callback) {
   nextTick(callback)
 }
+
+// Expose browser-compatible nextTick for dependents
+AbstractIterator.prototype._nextTick = nextTick
 
 module.exports = AbstractIterator

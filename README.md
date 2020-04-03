@@ -306,7 +306,9 @@ Support of other key and value types depends on the implementation as well as it
 
 ## Private API For Implementors
 
-Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous. If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `process.nextTick(callback, ..)`, `setImmediate` or some other means of micro- or macrotask scheduling.
+Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous.
+
+If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `process.nextTick` or some other means of microtask scheduling. For convenience, the prototypes of `AbstractLevelDOWN`, `AbstractIterator` and `AbstractChainedBatch` include a `_nextTick` method that is compatible with node and browsers.
 
 ### `db = AbstractLevelDOWN([manifest])`
 
