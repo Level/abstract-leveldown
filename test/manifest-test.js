@@ -5,7 +5,7 @@ module.exports = function (test, testCommon) {
 
   suite(test, testCommon)
 
-  test('manifest has status', function (t) {
+  testCommon.status && test('manifest has status', function (t) {
     var db = testCommon.factory()
     t.is(db.supports.status, true)
 

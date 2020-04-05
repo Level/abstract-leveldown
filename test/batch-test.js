@@ -11,7 +11,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test callback-less, 2-arg, batch() throws', function (t) {
+  testCommon.promises || test('test callback-less, 2-arg, batch() throws', function (t) {
     t.throws(
       db.batch.bind(db, 'foo', {}),
       /Error: batch\(array\) requires a callback argument/,
@@ -215,7 +215,11 @@ exports.batch = function (test, testCommon) {
       db.get('foo', function (err, value) {
         t.error(err)
         var result
-        if (isTypedArray(value)) {
+
+        if (testCommon.encodings) {
+          t.is(typeof value, 'string')
+          result = value
+        } else if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
@@ -244,7 +248,10 @@ exports.batch = function (test, testCommon) {
       db.get('foobatch1', function (err, value) {
         t.error(err)
         var result
-        if (isTypedArray(value)) {
+        if (testCommon.encodings) {
+          t.is(typeof value, 'string')
+          result = value
+        } else if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
@@ -264,7 +271,10 @@ exports.batch = function (test, testCommon) {
       db.get('foobatch3', function (err, value) {
         t.error(err)
         var result
-        if (isTypedArray(value)) {
+        if (testCommon.encodings) {
+          t.is(typeof value, 'string')
+          result = value
+        } else if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         } else {
           t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)

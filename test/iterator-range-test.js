@@ -35,6 +35,10 @@ exports.setUp = function (test, testCommon) {
 
 exports.range = function (test, testCommon) {
   function rangeTest (name, opts, expected) {
+    if (!testCommon.legacyRange && ('start' in opts || 'end' in opts)) {
+      return
+    }
+
     opts.keyAsBuffer = false
     opts.valueAsBuffer = false
     test(name, function (t) {

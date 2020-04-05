@@ -123,7 +123,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test batch#write() with no callback', function (t) {
+  testCommon.promises || test('test batch#write() with no callback', function (t) {
     try {
       db.batch().write()
     } catch (err) {
@@ -186,7 +186,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test serialize object', function (t) {
+  testCommon.serialize && test('test serialize object', function (t) {
     var batch = db.batch()
     var ops = collectBatchOps(batch)
 
@@ -202,7 +202,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test custom _serialize*', function (t) {
+  testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(4)
 
     var _db = Object.create(db)

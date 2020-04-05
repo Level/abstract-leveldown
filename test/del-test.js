@@ -10,7 +10,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test argument-less del() throws', function (t) {
+  testCommon.promises || test('test argument-less del() throws', function (t) {
     t.throws(
       db.del.bind(db),
       /Error: del\(\) requires a callback argument/,
@@ -19,7 +19,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 1-arg, del() throws', function (t) {
+  testCommon.promises || test('test callback-less, 1-arg, del() throws', function (t) {
     t.throws(
       db.del.bind(db, 'foo'),
       /Error: del\(\) requires a callback argument/,
@@ -28,7 +28,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 3-arg, del() throws', function (t) {
+  testCommon.promises || test('test callback-less, 3-arg, del() throws', function (t) {
     t.throws(
       db.del.bind(db, 'foo', {}),
       /Error: del\(\) requires a callback argument/,
@@ -37,7 +37,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test custom _serialize*', function (t) {
+  testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(3)
     var db = testCommon.factory()
     db._serializeKey = function (data) { return data }

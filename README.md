@@ -520,6 +520,7 @@ This also serves as a signal to users of your implementation. The following opti
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
 - `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
+- `legacyRange`: set to `false` if your iterator does not support the legacy `start` and `end` range options.
 
 This metadata will be moved to manifests (`db.supports`) in the future.
 

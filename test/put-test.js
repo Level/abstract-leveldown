@@ -10,7 +10,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test argument-less put() throws', function (t) {
+  testCommon.promises || test('test argument-less put() throws', function (t) {
     t.throws(
       db.put.bind(db),
       /Error: put\(\) requires a callback argument/,
@@ -19,7 +19,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 1-arg, put() throws', function (t) {
+  testCommon.promises || test('test callback-less, 1-arg, put() throws', function (t) {
     t.throws(
       db.put.bind(db, 'foo'),
       /Error: put\(\) requires a callback argument/,
@@ -28,7 +28,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 2-arg, put() throws', function (t) {
+  testCommon.promises || test('test callback-less, 2-arg, put() throws', function (t) {
     t.throws(
       db.put.bind(db, 'foo', 'bar'),
       /Error: put\(\) requires a callback argument/,
@@ -37,7 +37,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 3-arg, put() throws', function (t) {
+  testCommon.promises || test('test callback-less, 3-arg, put() throws', function (t) {
     t.throws(
       db.put.bind(db, 'foo', 'bar', {}),
       /Error: put\(\) requires a callback argument/,
@@ -46,7 +46,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test _serialize object', function (t) {
+  testCommon.serialize && test('test _serialize object', function (t) {
     t.plan(3)
     var db = testCommon.factory()
     db._put = function (key, value, opts, callback) {
@@ -59,7 +59,7 @@ exports.args = function (test, testCommon) {
     })
   })
 
-  test('test custom _serialize*', function (t) {
+  testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(4)
     var db = testCommon.factory()
     db._serializeKey = db._serializeValue = function (data) { return data }
