@@ -3,7 +3,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test database open no-arg throws', function (t) {
+  testCommon.promises || test('test database open no-arg throws', function (t) {
     var db = testCommon.factory()
     t.throws(
       db.open.bind(db),
@@ -13,7 +13,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 1-arg, open() throws', function (t) {
+  testCommon.promises || test('test callback-less, 1-arg, open() throws', function (t) {
     var db = testCommon.factory()
     t.throws(
       db.open.bind(db, {}),

@@ -10,7 +10,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test argument-less clear() throws', function (t) {
+  testCommon.promises || test('test argument-less clear() throws', function (t) {
     t.throws(
       db.clear.bind(db),
       /Error: clear\(\) requires a callback argument/,

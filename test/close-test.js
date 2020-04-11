@@ -10,12 +10,12 @@ exports.setUp = function (test, testCommon) {
 
 exports.close = function (test, testCommon) {
   test('test close()', function (t) {
-    t.throws(
+    testCommon.promises || t.throws(
       db.close.bind(db),
       /Error: close\(\) requires a callback argument/,
       'no-arg close() throws'
     )
-    t.throws(
+    testCommon.promises || t.throws(
       db.close.bind(db, 'foo'),
       /Error: close\(\) requires a callback argument/,
       'non-callback close() throws'

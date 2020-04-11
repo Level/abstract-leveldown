@@ -11,7 +11,7 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  test('test argument-less get() throws', function (t) {
+  testCommon.promises || test('test argument-less get() throws', function (t) {
     t.throws(
       db.get.bind(db),
       /Error: get\(\) requires a callback argument/,
@@ -20,7 +20,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 1-arg, get() throws', function (t) {
+  testCommon.promises || test('test callback-less, 1-arg, get() throws', function (t) {
     t.throws(
       db.get.bind(db, 'foo'),
       /Error: get\(\) requires a callback argument/,
@@ -29,7 +29,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test callback-less, 3-arg, get() throws', function (t) {
+  testCommon.promises || test('test callback-less, 3-arg, get() throws', function (t) {
     t.throws(
       db.get.bind(db, 'foo', {}),
       /Error: get\(\) requires a callback argument/,
@@ -38,7 +38,7 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test custom _serialize*', function (t) {
+  testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(3)
     var db = testCommon.factory()
     db._serializeKey = function (data) { return data }
@@ -61,29 +61,12 @@ exports.get = function (test, testCommon) {
       t.error(err)
       db.get('foo', function (err, value) {
         t.error(err)
-        t.ok(typeof value !== 'string', 'should not be string by default')
 
-        var result
-        if (isTypedArray(value)) {
-          result = String.fromCharCode.apply(null, new Uint16Array(value))
-        } else {
-          t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
-          try {
-            result = value.toString()
-          } catch (e) {
-            t.error(e, 'should not throw when converting value to a string')
-          }
-        }
-
-        t.equal(result, 'bar')
-
-        db.get('foo', {}, function (err, value) { // same but with {}
-          t.error(err)
+        if (!testCommon.encodings) {
           t.ok(typeof value !== 'string', 'should not be string by default')
 
-          var result
           if (isTypedArray(value)) {
-            result = String.fromCharCode.apply(null, new Uint16Array(value))
+            var result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
             t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
             try {
@@ -91,6 +74,31 @@ exports.get = function (test, testCommon) {
             } catch (e) {
               t.error(e, 'should not throw when converting value to a string')
             }
+          }
+        } else {
+          result = value
+        }
+
+        t.equal(result, 'bar')
+
+        db.get('foo', {}, function (err, value) { // same but with {}
+          t.error(err)
+
+          if (!testCommon.encodings) {
+            t.ok(typeof value !== 'string', 'should not be string by default')
+
+            if (isTypedArray(value)) {
+              var result = String.fromCharCode.apply(null, new Uint16Array(value))
+            } else {
+              t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
+              try {
+                result = value.toString()
+              } catch (e) {
+                t.error(e, 'should not throw when converting value to a string')
+              }
+            }
+          } else {
+            result = value
           }
 
           t.equal(result, 'bar')

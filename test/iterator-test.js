@@ -11,7 +11,8 @@ exports.setUp = function (test, testCommon) {
 exports.args = function (test, testCommon) {
   test('test iterator has db reference', function (t) {
     var iterator = db.iterator()
-    t.ok(iterator.db === db)
+    // For levelup compat: may return iterator of an underlying db, that's okay.
+    t.ok(iterator.db === db || iterator.db)
     iterator.end(t.end.bind(t))
   })
 
@@ -132,14 +133,19 @@ exports.iterator = function (test, testCommon) {
       var fn = function (err, key, value) {
         t.error(err)
         if (key && value) {
-          t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
-          t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
+          if (testCommon.encodings) {
+            t.is(typeof key, 'string', 'key argument is a string')
+            t.is(typeof value, 'string', 'value argument is a string')
+          } else {
+            t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
+            t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
+          }
           t.is(key.toString(), data[idx].key, 'correct key')
           t.is(value.toString(), data[idx].value, 'correct value')
           process.nextTick(next)
           idx++
         } else { // end
-          t.ok(typeof err === 'undefined', 'err argument is undefined')
+          t.ok(err == null, 'err argument is nullish')
           t.ok(typeof key === 'undefined', 'key argument is undefined')
           t.ok(typeof value === 'undefined', 'value argument is undefined')
           t.is(idx, data.length, 'correct number of entries')
