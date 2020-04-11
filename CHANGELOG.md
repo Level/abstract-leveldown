@@ -2,6 +2,16 @@
 
 _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
+## [6.3.0] - 2020-04-11
+
+### Changed
+
+- Upgrade devDependency `dependency-check` from `^3.3.0` to `^4.1.0` ([`9193656`](https://github.com/Level/abstract-leveldown/commit/9193656)) ([**@vweevers**](https://github.com/vweevers))
+
+### Added
+
+- Support running test suite on a `levelup` db, as well as skipping `start` and `end` tests (for `multileveldown`) ([#364](https://github.com/Level/abstract-leveldown/issues/364)) ([**@vweevers**](https://github.com/vweevers))
+
 ## [6.2.3] - 2020-04-03
 
 ### Changed
@@ -808,6 +818,8 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
+
+[6.3.0]: https://github.com/Level/abstract-leveldown/compare/v6.2.3...v6.3.0
 
 [6.2.3]: https://github.com/Level/abstract-leveldown/compare/v6.2.2...v6.2.3
 
