@@ -17,11 +17,8 @@
     "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
-    "buffer": "^5.5.0",
-    "immediate": "^3.2.3",
     "level-concat-iterator": "~2.0.0",
-    "level-supports": "~1.0.0",
-    "xtend": "~4.0.0"
+    "level-supports": "~1.0.0"
   },
   "devDependencies": {
     "airtap": "^3.0.0",

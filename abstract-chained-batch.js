@@ -1,5 +1,3 @@
-var nextTick = require('./next-tick')
-
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -79,8 +77,5 @@ AbstractChainedBatch.prototype.write = function (options, callback) {
 AbstractChainedBatch.prototype._write = function (options, callback) {
   this.db._batch(this._operations, options, callback)
 }
-
-// Expose browser-compatible nextTick for dependents
-AbstractChainedBatch.prototype._nextTick = nextTick
 
 module.exports = AbstractChainedBatch
