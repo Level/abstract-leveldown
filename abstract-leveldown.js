@@ -324,8 +324,8 @@ AbstractLevelDOWN.prototype._checkValue = function (value) {
 }
 
 // Expose browser-compatible nextTick for dependents
-AbstractLevelDOWN.prototype._nextTick = function (callback) {
-  process.nextTick(callback)
+AbstractLevelDOWN.prototype._nextTick = function (callback, value) {
+  process.nextTick(callback, value)
 }
 
 module.exports = AbstractLevelDOWN

@@ -1,5 +1,3 @@
-var nextTick = require('./next-tick')
-
 function AbstractIterator (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -18,12 +16,12 @@ AbstractIterator.prototype.next = function (callback) {
   }
 
   if (self._ended) {
-    nextTick(callback, new Error('cannot call next() after end()'))
+    this._nextTick(callback, new Error('cannot call next() after end()'))
     return self
   }
 
   if (self._nexting) {
-    nextTick(callback, new Error('cannot call next() before previous next() has completed'))
+    this._nextTick(callback, new Error('cannot call next() before previous next() has completed'))
     return self
   }
 
@@ -37,7 +35,7 @@ AbstractIterator.prototype.next = function (callback) {
 }
 
 AbstractIterator.prototype._next = function (callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractIterator.prototype.seek = function (target) {
@@ -60,7 +58,7 @@ AbstractIterator.prototype.end = function (callback) {
   }
 
   if (this._ended) {
-    return nextTick(callback, new Error('end() already called on iterator'))
+    return this._nextTick(callback, new Error('end() already called on iterator'))
   }
 
   this._ended = true
@@ -68,10 +66,12 @@ AbstractIterator.prototype.end = function (callback) {
 }
 
 AbstractIterator.prototype._end = function (callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 // Expose browser-compatible nextTick for dependents
-AbstractIterator.prototype._nextTick = nextTick
+AbstractIterator.prototype._nextTick = function (callback, value) {
+  process.nextTick(callback, value)
+}
 
 module.exports = AbstractIterator
