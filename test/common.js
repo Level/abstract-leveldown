@@ -1,3 +1,16 @@
+try {
+  require('level-concat-iterator')
+} catch (err) {
+  console.error('To use the abstract-leveldown test suite you must')
+  console.error('import level-concat-iterator as a dependency')
+  console.error('')
+  console.error('Please run `npm i level-concat-iterator@2 -D`')
+
+  throw new Error(
+    'level-concat-iterator is an optional dependency of the test suite.'
+  )
+}
+
 function testCommon (options) {
   var factory = options.factory
   var test = options.test
