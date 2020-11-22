@@ -12,6 +12,21 @@ matrix:
     env: CMD=test
   - node_js: stable
     env: CMD=test-browsers
+#adding code to work on Power systems
+  fast_finish: true
+  include:
+  - node_js: 6
+    env: CMD=test
+    arch: ppc64le
+  - node_js: 8
+    env: CMD=test
+    arch: ppc64le
+  - node_js: 10
+    env: CMD=test
+    arch: ppc64le
+  - node_js: stable
+    env: CMD=test-browsers
+    arch: ppc64le
     addons:
       sauce_connect: true
       hosts:
