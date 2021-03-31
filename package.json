@@ -17,7 +17,7 @@
     "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
-    "buffer": "^5.5.0",
+    "buffer": "^6.0.3",
     "immediate": "^3.2.3",
     "level-concat-iterator": "~2.0.0",
     "level-supports": "~1.0.0",
