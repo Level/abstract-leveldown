@@ -16,7 +16,6 @@ var testCommon = require('./common')({
 })
 
 var rangeOptions = ['gt', 'gte', 'lt', 'lte']
-var legacyRangeOptions = ['start', 'end']
 
 // Test the suite itself as well as the default implementation,
 // excluding noop operations that can't pass the test suite.
@@ -930,7 +929,7 @@ test('.status', function (t) {
 })
 
 test('_setupIteratorOptions', function (t) {
-  var keys = legacyRangeOptions.concat(rangeOptions)
+  var keys = rangeOptions.slice()
   var db = new AbstractLevelDOWN()
 
   function setupOptions (constrFn) {
@@ -948,7 +947,7 @@ test('_setupIteratorOptions', function (t) {
     t.end()
   }
 
-  t.plan(6)
+  t.plan(7)
 
   t.test('default options', function (t) {
     t.same(db._setupIteratorOptions(), {
@@ -1013,5 +1012,20 @@ test('_setupIteratorOptions', function (t) {
       t.is(options[key], undefined, 'should be undefined')
     })
     verifyOptions(t, db._setupIteratorOptions(options))
+  })
+
+  t.test('rejects legacy range options', function (t) {
+    t.plan(2)
+
+    for (var key of ['start', 'end']) {
+      var options = {}
+      options[key] = 'x'
+
+      try {
+        db._setupIteratorOptions(options)
+      } catch (err) {
+        t.is(err.message, 'Legacy range options ("start" and "end") have been removed')
+      }
+    }
   })
 })

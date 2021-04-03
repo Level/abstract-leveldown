@@ -10,6 +10,10 @@ function testCommon (options) {
     throw new TypeError('test must be a function')
   }
 
+  if (options.legacyRange != null) {
+    throw new Error('The legacyRange option has been removed')
+  }
+
   return {
     test: test,
     factory: factory,
@@ -25,10 +29,6 @@ function testCommon (options) {
     snapshots: options.snapshots !== false,
     seek: options.seek !== false,
     clear: !!options.clear,
-
-    // Allow skipping 'start' and 'end' tests
-    // TODO (next major): drop legacy range options
-    legacyRange: options.legacyRange !== false,
 
     // Support running test suite on a levelup db. All options below this line
     // are undocumented and should not be used by abstract-leveldown db's (yet).

@@ -151,12 +151,12 @@ exports.range = function (test, testCommon) {
     reverse: true
   }, data.slice(0, 51))
 
-  // Starting key is actually '00' so it should avoid it
+  // First key is actually '00' so it should avoid it
   rangeTest('lte=0', {
     lte: '0'
   }, data)
 
-  // Starting key is actually '00' so it should avoid it
+  // First key is actually '00' so it should avoid it
   rangeTest('lt=0', {
     lt: '0'
   }, data)
