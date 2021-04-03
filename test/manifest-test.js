@@ -1,4 +1,4 @@
-var suite = require('level-supports/test')
+const suite = require('level-supports/test')
 
 module.exports = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -6,7 +6,7 @@ module.exports = function (test, testCommon) {
   suite(test, testCommon)
 
   testCommon.status && test('manifest has status', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     t.is(db.supports.status, true)
 
     // The semantics of not opening or closing a new db are unclear

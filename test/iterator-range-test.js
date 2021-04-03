@@ -1,11 +1,11 @@
-var collectEntries = require('level-concat-iterator')
+const collectEntries = require('level-concat-iterator')
 
-var db
+let db
 
-var data = (function () {
-  var d = []
-  var i = 0
-  var k
+const data = (function () {
+  const d = []
+  let i = 0
+  let k
   for (; i < 100; i++) {
     k = (i < 10 ? '0' : '') + i
     d.push({
@@ -49,7 +49,7 @@ exports.range = function (test, testCommon) {
     // Test the documented promise that in reverse mode,
     // "the returned entries are the same, but in reverse".
     if (!opts.reverse && !('limit' in opts)) {
-      var reverseOpts = Object.assign({}, opts, { reverse: true })
+      const reverseOpts = Object.assign({}, opts, { reverse: true })
 
       rangeTest(
         name + ' (flipped)',

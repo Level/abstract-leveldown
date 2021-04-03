@@ -31,7 +31,7 @@
     "level-community": "^3.0.0",
     "nyc": "^15.1.0",
     "sinon": "^10.0.0",
-    "standard": "^14.0.0",
+    "standard": "^16.0.3",
     "tape": "^5.0.1"
   },
   "hallmark": {

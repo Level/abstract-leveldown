@@ -1,6 +1,6 @@
-var db
-var verifyNotFoundError = require('./util').verifyNotFoundError
-var isTypedArray = require('./util').isTypedArray
+let db
+const verifyNotFoundError = require('./util').verifyNotFoundError
+const isTypedArray = require('./util').isTypedArray
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -28,7 +28,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with null or undefined `value`', function (t) {
-    var illegalValues = [null, undefined]
+    const illegalValues = [null, undefined]
 
     t.plan(illegalValues.length)
 
@@ -40,7 +40,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with missing `key`', function (t) {
-    var async = false
+    let async = false
 
     db.batch([{ type: 'put', value: 'foo1' }], function (err) {
       t.ok(err, 'got error')
@@ -53,12 +53,12 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with null or undefined `key`', function (t) {
-    var illegalKeys = [null, undefined]
+    const illegalKeys = [null, undefined]
 
     t.plan(illegalKeys.length * 3)
 
     illegalKeys.forEach(function (key) {
-      var async = false
+      let async = false
 
       db.batch([{ type: 'put', key: key, value: 'foo1' }], function (err) {
         t.ok(err, 'got error')
@@ -71,7 +71,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with empty `key`', function (t) {
-    var illegalKeys = [
+    const illegalKeys = [
       { type: 'String', key: '' },
       { type: 'Buffer', key: Buffer.alloc(0) },
       { type: 'Array', key: [] }
@@ -80,7 +80,7 @@ exports.args = function (test, testCommon) {
     t.plan(illegalKeys.length * 3)
 
     illegalKeys.forEach(function (item) {
-      var async = false
+      let async = false
 
       db.batch([{ type: 'put', key: item.key, value: 'foo1' }], function (err) {
         t.ok(err, 'got error')
@@ -93,7 +93,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with missing `key` and `value`', function (t) {
-    var async = false
+    let async = false
 
     db.batch([{ type: 'put' }], function (err) {
       t.ok(err, 'got error')
@@ -106,7 +106,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with missing `type`', function (t) {
-    var async = false
+    let async = false
 
     db.batch([{ key: 'key', value: 'value' }], function (err) {
       t.ok(err, 'got error')
@@ -119,7 +119,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with wrong `type`', function (t) {
-    var async = false
+    let async = false
 
     db.batch([{ key: 'key', value: 'value', type: 'foo' }], function (err) {
       t.ok(err, 'got error')
@@ -132,7 +132,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with missing array', function (t) {
-    var async = false
+    let async = false
 
     db.batch(function (err) {
       t.ok(err, 'got error')
@@ -145,7 +145,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with undefined array', function (t) {
-    var async = false
+    let async = false
 
     db.batch(undefined, function (err) {
       t.ok(err, 'got error')
@@ -158,7 +158,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with null array', function (t) {
-    var async = false
+    let async = false
 
     db.batch(null, function (err) {
       t.ok(err, 'got error')
@@ -178,10 +178,10 @@ exports.args = function (test, testCommon) {
   })
 
   ;[null, undefined, 1, true].forEach(function (element) {
-    var type = element === null ? 'null' : typeof element
+    const type = element === null ? 'null' : typeof element
 
     test('test batch() with ' + type + ' element', function (t) {
-      var async = false
+      let async = false
 
       db.batch([element], function (err) {
         t.ok(err, 'got error')
@@ -195,7 +195,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch() with empty array', function (t) {
-    var async = false
+    let async = false
 
     db.batch([], function (err) {
       t.error(err, 'no error from batch()')
@@ -214,7 +214,7 @@ exports.batch = function (test, testCommon) {
 
       db.get('foo', function (err, value) {
         t.error(err)
-        var result
+        let result
 
         if (testCommon.encodings) {
           t.is(typeof value, 'string')
@@ -240,14 +240,14 @@ exports.batch = function (test, testCommon) {
     ], function (err) {
       t.error(err)
 
-      var r = 0
-      var done = function () {
+      let r = 0
+      const done = function () {
         if (++r === 3) { t.end() }
       }
 
       db.get('foobatch1', function (err, value) {
         t.error(err)
-        var result
+        let result
         if (testCommon.encodings) {
           t.is(typeof value, 'string')
           result = value
@@ -270,7 +270,7 @@ exports.batch = function (test, testCommon) {
 
       db.get('foobatch3', function (err, value) {
         t.error(err)
-        var result
+        let result
         if (testCommon.encodings) {
           t.is(typeof value, 'string')
           result = value
@@ -291,7 +291,7 @@ exports.atomic = function (test, testCommon) {
   test('test multiple batch()', function (t) {
     t.plan(4)
 
-    var async = false
+    let async = false
 
     db.batch([
       { type: 'put', key: 'foobah1', value: 'bar1' },

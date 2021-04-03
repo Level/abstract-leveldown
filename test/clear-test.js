@@ -1,5 +1,5 @@
-var concat = require('level-concat-iterator')
-var db
+const concat = require('level-concat-iterator')
+let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -35,8 +35,8 @@ exports.clear = function (test, testCommon) {
     test('test simple clear() on ' + type + ' keys', function (t) {
       t.plan(8)
 
-      var db = testCommon.factory()
-      var ops = keys.map(function (key) {
+      const db = testCommon.factory()
+      const ops = keys.map(function (key) {
         return { type: 'put', key: key, value: 'foo' }
       })
 

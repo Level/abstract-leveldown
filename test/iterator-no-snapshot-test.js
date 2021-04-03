@@ -1,4 +1,4 @@
-var collectEntries = require('level-concat-iterator')
+const collectEntries = require('level-concat-iterator')
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -7,8 +7,8 @@ exports.setUp = function (test, testCommon) {
 exports.noSnapshot = function (test, testCommon) {
   function make (run) {
     return function (t) {
-      var db = testCommon.factory()
-      var operations = [
+      const db = testCommon.factory()
+      const operations = [
         { type: 'put', key: 'a', value: 'a' },
         { type: 'put', key: 'b', value: 'b' },
         { type: 'put', key: 'c', value: 'c' }
@@ -23,7 +23,7 @@ exports.noSnapshot = function (test, testCommon) {
           // For this test it is important that we don't read eagerly.
           // NOTE: highWaterMark is not an abstract option atm, but
           // it is supported by leveldown, rocksdb and others.
-          var it = db.iterator({ highWaterMark: 0 })
+          const it = db.iterator({ highWaterMark: 0 })
 
           run(db, function (err) {
             t.ifError(err, 'no run error')
@@ -38,7 +38,7 @@ exports.noSnapshot = function (test, testCommon) {
     collectEntries(it, function (err, entries) {
       t.ifError(err, 'no iterator error')
 
-      var kv = entries.map(function (entry) {
+      const kv = entries.map(function (entry) {
         return entry.key.toString() + entry.value.toString()
       })
 

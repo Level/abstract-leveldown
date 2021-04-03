@@ -1,10 +1,12 @@
-var supports = require('level-supports')
-var Buffer = require('buffer').Buffer
-var AbstractIterator = require('./abstract-iterator')
-var AbstractChainedBatch = require('./abstract-chained-batch')
-var nextTick = require('./next-tick')
-var hasOwnProperty = Object.prototype.hasOwnProperty
-var rangeOptions = ['lt', 'lte', 'gt', 'gte']
+'use strict'
+
+const supports = require('level-supports')
+const Buffer = require('buffer').Buffer
+const AbstractIterator = require('./abstract-iterator')
+const AbstractChainedBatch = require('./abstract-chained-batch')
+const nextTick = require('./next-tick')
+const hasOwnProperty = Object.prototype.hasOwnProperty
+const rangeOptions = ['lt', 'lte', 'gt', 'gte']
 
 function AbstractLevelDOWN (manifest) {
   this.status = 'new'
@@ -16,8 +18,7 @@ function AbstractLevelDOWN (manifest) {
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
-  var self = this
-  var oldStatus = this.status
+  const oldStatus = this.status
 
   if (typeof options === 'function') callback = options
 
@@ -31,12 +32,12 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   options.errorIfExists = !!options.errorIfExists
 
   this.status = 'opening'
-  this._open(options, function (err) {
+  this._open(options, (err) => {
     if (err) {
-      self.status = oldStatus
+      this.status = oldStatus
       return callback(err)
     }
-    self.status = 'open'
+    this.status = 'open'
     callback()
   })
 }
@@ -46,20 +47,19 @@ AbstractLevelDOWN.prototype._open = function (options, callback) {
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
-  var self = this
-  var oldStatus = this.status
+  const oldStatus = this.status
 
   if (typeof callback !== 'function') {
     throw new Error('close() requires a callback argument')
   }
 
   this.status = 'closing'
-  this._close(function (err) {
+  this._close((err) => {
     if (err) {
-      self.status = oldStatus
+      this.status = oldStatus
       return callback(err)
     }
-    self.status = 'closed'
+    this.status = 'closed'
     callback()
   })
 }
@@ -75,7 +75,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
     throw new Error('get() requires a callback argument')
   }
 
-  var err = this._checkKey(key)
+  const err = this._checkKey(key)
   if (err) return nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -98,7 +98,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
     throw new Error('put() requires a callback argument')
   }
 
-  var err = this._checkKey(key) || this._checkValue(value)
+  const err = this._checkKey(key) || this._checkValue(value)
   if (err) return nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -120,7 +120,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
     throw new Error('del() requires a callback argument')
   }
 
-  var err = this._checkKey(key)
+  const err = this._checkKey(key)
   if (err) return nextTick(callback, err)
 
   key = this._serializeKey(key)
@@ -155,26 +155,26 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
   if (typeof options !== 'object' || options === null) options = {}
 
-  var serialized = new Array(array.length)
+  const serialized = new Array(array.length)
 
-  for (var i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     if (typeof array[i] !== 'object' || array[i] === null) {
       return nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
     }
 
-    var e = Object.assign({}, array[i])
+    const e = Object.assign({}, array[i])
 
     if (e.type !== 'put' && e.type !== 'del') {
       return nextTick(callback, new Error("`type` must be 'put' or 'del'"))
     }
 
-    var err = this._checkKey(e.key)
+    const err = this._checkKey(e.key)
     if (err) return nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 
     if (e.type === 'put') {
-      var valueErr = this._checkValue(e.value)
+      const valueErr = this._checkValue(e.value)
       if (valueErr) return nextTick(callback, valueErr)
 
       e.value = this._serializeValue(e.value)
@@ -211,25 +211,24 @@ AbstractLevelDOWN.prototype._clear = function (options, callback) {
   options.keyAsBuffer = true
   options.valueAsBuffer = true
 
-  var iterator = this._iterator(options)
-  var emptyOptions = {}
-  var self = this
+  const iterator = this._iterator(options)
+  const emptyOptions = {}
 
-  var next = function (err) {
+  const next = (err) => {
     if (err) {
       return iterator.end(function () {
         callback(err)
       })
     }
 
-    iterator.next(function (err, key) {
+    iterator.next((err, key) => {
       if (err) return next(err)
       if (key === undefined) return iterator.end(callback)
 
       // This could be optimized by using a batch, but the default _clear
       // is not meant to be fast. Implementations have more room to optimize
       // if they override _clear. Note: using _del bypasses key serialization.
-      self._del(key, emptyOptions, next)
+      this._del(key, emptyOptions, next)
     })
   }
 
@@ -250,16 +249,16 @@ AbstractLevelDOWN.prototype._setupIteratorOptions = function (options) {
 }
 
 function cleanRangeOptions (db, options) {
-  var result = {}
+  const result = {}
 
-  for (var k in options) {
+  for (const k in options) {
     if (!hasOwnProperty.call(options, k)) continue
 
     if (k === 'start' || k === 'end') {
       throw new Error('Legacy range options ("start" and "end") have been removed')
     }
 
-    var opt = options[k]
+    let opt = options[k]
 
     if (isRangeOption(k)) {
       // Note that we don't reject nullish and empty options here. While

@@ -1,4 +1,6 @@
-var nextTick = require('./next-tick')
+'use strict'
+
+const nextTick = require('./next-tick')
 
 function AbstractIterator (db) {
   if (typeof db !== 'object' || db === null) {
@@ -11,29 +13,27 @@ function AbstractIterator (db) {
 }
 
 AbstractIterator.prototype.next = function (callback) {
-  var self = this
-
   if (typeof callback !== 'function') {
     throw new Error('next() requires a callback argument')
   }
 
-  if (self._ended) {
+  if (this._ended) {
     nextTick(callback, new Error('cannot call next() after end()'))
-    return self
+    return this
   }
 
-  if (self._nexting) {
+  if (this._nexting) {
     nextTick(callback, new Error('cannot call next() before previous next() has completed'))
-    return self
+    return this
   }
 
-  self._nexting = true
-  self._next(function () {
-    self._nexting = false
-    callback.apply(null, arguments)
+  this._nexting = true
+  this._next((err, ...rest) => {
+    this._nexting = false
+    callback(err, ...rest)
   })
 
-  return self
+  return this
 }
 
 AbstractIterator.prototype._next = function (callback) {

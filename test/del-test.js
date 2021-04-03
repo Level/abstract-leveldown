@@ -1,5 +1,5 @@
-var db
-var verifyNotFoundError = require('./util').verifyNotFoundError
+let db
+const verifyNotFoundError = require('./util').verifyNotFoundError
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -39,7 +39,7 @@ exports.args = function (test, testCommon) {
 
   testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(3)
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     db._serializeKey = function (data) { return data }
     db._del = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })

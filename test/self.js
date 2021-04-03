@@ -1,13 +1,13 @@
 'use strict'
 
-var test = require('tape')
-var sinon = require('sinon')
-var inherits = require('util').inherits
-var AbstractLevelDOWN = require('../').AbstractLevelDOWN
-var AbstractIterator = require('../').AbstractIterator
-var AbstractChainedBatch = require('../').AbstractChainedBatch
+const test = require('tape')
+const sinon = require('sinon')
+const inherits = require('util').inherits
+const AbstractLevelDOWN = require('../').AbstractLevelDOWN
+const AbstractIterator = require('../').AbstractIterator
+const AbstractChainedBatch = require('../').AbstractChainedBatch
 
-var testCommon = require('./common')({
+const testCommon = require('./common')({
   test: test,
   clear: true,
   factory: function () {
@@ -15,7 +15,7 @@ var testCommon = require('./common')({
   }
 })
 
-var rangeOptions = ['gt', 'gte', 'lt', 'lte']
+const rangeOptions = ['gt', 'gte', 'lt', 'lte']
 
 // Test the suite itself as well as the default implementation,
 // excluding noop operations that can't pass the test suite.
@@ -84,7 +84,7 @@ function implement (ctor, methods) {
 
   inherits(Test, ctor)
 
-  for (var k in methods) {
+  for (const k in methods) {
     Test.prototype[k] = methods[k]
   }
 
@@ -96,15 +96,15 @@ function implement (ctor, methods) {
  */
 
 test('test core extensibility', function (t) {
-  var Test = implement(AbstractLevelDOWN)
-  var test = new Test()
+  const Test = implement(AbstractLevelDOWN)
+  const test = new Test()
   t.equal(test.status, 'new', 'status is new')
   t.end()
 })
 
 test('test key/value serialization', function (t) {
-  var Test = implement(AbstractLevelDOWN)
-  var test = new Test()
+  const Test = implement(AbstractLevelDOWN)
+  const test = new Test()
 
   ;['', {}, null, undefined, Buffer.alloc(0)].forEach(function (v) {
     t.ok(test._serializeKey(v) === v, '_serializeKey is an identity function')
@@ -115,11 +115,11 @@ test('test key/value serialization', function (t) {
 })
 
 test('test open() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { createIfMissing: true, errorIfExists: false }
-  var Test = implement(AbstractLevelDOWN, { _open: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { createIfMissing: true, errorIfExists: false }
+  const Test = implement(AbstractLevelDOWN, { _open: spy })
+  const test = new Test('foobar')
 
   test.open(expectedCb)
 
@@ -140,10 +140,10 @@ test('test open() extensibility', function (t) {
 })
 
 test('test close() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var Test = implement(AbstractLevelDOWN, { _close: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const Test = implement(AbstractLevelDOWN, { _close: spy })
+  const test = new Test('foobar')
 
   test.close(expectedCb)
 
@@ -154,12 +154,12 @@ test('test close() extensibility', function (t) {
 })
 
 test('test get() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { asBuffer: true }
-  var expectedKey = 'a key'
-  var Test = implement(AbstractLevelDOWN, { _get: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { asBuffer: true }
+  const expectedKey = 'a key'
+  const Test = implement(AbstractLevelDOWN, { _get: spy })
+  const test = new Test('foobar')
 
   test.get(expectedKey, expectedCb)
 
@@ -184,12 +184,12 @@ test('test get() extensibility', function (t) {
 })
 
 test('test del() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { options: 1 }
-  var expectedKey = 'a key'
-  var Test = implement(AbstractLevelDOWN, { _del: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { options: 1 }
+  const expectedKey = 'a key'
+  const Test = implement(AbstractLevelDOWN, { _del: spy })
+  const test = new Test('foobar')
 
   test.del(expectedKey, expectedCb)
 
@@ -212,13 +212,13 @@ test('test del() extensibility', function (t) {
 })
 
 test('test put() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { options: 1 }
-  var expectedKey = 'a key'
-  var expectedValue = 'a value'
-  var Test = implement(AbstractLevelDOWN, { _put: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { options: 1 }
+  const expectedKey = 'a key'
+  const expectedValue = 'a value'
+  const Test = implement(AbstractLevelDOWN, { _put: spy })
+  const test = new Test('foobar')
 
   test.put(expectedKey, expectedValue, expectedCb)
 
@@ -243,15 +243,15 @@ test('test put() extensibility', function (t) {
 })
 
 test('test batch([]) (array-form) extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { options: 1 }
-  var expectedArray = [
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { options: 1 }
+  const expectedArray = [
     { type: 'put', key: '1', value: '1' },
     { type: 'del', key: '2' }
   ]
-  var Test = implement(AbstractLevelDOWN, { _batch: spy })
-  var test = new Test('foobar')
+  const Test = implement(AbstractLevelDOWN, { _batch: spy })
+  const test = new Test('foobar')
 
   test.batch(expectedArray, expectedCb)
 
@@ -283,10 +283,10 @@ test('test batch([]) (array-form) extensibility', function (t) {
 })
 
 test('test batch([]) (array-form) with empty array is asynchronous', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, { _batch: spy })
-  var test = new Test()
-  var async = false
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, { _batch: spy })
+  const test = new Test()
+  let async = false
 
   test.batch([], function (err) {
     t.ifError(err, 'no error')
@@ -301,11 +301,11 @@ test('test batch([]) (array-form) with empty array is asynchronous', function (t
 })
 
 test('test chained batch() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var expectedOptions = { options: 1 }
-  var Test = implement(AbstractLevelDOWN, { _batch: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { options: 1 }
+  const Test = implement(AbstractLevelDOWN, { _batch: spy })
+  const test = new Test('foobar')
 
   test.batch().put('foo', 'bar').del('bang').write(expectedCb)
 
@@ -333,9 +333,9 @@ test('test chained batch() extensibility', function (t) {
 })
 
 test('test chained batch() with no operations is asynchronous', function (t) {
-  var Test = implement(AbstractLevelDOWN, {})
-  var test = new Test()
-  var async = false
+  const Test = implement(AbstractLevelDOWN, {})
+  const test = new Test()
+  let async = false
 
   test.batch().write(function (err) {
     t.ifError(err, 'no error')
@@ -347,9 +347,9 @@ test('test chained batch() with no operations is asynchronous', function (t) {
 })
 
 test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, { _chainedBatch: spy })
-  var test = new Test('foobar')
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, { _chainedBatch: spy })
+  const test = new Test('foobar')
 
   test.batch()
 
@@ -365,9 +365,9 @@ test('test chained batch() (custom _chainedBatch) extensibility', function (t) {
 })
 
 test('test AbstractChainedBatch extensibility', function (t) {
-  var Test = implement(AbstractChainedBatch)
-  var db = {}
-  var test = new Test(db)
+  const Test = implement(AbstractChainedBatch)
+  const db = {}
+  const test = new Test(db)
   t.ok(test.db === db, 'instance has db reference')
   t.end()
 })
@@ -375,7 +375,7 @@ test('test AbstractChainedBatch extensibility', function (t) {
 test('test AbstractChainedBatch expects a db', function (t) {
   t.plan(1)
 
-  var Test = implement(AbstractChainedBatch)
+  const Test = implement(AbstractChainedBatch)
 
   try {
     Test()
@@ -385,10 +385,10 @@ test('test AbstractChainedBatch expects a db', function (t) {
 })
 
 test('test AbstractChainedBatch#write() extensibility', function (t) {
-  var spy = sinon.spy()
-  var spycb = sinon.spy()
-  var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test({ test: true })
+  const spy = sinon.spy()
+  const spycb = sinon.spy()
+  const Test = implement(AbstractChainedBatch, { _write: spy })
+  const test = new Test({ test: true })
 
   test.write(spycb)
 
@@ -405,9 +405,9 @@ test('test AbstractChainedBatch#write() extensibility', function (t) {
 })
 
 test('test AbstractChainedBatch#write() extensibility with null options', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test({ test: true })
+  const spy = sinon.spy()
+  const Test = implement(AbstractChainedBatch, { _write: spy })
+  const test = new Test({ test: true })
 
   test.write(null, function () {})
 
@@ -417,9 +417,9 @@ test('test AbstractChainedBatch#write() extensibility with null options', functi
 })
 
 test('test AbstractChainedBatch#write() extensibility with options', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractChainedBatch, { _write: spy })
-  var test = new Test({ test: true })
+  const spy = sinon.spy()
+  const Test = implement(AbstractChainedBatch, { _write: spy })
+  const test = new Test({ test: true })
 
   test.write({ test: true }, function () {})
 
@@ -429,12 +429,12 @@ test('test AbstractChainedBatch#write() extensibility with options', function (t
 })
 
 test('test AbstractChainedBatch#put() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedKey = 'key'
-  var expectedValue = 'value'
-  var Test = implement(AbstractChainedBatch, { _put: spy })
-  var test = new Test(testCommon.factory())
-  var returnValue = test.put(expectedKey, expectedValue)
+  const spy = sinon.spy()
+  const expectedKey = 'key'
+  const expectedValue = 'value'
+  const Test = implement(AbstractChainedBatch, { _put: spy })
+  const test = new Test(testCommon.factory())
+  const returnValue = test.put(expectedKey, expectedValue)
 
   t.equal(spy.callCount, 1, 'got _put call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _put() was correct')
@@ -446,11 +446,11 @@ test('test AbstractChainedBatch#put() extensibility', function (t) {
 })
 
 test('test AbstractChainedBatch#del() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedKey = 'key'
-  var Test = implement(AbstractChainedBatch, { _del: spy })
-  var test = new Test(testCommon.factory())
-  var returnValue = test.del(expectedKey)
+  const spy = sinon.spy()
+  const expectedKey = 'key'
+  const Test = implement(AbstractChainedBatch, { _del: spy })
+  const test = new Test(testCommon.factory())
+  const returnValue = test.del(expectedKey)
 
   t.equal(spy.callCount, 1, 'got _del call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _del() was correct')
@@ -461,10 +461,10 @@ test('test AbstractChainedBatch#del() extensibility', function (t) {
 })
 
 test('test AbstractChainedBatch#clear() extensibility', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractChainedBatch, { _clear: spy })
-  var test = new Test(testCommon.factory())
-  var returnValue = test.clear()
+  const spy = sinon.spy()
+  const Test = implement(AbstractChainedBatch, { _clear: spy })
+  const test = new Test(testCommon.factory())
+  const returnValue = test.clear()
 
   t.equal(spy.callCount, 1, 'got _clear call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _clear() was correct')
@@ -474,8 +474,8 @@ test('test AbstractChainedBatch#clear() extensibility', function (t) {
 })
 
 test('test iterator() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedOptions = {
+  const spy = sinon.spy()
+  const expectedOptions = {
     options: 1,
     reverse: false,
     keys: true,
@@ -484,8 +484,8 @@ test('test iterator() extensibility', function (t) {
     keyAsBuffer: true,
     valueAsBuffer: true
   }
-  var Test = implement(AbstractLevelDOWN, { _iterator: spy })
-  var test = new Test('foobar')
+  const Test = implement(AbstractLevelDOWN, { _iterator: spy })
+  const test = new Test('foobar')
 
   test.iterator({ options: 1 })
 
@@ -497,18 +497,18 @@ test('test iterator() extensibility', function (t) {
 })
 
 test('test AbstractIterator extensibility', function (t) {
-  var Test = implement(AbstractIterator)
-  var db = {}
-  var test = new Test(db)
+  const Test = implement(AbstractIterator)
+  const db = {}
+  const test = new Test(db)
   t.ok(test.db === db, 'instance has db reference')
   t.end()
 })
 
 test('test AbstractIterator#next() extensibility', function (t) {
-  var spy = sinon.spy()
-  var spycb = sinon.spy()
-  var Test = implement(AbstractIterator, { _next: spy })
-  var test = new Test({})
+  const spy = sinon.spy()
+  const spycb = sinon.spy()
+  const Test = implement(AbstractIterator, { _next: spy })
+  const test = new Test({})
 
   test.next(spycb)
 
@@ -524,10 +524,10 @@ test('test AbstractIterator#next() extensibility', function (t) {
 })
 
 test('test AbstractIterator#end() extensibility', function (t) {
-  var spy = sinon.spy()
-  var expectedCb = function () {}
-  var Test = implement(AbstractIterator, { _end: spy })
-  var test = new Test({})
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const Test = implement(AbstractIterator, { _end: spy })
+  const test = new Test({})
 
   test.end(expectedCb)
 
@@ -539,10 +539,10 @@ test('test AbstractIterator#end() extensibility', function (t) {
 })
 
 test('test clear() extensibility', function (t) {
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, { _clear: spy })
-  var db = new Test()
-  var callback = function () {}
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, { _clear: spy })
+  const db = new Test()
+  const callback = function () {}
 
   call([callback], { reverse: false, limit: -1 })
   call([null, callback], { reverse: false, limit: -1 })
@@ -570,8 +570,8 @@ test('test clear() extensibility', function (t) {
 test('test serialization extensibility (put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _put: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -584,7 +584,7 @@ test('test serialization extensibility (put)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.put('no', 'nope', function () {})
 
   t.equal(spy.callCount, 1, 'got _put() call')
@@ -595,8 +595,8 @@ test('test serialization extensibility (put)', function (t) {
 test('test serialization extensibility (del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _del: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -607,7 +607,7 @@ test('test serialization extensibility (del)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.del('no', function () {})
 
   t.equal(spy.callCount, 1, 'got _del() call')
@@ -619,8 +619,8 @@ test('test serialization extensibility (del)', function (t) {
 test('test serialization extensibility (batch array put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _batch: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -632,7 +632,7 @@ test('test serialization extensibility (batch array put)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.batch([{ type: 'put', key: 'no', value: 'nope' }], function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
@@ -643,8 +643,8 @@ test('test serialization extensibility (batch array put)', function (t) {
 test('test serialization extensibility (batch chain put)', function (t) {
   t.plan(5)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _batch: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -656,7 +656,7 @@ test('test serialization extensibility (batch chain put)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.batch().put('no', 'nope').write(function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
@@ -667,8 +667,8 @@ test('test serialization extensibility (batch chain put)', function (t) {
 test('test serialization extensibility (batch array del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _batch: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -679,7 +679,7 @@ test('test serialization extensibility (batch array del)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.batch([{ type: 'del', key: 'no' }], function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
@@ -689,8 +689,8 @@ test('test serialization extensibility (batch array del)', function (t) {
 test('test serialization extensibility (batch chain del)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _batch: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -701,7 +701,7 @@ test('test serialization extensibility (batch chain del)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
+  const test = new Test('foobar')
   test.batch().del('no').write(function () {})
 
   t.equal(spy.callCount, 1, 'got _batch() call')
@@ -711,8 +711,8 @@ test('test serialization extensibility (batch chain del)', function (t) {
 test('test serialization extensibility (batch array is not mutated)', function (t) {
   t.plan(7)
 
-  var spy = sinon.spy()
-  var Test = implement(AbstractLevelDOWN, {
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
     _batch: spy,
     _serializeKey: function (key) {
       t.equal(key, 'no')
@@ -724,8 +724,8 @@ test('test serialization extensibility (batch array is not mutated)', function (
     }
   })
 
-  var test = new Test('foobar')
-  var op = { type: 'put', key: 'no', value: 'nope' }
+  const test = new Test('foobar')
+  const op = { type: 'put', key: 'no', value: 'nope' }
 
   test.batch([op], function () {})
 
@@ -762,17 +762,17 @@ test('test serialization extensibility (iterator range options)', function (t) {
 
   inherits(Iterator, AbstractIterator)
 
-  var test = new Test()
+  const test = new Test()
   test.iterator({ gt: 'input' })
 })
 
 test('test serialization extensibility (iterator seek)', function (t) {
   t.plan(3)
 
-  var spy = sinon.spy()
-  var TestIterator = implement(AbstractIterator, { _seek: spy })
+  const spy = sinon.spy()
+  const TestIterator = implement(AbstractIterator, { _seek: spy })
 
-  var Test = implement(AbstractLevelDOWN, {
+  const Test = implement(AbstractLevelDOWN, {
     _iterator: function () {
       return new TestIterator(this)
     },
@@ -782,8 +782,8 @@ test('test serialization extensibility (iterator seek)', function (t) {
     }
   })
 
-  var test = new Test('foobar')
-  var it = test.iterator()
+  const test = new Test('foobar')
+  const it = test.iterator()
 
   it.seek('target')
 
@@ -795,7 +795,7 @@ test('test serialization extensibility (clear range options)', function (t) {
   t.plan(rangeOptions.length * 2)
 
   rangeOptions.forEach(function (key) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _serializeKey: function (key) {
         t.is(key, 'input')
         return 'output'
@@ -805,8 +805,8 @@ test('test serialization extensibility (clear range options)', function (t) {
       }
     })
 
-    var db = new Test()
-    var options = {}
+    const db = new Test()
+    const options = {}
 
     options[key] = 'input'
     db.clear(options, function () {})
@@ -814,12 +814,12 @@ test('test serialization extensibility (clear range options)', function (t) {
 })
 
 test('clear() does not delete empty or nullish range options', function (t) {
-  var rangeValues = [Buffer.alloc(0), '', null, undefined]
+  const rangeValues = [Buffer.alloc(0), '', null, undefined]
 
   t.plan(rangeOptions.length * rangeValues.length)
 
   rangeValues.forEach(function (value) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _clear: function (options, callback) {
         rangeOptions.forEach(function (key) {
           t.ok(key in options, key + ' option should not be deleted')
@@ -827,8 +827,8 @@ test('clear() does not delete empty or nullish range options', function (t) {
       }
     })
 
-    var db = new Test()
-    var options = {}
+    const db = new Test()
+    const options = {}
 
     rangeOptions.forEach(function (key) {
       options[key] = value
@@ -842,8 +842,8 @@ test('.status', function (t) {
   t.plan(5)
 
   t.test('empty prototype', function (t) {
-    var Test = implement(AbstractLevelDOWN)
-    var test = new Test('foobar')
+    const Test = implement(AbstractLevelDOWN)
+    const test = new Test('foobar')
 
     t.equal(test.status, 'new')
 
@@ -860,13 +860,13 @@ test('.status', function (t) {
   })
 
   t.test('open error', function (t) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _open: function (options, cb) {
         cb(new Error())
       }
     })
 
-    var test = new Test('foobar')
+    const test = new Test('foobar')
 
     test.open(function (err) {
       t.ok(err)
@@ -876,13 +876,13 @@ test('.status', function (t) {
   })
 
   t.test('close error', function (t) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _close: function (cb) {
         cb(new Error())
       }
     })
 
-    var test = new Test('foobar')
+    const test = new Test('foobar')
     test.open(function () {
       test.close(function (err) {
         t.ok(err)
@@ -893,13 +893,13 @@ test('.status', function (t) {
   })
 
   t.test('open', function (t) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _open: function (options, cb) {
         process.nextTick(cb)
       }
     })
 
-    var test = new Test('foobar')
+    const test = new Test('foobar')
     test.open(function (err) {
       t.error(err)
       t.equal(test.status, 'open')
@@ -909,13 +909,13 @@ test('.status', function (t) {
   })
 
   t.test('close', function (t) {
-    var Test = implement(AbstractLevelDOWN, {
+    const Test = implement(AbstractLevelDOWN, {
       _close: function (cb) {
         process.nextTick(cb)
       }
     })
 
-    var test = new Test('foobar')
+    const test = new Test('foobar')
     test.open(function (err) {
       t.error(err)
       test.close(function (err) {
@@ -929,11 +929,11 @@ test('.status', function (t) {
 })
 
 test('_setupIteratorOptions', function (t) {
-  var keys = rangeOptions.slice()
-  var db = new AbstractLevelDOWN()
+  const keys = rangeOptions.slice()
+  const db = new AbstractLevelDOWN()
 
   function setupOptions (constrFn) {
-    var options = {}
+    const options = {}
     keys.forEach(function (key) {
       options[key] = constrFn()
     })
@@ -981,7 +981,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('does not delete empty buffers', function (t) {
-    var options = setupOptions(function () { return Buffer.from('') })
+    const options = setupOptions(function () { return Buffer.from('') })
     keys.forEach(function (key) {
       t.is(Buffer.isBuffer(options[key]), true, 'should be buffer')
       t.is(options[key].length, 0, 'should be empty')
@@ -990,7 +990,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('does not delete empty strings', function (t) {
-    var options = setupOptions(function () { return '' })
+    const options = setupOptions(function () { return '' })
     keys.forEach(function (key) {
       t.is(typeof options[key], 'string', 'should be string')
       t.is(options[key].length, 0, 'should be empty')
@@ -999,7 +999,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('does not delete null', function (t) {
-    var options = setupOptions(function () { return null })
+    const options = setupOptions(function () { return null })
     keys.forEach(function (key) {
       t.is(options[key], null, 'should be null')
     })
@@ -1007,7 +1007,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   t.test('does not delete undefined', function (t) {
-    var options = setupOptions(function () { return undefined })
+    const options = setupOptions(function () { return undefined })
     keys.forEach(function (key) {
       t.is(options[key], undefined, 'should be undefined')
     })
@@ -1017,8 +1017,8 @@ test('_setupIteratorOptions', function (t) {
   t.test('rejects legacy range options', function (t) {
     t.plan(2)
 
-    for (var key of ['start', 'end']) {
-      var options = {}
+    for (const key of ['start', 'end']) {
+      const options = {}
       options[key] = 'x'
 
       try {

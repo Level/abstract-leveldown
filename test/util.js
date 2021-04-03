@@ -1,4 +1,4 @@
-var nfre = /NotFound/i
+const nfre = /NotFound/i
 
 exports.verifyNotFoundError = function verifyNotFoundError (err) {
   return nfre.test(err.message) || nfre.test(err.name)

@@ -12,8 +12,8 @@ exports.setUp = function (test, testCommon) {
 exports.sequence = function (test, testCommon) {
   function make (name, testFn) {
     test(name, function (t) {
-      var db = testCommon.factory()
-      var done = function (err) {
+      const db = testCommon.factory()
+      const done = function (err) {
         t.error(err, 'no error from done()')
 
         db.close(function (err) {
@@ -30,9 +30,9 @@ exports.sequence = function (test, testCommon) {
   }
 
   make('iterator#seek() throws if next() has not completed', function (db, t, done) {
-    var ite = db.iterator()
-    var error
-    var async = false
+    const ite = db.iterator()
+    let error
+    let async = false
 
     ite.next(function (err, key, value) {
       t.error(err, 'no error from next()')
@@ -52,7 +52,7 @@ exports.sequence = function (test, testCommon) {
   })
 
   make('iterator#seek() throws after end()', function (db, t, done) {
-    var ite = db.iterator()
+    const ite = db.iterator()
 
     // TODO: why call next? Can't we end immediately?
     ite.next(function (err, key, value) {
@@ -60,7 +60,7 @@ exports.sequence = function (test, testCommon) {
 
       ite.end(function (err) {
         t.error(err, 'no error from end()')
-        var error
+        let error
 
         try {
           ite.seek('two')
@@ -78,8 +78,8 @@ exports.sequence = function (test, testCommon) {
 exports.seek = function (test, testCommon) {
   function make (name, testFn) {
     test(name, function (t) {
-      var db = testCommon.factory()
-      var done = function (err) {
+      const db = testCommon.factory()
+      const done = function (err) {
         t.error(err, 'no error from done()')
 
         db.close(function (err) {
@@ -104,7 +104,7 @@ exports.seek = function (test, testCommon) {
   }
 
   make('iterator#seek() to string target', function (db, t, done) {
-    var ite = db.iterator()
+    const ite = db.iterator()
     ite.seek('two')
     ite.next(function (err, key, value) {
       t.error(err, 'no error')
@@ -121,7 +121,7 @@ exports.seek = function (test, testCommon) {
 
   if (testCommon.bufferKeys) {
     make('iterator#seek() to buffer target', function (db, t, done) {
-      var ite = db.iterator()
+      const ite = db.iterator()
       ite.seek(Buffer.from('two'))
       ite.next(function (err, key, value) {
         t.error(err, 'no error from next()')
@@ -138,7 +138,7 @@ exports.seek = function (test, testCommon) {
   }
 
   make('iterator#seek() on reverse iterator', function (db, t, done) {
-    var ite = db.iterator({ reverse: true, limit: 1 })
+    const ite = db.iterator({ reverse: true, limit: 1 })
     ite.seek('three!')
     ite.next(function (err, key, value) {
       t.error(err, 'no error')
@@ -149,7 +149,7 @@ exports.seek = function (test, testCommon) {
   })
 
   make('iterator#seek() to out of range target', function (db, t, done) {
-    var ite = db.iterator()
+    const ite = db.iterator()
     ite.seek('zzz')
     ite.next(function (err, key, value) {
       t.error(err, 'no error')
@@ -160,7 +160,7 @@ exports.seek = function (test, testCommon) {
   })
 
   make('iterator#seek() on reverse iterator to out of range target', function (db, t, done) {
-    var ite = db.iterator({ reverse: true })
+    const ite = db.iterator({ reverse: true })
     ite.seek('zzz')
     ite.next(function (err, key, value) {
       t.error(err, 'no error')
@@ -171,22 +171,22 @@ exports.seek = function (test, testCommon) {
   })
 
   test('iterator#seek() respects range', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     db.open(function (err) {
       t.error(err, 'no error from open()')
 
       // Can't use Array.fill() because IE
-      var ops = []
+      const ops = []
 
-      for (var i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i++) {
         ops.push({ type: 'put', key: String(i), value: String(i) })
       }
 
       db.batch(ops, function (err) {
         t.error(err, 'no error from batch()')
 
-        var pending = 0
+        let pending = 0
 
         expect({ gt: '5' }, '4', undefined)
         expect({ gt: '5' }, '5', undefined)
@@ -227,14 +227,14 @@ exports.seek = function (test, testCommon) {
 
         function expect (range, target, expected) {
           pending++
-          var ite = db.iterator(range)
+          const ite = db.iterator(range)
 
           ite.seek(target)
           ite.next(function (err, key, value) {
             t.error(err, 'no error from next()')
 
-            var json = JSON.stringify(range)
-            var msg = 'seek(' + target + ') on ' + json + ' yields ' + expected
+            const json = JSON.stringify(range)
+            const msg = 'seek(' + target + ') on ' + json + ' yields ' + expected
 
             if (expected === undefined) {
               t.equal(value, undefined, msg)

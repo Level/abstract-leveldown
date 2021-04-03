@@ -1,9 +1,9 @@
-var concat = require('level-concat-iterator')
+const concat = require('level-concat-iterator')
 
-var data = (function () {
-  var d = []
-  var i = 0
-  var k
+const data = (function () {
+  const d = []
+  let i = 0
+  let k
   for (; i < 100; i++) {
     k = (i < 10 ? '0' : '') + i
     d.push({
@@ -31,7 +31,7 @@ exports.range = function (test, testCommon) {
   }
 
   function prepare (t, callback) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     db.open(function (err) {
       t.ifError(err, 'no open error')
@@ -50,7 +50,7 @@ exports.range = function (test, testCommon) {
   }
 
   function verify (t, db, expected) {
-    var it = db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
+    const it = db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
 
     concat(it, function (err, result) {
       t.ifError(err, 'no concat error')
@@ -63,7 +63,7 @@ exports.range = function (test, testCommon) {
 
   function exclude (data, start, end, expectedLength) {
     data = data.slice()
-    var removed = data.splice(start, end - start + 1) // Inclusive
+    const removed = data.splice(start, end - start + 1) // Inclusive
     if (expectedLength != null) checkLength(removed, expectedLength)
     return data
   }

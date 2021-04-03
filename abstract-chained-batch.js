@@ -1,4 +1,6 @@
-var nextTick = require('./next-tick')
+'use strict'
+
+const nextTick = require('./next-tick')
 
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
@@ -19,7 +21,7 @@ AbstractChainedBatch.prototype._checkWritten = function () {
 AbstractChainedBatch.prototype.put = function (key, value) {
   this._checkWritten()
 
-  var err = this.db._checkKey(key) || this.db._checkValue(value)
+  const err = this.db._checkKey(key) || this.db._checkValue(value)
   if (err) throw err
 
   key = this.db._serializeKey(key)
@@ -37,7 +39,7 @@ AbstractChainedBatch.prototype._put = function (key, value) {
 AbstractChainedBatch.prototype.del = function (key) {
   this._checkWritten()
 
-  var err = this.db._checkKey(key)
+  const err = this.db._checkKey(key)
   if (err) throw err
 
   key = this.db._serializeKey(key)

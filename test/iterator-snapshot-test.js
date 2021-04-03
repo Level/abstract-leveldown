@@ -5,7 +5,7 @@ exports.setUp = function (test, testCommon) {
 exports.snapshot = function (test, testCommon) {
   function make (run) {
     return function (t) {
-      var db = testCommon.factory()
+      const db = testCommon.factory()
 
       db.open(function (err) {
         t.ifError(err, 'no open error')
@@ -16,7 +16,7 @@ exports.snapshot = function (test, testCommon) {
           // For this test it is important that we don't read eagerly.
           // NOTE: highWaterMark is not an abstract option atm, but
           // it is supported by leveldown, rocksdb and others.
-          var it = db.iterator({ highWaterMark: 0 })
+          const it = db.iterator({ highWaterMark: 0 })
 
           run(t, db, it, function end (err) {
             t.ifError(err, 'no run error')

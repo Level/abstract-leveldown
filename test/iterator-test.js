@@ -1,4 +1,4 @@
-var db
+let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -10,14 +10,14 @@ exports.setUp = function (test, testCommon) {
 
 exports.args = function (test, testCommon) {
   test('test iterator has db reference', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     // For levelup compat: may return iterator of an underlying db, that's okay.
     t.ok(iterator.db === db || iterator.db)
     iterator.end(t.end.bind(t))
   })
 
   test('test argument-less iterator#next() throws', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     t.throws(
       iterator.next.bind(iterator),
       /Error: next\(\) requires a callback argument/,
@@ -27,7 +27,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test argument-less iterator#end() after next() throws', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     iterator.next(function () {
       t.throws(
         iterator.end.bind(iterator),
@@ -39,7 +39,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test argument-less iterator#end() throws', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     t.throws(
       iterator.end.bind(iterator),
       /Error: end\(\) requires a callback argument/,
@@ -49,8 +49,8 @@ exports.args = function (test, testCommon) {
   })
 
   test('test iterator#next returns this', function (t) {
-    var iterator = db.iterator()
-    var self = iterator.next(function () {})
+    const iterator = db.iterator()
+    const self = iterator.next(function () {})
     t.ok(iterator === self)
     iterator.end(t.end.bind(t))
   })
@@ -58,11 +58,11 @@ exports.args = function (test, testCommon) {
 
 exports.sequence = function (test, testCommon) {
   test('test twice iterator#end() callback with error', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     iterator.end(function (err) {
       t.error(err)
 
-      var async = false
+      let async = false
 
       iterator.end(function (err2) {
         t.ok(err2, 'returned error')
@@ -77,11 +77,11 @@ exports.sequence = function (test, testCommon) {
   })
 
   test('test iterator#next after iterator#end() callback with error', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     iterator.end(function (err) {
       t.error(err)
 
-      var async = false
+      let async = false
 
       iterator.next(function (err2) {
         t.ok(err2, 'returned error')
@@ -96,7 +96,7 @@ exports.sequence = function (test, testCommon) {
   })
 
   test('test twice iterator#next() throws', function (t) {
-    var iterator = db.iterator()
+    const iterator = db.iterator()
     iterator.next(function (err) {
       t.error(err)
       iterator.end(function (err) {
@@ -105,7 +105,7 @@ exports.sequence = function (test, testCommon) {
       })
     })
 
-    var async = false
+    let async = false
 
     iterator.next(function (err) {
       t.ok(err, 'returned error')
@@ -120,17 +120,17 @@ exports.sequence = function (test, testCommon) {
 
 exports.iterator = function (test, testCommon) {
   test('test simple iterator()', function (t) {
-    var data = [
+    const data = [
       { type: 'put', key: 'foobatch1', value: 'bar1' },
       { type: 'put', key: 'foobatch2', value: 'bar2' },
       { type: 'put', key: 'foobatch3', value: 'bar3' }
     ]
-    var idx = 0
+    let idx = 0
 
     db.batch(data, function (err) {
       t.error(err)
-      var iterator = db.iterator()
-      var fn = function (err, key, value) {
+      const iterator = db.iterator()
+      const fn = function (err, key, value) {
         t.error(err)
         if (key && value) {
           if (testCommon.encodings) {
@@ -154,7 +154,7 @@ exports.iterator = function (test, testCommon) {
           })
         }
       }
-      var next = function () {
+      const next = function () {
         iterator.next(fn)
       }
 

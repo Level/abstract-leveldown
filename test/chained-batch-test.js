@@ -1,11 +1,11 @@
-var collectEntries = require('level-concat-iterator')
+const collectEntries = require('level-concat-iterator')
 
-var db
+let db
 
 function collectBatchOps (batch) {
-  var _put = batch._put
-  var _del = batch._del
-  var _operations = []
+  const _put = batch._put
+  const _del = batch._del
+  const _operations = []
 
   if (typeof _put !== 'function' || typeof _del !== 'function') {
     return batch._operations
@@ -82,7 +82,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#put() with null or undefined `value`', function (t) {
-    var illegalValues = [null, undefined]
+    const illegalValues = [null, undefined]
     t.plan(illegalValues.length)
 
     illegalValues.forEach(function (value) {
@@ -106,7 +106,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#del() with null or undefined `key`', function (t) {
-    var illegalKeys = [null, undefined]
+    const illegalKeys = [null, undefined]
     t.plan(illegalKeys.length)
 
     illegalKeys.forEach(function (key) {
@@ -135,7 +135,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#put() after write()', function (t) {
-    var batch = db.batch().put('foo', 'bar')
+    const batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
       batch.put('boom', 'bang')
@@ -148,7 +148,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#del() after write()', function (t) {
-    var batch = db.batch().put('foo', 'bar')
+    const batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
       batch.del('foo')
@@ -161,7 +161,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#clear() after write()', function (t) {
-    var batch = db.batch().put('foo', 'bar')
+    const batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
       batch.clear()
@@ -174,7 +174,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#write() after write()', function (t) {
-    var batch = db.batch().put('foo', 'bar')
+    const batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
     try {
       batch.write(function () {})
@@ -187,8 +187,8 @@ exports.args = function (test, testCommon) {
   })
 
   testCommon.serialize && test('test serialize object', function (t) {
-    var batch = db.batch()
-    var ops = collectBatchOps(batch)
+    const batch = db.batch()
+    const ops = collectBatchOps(batch)
 
     batch
       .put({ foo: 'bar' }, { beep: 'boop' })
@@ -205,9 +205,9 @@ exports.args = function (test, testCommon) {
   testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(4)
 
-    var _db = Object.create(db)
-    var batch = _db.batch()
-    var ops = collectBatchOps(batch)
+    const _db = Object.create(db)
+    const batch = _db.batch()
+    const ops = collectBatchOps(batch)
 
     _db._serializeKey = function (key) {
       t.same(key, { foo: 'bar' })
@@ -235,7 +235,7 @@ exports.args = function (test, testCommon) {
   })
 
   test('test batch#write() with no operations', function (t) {
-    var async = false
+    let async = false
 
     db.batch().write(function (err) {
       t.ifError(err, 'no error from write()')
@@ -270,7 +270,7 @@ exports.batch = function (test, testCommon) {
             db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
               t.error(err)
               t.equal(data.length, 3, 'correct number of entries')
-              var expected = [
+              const expected = [
                 { key: 'foo', value: 'bar' },
                 { key: 'one', value: 'I' },
                 { key: 'two', value: 'II' }

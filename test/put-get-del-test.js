@@ -1,12 +1,12 @@
 'use strict'
 
-var db
-var verifyNotFoundError = require('./util').verifyNotFoundError
-var testBuffer = Buffer.from('testbuffer')
+let db
+const verifyNotFoundError = require('./util').verifyNotFoundError
+const testBuffer = Buffer.from('testbuffer')
 
 function makeGetDelErrorTests (test, type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
-    var async = false
+    let async = false
 
     db.get(key, function (err) {
       t.ok(err, 'has error')
@@ -20,7 +20,7 @@ function makeGetDelErrorTests (test, type, key, expectedError) {
   })
 
   test('test del() with ' + type + ' causes error', function (t) {
-    var async = false
+    let async = false
 
     db.del(key, function (err) {
       t.ok(err, 'has error')
@@ -36,7 +36,7 @@ function makeGetDelErrorTests (test, type, key, expectedError) {
 
 function makePutErrorTest (test, type, key, value, expectedError) {
   test('test put() with ' + type + ' causes error', function (t) {
-    var async = false
+    let async = false
 
     db.put(key, value, function (err) {
       t.ok(err, 'has error')
@@ -51,16 +51,18 @@ function makePutErrorTest (test, type, key, value, expectedError) {
 }
 
 function makePutGetDelSuccessfulTest (test, testCommon, type, key, value, expectedResult) {
-  var hasExpectedResult = arguments.length === 6
+  const hasExpectedResult = arguments.length === 6
   test('test put()/get()/del() with ' + type, function (t) {
     db.put(key, value, function (err) {
       t.error(err)
       db.get(key, function (err, _value) {
         t.error(err, 'no error, has key/value for `' + type + '`')
 
+        let result
+
         if (!testCommon.encodings) {
           t.ok(Buffer.isBuffer(_value), 'is a Buffer')
-          var result = _value
+          result = _value
         } else {
           t.is(typeof _value, 'string', 'is a string')
           result = _value
@@ -76,7 +78,7 @@ function makePutGetDelSuccessfulTest (test, testCommon, type, key, value, expect
         db.del(key, function (err) {
           t.error(err, 'no error, deleted key/value for `' + type + '`')
 
-          var async = false
+          let async = false
 
           db.get(key, function (err, value) {
             t.ok(err, 'entry properly deleted')
