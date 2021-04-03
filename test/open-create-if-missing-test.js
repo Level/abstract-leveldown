@@ -4,8 +4,8 @@ exports.setUp = function (test, testCommon) {
 
 exports.createIfMissing = function (test, testCommon) {
   test('test database open createIfMissing:false', function (t) {
-    var db = testCommon.factory()
-    var async = false
+    const db = testCommon.factory()
+    let async = false
 
     db.open({ createIfMissing: false }, function (err) {
       t.ok(err, 'error')

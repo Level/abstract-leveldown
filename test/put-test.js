@@ -1,5 +1,5 @@
-var db
-var isTypedArray = require('./util').isTypedArray
+let db
+const isTypedArray = require('./util').isTypedArray
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -48,7 +48,7 @@ exports.args = function (test, testCommon) {
 
   testCommon.serialize && test('test _serialize object', function (t) {
     t.plan(3)
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     db._put = function (key, value, opts, callback) {
       t.ok(key)
       t.ok(value)
@@ -61,7 +61,7 @@ exports.args = function (test, testCommon) {
 
   testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(4)
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     db._serializeKey = db._serializeValue = function (data) { return data }
     db._put = function (key, value, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
@@ -83,7 +83,7 @@ exports.put = function (test, testCommon) {
       t.error(err)
       db.get('foo', function (err, value) {
         t.error(err)
-        var result = value.toString()
+        let result = value.toString()
         if (isTypedArray(value)) {
           result = String.fromCharCode.apply(null, new Uint16Array(value))
         }

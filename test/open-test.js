@@ -4,7 +4,7 @@ exports.setUp = function (test, testCommon) {
 
 exports.args = function (test, testCommon) {
   testCommon.promises || test('test database open no-arg throws', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     t.throws(
       db.open.bind(db),
       /Error: open\(\) requires a callback argument/,
@@ -14,7 +14,7 @@ exports.args = function (test, testCommon) {
   })
 
   testCommon.promises || test('test callback-less, 1-arg, open() throws', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     t.throws(
       db.open.bind(db, {}),
       /Error: open\(\) requires a callback argument/,
@@ -26,7 +26,7 @@ exports.args = function (test, testCommon) {
 
 exports.open = function (test, testCommon) {
   test('test database open, no options', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     // default createIfMissing=true, errorIfExists=false
     db.open(function (err) {
@@ -38,7 +38,7 @@ exports.open = function (test, testCommon) {
   })
 
   test('test database open, options and callback', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     // default createIfMissing=true, errorIfExists=false
     db.open({}, function (err) {
@@ -50,7 +50,7 @@ exports.open = function (test, testCommon) {
   })
 
   test('test database open, close and open', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     db.open(function (err) {
       t.error(err)

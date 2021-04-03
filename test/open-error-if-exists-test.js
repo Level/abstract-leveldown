@@ -4,14 +4,14 @@ exports.setUp = function (test, testCommon) {
 
 exports.errorIfExists = function (test, testCommon) {
   test('test database open errorIfExists:true', function (t) {
-    var db = testCommon.factory()
+    const db = testCommon.factory()
 
     db.open({}, function (err) {
       t.error(err)
       db.close(function (err) {
         t.error(err)
 
-        var async = false
+        let async = false
 
         db.open({ createIfMissing: false, errorIfExists: true }, function (err) {
           t.ok(err, 'error')

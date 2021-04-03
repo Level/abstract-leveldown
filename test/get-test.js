@@ -1,6 +1,7 @@
-var db
-var verifyNotFoundError = require('./util').verifyNotFoundError
-var isTypedArray = require('./util').isTypedArray
+let db
+
+const verifyNotFoundError = require('./util').verifyNotFoundError
+const isTypedArray = require('./util').isTypedArray
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -40,7 +41,7 @@ exports.args = function (test, testCommon) {
 
   testCommon.serialize && test('test custom _serialize*', function (t) {
     t.plan(3)
-    var db = testCommon.factory()
+    const db = testCommon.factory()
     db._serializeKey = function (data) { return data }
     db._get = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
@@ -62,11 +63,13 @@ exports.get = function (test, testCommon) {
       db.get('foo', function (err, value) {
         t.error(err)
 
+        let result
+
         if (!testCommon.encodings) {
           t.ok(typeof value !== 'string', 'should not be string by default')
 
           if (isTypedArray(value)) {
-            var result = String.fromCharCode.apply(null, new Uint16Array(value))
+            result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
             t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
             try {
@@ -84,11 +87,13 @@ exports.get = function (test, testCommon) {
         db.get('foo', {}, function (err, value) { // same but with {}
           t.error(err)
 
+          let result
+
           if (!testCommon.encodings) {
             t.ok(typeof value !== 'string', 'should not be string by default')
 
             if (isTypedArray(value)) {
-              var result = String.fromCharCode.apply(null, new Uint16Array(value))
+              result = String.fromCharCode.apply(null, new Uint16Array(value))
             } else {
               t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
               try {
@@ -117,12 +122,12 @@ exports.get = function (test, testCommon) {
   test('test simultaniously get()', function (t) {
     db.put('hello', 'world', function (err) {
       t.error(err)
-      var r = 0
-      var done = function () {
+      let r = 0
+      const done = function () {
         if (++r === 20) { t.end() }
       }
-      var i = 0
-      var j = 0
+      let i = 0
+      let j = 0
 
       for (; i < 10; ++i) {
         db.get('hello', function (err, value) {
@@ -149,7 +154,7 @@ exports.get = function (test, testCommon) {
     db.put('hello', 'world', function (err) {
       t.error(err)
 
-      var async = false
+      let async = false
 
       db.get('not found', function (err, value) {
         t.ok(err, 'should error')

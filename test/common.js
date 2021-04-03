@@ -1,6 +1,6 @@
 function testCommon (options) {
-  var factory = options.factory
-  var test = options.test
+  const factory = options.factory
+  const test = options.test
 
   if (typeof factory !== 'function') {
     throw new TypeError('factory must be a function')
