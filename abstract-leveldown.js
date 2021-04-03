@@ -5,7 +5,7 @@ var AbstractIterator = require('./abstract-iterator')
 var AbstractChainedBatch = require('./abstract-chained-batch')
 var nextTick = require('./next-tick')
 var hasOwnProperty = Object.prototype.hasOwnProperty
-var rangeOptions = 'start end gt gte lt lte'.split(' ')
+var rangeOptions = ['lt', 'lte', 'gt', 'gte']
 
 function AbstractLevelDOWN (manifest) {
   this.status = 'new'
@@ -255,6 +255,10 @@ function cleanRangeOptions (db, options) {
 
   for (var k in options) {
     if (!hasOwnProperty.call(options, k)) continue
+
+    if (k === 'start' || k === 'end') {
+      throw new Error('Legacy range options ("start" and "end") have been removed')
+    }
 
     var opt = options[k]
 

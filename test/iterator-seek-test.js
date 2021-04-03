@@ -196,10 +196,6 @@ exports.seek = function (test, testCommon) {
         expect({ gte: '5' }, '5', '5')
         expect({ gte: '5' }, '6', '6')
 
-        expect({ start: '5' }, '4', undefined)
-        expect({ start: '5' }, '5', '5')
-        expect({ start: '5' }, '6', '6')
-
         expect({ lt: '5' }, '4', '4')
         expect({ lt: '5' }, '5', undefined)
         expect({ lt: '5' }, '6', undefined)
@@ -207,10 +203,6 @@ exports.seek = function (test, testCommon) {
         expect({ lte: '5' }, '4', '4')
         expect({ lte: '5' }, '5', '5')
         expect({ lte: '5' }, '6', undefined)
-
-        expect({ end: '5' }, '4', '4')
-        expect({ end: '5' }, '5', '5')
-        expect({ end: '5' }, '6', undefined)
 
         expect({ lt: '5', reverse: true }, '4', '4')
         expect({ lt: '5', reverse: true }, '5', undefined)
@@ -220,10 +212,6 @@ exports.seek = function (test, testCommon) {
         expect({ lte: '5', reverse: true }, '5', '5')
         expect({ lte: '5', reverse: true }, '6', undefined)
 
-        expect({ start: '5', reverse: true }, '4', '4')
-        expect({ start: '5', reverse: true }, '5', '5')
-        expect({ start: '5', reverse: true }, '6', undefined)
-
         expect({ gt: '5', reverse: true }, '4', undefined)
         expect({ gt: '5', reverse: true }, '5', undefined)
         expect({ gt: '5', reverse: true }, '6', '6')
@@ -231,10 +219,6 @@ exports.seek = function (test, testCommon) {
         expect({ gte: '5', reverse: true }, '4', undefined)
         expect({ gte: '5', reverse: true }, '5', '5')
         expect({ gte: '5', reverse: true }, '6', '6')
-
-        expect({ end: '5', reverse: true }, '4', undefined)
-        expect({ end: '5', reverse: true }, '5', '5')
-        expect({ end: '5', reverse: true }, '6', '6')
 
         expect({ gt: '7', lt: '8' }, '7', undefined)
         expect({ gte: '7', lt: '8' }, '7', '7')

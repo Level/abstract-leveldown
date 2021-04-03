@@ -251,11 +251,6 @@ Returns an [`iterator`](#iterator). Accepts the following range options:
 - `reverse` _(boolean, default: `false`)_: iterate entries in reverse order. Beware that a reverse seek can be slower than a forward seek.
 - `limit` _(number, default: `-1`)_: limit the number of entries collected by this iterator. This number represents a _maximum_ number of entries and may not be reached if you get to the end of the range first. A value of `-1` means there is no limit. When `reverse=true` the entries with the highest keys will be returned instead of the lowest keys.
 
-Legacy options:
-
-- `start`: instead use `gte`
-- `end`: instead use `lte`.
-
 **Note** Zero-length strings, buffers and arrays as well as `null` and `undefined` are invalid as keys, yet valid as range options. These types are significant in encodings like [`bytewise`](https://github.com/deanlandolt/bytewise) and [`charwise`](https://github.com/dominictarr/charwise) as well as some underlying stores like IndexedDB. Consumers of an implementation should assume that `{ gt: undefined }` is _not_ the same as `{}`. An implementation can choose to:
 
 - [_Serialize_](#db_serializekeykey) or [_encode_][encoding-down] these types to make them meaningful
@@ -570,7 +565,6 @@ This also serves as a signal to users of your implementation. The following opti
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
 - `createIfMissing` and `errorIfExists`: set to `false` if `db._open()` does not support these options.
-- `legacyRange`: set to `false` if your iterator does not support the legacy `start` and `end` range options.
 
 This metadata will be moved to manifests (`db.supports`) in the future.
 
