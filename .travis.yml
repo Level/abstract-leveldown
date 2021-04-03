@@ -10,10 +10,13 @@ matrix:
     env: CMD=test
   - node_js: 10
     env: CMD=test
+  - node_js: 12
+    env: CMD=test
+  - node_js: 14
+    env: CMD=test
   - node_js: stable
     env: CMD=test-browsers
     addons:
-      sauce_connect: true
       hosts:
         - airtap.local
 

@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "standard && hallmark && nyc node test/self.js",
-    "test-browsers": "airtap --coverage --loopback airtap.local test/self.js",
-    "test-browser-local": "airtap --coverage --local test/self.js",
+    "test-browsers": "airtap --coverage test/self.js",
+    "test-browser-local": "airtap --coverage -p local --live test/self.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "hallmark": "hallmark --fix",
     "dependency-check": "dependency-check --no-dev -i buffer -i immediate . test/*.js",
@@ -24,7 +24,8 @@
     "xtend": "~4.0.0"
   },
   "devDependencies": {
-    "airtap": "^3.0.0",
+    "airtap": "^4.0.3",
+    "airtap-sauce": "^1.1.0",
     "coveralls": "^3.0.2",
     "dependency-check": "^4.1.0",
     "hallmark": "^3.1.0",
