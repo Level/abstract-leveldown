@@ -1,5 +1,4 @@
 var collectEntries = require('level-concat-iterator')
-var xtend = require('xtend')
 
 var db
 
@@ -50,7 +49,7 @@ exports.range = function (test, testCommon) {
     // Test the documented promise that in reverse mode,
     // "the returned entries are the same, but in reverse".
     if (!opts.reverse && !('limit' in opts)) {
-      var reverseOpts = xtend(opts, { reverse: true })
+      var reverseOpts = Object.assign({}, opts, { reverse: true })
 
       rangeTest(
         name + ' (flipped)',

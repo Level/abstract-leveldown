@@ -1,4 +1,3 @@
-var xtend = require('xtend')
 var supports = require('level-supports')
 var Buffer = require('buffer').Buffer
 var AbstractIterator = require('./abstract-iterator')
@@ -163,7 +162,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
       return nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
     }
 
-    var e = xtend(array[i])
+    var e = Object.assign({}, array[i])
 
     if (e.type !== 'put' && e.type !== 'del') {
       return nextTick(callback, new Error("`type` must be 'put' or 'del'"))
