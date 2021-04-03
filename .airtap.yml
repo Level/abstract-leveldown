@@ -14,7 +14,6 @@ browsers:
     version: 11..latest
   - name: chrome for android
     version: 6..latest
-  - name: android
   - name: msedge
 
 presets:
