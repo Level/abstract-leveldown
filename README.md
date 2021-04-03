@@ -167,7 +167,7 @@ See [`memdown`](https://github.com/Level/memdown/) if you are looking for a comp
 
 ## Browser Support
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://saucelabs.com/u/abstract-leveldown)
+[![Sauce Test Status](https://app.saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://app.saucelabs.com/u/abstract-leveldown)
 
 ## Public API For Consumers
 
