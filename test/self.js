@@ -91,6 +91,53 @@ function implement (ctor, methods) {
   return Test
 }
 
+// Temporary test for browsers
+// Not supported on Safari < 12 and Safari iOS < 12
+test('async generator', async function (t) {
+  let ended = false
+
+  const end = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    ended = true
+  }
+
+  async function * generator () {
+    try {
+      yield 1
+      yield 2
+      yield 3
+      yield 4
+    } finally {
+      // Test that we're always able to cleanup resources
+      await end()
+    }
+  }
+
+  const res = []
+
+  for await (const x of generator()) {
+    res.push(x)
+    if (x === 2) break
+  }
+
+  t.same(res, [1, 2])
+  t.is(ended, true)
+
+  ended = false
+
+  try {
+    for await (const x of generator()) {
+      res.push(x)
+      if (x === 2) throw new Error('userland error')
+    }
+  } catch (err) {
+    t.is(err.message, 'userland error')
+  }
+
+  t.same(res, [1, 2, 1, 2])
+  t.is(ended, true)
+})
+
 /**
  * Extensibility
  */
