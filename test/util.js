@@ -1,3 +1,5 @@
+'use strict'
+
 const nfre = /NotFound/i
 
 exports.verifyNotFoundError = function verifyNotFoundError (err) {

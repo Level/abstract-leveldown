@@ -1,7 +1,5 @@
 'use strict'
 
-const nextTick = require('./next-tick')
-
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -83,6 +81,6 @@ AbstractChainedBatch.prototype._write = function (options, callback) {
 }
 
 // Expose browser-compatible nextTick for dependents
-AbstractChainedBatch.prototype._nextTick = nextTick
+AbstractChainedBatch.prototype._nextTick = require('./next-tick')
 
 module.exports = AbstractChainedBatch

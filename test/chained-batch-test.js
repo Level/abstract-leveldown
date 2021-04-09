@@ -1,3 +1,5 @@
+'use strict'
+
 const collectEntries = require('level-concat-iterator')
 
 let db

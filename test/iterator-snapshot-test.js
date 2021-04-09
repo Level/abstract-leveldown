@@ -1,3 +1,5 @@
+'use strict'
+
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
 }

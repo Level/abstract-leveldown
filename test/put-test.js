@@ -1,5 +1,8 @@
-let db
+'use strict'
+
 const isTypedArray = require('./util').isTypedArray
+
+let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -52,7 +55,7 @@ exports.args = function (test, testCommon) {
     db._put = function (key, value, opts, callback) {
       t.ok(key)
       t.ok(value)
-      process.nextTick(callback)
+      this._nextTick(callback)
     }
     db.put({}, {}, function (err, val) {
       t.error(err)
@@ -66,7 +69,7 @@ exports.args = function (test, testCommon) {
     db._put = function (key, value, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
       t.deepEqual(value, { beep: 'boop' })
-      process.nextTick(callback)
+      this._nextTick(callback)
     }
     db.open(function () {
       db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {

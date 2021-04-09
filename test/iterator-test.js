@@ -1,3 +1,5 @@
+'use strict'
+
 let db
 
 exports.setUp = function (test, testCommon) {
@@ -142,7 +144,7 @@ exports.iterator = function (test, testCommon) {
           }
           t.is(key.toString(), data[idx].key, 'correct key')
           t.is(value.toString(), data[idx].value, 'correct value')
-          process.nextTick(next)
+          db._nextTick(next)
           idx++
         } else { // end
           t.ok(err == null, 'err argument is nullish')

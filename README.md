@@ -114,7 +114,7 @@ FakeLevelDOWN.prototype._open = function (options, callback) {
   this._store = {}
 
   // Use nextTick to be a nice async citizen
-  process.nextTick(callback)
+  this._nextTick(callback)
 }
 
 FakeLevelDOWN.prototype._serializeKey = function (key) {
@@ -125,7 +125,7 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 
 FakeLevelDOWN.prototype._put = function (key, value, options, callback) {
   this._store[key] = value
-  process.nextTick(callback)
+  this._nextTick(callback)
 }
 
 FakeLevelDOWN.prototype._get = function (key, options, callback) {
@@ -133,15 +133,15 @@ FakeLevelDOWN.prototype._get = function (key, options, callback) {
 
   if (value === undefined) {
     // 'NotFound' error, consistent with LevelDOWN API
-    return process.nextTick(callback, new Error('NotFound'))
+    return this._nextTick(callback, new Error('NotFound'))
   }
 
-  process.nextTick(callback, null, value)
+  this._nextTick(callback, null, value)
 }
 
 FakeLevelDOWN.prototype._del = function (key, options, callback) {
   delete this._store[key]
-  process.nextTick(callback)
+  this._nextTick(callback)
 }
 ```
 
@@ -353,7 +353,7 @@ Support of other key and value types depends on the implementation as well as it
 
 Each of these methods will receive exactly the number and order of arguments described. Optional arguments will receive sensible defaults. All callbacks are error-first and must be asynchronous.
 
-If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `process.nextTick` or some other means of microtask scheduling. For convenience, the prototypes of `AbstractLevelDOWN`, `AbstractIterator` and `AbstractChainedBatch` include a `_nextTick` method that is compatible with node and browsers.
+If an operation within your implementation is synchronous, be sure to invoke the callback on a next tick using `queueMicrotask`, `process.nextTick` or some other means of microtask scheduling. For convenience, the prototypes of `AbstractLevelDOWN`, `AbstractIterator` and `AbstractChainedBatch` include a `_nextTick` method that is compatible with node and browsers.
 
 ### `db = AbstractLevelDOWN([manifest])`
 

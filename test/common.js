@@ -1,3 +1,5 @@
+'use strict'
+
 function testCommon (options) {
   const factory = options.factory
   const test = options.test

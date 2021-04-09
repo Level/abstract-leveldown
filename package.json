@@ -13,15 +13,15 @@
     "test-browser-local": "airtap --coverage -p local --live test/self.js",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "hallmark": "hallmark --fix",
-    "dependency-check": "dependency-check --no-dev -i buffer -i immediate . test/*.js",
+    "dependency-check": "dependency-check --no-dev -i buffer -i queue-microtask . test/*.js",
     "prepublishOnly": "npm run dependency-check"
   },
   "dependencies": {
     "buffer": "^6.0.3",
-    "immediate": "^3.2.3",
     "is-buffer": "^2.0.5",
     "level-concat-iterator": "^3.0.0",
-    "level-supports": "^2.0.0"
+    "level-supports": "^2.0.0",
+    "queue-microtask": "^1.2.3"
   },
   "devDependencies": {
     "airtap": "^4.0.3",

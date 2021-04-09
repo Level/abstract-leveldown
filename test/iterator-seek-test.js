@@ -1,3 +1,5 @@
+'use strict'
+
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
   exports.sequence(test, testCommon)

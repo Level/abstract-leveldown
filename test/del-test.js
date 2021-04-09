@@ -1,5 +1,8 @@
-let db
+'use strict'
+
 const verifyNotFoundError = require('./util').verifyNotFoundError
+
+let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
@@ -43,7 +46,7 @@ exports.args = function (test, testCommon) {
     db._serializeKey = function (data) { return data }
     db._del = function (key, options, callback) {
       t.deepEqual(key, { foo: 'bar' })
-      process.nextTick(callback)
+      this._nextTick(callback)
     }
     db.open(function () {
       db.del({ foo: 'bar' }, function (err) {
