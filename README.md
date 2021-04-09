@@ -283,13 +283,13 @@ If no options are provided, all entries will be deleted. The `callback` function
 
 ### `chainedBatch`
 
-#### `chainedBatch.put(key, value)`
+#### `chainedBatch.put(key, value[, options])`
 
-Queue a `put` operation on this batch. This may throw if `key` or `value` is invalid.
+Queue a `put` operation on this batch. This may throw if `key` or `value` is invalid. There are no `options` by default but implementations may add theirs.
 
-#### `chainedBatch.del(key)`
+#### `chainedBatch.del(key[, options])`
 
-Queue a `del` operation on this batch. This may throw if `key` is invalid.
+Queue a `del` operation on this batch. This may throw if `key` is invalid. There are no `options` by default but implementations may add theirs.
 
 #### `chainedBatch.clear()`
 
@@ -494,13 +494,13 @@ The default `_end()` invokes `callback` on a next tick. Overriding is optional.
 
 The first argument to this constructor must be an instance of your `AbstractLevelDOWN` implementation. The constructor will set `chainedBatch.db` which is used to access `db._serialize*` and ensures that `db` will not be garbage collected in case there are no other references to it.
 
-#### `chainedBatch._put(key, value)`
+#### `chainedBatch._put(key, value, options)`
 
-Queue a `put` operation on this batch.
+Queue a `put` operation on this batch. There are no default options but `options` will always be an object.
 
-#### `chainedBatch._del(key)`
+#### `chainedBatch._del(key, options)`
 
-Queue a `del` operation on this batch.
+Queue a `del` operation on this batch. There are no default options but `options` will always be an object.
 
 #### `chainedBatch._clear()`
 

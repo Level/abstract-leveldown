@@ -1,5 +1,7 @@
 'use strict'
 
+const emptyOptions = Object.freeze({})
+
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
     throw new TypeError('First argument must be an abstract-leveldown compliant store')
@@ -16,7 +18,7 @@ AbstractChainedBatch.prototype._checkWritten = function () {
   }
 }
 
-AbstractChainedBatch.prototype.put = function (key, value) {
+AbstractChainedBatch.prototype.put = function (key, value, options) {
   this._checkWritten()
 
   const err = this.db._checkKey(key) || this.db._checkValue(value)
@@ -25,29 +27,29 @@ AbstractChainedBatch.prototype.put = function (key, value) {
   key = this.db._serializeKey(key)
   value = this.db._serializeValue(value)
 
-  this._put(key, value)
+  this._put(key, value, options != null ? options : emptyOptions)
 
   return this
 }
 
-AbstractChainedBatch.prototype._put = function (key, value) {
-  this._operations.push({ type: 'put', key: key, value: value })
+AbstractChainedBatch.prototype._put = function (key, value, options) {
+  this._operations.push({ ...options, type: 'put', key, value })
 }
 
-AbstractChainedBatch.prototype.del = function (key) {
+AbstractChainedBatch.prototype.del = function (key, options) {
   this._checkWritten()
 
   const err = this.db._checkKey(key)
   if (err) throw err
 
   key = this.db._serializeKey(key)
-  this._del(key)
+  this._del(key, options != null ? options : emptyOptions)
 
   return this
 }
 
-AbstractChainedBatch.prototype._del = function (key) {
-  this._operations.push({ type: 'del', key: key })
+AbstractChainedBatch.prototype._del = function (key, options) {
+  this._operations.push({ ...options, type: 'del', key })
 }
 
 AbstractChainedBatch.prototype.clear = function () {
@@ -64,7 +66,9 @@ AbstractChainedBatch.prototype._clear = function () {
 AbstractChainedBatch.prototype.write = function (options, callback) {
   this._checkWritten()
 
-  if (typeof options === 'function') { callback = options }
+  if (typeof options === 'function') {
+    callback = options
+  }
   if (typeof callback !== 'function') {
     throw new Error('write() requires a callback argument')
   }
