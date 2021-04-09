@@ -942,7 +942,7 @@ test('.status', function (t) {
   t.test('open', function (t) {
     const Test = implement(AbstractLevelDOWN, {
       _open: function (options, cb) {
-        process.nextTick(cb)
+        this._nextTick(cb)
       }
     })
 
@@ -958,7 +958,7 @@ test('.status', function (t) {
   t.test('close', function (t) {
     const Test = implement(AbstractLevelDOWN, {
       _close: function (cb) {
-        process.nextTick(cb)
+        this._nextTick(cb)
       }
     })
 

@@ -1,3 +1,5 @@
+'use strict'
+
 const suite = require('level-supports/test')
 
 module.exports = function (test, testCommon) {

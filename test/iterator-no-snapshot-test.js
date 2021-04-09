@@ -1,3 +1,5 @@
+'use strict'
+
 const collectEntries = require('level-concat-iterator')
 
 exports.setUp = function (test, testCommon) {

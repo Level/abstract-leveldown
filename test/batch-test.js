@@ -1,6 +1,9 @@
-let db
+'use strict'
+
 const verifyNotFoundError = require('./util').verifyNotFoundError
 const isTypedArray = require('./util').isTypedArray
+
+let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)

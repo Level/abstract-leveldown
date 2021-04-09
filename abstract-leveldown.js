@@ -4,7 +4,6 @@ const supports = require('level-supports')
 const isBuffer = require('is-buffer')
 const AbstractIterator = require('./abstract-iterator')
 const AbstractChainedBatch = require('./abstract-chained-batch')
-const nextTick = require('./next-tick')
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const rangeOptions = ['lt', 'lte', 'gt', 'gte']
 
@@ -43,7 +42,7 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
 }
 
 AbstractLevelDOWN.prototype._open = function (options, callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
@@ -65,7 +64,7 @@ AbstractLevelDOWN.prototype.close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype._close = function (callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
@@ -76,7 +75,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
   }
 
   const err = this._checkKey(key)
-  if (err) return nextTick(callback, err)
+  if (err) return this._nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -88,7 +87,7 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._get = function (key, options, callback) {
-  nextTick(function () { callback(new Error('NotFound')) })
+  this._nextTick(function () { callback(new Error('NotFound')) })
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
@@ -99,7 +98,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
   }
 
   const err = this._checkKey(key) || this._checkValue(value)
-  if (err) return nextTick(callback, err)
+  if (err) return this._nextTick(callback, err)
 
   key = this._serializeKey(key)
   value = this._serializeValue(value)
@@ -110,7 +109,7 @@ AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
@@ -121,7 +120,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
   }
 
   const err = this._checkKey(key)
-  if (err) return nextTick(callback, err)
+  if (err) return this._nextTick(callback, err)
 
   key = this._serializeKey(key)
 
@@ -131,7 +130,7 @@ AbstractLevelDOWN.prototype.del = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._del = function (key, options, callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
@@ -146,11 +145,11 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   }
 
   if (!Array.isArray(array)) {
-    return nextTick(callback, new Error('batch(array) requires an array argument'))
+    return this._nextTick(callback, new Error('batch(array) requires an array argument'))
   }
 
   if (array.length === 0) {
-    return nextTick(callback)
+    return this._nextTick(callback)
   }
 
   if (typeof options !== 'object' || options === null) options = {}
@@ -159,23 +158,23 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 
   for (let i = 0; i < array.length; i++) {
     if (typeof array[i] !== 'object' || array[i] === null) {
-      return nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
+      return this._nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
     }
 
     const e = Object.assign({}, array[i])
 
     if (e.type !== 'put' && e.type !== 'del') {
-      return nextTick(callback, new Error("`type` must be 'put' or 'del'"))
+      return this._nextTick(callback, new Error("`type` must be 'put' or 'del'"))
     }
 
     const err = this._checkKey(e.key)
-    if (err) return nextTick(callback, err)
+    if (err) return this._nextTick(callback, err)
 
     e.key = this._serializeKey(e.key)
 
     if (e.type === 'put') {
       const valueErr = this._checkValue(e.value)
-      if (valueErr) return nextTick(callback, valueErr)
+      if (valueErr) return this._nextTick(callback, valueErr)
 
       e.value = this._serializeValue(e.value)
     }
@@ -187,7 +186,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
-  nextTick(callback)
+  this._nextTick(callback)
 }
 
 AbstractLevelDOWN.prototype.clear = function (options, callback) {
@@ -317,6 +316,8 @@ AbstractLevelDOWN.prototype._checkValue = function (value) {
 }
 
 // Expose browser-compatible nextTick for dependents
-AbstractLevelDOWN.prototype._nextTick = nextTick
+// TODO: rename _nextTick to _queueMicrotask
+// TODO: after we drop node 10, also use queueMicrotask in node
+AbstractLevelDOWN.prototype._nextTick = require('./next-tick')
 
 module.exports = AbstractLevelDOWN

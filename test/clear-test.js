@@ -1,3 +1,5 @@
+'use strict'
+
 const concat = require('level-concat-iterator')
 let db
 

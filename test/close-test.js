@@ -1,3 +1,5 @@
+'use strict'
+
 let db
 
 exports.setUp = function (test, testCommon) {
