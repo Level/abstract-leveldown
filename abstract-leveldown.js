@@ -1,7 +1,7 @@
 'use strict'
 
 const supports = require('level-supports')
-const Buffer = require('buffer').Buffer
+const isBuffer = require('is-buffer')
 const AbstractIterator = require('./abstract-iterator')
 const AbstractChainedBatch = require('./abstract-chained-batch')
 const nextTick = require('./next-tick')
@@ -301,7 +301,7 @@ AbstractLevelDOWN.prototype._serializeValue = function (value) {
 AbstractLevelDOWN.prototype._checkKey = function (key) {
   if (key === null || key === undefined) {
     return new Error('key cannot be `null` or `undefined`')
-  } else if (Buffer.isBuffer(key) && key.length === 0) {
+  } else if (isBuffer(key) && key.length === 0) { // TODO: replace with typed array check
     return new Error('key cannot be an empty Buffer')
   } else if (key === '') {
     return new Error('key cannot be an empty String')

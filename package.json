@@ -19,6 +19,7 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "immediate": "^3.2.3",
+    "is-buffer": "^2.0.5",
     "level-concat-iterator": "^3.0.0",
     "level-supports": "^2.0.0"
   },
