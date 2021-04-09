@@ -2,6 +2,25 @@
 
 _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
+## [7.0.0] - 2021-04-09
+
+### Changed
+
+- Replace `immediate` shim with smaller `queue-microtask` ([`a00e3ed`](https://github.com/Level/abstract-leveldown/commit/a00e3ed)) (Vincent Weevers).
+- Remove need for full buffer shim (except in test suite) ([`8f79234`](https://github.com/Level/abstract-leveldown/commit/8f79234)) (Vincent Weevers)
+- Bump `level-concat-iterator` and `level-supports` ([`0b5e1a3`](https://github.com/Level/abstract-leveldown/commit/0b5e1a3)) (Vincent Weevers)
+- **Breaking:** drop support of Safari 11 ([`7c4cce6`](https://github.com/Level/abstract-leveldown/commit/7c4cce6)) (Vincent Weevers)
+- Modernize syntax and bump standard from 14.x to 16.x ([`cfe8040`](https://github.com/Level/abstract-leveldown/commit/cfe8040)) (Vincent Weevers)
+- Replace `xtend` dependency with `Object.assign()` ([`9d4171f`](https://github.com/Level/abstract-leveldown/commit/9d4171f)) (Vincent Weevers)
+- **Breaking:** remove legacy range options (`start` & `end`) ([`979d34f`](https://github.com/Level/abstract-leveldown/commit/979d34f)) ([Level/community#86](https://github.com/Level/community/issues/86)) (Vincent Weevers)
+- **Breaking:** drop support of stock Android browser (AOSP) ([`a1fd94e`](https://github.com/Level/abstract-leveldown/commit/a1fd94e)) (Vincent Weevers)
+- **Breaking:** drop node 6 and 8 ([`1beee24`](https://github.com/Level/abstract-leveldown/commit/1beee24)) (Vincent Weevers)
+- **Breaking (for browsers)**: bump `buffer` from 5.x to 6.x ([#373](https://github.com/Level/abstract-leveldown/issues/373)) ([`f62f38b`](https://github.com/Level/abstract-leveldown/commit/f62f38b)) (Alex Potsides).
+
+### Added
+
+- Support arbitrary options on chained batch `put()` and `del()` ([`ba144b2`](https://github.com/Level/abstract-leveldown/commit/ba144b2)) ([Level/levelup#633](https://github.com/Level/levelup/issues/633)) (Vincent Weevers).
+
 ## [6.3.0] - 2020-04-11
 
 ### Changed
@@ -103,7 +122,7 @@ _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
 ## [6.0.0] - 2018-10-20
 
-_If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#v6)._
+_If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#600)._
 
 ### Changed
 
@@ -818,6 +837,8 @@ No changes. Merely published changes made in `0.8.1`.
 ## 0.0.0 - 2013-03-15
 
 First release. :seedling:
+
+[7.0.0]: https://github.com/Level/abstract-leveldown/compare/v6.3.0...v7.0.0
 
 [6.3.0]: https://github.com/Level/abstract-leveldown/compare/v6.2.3...v6.3.0
 

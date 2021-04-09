@@ -6,7 +6,8 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 <details><summary>Click to expand</summary>
 
-- [v6](#v6)
+- [7.0.0](#700)
+- [6.0.0](#600)
   - [Changes to public API](#changes-to-public-api)
     - [Nullish values are rejected](#nullish-values-are-rejected)
     - [Range options are serialized](#range-options-are-serialized)
@@ -24,19 +25,42 @@ This document describes breaking changes and how to upgrade. For a complete list
     - [Seeking became part of official API](#seeking-became-part-of-official-api)
     - [Chained batch has been refactored](#chained-batch-has-been-refactored)
     - [Default `_serializeKey` and `_serializeValue` became identity functions](#default-_serializekey-and-_serializevalue-became-identity-functions)
-- [v5](#v5)
-- [v4](#v4)
+- [5.0.0](#500)
+- [4.0.0](#400)
   - - [default `testCommon` parameter](#default-testcommon-parameter)
     - [`testBuffer` parameter removed](#testbuffer-parameter-removed)
     - [`.approximateSize` method removed](#approximatesize-method-removed)
     - [`._isBuffer` method removed](#_isbuffer-method-removed)
     - [`isLevelDOWN` function removed](#isleveldown-function-removed)
     - [`ranges-test.js` renamed](#ranges-testjs-renamed)
-- [v3](#v3)
+- [3.0.0](#300)
 
 </details>
 
-## v6
+## 7.0.0
+
+Legacy range options have been removed ([Level/community#86](https://github.com/Level/community/issues/86)). If you previously did:
+
+```js
+db.iterator({ start: 'a', end: 'z' })
+```
+
+An error would now be thrown and you must instead do:
+
+```js
+db.iterator({ gte: 'a', lte: 'z' })
+```
+
+This release also drops support of legacy runtime environments ([Level/community#98](https://github.com/Level/community/issues/98)):
+
+- Node.js 6 and 8
+- Internet Explorer 11
+- Safari 9-11
+- Stock Android browser (AOSP).
+
+Lastly, and less likely to be a breaking change, the [`immediate`](https://github.com/calvinmetcalf/immediate) browser shim for `process.nextTick()` has been replaced with the smaller [`queue-microtask`](https://github.com/feross/queue-microtask). In the future we might use `queueMicrotask` in Node.js too.
+
+## 6.0.0
 
 This release brings a major refactoring of the test suite, decouples `abstract-leveldown` from disk-based implementations and solves long-standing issues around serialization and type support. Because the changes are substantial, this guide has two sections:
 
@@ -240,11 +264,11 @@ Please see the [README](README.md) for details.
 
 They return whatever is given. Previously they were opinionated and mostly geared towards string- and Buffer-based storages. Implementations that didn't already define their own serialization should now do so, according to the types that they support. Please refer to the [README](README.md) for recommended behavior.
 
-## v5
+## 5.0.0
 
 Dropped support for node 4. No other breaking changes.
 
-## v4
+## 4.0.0
 
 #### default `testCommon` parameter
 
@@ -340,6 +364,6 @@ to:
 const abstract = require('abstract-leveldown/abstract/iterator-range-test')
 ```
 
-## v3
+## 3.0.0
 
 No changes to the API. New major version because support for node 0.12 was dropped.
