@@ -14,12 +14,12 @@ function collectBatchOps (batch) {
   }
 
   batch._put = function (key, value) {
-    _operations.push({ type: 'put', key: key, value: value })
+    _operations.push({ type: 'put', key, value })
     return _put.apply(this, arguments)
   }
 
   batch._del = function (key) {
-    _operations.push({ type: 'del', key: key })
+    _operations.push({ type: 'del', key })
     return _del.apply(this, arguments)
   }
 

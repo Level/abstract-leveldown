@@ -365,14 +365,14 @@ test('test chained batch() extensibility', function (t) {
   t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
   t.equal(spy.getCall(0).args[2], expectedCb, 'got expected callback argument')
 
-  test.batch().put('foo', 'bar').del('bang').write(expectedOptions, expectedCb)
+  test.batch().put('foo', 'bar', expectedOptions).del('bang', expectedOptions).write(expectedOptions, expectedCb)
 
   t.equal(spy.callCount, 2, 'got _batch() call')
   t.equal(spy.getCall(1).thisValue, test, '`this` on _batch() was correct')
   t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
   t.equal(spy.getCall(1).args[0].length, 2, 'got expected array argument')
-  t.deepEqual(spy.getCall(1).args[0][0], { type: 'put', key: 'foo', value: 'bar' }, 'got expected array argument[0]')
-  t.deepEqual(spy.getCall(1).args[0][1], { type: 'del', key: 'bang' }, 'got expected array argument[1]')
+  t.deepEqual(spy.getCall(1).args[0][0], { type: 'put', key: 'foo', value: 'bar', options: 1 }, 'got expected array argument[0]')
+  t.deepEqual(spy.getCall(1).args[0][1], { type: 'del', key: 'bang', options: 1 }, 'got expected array argument[1]')
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected callback argument')
 
@@ -485,9 +485,10 @@ test('test AbstractChainedBatch#put() extensibility', function (t) {
 
   t.equal(spy.callCount, 1, 'got _put call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _put() was correct')
-  t.equal(spy.getCall(0).args.length, 2, 'got two arguments')
+  t.equal(spy.getCall(0).args.length, 3, 'got 3 arguments')
   t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
   t.equal(spy.getCall(0).args[1], expectedValue, 'got expected value argument')
+  t.same(spy.getCall(0).args[2], {}, 'got expected options argument')
   t.equal(returnValue, test, 'get expected return value')
   t.end()
 })
@@ -501,8 +502,9 @@ test('test AbstractChainedBatch#del() extensibility', function (t) {
 
   t.equal(spy.callCount, 1, 'got _del call')
   t.equal(spy.getCall(0).thisValue, test, '`this` on _del() was correct')
-  t.equal(spy.getCall(0).args.length, 1, 'got one argument')
+  t.equal(spy.getCall(0).args.length, 2, 'got 2 arguments')
   t.equal(spy.getCall(0).args[0], expectedKey, 'got expected key argument')
+  t.same(spy.getCall(0).args[1], {}, 'got expected options argument')
   t.equal(returnValue, test, 'get expected return value')
   t.end()
 })
