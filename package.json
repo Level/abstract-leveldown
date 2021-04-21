@@ -26,7 +26,6 @@
   "devDependencies": {
     "airtap": "^4.0.3",
     "airtap-sauce": "^1.1.0",
-    "coveralls": "^3.0.2",
     "dependency-check": "^4.1.0",
     "hallmark": "^3.1.0",
     "level-community": "^3.0.0",
