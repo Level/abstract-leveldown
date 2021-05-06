@@ -133,6 +133,59 @@ AbstractLevelDOWN.prototype._del = function (key, options, callback) {
   this._nextTick(callback)
 }
 
+AbstractLevelDOWN.prototype.map = function (keys, options, callback) {
+  if (typeof options === 'function') callback = options
+
+  if (typeof callback !== 'function') {
+    throw new Error('map() requires a callback argument')
+  }
+
+  if (Array.isArray(keys) === false || keys === null) {
+    return this._nextTick(callback, new Error('map(keys) element must be an array and not `null`'))
+  }
+
+  const _keys = new Array(keys.length)
+
+  for (const index in keys) {
+    const key = keys[index]
+    const err = this._checkKey(key)
+    if (err) return this._nextTick(callback, err)
+
+    _keys[index] = this._serializeKey(key)
+  }
+
+  if (typeof options !== 'object' || options === null) options = {}
+
+  options.asBuffer = options.asBuffer !== false
+
+  this._map(_keys, options, callback)
+}
+
+AbstractLevelDOWN.prototype._map = function (keys, options, callback) {
+  const count = keys.length
+  const result = new Array(count)
+  let index = 0
+
+  if (count === 0) return this._nextTick(callback, null, [])
+
+  const next = (err, value) => {
+    if (err) {
+      return this._nextTick(callback, err)
+    }
+
+    result[index++] = value
+
+    if (index >= count) {
+      return this._nextTick(callback, null, result)
+    }
+
+    /** key and options already serialized */
+    this._get(keys[index], options, next)
+  }
+
+  this._get(keys[index], options, next)
+}
+
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   if (!arguments.length) return this._chainedBatch()
 

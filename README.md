@@ -230,6 +230,14 @@ Store a new entry or overwrite an existing entry. There are no `options` by defa
 
 Delete an entry. There are no `options` by default but implementations may add theirs. The `callback` function will be called with no arguments if the operation is successful or with an `Error` if deletion failed for any reason.
 
+### `db.map(keys[, options], callback)`
+
+Get multiple values from the store by an array `keys`. The optional `options` object may contain:
+
+- `asBuffer` _(boolean, default: `true`)_: Whether to return each `value` in the result array as a Buffer. If `false`, the returned type depends on the implementation.
+
+The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be the array of values. Given N keys, the result will contain N values.
+
 ### `db.batch(operations[, options], callback)`
 
 Perform multiple _put_ and/or _del_ operations in bulk. The `operations` argument must be an `Array` containing a list of operations to be executed sequentially, although as a whole they are performed as an atomic operation.
@@ -426,6 +434,14 @@ The default `_put()` invokes `callback` on a next tick. It must be overridden.
 Delete an entry. There are no default options but `options` will always be an object. If deletion failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
 
 The default `_del()` invokes `callback` on a next tick. It must be overridden.
+
+### `db._map(keys, options, callback)`
+
+Map each `key` in the `keys` array to a `value`. The `options` object will always have the following properties: `asBuffer`. If _any_ key in `keys` does not exist, call the `callback` function with a `new Error('NotFound')`. Otherwise call `callback` with `null` as the first argument and the values array as the second.
+
+The default `_map()` loops through each key in the array `keys` and invokes `_get(key)`. It invokes `callback` on the next tick with the concatenated `_get` results array. 
+
+If applicable it is _recommended_, but not required, to implement `_map()` as native-code as this will likely be more performant than the default fallback. 
 
 ### `db._batch(operations, options, callback)`
 

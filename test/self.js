@@ -43,6 +43,9 @@ require('./put-get-del-test').setUp(test, testCommon)
 require('./put-get-del-test').errorKeys(test, testCommon)
 require('./put-get-del-test').tearDown(test, testCommon)
 
+require('./map-test').setUp(test, testCommon)
+require('./map-test').args(test, testCommon)
+
 require('./batch-test').setUp(test, testCommon)
 require('./batch-test').args(test, testCommon)
 
@@ -228,6 +231,62 @@ test('test get() extensibility', function (t) {
   t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
   t.equal(spy.getCall(1).args[2], expectedCb, 'got expected cb argument')
   t.end()
+})
+
+test('test map() extensibility', function (t) {
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { asBuffer: true }
+  const expectedKeys = ['a key']
+  const Test = implement(AbstractLevelDOWN, { _map: spy })
+  const test = new Test('foobar')
+
+  test.map(expectedKeys, expectedCb)
+
+  t.equal(spy.callCount, 1, 'got _map() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on __() was correct')
+  t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
+  t.deepEqual(spy.getCall(0).args[0], expectedKeys, 'got expected key argument')
+  t.deepEqual(spy.getCall(0).args[1], expectedOptions, 'got default options argument')
+  t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
+
+  test.map(expectedKeys, { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
+
+  t.equal(spy.callCount, 2, 'got _map() call')
+  t.equal(spy.getCall(1).thisValue, test, '`this` on _map() was correct')
+  t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
+  t.deepEqual(spy.getCall(1).args[0], expectedKeys, 'got expected key argument')
+  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
+  t.equal(spy.getCall(1).args[2], expectedCb, 'got expected cb argument')
+  t.end()
+})
+
+test('test _map() default calls _get()', function (t) {
+  const table = { A: 'a', B: 'b', C: 'c' }
+  const spy = sinon.spy(function (key, opts, cb) {
+    cb(null, table[key])
+  })
+  const expectedOptions = { asBuffer: true }
+  const expectedKeys = Object.keys(table)
+  const Test = implement(AbstractLevelDOWN, { _get: spy })
+  const test = new Test('foobar')
+
+  test._map(expectedKeys, expectedOptions, function (err, values) {
+    t.error(err)
+
+    t.equal(spy.callCount, Object.keys(table).length, 'correct number of _get() calls')
+    t.equal(spy.getCall(0).thisValue, test, '`this` on __() was correct')
+    t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
+
+    for (let i = 0; i < spy.callCount; i++) {
+      t.deepEqual(spy.getCall(i).args[0], expectedKeys[i], 'got expected key argument')
+      t.deepEqual(spy.getCall(i).args[1], expectedOptions, 'got default options argument')
+    }
+
+    t.end()
+  })
 })
 
 test('test del() extensibility', function (t) {
