@@ -23,7 +23,7 @@ exports.asyncIterator = function (test, testCommon) {
   test('for await...of db.iterator()', async function (t) {
     t.plan(2)
 
-    const it = db.iterator()
+    const it = db.iterator({ keyAsBuffer: false, valueAsBuffer: false })
     const output = []
 
     for await (const [key, value] of it) {
