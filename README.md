@@ -3,14 +3,13 @@
 > An abstract prototype matching the [`leveldown`][leveldown] API. Useful for extending [`levelup`](https://github.com/Level/levelup) functionality by providing a replacement to `leveldown`.
 
 [![level badge][level-badge]](https://github.com/Level/awesome)
-[![npm](https://img.shields.io/npm/v/abstract-leveldown.svg?label=&logo=npm)](https://www.npmjs.com/package/abstract-leveldown)
+[![npm](https://img.shields.io/npm/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 [![Node version](https://img.shields.io/node/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
-[![Test](https://github.com/Level/abstract-leveldown/actions/workflows/test.yml/badge.svg)](https://github.com/Level/abstract-leveldown/actions/workflows/test.yml)
-[![Coverage Status](https://codecov.io/gh/Level/abstract-leveldown/branch/master/graph/badge.svg)](https://codecov.io/gh/Level/abstract-leveldown)
-[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-[![npm](https://img.shields.io/npm/dm/abstract-leveldown.svg?label=dl)](https://www.npmjs.com/package/abstract-leveldown)
-[![Backers on Open Collective](https://opencollective.com/level/backers/badge.svg?color=orange)](#backers)
-[![Sponsors on Open Collective](https://opencollective.com/level/sponsors/badge.svg?color=orange)](#sponsors)
+[![Test](https://img.shields.io/github/workflow/status/Level/abstract-leveldown/Test?label=test)](https://github.com/Level/abstract-leveldown/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/codecov/c/github/Level/abstract-leveldown?label=&logo=codecov&logoColor=fff)](https://codecov.io/gh/Level/abstract-leveldown)
+[![Standard](https://img.shields.io/badge/standard-informational?logo=javascript&logoColor=fff)](https://standardjs.com)
+[![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
+[![Donate](https://img.shields.io/badge/donate-orange?logo=open-collective&logoColor=fff)](https://opencollective.com/level)
 
 ## Table of Contents
 
@@ -39,9 +38,10 @@
     - [`chainedBatch.write([options, ]callback)`](#chainedbatchwriteoptions-callback)
     - [`chainedBatch.db`](#chainedbatchdb)
   - [`iterator`](#iterator)
-    - [`iterator.next(callback)`](#iteratornextcallback)
+    - [`for await...of iterator`](#for-awaitof-iterator)
+    - [`iterator.next([callback])`](#iteratornextcallback)
     - [`iterator.seek(target)`](#iteratorseektarget)
-    - [`iterator.end(callback)`](#iteratorendcallback)
+    - [`iterator.end([callback])`](#iteratorendcallback)
     - [`iterator.db`](#iteratordb)
   - [Type Support](#type-support)
 - [Private API For Implementors](#private-api-for-implementors)
@@ -75,8 +75,6 @@
 - [Contributing](#contributing)
 - [Big Thanks](#big-thanks)
 - [Donate](#donate)
-  - [Backers](#backers)
-  - [Sponsors](#sponsors)
 - [License](#license)
 
 </details>
@@ -675,19 +673,11 @@ Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](http
 
 ## Donate
 
-To sustain [`Level`](https://github.com/Level) and its activities, become a backer or sponsor on [Open Collective](https://opencollective.com/level). Your logo or avatar will be displayed on our 28+ [GitHub repositories](https://github.com/Level) and [npm](https://www.npmjs.com/) packages. 💖
-
-### Backers
-
-[![Open Collective backers](https://opencollective.com/level/backers.svg?width=890)](https://opencollective.com/level)
-
-### Sponsors
-
-[![Open Collective sponsors](https://opencollective.com/level/sponsors.svg?width=890)](https://opencollective.com/level)
+Support us with a monthly donation on [Open Collective](https://opencollective.com/level) and help us continue our work.
 
 ## License
 
-[MIT](LICENSE.md) © 2013-present Rod Vagg and [Contributors](CONTRIBUTORS.md).
+[MIT](LICENSE)
 
 [level-badge]: https://leveljs.org/img/badge.svg
 

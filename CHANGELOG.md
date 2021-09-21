@@ -1,8 +1,8 @@
 # Changelog
 
-_**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
-
 ## [7.0.0] - 2021-04-09
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
 
 ### Changed
 
@@ -80,9 +80,7 @@ _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
 ### Added
 
-- Add `clear()` method to delete all entries or a range ([#310](https://github.com/Level/abstract-leveldown/issues/310)) ([**@vweevers**](https://github.com/vweevers)).
-
-**Historical Note** The `clear()` method is experimental and optional for the time being. Please see the [README](https://github.com/Level/abstract-leveldown) for details.
+- Add experimental `clear()` method to delete all entries or a range ([#310](https://github.com/Level/abstract-leveldown/issues/310)) ([**@vweevers**](https://github.com/vweevers)).
 
 ## [6.0.3] - 2019-04-26
 
@@ -122,7 +120,7 @@ _**If you are upgrading:** please see [`UPGRADING.md`](UPGRADING.md)._
 
 ## [6.0.0] - 2018-10-20
 
-_If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#600)._
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
 
 ### Changed
 
@@ -177,6 +175,8 @@ _If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#600)._
 
 ## [5.0.0] - 2018-05-22
 
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
+
 ### Changed
 
 - Upgrade `sinon` to `^5.0.0` ([**@ralphtheninja**](https://github.com/ralphtheninja))
@@ -214,6 +214,8 @@ _If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#600)._
 
 ## [4.0.1] - 2018-02-09
 
+_This was released as a patch because it only changed tests and TypeScript typings (which are marked experimental and don't follow semver)._
+
 ### Added
 
 - Run test suite in TypeScript in addition to Node.js ([**@vweevers**](https://github.com/vweevers))
@@ -230,10 +232,9 @@ _If you are upgrading, please consult the [Upgrade Guide](UPGRADING.md#600)._
 - Use ES6 classes in tests to please TypeScript ([**@vweevers**](https://github.com/vweevers))
 - Define default methods on prototype to please TypeScript ([**@vweevers**](https://github.com/vweevers))
 
-**Historical Note** This was released as a patch because it only changed tests
-and TypeScript typings (which are marked experimental and don't follow semver).
-
 ## [4.0.0] - 2018-01-20
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
 
 ### Changed
 
@@ -270,6 +271,8 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 - Call back errors on next tick to avoid `zalgo` ([**@vweevers**](https://github.com/vweevers))
 
 ## [3.0.0] - 2017-11-04
+
+_If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
 
 ### Added
 
@@ -344,6 +347,8 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 
 ## [2.6.0] - 2016-03-10
 
+_This release was a breaking change. See [**@juliangruber**](https://github.com/juliangruber)'s [comment](https://github.com/Level/abstract-leveldown/pull/85#issuecomment-246980978) for more information._
+
 ### Changed
 
 - Use proto delegation to patch methods on db ([**@deanlandolt**](https://github.com/deanlandolt))
@@ -356,8 +361,6 @@ and TypeScript typings (which are marked experimental and don't follow semver).
 ### Removed
 
 - Remove unnecessary initialization hackery in `abstract/chained-batch-test.js` ([**@deanlandolt**](https://github.com/deanlandolt))
-
-**Historical Note** This release was a breaking change. See [**@juliangruber**](https://github.com/juliangruber)'s [comment](https://github.com/Level/abstract-leveldown/pull/85#issuecomment-246980978) for more information.
 
 ## [2.5.0] - 2016-05-01
 
@@ -656,13 +659,15 @@ No changes. Merely published changes made in `0.8.1`.
 
 ## [0.8.1] - 2013-08-02
 
+_The version in `package.json` was changed from `0.7.4` to `0.8.1`. The `0.8.1` tag exists but this version was never published to npm._
+
 ### Changed
 
 - Remove use of `const` in `testCommon.js` ([**@rvagg**](https://github.com/rvagg))
 
-**Historical Note** The version in `package.json` was changed from `0.7.4` to `0.8.1`. The `0.8.1` tag exists but this version was never published to npm.
-
 ## [0.8.0] - 2013-08-02
+
+_It seems the version in `package.json` was never changed to `0.8.0` in the git history, even though the `0.8.0` tag exists. Most likely `package.json` was modified locally during `npm publish` but was never committed._
 
 ### Changed
 
@@ -676,8 +681,6 @@ No changes. Merely published changes made in `0.8.1`.
 ### Fixed
 
 - Fix `cleanup` function not calling back when browserified ([**@rvagg**](https://github.com/rvagg))
-
-**Historical Note** It seems the version in `package.json` was never changed to `0.8.0` in the git history, even though the `0.8.0` tag exists. Most likely `package.json` was modified locally during `npm publish` but was never committed.
 
 ## [0.7.4] - 2013-08-02
 
@@ -834,162 +837,164 @@ No changes. Merely published changes made in `0.8.1`.
 
 - Add `checkKeyValue` function for more complete error checking ([**@rvagg**](https://github.com/rvagg))
 
-## 0.0.0 - 2013-03-15
+## [0.0.0] - 2013-03-15
 
 First release. :seedling:
 
-[7.0.0]: https://github.com/Level/abstract-leveldown/compare/v6.3.0...v7.0.0
+[7.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v7.0.0
 
-[6.3.0]: https://github.com/Level/abstract-leveldown/compare/v6.2.3...v6.3.0
+[6.3.0]: https://github.com/Level/abstract-leveldown/releases/tag/v6.3.0
 
-[6.2.3]: https://github.com/Level/abstract-leveldown/compare/v6.2.2...v6.2.3
+[6.2.3]: https://github.com/Level/abstract-leveldown/releases/tag/v6.2.3
 
-[6.2.2]: https://github.com/Level/abstract-leveldown/compare/v6.2.1...v6.2.2
+[6.2.2]: https://github.com/Level/abstract-leveldown/releases/tag/v6.2.2
 
-[6.2.1]: https://github.com/Level/abstract-leveldown/compare/v6.2.0...v6.2.1
+[6.2.1]: https://github.com/Level/abstract-leveldown/releases/tag/v6.2.1
 
-[6.2.0]: https://github.com/Level/abstract-leveldown/compare/v6.1.1...v6.2.0
+[6.2.0]: https://github.com/Level/abstract-leveldown/releases/tag/v6.2.0
 
-[6.1.1]: https://github.com/Level/abstract-leveldown/compare/v6.1.0...v6.1.1
+[6.1.1]: https://github.com/Level/abstract-leveldown/releases/tag/v6.1.1
 
-[6.1.0]: https://github.com/Level/abstract-leveldown/compare/v6.0.3...v6.1.0
+[6.1.0]: https://github.com/Level/abstract-leveldown/releases/tag/v6.1.0
 
-[6.0.3]: https://github.com/Level/abstract-leveldown/compare/v6.0.2...v6.0.3
+[6.0.3]: https://github.com/Level/abstract-leveldown/releases/tag/v6.0.3
 
-[6.0.2]: https://github.com/Level/abstract-leveldown/compare/v6.0.1...v6.0.2
+[6.0.2]: https://github.com/Level/abstract-leveldown/releases/tag/v6.0.2
 
-[6.0.1]: https://github.com/Level/abstract-leveldown/compare/v6.0.0...v6.0.1
+[6.0.1]: https://github.com/Level/abstract-leveldown/releases/tag/v6.0.1
 
-[6.0.0]: https://github.com/Level/abstract-leveldown/compare/v5.0.0...v6.0.0
+[6.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v6.0.0
 
-[5.0.0]: https://github.com/Level/abstract-leveldown/compare/v4.0.3...v5.0.0
+[5.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v5.0.0
 
-[4.0.3]: https://github.com/Level/abstract-leveldown/compare/v4.0.2...v4.0.3
+[4.0.3]: https://github.com/Level/abstract-leveldown/releases/tag/v4.0.3
 
-[4.0.2]: https://github.com/Level/abstract-leveldown/compare/v4.0.1...v4.0.2
+[4.0.2]: https://github.com/Level/abstract-leveldown/releases/tag/v4.0.2
 
-[4.0.1]: https://github.com/Level/abstract-leveldown/compare/v4.0.0...v4.0.1
+[4.0.1]: https://github.com/Level/abstract-leveldown/releases/tag/v4.0.1
 
-[4.0.0]: https://github.com/Level/abstract-leveldown/compare/v3.0.0...v4.0.0
+[4.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v4.0.0
 
-[3.0.0]: https://github.com/Level/abstract-leveldown/compare/v2.7.2...v3.0.0
+[3.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v3.0.0
 
-[2.7.2]: https://github.com/Level/abstract-leveldown/compare/v2.7.1...v2.7.2
+[2.7.2]: https://github.com/Level/abstract-leveldown/releases/tag/v2.7.2
 
-[2.7.1]: https://github.com/Level/abstract-leveldown/compare/v2.7.0...v2.7.1
+[2.7.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.7.1
 
-[2.7.0]: https://github.com/Level/abstract-leveldown/compare/v2.6.3...v2.7.0
+[2.7.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.7.0
 
-[2.6.3]: https://github.com/Level/abstract-leveldown/compare/v2.6.2...v2.6.3
+[2.6.3]: https://github.com/Level/abstract-leveldown/releases/tag/v2.6.3
 
-[2.6.2]: https://github.com/Level/abstract-leveldown/compare/v2.6.1...v2.6.2
+[2.6.2]: https://github.com/Level/abstract-leveldown/releases/tag/v2.6.2
 
-[2.6.1]: https://github.com/Level/abstract-leveldown/compare/v2.6.0...v2.6.1
+[2.6.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.6.1
 
-[2.6.0]: https://github.com/Level/abstract-leveldown/compare/v2.5.0...v2.6.0
+[2.6.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.6.0
 
-[2.5.0]: https://github.com/Level/abstract-leveldown/compare/v2.4.1...v2.5.0
+[2.5.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.5.0
 
-[2.4.1]: https://github.com/Level/abstract-leveldown/compare/v2.4.0...v2.4.1
+[2.4.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.4.1
 
-[2.4.0]: https://github.com/Level/abstract-leveldown/compare/v2.3.1...v2.4.0
+[2.4.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.4.0
 
-[2.3.1]: https://github.com/Level/abstract-leveldown/compare/v2.3.0...v2.3.1
+[2.3.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.3.1
 
-[2.3.0]: https://github.com/Level/abstract-leveldown/compare/v2.2.2...v2.3.0
+[2.3.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.3.0
 
-[2.2.2]: https://github.com/Level/abstract-leveldown/compare/v2.2.1...v2.2.2
+[2.2.2]: https://github.com/Level/abstract-leveldown/releases/tag/v2.2.2
 
-[2.2.1]: https://github.com/Level/abstract-leveldown/compare/v2.2.0...v2.2.1
+[2.2.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.2.1
 
-[2.2.0]: https://github.com/Level/abstract-leveldown/compare/v2.1.4...v2.2.0
+[2.2.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.2.0
 
-[2.1.4]: https://github.com/Level/abstract-leveldown/compare/v2.1.3...v2.1.4
+[2.1.4]: https://github.com/Level/abstract-leveldown/releases/tag/v2.1.4
 
-[2.1.3]: https://github.com/Level/abstract-leveldown/compare/v2.1.2...v2.1.3
+[2.1.3]: https://github.com/Level/abstract-leveldown/releases/tag/v2.1.3
 
-[2.1.2]: https://github.com/Level/abstract-leveldown/compare/v2.1.1...v2.1.2
+[2.1.2]: https://github.com/Level/abstract-leveldown/releases/tag/v2.1.2
 
-[2.1.1]: https://github.com/Level/abstract-leveldown/compare/v2.1.0...v2.1.1
+[2.1.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.1.1
 
-[2.1.0]: https://github.com/Level/abstract-leveldown/compare/v2.0.3...v2.1.0
+[2.1.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.1.0
 
-[2.0.3]: https://github.com/Level/abstract-leveldown/compare/v2.0.2...v2.0.3
+[2.0.3]: https://github.com/Level/abstract-leveldown/releases/tag/v2.0.3
 
-[2.0.2]: https://github.com/Level/abstract-leveldown/compare/v2.0.1...v2.0.2
+[2.0.2]: https://github.com/Level/abstract-leveldown/releases/tag/v2.0.2
 
-[2.0.1]: https://github.com/Level/abstract-leveldown/compare/v2.0.0...v2.0.1
+[2.0.1]: https://github.com/Level/abstract-leveldown/releases/tag/v2.0.1
 
-[2.0.0]: https://github.com/Level/abstract-leveldown/compare/v1.0.0...v2.0.0
+[2.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v2.0.0
 
-[1.0.0]: https://github.com/Level/abstract-leveldown/compare/v0.12.4...v1.0.0
+[1.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v1.0.0
 
-[0.12.4]: https://github.com/Level/abstract-leveldown/compare/v0.12.3...v0.12.4
+[0.12.4]: https://github.com/Level/abstract-leveldown/releases/tag/v0.12.4
 
-[0.12.3]: https://github.com/Level/abstract-leveldown/compare/v0.12.2...v0.12.3
+[0.12.3]: https://github.com/Level/abstract-leveldown/releases/tag/v0.12.3
 
-[0.12.2]: https://github.com/Level/abstract-leveldown/compare/v0.12.1...v0.12.2
+[0.12.2]: https://github.com/Level/abstract-leveldown/releases/tag/v0.12.2
 
-[0.12.1]: https://github.com/Level/abstract-leveldown/compare/v0.12.0...v0.12.1
+[0.12.1]: https://github.com/Level/abstract-leveldown/releases/tag/v0.12.1
 
-[0.12.0]: https://github.com/Level/abstract-leveldown/compare/v0.11.4...v0.12.0
+[0.12.0]: https://github.com/Level/abstract-leveldown/releases/tag/v0.12.0
 
-[0.11.4]: https://github.com/Level/abstract-leveldown/compare/v0.11.3...v0.11.4
+[0.11.4]: https://github.com/Level/abstract-leveldown/releases/tag/v0.11.4
 
-[0.11.3]: https://github.com/Level/abstract-leveldown/compare/v0.11.2...v0.11.3
+[0.11.3]: https://github.com/Level/abstract-leveldown/releases/tag/v0.11.3
 
-[0.11.2]: https://github.com/Level/abstract-leveldown/compare/0.11.1...v0.11.2
+[0.11.2]: https://github.com/Level/abstract-leveldown/releases/tag/v0.11.2
 
-[0.11.1]: https://github.com/Level/abstract-leveldown/compare/0.11.0...0.11.1
+[0.11.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.11.1
 
-[0.11.0]: https://github.com/Level/abstract-leveldown/compare/0.10.2...0.11.0
+[0.11.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.11.0
 
-[0.10.2]: https://github.com/Level/abstract-leveldown/compare/0.10.1...0.10.2
+[0.10.2]: https://github.com/Level/abstract-leveldown/releases/tag/0.10.2
 
-[0.10.1]: https://github.com/Level/abstract-leveldown/compare/0.10.0...0.10.1
+[0.10.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.10.1
 
-[0.10.0]: https://github.com/Level/abstract-leveldown/compare/0.9.0...0.10.0
+[0.10.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.10.0
 
-[0.9.0]: https://github.com/Level/abstract-leveldown/compare/0.8.2...0.9.0
+[0.9.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.9.0
 
-[0.8.2]: https://github.com/Level/abstract-leveldown/compare/0.8.1...0.8.2
+[0.8.2]: https://github.com/Level/abstract-leveldown/releases/tag/0.8.2
 
-[0.8.1]: https://github.com/Level/abstract-leveldown/compare/0.8.0...0.8.1
+[0.8.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.8.1
 
-[0.8.0]: https://github.com/Level/abstract-leveldown/compare/0.7.4...0.8.0
+[0.8.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.8.0
 
-[0.7.4]: https://github.com/Level/abstract-leveldown/compare/0.7.3...0.7.4
+[0.7.4]: https://github.com/Level/abstract-leveldown/releases/tag/0.7.4
 
-[0.7.3]: https://github.com/Level/abstract-leveldown/compare/0.7.2...0.7.3
+[0.7.3]: https://github.com/Level/abstract-leveldown/releases/tag/0.7.3
 
-[0.7.2]: https://github.com/Level/abstract-leveldown/compare/0.7.1...0.7.2
+[0.7.2]: https://github.com/Level/abstract-leveldown/releases/tag/0.7.2
 
-[0.7.1]: https://github.com/Level/abstract-leveldown/compare/0.7.0...0.7.1
+[0.7.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.7.1
 
-[0.7.0]: https://github.com/Level/abstract-leveldown/compare/0.6.1...0.7.0
+[0.7.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.7.0
 
-[0.6.1]: https://github.com/Level/abstract-leveldown/compare/0.6.0...0.6.1
+[0.6.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.6.1
 
-[0.6.0]: https://github.com/Level/abstract-leveldown/compare/0.5.0...0.6.0
+[0.6.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.6.0
 
-[0.5.0]: https://github.com/Level/abstract-leveldown/compare/0.4.0...0.5.0
+[0.5.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.5.0
 
-[0.4.0]: https://github.com/Level/abstract-leveldown/compare/0.4.0-1...0.4.0
+[0.4.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.4.0
 
-[0.4.0-1]: https://github.com/Level/abstract-leveldown/compare/0.3.0...0.4.0-1
+[0.4.0-1]: https://github.com/Level/abstract-leveldown/releases/tag/0.4.0-1
 
-[0.3.0]: https://github.com/Level/abstract-leveldown/compare/0.2.3...0.3.0
+[0.3.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.3.0
 
-[0.2.3]: https://github.com/Level/abstract-leveldown/compare/0.2.2...0.2.3
+[0.2.3]: https://github.com/Level/abstract-leveldown/releases/tag/0.2.3
 
-[0.2.2]: https://github.com/Level/abstract-leveldown/compare/0.2.1...0.2.2
+[0.2.2]: https://github.com/Level/abstract-leveldown/releases/tag/0.2.2
 
-[0.2.1]: https://github.com/Level/abstract-leveldown/compare/0.2.0...0.2.1
+[0.2.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.2.1
 
-[0.2.0]: https://github.com/Level/abstract-leveldown/compare/0.1.0...0.2.0
+[0.2.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.2.0
 
-[0.1.0]: https://github.com/Level/abstract-leveldown/compare/0.0.2...0.1.0
+[0.1.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.1.0
 
-[0.0.2]: https://github.com/Level/abstract-leveldown/compare/0.0.1...0.0.2
+[0.0.2]: https://github.com/Level/abstract-leveldown/releases/tag/0.0.2
 
-[0.0.1]: https://github.com/Level/abstract-leveldown/compare/0.0.0...0.0.1
+[0.0.1]: https://github.com/Level/abstract-leveldown/releases/tag/0.0.1
+
+[0.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/0.0.0

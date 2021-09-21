@@ -16,6 +16,18 @@
     "dependency-check": "dependency-check --no-dev -i buffer -i queue-microtask . test/*.js",
     "prepublishOnly": "npm run dependency-check"
   },
+  "files": [
+    "abstract-chained-batch.js",
+    "abstract-iterator.js",
+    "abstract-leveldown.js",
+    "index.js",
+    "next-tick-browser.js",
+    "next-tick.js",
+    "test",
+    "CHANGELOG.md",
+    "UPGRADING.md",
+    "sauce-labs.svg"
+  ],
   "dependencies": {
     "buffer": "^6.0.3",
     "is-buffer": "^2.0.5",
@@ -28,14 +40,10 @@
     "airtap-sauce": "^1.1.0",
     "dependency-check": "^4.1.0",
     "hallmark": "^3.1.0",
-    "level-community": "^3.0.0",
     "nyc": "^15.1.0",
     "sinon": "^11.1.1",
     "standard": "^16.0.3",
     "tape": "^5.0.1"
-  },
-  "hallmark": {
-    "community": "level-community"
   },
   "repository": {
     "type": "git",
