@@ -311,31 +311,53 @@ A reference to the `db` that created this chained batch.
 
 An iterator allows you to _iterate_ the entire store or a range. It operates on a snapshot of the store, created at the time `db.iterator()` was called. This means reads on the iterator are unaffected by simultaneous writes. Most but not all implementations can offer this guarantee.
 
-An iterator keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
+Iterators can be consumed with [`for await...of`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) or by manually calling `iterator.next()` in succession. In the latter mode, `iterator.end()` must always be called. In contrast, finishing, throwing or breaking from a `for await...of` loop automatically calls `iterator.end()`.
 
-#### `iterator.next(callback)`
-
-Advance the iterator and yield the entry at that key. If an error occurs, the `callback` function will be called with an `Error`. Otherwise, the `callback` receives `null`, a `key` and a `value`. The type of `key` and `value` depends on the options passed to `db.iterator()`.
-
-If the iterator has reached its end, both `key` and `value` will be `undefined`. This happens in the following situations:
+An iterator reaches its natural end in the following situations:
 
 - The end of the store has been reached
 - The end of the range has been reached
 - The last `iterator.seek()` was out of range.
 
-**Note:** Don't forget to call `iterator.end()`, even if you received an error.
+An iterator keeps track of when a `next()` is in progress and when an `end()` has been called so it doesn't allow concurrent `next()` calls, it does allow `end()` while a `next()` is in progress and it doesn't allow either `next()` or `end()` after `end()` has been called.
+
+#### `for await...of iterator`
+
+Yields arrays containing a `key` and `value`. The type of `key` and `value` depends on the options passed to `db.iterator()`.
+
+```js
+try {
+  for await (const [key, value] of db.iterator()) {
+    console.log(key)
+  }
+} catch (err) {
+  console.error(err)
+}
+```
+
+Note for implementors: this uses `iterator.next()` and `iterator.end()` under the hood so no further method implementations are needed to support `for await...of`.
+
+#### `iterator.next([callback])`
+
+Advance the iterator and yield the entry at that key. If an error occurs, the `callback` function will be called with an `Error`. Otherwise, the `callback` receives `null`, a `key` and a `value`. The type of `key` and `value` depends on the options passed to `db.iterator()`. If the iterator has reached its natural end, both `key` and `value` will be `undefined`.
+
+If no callback is provided, a promise is returned for either an array (containing a `key` and `value`) or `undefined` if the iterator reached its natural end.
+
+**Note:** Always call `iterator.end()`, even if you received an error and even if the iterator reached its natural end.
 
 #### `iterator.seek(target)`
 
-Seek the iterator to a given key or the closest key. Subsequent calls to `iterator.next()` will yield entries with keys equal to or larger than `target`, or equal to or smaller than `target` if the `reverse` option passed to `db.iterator()` was true.
+Seek the iterator to a given key or the closest key. Subsequent calls to `iterator.next()` (including implicit calls in a `for await...of` loop) will yield entries with keys equal to or larger than `target`, or equal to or smaller than `target` if the `reverse` option passed to `db.iterator()` was true.
 
-If range options like `gt` were passed to `db.iterator()` and `target` does not fall within that range, the iterator will reach its end.
+If range options like `gt` were passed to `db.iterator()` and `target` does not fall within that range, the iterator will reach its natural end.
 
 **Note:** At the time of writing, [`leveldown`][leveldown] is the only known implementation to support `seek()`. In other implementations, it is a noop.
 
-#### `iterator.end(callback)`
+#### `iterator.end([callback])`
 
 End iteration and free up underlying resources. The `callback` function will be called with no arguments on success or with an `Error` if ending failed for any reason.
+
+If no callback is provided, a promise is returned.
 
 #### `iterator.db`
 
