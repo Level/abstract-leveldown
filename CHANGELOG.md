@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.1.0] - 2021-09-21
+
+### Added
+
+- Support `for await...of db.iterator()` ([#379](https://github.com/Level/abstract-leveldown/issues/379)) ([`372695f`](https://github.com/Level/abstract-leveldown/commit/372695f)) (Vincent Weevers)
+
 ## [7.0.0] - 2021-04-09
 
 _If you are upgrading: please see [`UPGRADING.md`](UPGRADING.md)._
@@ -840,6 +846,8 @@ _It seems the version in `package.json` was never changed to `0.8.0` in the git 
 ## [0.0.0] - 2013-03-15
 
 First release. :seedling:
+
+[7.1.0]: https://github.com/Level/abstract-leveldown/releases/tag/v7.1.0
 
 [7.0.0]: https://github.com/Level/abstract-leveldown/releases/tag/v7.0.0
 
