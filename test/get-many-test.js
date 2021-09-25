@@ -198,7 +198,7 @@ exports.getMany = function (test, testCommon) {
 
     db.getMany([], assertAsync(t, function (err) {
       t.is(err && err.message, 'Database is not open')
-      db.close(t.end.bind(t))
+      t.end()
     }))
   })
 
