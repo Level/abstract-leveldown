@@ -2,8 +2,12 @@
 
 const supports = require('level-supports')
 const isBuffer = require('is-buffer')
+const catering = require('catering')
 const AbstractIterator = require('./abstract-iterator')
 const AbstractChainedBatch = require('./abstract-chained-batch')
+const getCallback = require('./lib/common').getCallback
+const getOptions = require('./lib/common').getOptions
+
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const rangeOptions = ['lt', 'lte', 'gt', 'gte']
 
@@ -88,6 +92,51 @@ AbstractLevelDOWN.prototype.get = function (key, options, callback) {
 
 AbstractLevelDOWN.prototype._get = function (key, options, callback) {
   this._nextTick(function () { callback(new Error('NotFound')) })
+}
+
+AbstractLevelDOWN.prototype.getMany = function (keys, options, callback) {
+  callback = getCallback(options, callback)
+  callback = catering.fromCallback(callback)
+  options = getOptions(options)
+
+  if (maybeError(this, callback)) {
+    return callback.promise
+  }
+
+  if (!Array.isArray(keys)) {
+    this._nextTick(callback, new Error('getMany() requires an array argument'))
+    return callback.promise
+  }
+
+  if (keys.length === 0) {
+    this._nextTick(callback, null, [])
+    return callback.promise
+  }
+
+  if (typeof options.asBuffer !== 'boolean') {
+    options = { ...options, asBuffer: true }
+  }
+
+  const serialized = new Array(keys.length)
+
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i]
+    const err = this._checkKey(key)
+
+    if (err) {
+      this._nextTick(callback, err)
+      return callback.promise
+    }
+
+    serialized[i] = this._serializeKey(key)
+  }
+
+  this._getMany(serialized, options, callback)
+  return callback.promise
+}
+
+AbstractLevelDOWN.prototype._getMany = function (keys, options, callback) {
+  this._nextTick(callback, null, new Array(keys.length).fill(undefined))
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
@@ -315,9 +364,40 @@ AbstractLevelDOWN.prototype._checkValue = function (value) {
   }
 }
 
+// Undocumented, only here for levelup API parity
+AbstractLevelDOWN.prototype.isOpen = function () {
+  return this.status === 'open'
+}
+
+AbstractLevelDOWN.prototype.isClosed = function () {
+  return this.status === 'new' || this.status === 'closing' || this.status === 'closed'
+}
+
 // Expose browser-compatible nextTick for dependents
 // TODO: rename _nextTick to _queueMicrotask
 // TODO: after we drop node 10, also use queueMicrotask in node
 AbstractLevelDOWN.prototype._nextTick = require('./next-tick')
 
 module.exports = AbstractLevelDOWN
+
+function maybeError (db, callback) {
+  if (db.status !== 'open') {
+    // Exemption to support deferredOpen
+    if (db.type === 'deferred-leveldown') {
+      return false
+    }
+
+    // TODO: deferred-leveldown and levelup are inconsistent: the former allows
+    // operations on any db status, the latter only if 'opening' or 'open'. We
+    // should define the scope of the deferredOpen feature. For now, pick the
+    // levelup behavior. Ref https://github.com/Level/community/issues/58
+    if (db.supports.deferredOpen && db.status === 'opening') {
+      return false
+    }
+
+    db._nextTick(callback, new Error('Database is not open'))
+    return true
+  }
+
+  return false
+}

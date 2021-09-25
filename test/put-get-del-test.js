@@ -1,11 +1,12 @@
 'use strict'
 
 const verifyNotFoundError = require('./util').verifyNotFoundError
+const assertAsync = require('./util').assertAsync
 const testBuffer = Buffer.from('testbuffer')
 
 let db
 
-function makeGetDelErrorTests (test, type, key, expectedError) {
+function makeGetDelErrorTests (test, testCommon, type, key, expectedError) {
   test('test get() with ' + type + ' causes error', function (t) {
     let async = false
 
@@ -32,6 +33,22 @@ function makeGetDelErrorTests (test, type, key, expectedError) {
     })
 
     async = true
+  })
+
+  testCommon.getMany && test('test getMany() with ' + type + ' causes error', function (t) {
+    t.plan(2 * 4)
+
+    db.getMany([key], assertAsync(t, function (err) {
+      t.ok(err, 'has error')
+      t.ok(err instanceof Error)
+      t.ok(err.message.match(expectedError), 'correct error message')
+    }))
+
+    db.getMany(['valid', key], assertAsync(t, function (err) {
+      t.ok(err, 'has error')
+      t.ok(err instanceof Error)
+      t.ok(err.message.match(expectedError), 'correct error message')
+    }))
   })
 }
 
@@ -96,8 +113,8 @@ function makePutGetDelSuccessfulTest (test, testCommon, type, key, value, expect
   })
 }
 
-function makeErrorKeyTest (test, type, key, expectedError) {
-  makeGetDelErrorTests(test, type, key, expectedError)
+function makeErrorKeyTest (test, testCommon, type, key, expectedError) {
+  makeGetDelErrorTests(test, testCommon, type, key, expectedError)
   makePutErrorTest(test, type, key, 'foo', expectedError)
 }
 
@@ -110,11 +127,11 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.errorKeys = function (test, testCommon) {
-  makeErrorKeyTest(test, 'null key', null, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest(test, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest(test, 'empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest(test, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
-  makeErrorKeyTest(test, 'empty Array key', [], /key cannot be an empty Array/)
+  makeErrorKeyTest(test, testCommon, 'null key', null, /key cannot be `null` or `undefined`/)
+  makeErrorKeyTest(test, testCommon, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
+  makeErrorKeyTest(test, testCommon, 'empty String key', '', /key cannot be an empty String/)
+  makeErrorKeyTest(test, testCommon, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
+  makeErrorKeyTest(test, testCommon, 'empty Array key', [], /key cannot be an empty Array/)
 }
 
 exports.errorValues = function (test, testCommon) {

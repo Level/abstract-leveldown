@@ -36,6 +36,9 @@ require('./del-test').args(test, testCommon)
 require('./get-test').setUp(test, testCommon)
 require('./get-test').args(test, testCommon)
 
+require('./get-many-test').setUp(test, testCommon)
+require('./get-many-test').args(test, testCommon)
+
 require('./put-test').setUp(test, testCommon)
 require('./put-test').args(test, testCommon)
 

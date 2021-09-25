@@ -26,6 +26,10 @@ function suite (options) {
   require('./del-test').all(test, testCommon)
   require('./put-get-del-test').all(test, testCommon)
 
+  if (testCommon.getMany) {
+    require('./get-many-test').all(test, testCommon)
+  }
+
   require('./batch-test').all(test, testCommon)
   require('./chained-batch-test').all(test, testCommon)
 

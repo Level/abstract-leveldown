@@ -1,5 +1,6 @@
 'use strict'
 
+const isBuffer = require('is-buffer')
 const verifyNotFoundError = require('./util').verifyNotFoundError
 const isTypedArray = require('./util').isTypedArray
 
@@ -46,7 +47,7 @@ exports.args = function (test, testCommon) {
     const db = testCommon.factory()
     db._serializeKey = function (data) { return data }
     db._get = function (key, options, callback) {
-      t.deepEqual(key, { foo: 'bar' })
+      t.same(key, { foo: 'bar' })
       this._nextTick(callback)
     }
     db.open(function () {
@@ -68,12 +69,12 @@ exports.get = function (test, testCommon) {
         let result
 
         if (!testCommon.encodings) {
-          t.ok(typeof value !== 'string', 'should not be string by default')
+          t.isNot(typeof value, 'string', 'should not be string by default')
 
           if (isTypedArray(value)) {
             result = String.fromCharCode.apply(null, new Uint16Array(value))
           } else {
-            t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
+            t.ok(isBuffer(value))
             try {
               result = value.toString()
             } catch (e) {
@@ -84,7 +85,7 @@ exports.get = function (test, testCommon) {
           result = value
         }
 
-        t.equal(result, 'bar')
+        t.is(result, 'bar')
 
         db.get('foo', {}, function (err, value) { // same but with {}
           t.error(err)
@@ -97,7 +98,7 @@ exports.get = function (test, testCommon) {
             if (isTypedArray(value)) {
               result = String.fromCharCode.apply(null, new Uint16Array(value))
             } else {
-              t.ok(typeof Buffer !== 'undefined' && value instanceof Buffer)
+              t.ok(isBuffer(value))
               try {
                 result = value.toString()
               } catch (e) {
@@ -108,12 +109,12 @@ exports.get = function (test, testCommon) {
             result = value
           }
 
-          t.equal(result, 'bar')
+          t.is(result, 'bar')
 
           db.get('foo', { asBuffer: false }, function (err, value) {
             t.error(err)
             t.ok(typeof value === 'string', 'should be string if not buffer')
-            t.equal(value, 'bar')
+            t.is(value, 'bar')
             t.end()
           })
         })
@@ -121,25 +122,23 @@ exports.get = function (test, testCommon) {
     })
   })
 
-  test('test simultaniously get()', function (t) {
+  test('test simultaneous get()', function (t) {
     db.put('hello', 'world', function (err) {
       t.error(err)
-      let r = 0
+      let completed = 0
       const done = function () {
-        if (++r === 20) { t.end() }
+        if (++completed === 20) t.end()
       }
-      let i = 0
-      let j = 0
 
-      for (; i < 10; ++i) {
+      for (let i = 0; i < 10; ++i) {
         db.get('hello', function (err, value) {
           t.error(err)
-          t.equal(value.toString(), 'world')
+          t.is(value.toString(), 'world')
           done()
         })
       }
 
-      for (; j < 10; ++j) {
+      for (let i = 0; i < 10; ++i) {
         db.get('not found', function (err, value) {
           t.ok(err, 'should error')
           t.ok(verifyNotFoundError(err), 'should have correct error message')
@@ -151,22 +150,18 @@ exports.get = function (test, testCommon) {
   })
 
   test('test get() not found error is asynchronous', function (t) {
-    t.plan(5)
+    t.plan(4)
 
-    db.put('hello', 'world', function (err) {
-      t.error(err)
+    let async = false
 
-      let async = false
-
-      db.get('not found', function (err, value) {
-        t.ok(err, 'should error')
-        t.ok(verifyNotFoundError(err), 'should have correct error message')
-        t.ok(typeof value === 'undefined', 'value is undefined')
-        t.ok(async, 'callback is asynchronous')
-      })
-
-      async = true
+    db.get('not found', function (err, value) {
+      t.ok(err, 'should error')
+      t.ok(verifyNotFoundError(err), 'should have correct error message')
+      t.ok(typeof value === 'undefined', 'value is undefined')
+      t.ok(async, 'callback is asynchronous')
     })
+
+    async = true
   })
 }
 
