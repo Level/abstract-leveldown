@@ -35,21 +35,22 @@ function makeGetDelErrorTests (test, testCommon, type, key, expectedError) {
     async = true
   })
 
-  testCommon.getMany && test('test getMany() with ' + type + ' causes error', function (t) {
+  testCommon.getMany && test('test getMany() with ' + type + ' causes error', assertAsync.ctx(function (t) {
+    // Add 1 assertion for every assertAsync()
     t.plan(2 * 4)
 
-    db.getMany([key], assertAsync(t, function (err) {
+    db.getMany([key], assertAsync(function (err) {
       t.ok(err, 'has error')
       t.ok(err instanceof Error)
       t.ok(err.message.match(expectedError), 'correct error message')
     }))
 
-    db.getMany(['valid', key], assertAsync(t, function (err) {
+    db.getMany(['valid', key], assertAsync(function (err) {
       t.ok(err, 'has error')
       t.ok(err instanceof Error)
       t.ok(err.message.match(expectedError), 'correct error message')
     }))
-  })
+  }))
 }
 
 function makePutErrorTest (test, type, key, value, expectedError) {

@@ -41,22 +41,6 @@ exports.args = function (test, testCommon) {
     )
     t.end()
   })
-
-  testCommon.serialize && test('test custom _serialize*', function (t) {
-    t.plan(3)
-    const db = testCommon.factory()
-    db._serializeKey = function (data) { return data }
-    db._get = function (key, options, callback) {
-      t.same(key, { foo: 'bar' })
-      this._nextTick(callback)
-    }
-    db.open(function () {
-      db.get({ foo: 'bar' }, function (err) {
-        t.error(err)
-        db.close(t.error.bind(t))
-      })
-    })
-  })
 }
 
 exports.get = function (test, testCommon) {

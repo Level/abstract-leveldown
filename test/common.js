@@ -43,7 +43,6 @@ function testCommon (options) {
     // and that operations return strings rather than buffers by default.
     encodings: !!options.encodings,
 
-    // Not yet used, only here for symmetry with levelup's test suite.
     deferredOpen: !!options.deferredOpen,
     streams: !!options.streams
   }

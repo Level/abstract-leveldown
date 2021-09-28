@@ -236,6 +236,37 @@ test('test get() extensibility', function (t) {
   t.end()
 })
 
+test('test getMany() extensibility', function (t) {
+  const spy = sinon.spy()
+  const expectedCb = function () {}
+  const expectedOptions = { asBuffer: true }
+  const expectedKey = 'a key'
+  const Test = implement(AbstractLevelDOWN, { _getMany: spy })
+  const test = new Test('foobar')
+
+  test.status = 'open'
+  test.getMany([expectedKey], expectedCb)
+
+  t.equal(spy.callCount, 1, 'got _getMany() call')
+  t.equal(spy.getCall(0).thisValue, test, '`this` on _getMany() was correct')
+  t.equal(spy.getCall(0).args.length, 3, 'got three arguments')
+  t.deepEqual(spy.getCall(0).args[0], [expectedKey], 'got expected keys argument')
+  t.deepEqual(spy.getCall(0).args[1], expectedOptions, 'got default options argument')
+  t.equal(spy.getCall(0).args[2], expectedCb, 'got expected cb argument')
+
+  test.getMany([expectedKey], { options: 1 }, expectedCb)
+
+  expectedOptions.options = 1
+
+  t.equal(spy.callCount, 2, 'got _getMany() call')
+  t.equal(spy.getCall(1).thisValue, test, '`this` on _getMany() was correct')
+  t.equal(spy.getCall(1).args.length, 3, 'got three arguments')
+  t.deepEqual(spy.getCall(1).args[0], [expectedKey], 'got expected key argument')
+  t.deepEqual(spy.getCall(1).args[1], expectedOptions, 'got expected options argument')
+  t.equal(spy.getCall(1).args[2], expectedCb, 'got expected cb argument')
+  t.end()
+})
+
 test('test del() extensibility', function (t) {
   const spy = sinon.spy()
   const expectedCb = function () {}
@@ -622,6 +653,44 @@ test('test clear() extensibility', function (t) {
   t.end()
 })
 
+test('test serialization extensibility (get)', function (t) {
+  t.plan(2)
+
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
+    _get: spy,
+    _serializeKey: function (key) {
+      return key.toUpperCase()
+    }
+  })
+
+  const test = new Test()
+  test.get('foo', function () {})
+
+  t.is(spy.callCount, 1, 'got _get() call')
+  t.is(spy.getCall(0).args[0], 'FOO', 'got expected key argument')
+})
+
+test('test serialization extensibility (getMany)', function (t) {
+  t.plan(2)
+
+  const spy = sinon.spy()
+  const Test = implement(AbstractLevelDOWN, {
+    _getMany: spy,
+    _serializeKey: function (key) {
+      return key.toUpperCase()
+    }
+  })
+
+  const test = new Test()
+
+  test.status = 'open'
+  test.getMany(['foo', 'bar'], function () {})
+
+  t.is(spy.callCount, 1, 'got _getMany() call')
+  t.same(spy.getCall(0).args[0], ['FOO', 'BAR'], 'got expected keys argument')
+})
+
 test('test serialization extensibility (put)', function (t) {
   t.plan(5)
 
@@ -912,6 +981,8 @@ test('.status', function (t) {
         t.end()
       })
     })
+
+    t.equal(test.status, 'opening')
   })
 
   t.test('open error', function (t) {

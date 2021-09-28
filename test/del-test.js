@@ -39,22 +39,6 @@ exports.args = function (test, testCommon) {
     )
     t.end()
   })
-
-  testCommon.serialize && test('test custom _serialize*', function (t) {
-    t.plan(3)
-    const db = testCommon.factory()
-    db._serializeKey = function (data) { return data }
-    db._del = function (key, options, callback) {
-      t.deepEqual(key, { foo: 'bar' })
-      this._nextTick(callback)
-    }
-    db.open(function () {
-      db.del({ foo: 'bar' }, function (err) {
-        t.error(err)
-        db.close(t.error.bind(t))
-      })
-    })
-  })
 }
 
 exports.del = function (test, testCommon) {

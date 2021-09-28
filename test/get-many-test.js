@@ -6,6 +6,9 @@ const assertAsync = require('./util').assertAsync
 
 let db
 
+/**
+ * @param {import('tape')} test
+ */
 exports.setUp = function (test, testCommon) {
   test('setUp db', function (t) {
     db = testCommon.factory()
@@ -13,17 +16,21 @@ exports.setUp = function (test, testCommon) {
   })
 }
 
+/**
+ * @param {import('tape')} test
+ */
 exports.args = function (test, testCommon) {
-  test('test getMany() requires an array argument (callback)', function (t) {
+  test('test getMany() requires an array argument (callback)', assertAsync.ctx(function (t) {
+    // Add 1 assertion for every assertAsync()
     t.plan(4)
 
-    db.getMany('foo', assertAsync(t, function (err) {
+    db.getMany('foo', assertAsync(function (err) {
       t.is(err && err.message, 'getMany() requires an array argument')
     }))
-    db.getMany('foo', {}, assertAsync(t, function (err) {
+    db.getMany('foo', {}, assertAsync(function (err) {
       t.is(err && err.message, 'getMany() requires an array argument')
     }))
-  })
+  }))
 
   test('test getMany() requires an array argument (promise)', function (t) {
     t.plan(3)
@@ -38,24 +45,11 @@ exports.args = function (test, testCommon) {
       t.is(err && err.message, 'getMany() requires an array argument')
     })
   })
-
-  testCommon.serialize && test('test custom _serialize*', function (t) {
-    t.plan(3)
-    const db = testCommon.factory()
-    db._serializeKey = function (data) { return data }
-    db._getMany = function (keys, options, callback) {
-      t.same(keys, [{ foo: 'bar' }])
-      this._nextTick(callback, null, ['foo'])
-    }
-    db.open(function () {
-      db.getMany([{ foo: 'bar' }], function (err) {
-        t.error(err)
-        db.close(t.error.bind(t))
-      })
-    })
-  })
 }
 
+/**
+ * @param {import('tape')} test
+ */
 exports.getMany = function (test, testCommon) {
   test('test getMany() support is reflected in manifest', function (t) {
     t.is(db.supports && db.supports.getMany, true)
@@ -129,27 +123,27 @@ exports.getMany = function (test, testCommon) {
     })
   })
 
-  test('test empty getMany()', function (t) {
+  test('test empty getMany()', assertAsync.ctx(function (t) {
     t.plan(2 * 3)
 
     for (const asBuffer in [true, false]) {
-      db.getMany([], { asBuffer }, assertAsync(t, function (err, values) {
+      db.getMany([], { asBuffer }, assertAsync(function (err, values) {
         t.ifError(err)
         t.same(values, [])
       }))
     }
-  })
+  }))
 
-  test('test not-found getMany()', function (t) {
+  test('test not-found getMany()', assertAsync.ctx(function (t) {
     t.plan(2 * 3)
 
     for (const asBuffer in [true, false]) {
-      db.getMany(['nope', 'another'], { asBuffer }, assertAsync(t, function (err, values) {
+      db.getMany(['nope', 'another'], { asBuffer }, assertAsync(function (err, values) {
         t.ifError(err)
         t.same(values, [undefined, undefined])
       }))
     }
-  })
+  }))
 
   test('test getMany() with promise', async function (t) {
     t.same(await db.getMany(['foo'], { asBuffer: false }), ['bar'])
@@ -188,50 +182,125 @@ exports.getMany = function (test, testCommon) {
     })
   })
 
-  testCommon.deferredOpen || test('test getMany() on new db', function (t) {
-    const db = testCommon.factory()
+  test('test getMany() on new db', assertAsync.ctx(function (t) {
+    t.plan(2 * 2 * 5)
 
-    if (db.type === 'deferred-leveldown') {
-      t.pass('exempted')
-      return t.end()
+    // Also test empty array because it has a fast-path
+    for (const keys of [['foo'], []]) {
+      // Opening should make no difference, because we call it after getMany()
+      for (const open of [true, false]) {
+        const db = testCommon.factory()
+
+        if (testCommon.status) {
+          t.is(db.status, testCommon.deferredOpen ? 'opening' : 'new')
+        } else {
+          t.pass('no status')
+        }
+
+        // Must be true if db supports deferredOpen
+        const operational = testCommon.deferredOpen || db.isOperational()
+
+        db.getMany(keys, assertAsync(function (err, values) {
+          if (operational) {
+            t.ifError(err, 'no error')
+            t.same(values, keys.map(_ => undefined))
+          } else {
+            t.is(err && err.message, 'Database is not open')
+            t.is(values, undefined)
+          }
+        }))
+
+        if (open) {
+          db.open(t.error.bind(t))
+        } else {
+          t.pass()
+        }
+      }
     }
+  }))
 
-    db.getMany([], assertAsync(t, function (err) {
-      t.is(err && err.message, 'Database is not open')
-      t.end()
-    }))
+  test('test getMany() on opening db', assertAsync.ctx(function (t) {
+    t.plan(2 * 5)
+
+    // Also test empty array because it has a fast-path
+    for (const keys of [['foo'], []]) {
+      const db = testCommon.factory()
+
+      // Is a noop if db supports deferredOpen
+      db.open(assertAsync(t.error.bind(t), 'open'))
+
+      // Must be true if db supports deferredOpen
+      const operational = testCommon.deferredOpen || db.isOperational()
+
+      db.getMany(keys, assertAsync(function (err, values) {
+        if (operational) {
+          t.ifError(err, 'no error')
+          t.same(values, keys.map(_ => undefined))
+        } else {
+          t.is(err && err.message, 'Database is not open')
+          t.is(values, undefined)
+        }
+      }))
+    }
+  }))
+
+  test('test getMany() on closed db', function (t) {
+    t.plan(2 * 6)
+
+    // Also test empty array because it has a fast-path
+    for (const keys of [['foo'], []]) {
+      const db = testCommon.factory()
+
+      db.open(function (err) {
+        t.ifError(err)
+        t.is(db.isOperational(), true)
+
+        db.close(assertAsync.with(t, function (err) {
+          t.ifError(err)
+          t.is(db.isOperational(), false)
+
+          db.getMany(keys, assertAsync(function (err) {
+            t.is(err && err.message, 'Database is not open')
+          }))
+        }))
+      })
+    }
   })
 
   test('test getMany() on closing db', function (t) {
-    const db = testCommon.factory()
+    t.plan(2 * 4)
 
-    if (db.type === 'deferred-leveldown') {
-      t.pass('exempted')
-      return t.end()
-    }
+    // Also test empty array because it has a fast-path
+    for (const keys of [['foo'], []]) {
+      const db = testCommon.factory()
 
-    t.plan(4)
-
-    db.open(function (err) {
-      t.ifError(err)
-
-      db.close(function (err) {
+      db.open(assertAsync.with(t, function (err) {
         t.ifError(err)
-      })
 
-      db.getMany([], assertAsync(t, function (err) {
-        t.is(err && err.message, 'Database is not open')
+        db.close(function (err) {
+          t.ifError(err)
+        })
+
+        db.getMany(keys, assertAsync(function (err) {
+          t.is(err && err.message, 'Database is not open')
+        }))
       }))
-    })
+    }
   })
 }
 
+/**
+ * @param {import('tape')} test
+ */
 exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
     db.close(t.end.bind(t))
   })
 }
 
+/**
+ * @param {import('tape')} test
+ */
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
   exports.args(test, testCommon)

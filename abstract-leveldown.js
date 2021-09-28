@@ -364,13 +364,14 @@ AbstractLevelDOWN.prototype._checkValue = function (value) {
   }
 }
 
-// Undocumented, only here for levelup API parity
-AbstractLevelDOWN.prototype.isOpen = function () {
-  return this.status === 'open'
+// TODO: docs and tests
+AbstractLevelDOWN.prototype.isOperational = function () {
+  return this.status === 'open' || this._isOperational()
 }
 
-AbstractLevelDOWN.prototype.isClosed = function () {
-  return this.status === 'new' || this.status === 'closing' || this.status === 'closed'
+// Implementation may accept operations in other states too
+AbstractLevelDOWN.prototype._isOperational = function () {
+  return false
 }
 
 // Expose browser-compatible nextTick for dependents
@@ -381,20 +382,7 @@ AbstractLevelDOWN.prototype._nextTick = require('./next-tick')
 module.exports = AbstractLevelDOWN
 
 function maybeError (db, callback) {
-  if (db.status !== 'open') {
-    // Exemption to support deferredOpen
-    if (db.type === 'deferred-leveldown') {
-      return false
-    }
-
-    // TODO: deferred-leveldown and levelup are inconsistent: the former allows
-    // operations on any db status, the latter only if 'opening' or 'open'. We
-    // should define the scope of the deferredOpen feature. For now, pick the
-    // levelup behavior. Ref https://github.com/Level/community/issues/58
-    if (db.supports.deferredOpen && db.status === 'opening') {
-      return false
-    }
-
+  if (!db.isOperational()) {
     db._nextTick(callback, new Error('Database is not open'))
     return true
   }
