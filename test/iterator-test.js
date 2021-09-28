@@ -13,8 +13,8 @@ exports.setUp = function (test, testCommon) {
 exports.args = function (test, testCommon) {
   test('test iterator has db reference', function (t) {
     const iterator = db.iterator()
-    // For levelup compat: may return iterator of an underlying db, that's okay.
-    t.ok(iterator.db === db || iterator.db)
+    // For levelup & deferred-leveldown compat: may return iterator of an underlying db, that's okay.
+    t.ok(iterator.db === db || iterator.db === (db.db || db._db || db))
     iterator.end(t.end.bind(t))
   })
 

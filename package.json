@@ -21,6 +21,7 @@
     "abstract-iterator.js",
     "abstract-leveldown.js",
     "index.js",
+    "lib",
     "next-tick-browser.js",
     "next-tick.js",
     "test",
@@ -30,9 +31,10 @@
   ],
   "dependencies": {
     "buffer": "^6.0.3",
+    "catering": "^2.0.0",
     "is-buffer": "^2.0.5",
     "level-concat-iterator": "^3.0.0",
-    "level-supports": "^2.0.0",
+    "level-supports": "^2.0.1",
     "queue-microtask": "^1.2.3"
   },
   "devDependencies": {

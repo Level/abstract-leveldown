@@ -48,36 +48,6 @@ exports.args = function (test, testCommon) {
     )
     t.end()
   })
-
-  testCommon.serialize && test('test _serialize object', function (t) {
-    t.plan(3)
-    const db = testCommon.factory()
-    db._put = function (key, value, opts, callback) {
-      t.ok(key)
-      t.ok(value)
-      this._nextTick(callback)
-    }
-    db.put({}, {}, function (err, val) {
-      t.error(err)
-    })
-  })
-
-  testCommon.serialize && test('test custom _serialize*', function (t) {
-    t.plan(4)
-    const db = testCommon.factory()
-    db._serializeKey = db._serializeValue = function (data) { return data }
-    db._put = function (key, value, options, callback) {
-      t.deepEqual(key, { foo: 'bar' })
-      t.deepEqual(value, { beep: 'boop' })
-      this._nextTick(callback)
-    }
-    db.open(function () {
-      db.put({ foo: 'bar' }, { beep: 'boop' }, function (err) {
-        t.error(err)
-        db.close(t.error.bind(t))
-      })
-    })
-  })
 }
 
 exports.put = function (test, testCommon) {

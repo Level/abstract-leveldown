@@ -218,7 +218,17 @@ Get a value from the store by `key`. The optional `options` object may contain:
 
 - `asBuffer` _(boolean, default: `true`)_: Whether to return the `value` as a Buffer. If `false`, the returned type depends on the implementation.
 
-The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be the value.
+The `callback` function will be called with an `Error` if the operation failed for any reason, including if the key was not found. If successful the first argument will be `null` and the second argument will be the value.
+
+### `db.getMany(keys[, options][, callback])`
+
+Get multiple values from the store by an array of `keys`. The optional `options` object may contain:
+
+- `asBuffer` _(boolean, default: `true`)_: Whether to return the `value` as a Buffer. If `false`, the returned type depends on the implementation.
+
+The `callback` function will be called with an `Error` if the operation failed for any reason. If successful the first argument will be `null` and the second argument will be an array of values with the same order as `keys`. If a key was not found, the relevant value will be `undefined`.
+
+If no callback is provided, a promise is returned.
 
 ### `db.put(key, value[, options], callback)`
 
@@ -435,6 +445,14 @@ Get a value by `key`. The `options` object will always have the following proper
 
 The default `_get()` invokes `callback` on a next tick with a `NotFound` error. It must be overridden.
 
+### `db._getMany(keys, options, callback)`
+
+**This new method is optional for the time being. To enable its tests, set the [`getMany` option of the test suite](#excluding-tests) to `true`.**
+
+Get multiple values by an array of `keys`. The `options` object will always have the following properties: `asBuffer`. If an error occurs, call the `callback` function with an `Error`. Otherwise call `callback` with `null` as the first argument and an array of values as the second. If a key does not exist, set the relevant value to `undefined`.
+
+The default `_getMany()` invokes `callback` on a next tick with an array of values that is equal in length to `keys` and is filled with `undefined`. It must be overridden to support `getMany()` but this is currently an opt-in feature. If the implementation does support `getMany()` then `db.supports.getMany` must be set to true via the [constructor](#db--abstractleveldownmanifest).
+
 ### `db._put(key, value, options, callback)`
 
 Store a new entry or overwrite an existing entry. There are no default options but `options` will always be an object. If putting failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
@@ -581,6 +599,7 @@ This also serves as a signal to users of your implementation. The following opti
 - `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
 - `seek`: set to `false` if your `iterator` does not implement `_seek`
 - `clear`: defaults to `false` until a next major release. Set to `true` if your implementation either implements `_clear()` itself or is suitable to use the default implementation of `_clear()` (which requires binary key support).
+- `getMany`: defaults to `false` until a next major release. Set to `true` if your implementation implements `_getMany()`.
 - `snapshots`: set to `false` if any of the following is true:
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously
