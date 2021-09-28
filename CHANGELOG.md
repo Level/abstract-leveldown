@@ -1,5 +1,11 @@
 # Changelog
 
+## [7.2.0] - 2021-09-28
+
+### Added
+
+- Add `db.getMany(keys)` ([#381](https://github.com/Level/abstract-leveldown/issues/381)) ([`e4445a7`](https://github.com/Level/abstract-leveldown/commit/e4445a7)) (Vincent Weevers).
+
 ## [7.1.0] - 2021-09-21
 
 ### Added
@@ -846,6 +852,8 @@ _It seems the version in `package.json` was never changed to `0.8.0` in the git 
 ## [0.0.0] - 2013-03-15
 
 First release. :seedling:
+
+[7.2.0]: https://github.com/Level/abstract-leveldown/releases/tag/v7.2.0
 
 [7.1.0]: https://github.com/Level/abstract-leveldown/releases/tag/v7.1.0
 
