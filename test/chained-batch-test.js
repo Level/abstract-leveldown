@@ -40,84 +40,62 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  test('test batch#put() with missing `value`', function (t) {
-    t.plan(1)
+  test('test batch#put() with missing, null or undefined `value`', function (t) {
+    t.plan(3 * 2)
 
-    try {
-      db.batch().put('foo1')
-    } catch (err) {
-      t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+    for (const args of [[null], [undefined], []]) {
+      const batch = db.batch()
+
+      try {
+        batch.put('key', ...args)
+      } catch (err) {
+        t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
+        t.is(batch.length, 0, 'length is not incremented on error')
+      }
     }
   })
 
-  test('test batch#put() with missing `key`', function (t) {
-    try {
-      db.batch().put(undefined, 'foo1')
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
-  })
+  test('test batch#put() with null or undefined `key`', function (t) {
+    t.plan(2 * 2)
 
-  test('test batch#put() with null `key`', function (t) {
-    try {
-      db.batch().put(null, 'foo1')
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
+    for (const key of [null, undefined]) {
+      const batch = db.batch()
+
+      try {
+        batch.put(key, 'foo1')
+      } catch (err) {
+        t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+        t.is(batch.length, 0, 'length is not incremented on error')
+      }
     }
-    t.fail('should have thrown')
-    t.end()
   })
 
   test('test batch#put() with missing `key` and `value`', function (t) {
+    t.plan(2)
+
+    const batch = db.batch()
+
     try {
-      db.batch().put()
+      batch.put()
     } catch (err) {
       t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
+      t.is(batch.length, 0, 'length is not incremented on error')
     }
-    t.fail('should have thrown')
-    t.end()
   })
 
-  test('test batch#put() with null or undefined `value`', function (t) {
-    const illegalValues = [null, undefined]
-    t.plan(illegalValues.length)
+  test('test batch#del() with missing, null or undefined `key`', function (t) {
+    t.plan(3 * 2)
 
-    illegalValues.forEach(function (value) {
+    for (const args of [[null], [undefined], []]) {
+      const batch = db.batch()
+
       try {
-        db.batch().put('key', value)
-      } catch (err) {
-        t.is(err.message, 'value cannot be `null` or `undefined`', 'correct error message')
-      }
-    })
-  })
-
-  test('test batch#del() with missing `key`', function (t) {
-    try {
-      db.batch().del()
-    } catch (err) {
-      t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
-  })
-
-  test('test batch#del() with null or undefined `key`', function (t) {
-    const illegalKeys = [null, undefined]
-    t.plan(illegalKeys.length)
-
-    illegalKeys.forEach(function (key) {
-      try {
-        db.batch().del(key)
+        batch.del(...args)
       } catch (err) {
         t.equal(err.message, 'key cannot be `null` or `undefined`', 'correct error message')
+        t.is(batch.length, 0, 'length is not incremented on error')
       }
-    })
+    }
   })
 
   test('test batch#clear() doesn\'t throw', function (t) {
@@ -204,38 +182,6 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  testCommon.serialize && test('test custom _serialize*', function (t) {
-    t.plan(4)
-
-    const _db = Object.create(db)
-    const batch = _db.batch()
-    const ops = collectBatchOps(batch)
-
-    _db._serializeKey = function (key) {
-      t.same(key, { foo: 'bar' })
-      return 'key1'
-    }
-
-    _db._serializeValue = function (value) {
-      t.same(value, { beep: 'boop' })
-      return 'value1'
-    }
-
-    batch.put({ foo: 'bar' }, { beep: 'boop' })
-
-    _db._serializeKey = function (key) {
-      t.same(key, { bar: 'baz' })
-      return 'key2'
-    }
-
-    batch.del({ bar: 'baz' })
-
-    t.deepEqual(ops, [
-      { type: 'put', key: 'key1', value: 'value1' },
-      { type: 'del', key: 'key2' }
-    ])
-  })
-
   test('test batch#write() with no operations', function (t) {
     let async = false
 
@@ -257,31 +203,40 @@ exports.batch = function (test, testCommon) {
       { type: 'put', key: 'three', value: '3' }
     ], function (err) {
       t.error(err)
-      db.batch()
+
+      const batch = db.batch()
         .put('1', 'one')
         .del('2', 'two')
         .put('3', 'three')
-        .clear()
-        .put('one', 'I')
+
+      t.is(batch.length, 3, 'length was incremented')
+
+      batch.clear()
+      t.is(batch.length, 0, 'length is reset')
+
+      batch.put('one', 'I')
         .put('two', 'II')
         .del('three')
         .put('foo', 'bar')
-        .write(function (err) {
-          t.error(err)
-          collectEntries(
-            db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
-              t.error(err)
-              t.equal(data.length, 3, 'correct number of entries')
-              const expected = [
-                { key: 'foo', value: 'bar' },
-                { key: 'one', value: 'I' },
-                { key: 'two', value: 'II' }
-              ]
-              t.deepEqual(data, expected)
-              t.end()
-            }
-          )
-        })
+
+      t.is(batch.length, 4, 'length was incremented')
+
+      batch.write(function (err) {
+        t.error(err)
+        collectEntries(
+          db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
+            t.error(err)
+            t.equal(data.length, 3, 'correct number of entries')
+            const expected = [
+              { key: 'foo', value: 'bar' },
+              { key: 'one', value: 'I' },
+              { key: 'two', value: 'II' }
+            ]
+            t.deepEqual(data, expected)
+            t.end()
+          }
+        )
+      })
     })
   })
 }

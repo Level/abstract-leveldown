@@ -1,6 +1,7 @@
 'use strict'
 
 const emptyOptions = Object.freeze({})
+const kLength = Symbol('length')
 
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
@@ -10,7 +11,17 @@ function AbstractChainedBatch (db) {
   this.db = db
   this._operations = []
   this._written = false
+  this[kLength] = 0
 }
+
+Object.defineProperty(AbstractChainedBatch.prototype, 'length', {
+  // Allow implementations to implement it differently if needed
+  configurable: true,
+  enumerable: true,
+  get () {
+    return this[kLength]
+  }
+})
 
 AbstractChainedBatch.prototype._checkWritten = function () {
   if (this._written) {
@@ -28,6 +39,7 @@ AbstractChainedBatch.prototype.put = function (key, value, options) {
   value = this.db._serializeValue(value)
 
   this._put(key, value, options != null ? options : emptyOptions)
+  this[kLength]++
 
   return this
 }
@@ -44,6 +56,7 @@ AbstractChainedBatch.prototype.del = function (key, options) {
 
   key = this.db._serializeKey(key)
   this._del(key, options != null ? options : emptyOptions)
+  this[kLength]++
 
   return this
 }
@@ -55,6 +68,7 @@ AbstractChainedBatch.prototype._del = function (key, options) {
 AbstractChainedBatch.prototype.clear = function () {
   this._checkWritten()
   this._clear()
+  this[kLength] = 0
 
   return this
 }

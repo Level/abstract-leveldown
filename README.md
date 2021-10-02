@@ -313,6 +313,10 @@ There are no `options` by default but implementations may add theirs. The `callb
 
 After `write` has been called, no further operations are allowed.
 
+#### `chainedBatch.length`
+
+The number of queued operations on the current batch.
+
 #### `chainedBatch.db`
 
 A reference to the `db` that created this chained batch.
