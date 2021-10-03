@@ -12,6 +12,19 @@ exports.isTypedArray = function isTypedArray (value) {
     (typeof Uint8Array !== 'undefined' && value instanceof Uint8Array)
 }
 
+exports.illegalKeys = [
+  { name: 'null key', key: null, regex: /key cannot be `null` or `undefined`/ },
+  { name: 'undefined key', key: undefined, regex: /key cannot be `null` or `undefined`/ },
+  { name: 'empty String key', key: '', regex: /key cannot be an empty String/ },
+  { name: 'empty Buffer key', key: Buffer.alloc(0), regex: /key cannot be an empty \w*Buffer/ },
+  { name: 'empty Array key', key: [], regex: /key cannot be an empty Array/ }
+]
+
+exports.illegalValues = [
+  { name: 'null key', value: null, regex: /value cannot be `null` or `undefined`/ },
+  { name: 'undefined value', value: undefined, regex: /value cannot be `null` or `undefined`/ }
+]
+
 /**
  * Wrap a callback to check that it's called asynchronously. Must be
  * combined with a `ctx()`, `with()` or `end()` call.

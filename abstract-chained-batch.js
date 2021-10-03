@@ -1,7 +1,11 @@
 'use strict'
 
+const { fromCallback } = require('catering')
+const { getCallback, getOptions } = require('./lib/common')
+
 const emptyOptions = Object.freeze({})
 const kLength = Symbol('length')
+const kPromise = Symbol('promise')
 
 function AbstractChainedBatch (db) {
   if (typeof db !== 'object' || db === null) {
@@ -30,6 +34,10 @@ AbstractChainedBatch.prototype._checkWritten = function () {
 }
 
 AbstractChainedBatch.prototype.put = function (key, value, options) {
+  if (!this.db.isOperational()) {
+    throw new Error('Database is not open')
+  }
+
   this._checkWritten()
 
   const err = this.db._checkKey(key) || this.db._checkValue(value)
@@ -49,6 +57,10 @@ AbstractChainedBatch.prototype._put = function (key, value, options) {
 }
 
 AbstractChainedBatch.prototype.del = function (key, options) {
+  if (!this.db.isOperational()) {
+    throw new Error('Database is not open')
+  }
+
   this._checkWritten()
 
   const err = this.db._checkKey(key)
@@ -66,6 +78,10 @@ AbstractChainedBatch.prototype._del = function (key, options) {
 }
 
 AbstractChainedBatch.prototype.clear = function () {
+  if (!this.db.isOperational()) {
+    throw new Error('Database is not open')
+  }
+
   this._checkWritten()
   this._clear()
   this[kLength] = 0
@@ -78,20 +94,20 @@ AbstractChainedBatch.prototype._clear = function () {
 }
 
 AbstractChainedBatch.prototype.write = function (options, callback) {
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
+
+  if (!this.db.isOperational()) {
+    this._nextTick(callback, new Error('Database is not open'))
+    return callback[kPromise]
+  }
+
   this._checkWritten()
-
-  if (typeof options === 'function') {
-    callback = options
-  }
-  if (typeof callback !== 'function') {
-    throw new Error('write() requires a callback argument')
-  }
-  if (typeof options !== 'object' || options === null) {
-    options = {}
-  }
-
   this._written = true
   this._write(options, callback)
+
+  return callback[kPromise]
 }
 
 AbstractChainedBatch.prototype._write = function (options, callback) {

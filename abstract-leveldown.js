@@ -2,47 +2,52 @@
 
 const supports = require('level-supports')
 const isBuffer = require('is-buffer')
-const catering = require('catering')
+const { fromCallback } = require('catering')
 const AbstractIterator = require('./abstract-iterator')
 const AbstractChainedBatch = require('./abstract-chained-batch')
-const getCallback = require('./lib/common').getCallback
-const getOptions = require('./lib/common').getOptions
+const { getCallback, getOptions } = require('./lib/common')
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 const rangeOptions = ['lt', 'lte', 'gt', 'gte']
+const kPromise = Symbol('promise')
 
 function AbstractLevelDOWN (manifest) {
   this.status = 'new'
 
   // TODO (next major): make this mandatory
   this.supports = supports(manifest, {
-    status: true
+    status: true,
+    promises: true
   })
 }
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
-  const oldStatus = this.status
-
-  if (typeof options === 'function') callback = options
-
-  if (typeof callback !== 'function') {
-    throw new Error('open() requires a callback argument')
-  }
-
-  if (typeof options !== 'object' || options === null) options = {}
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
 
   options.createIfMissing = options.createIfMissing !== false
   options.errorIfExists = !!options.errorIfExists
 
-  this.status = 'opening'
-  this._open(options, (err) => {
-    if (err) {
-      this.status = oldStatus
-      return callback(err)
-    }
-    this.status = 'open'
-    callback()
-  })
+  if (this.status === 'new' || this.status === 'closed') {
+    const oldStatus = this.status
+    this.status = 'opening'
+    this._open(options, (err) => {
+      if (err) {
+        this.status = oldStatus
+        return callback(err)
+      }
+      this.status = 'open'
+      callback()
+    })
+  } else if (this.status === 'open') {
+    this._nextTick(callback)
+  } else {
+    // Cannot handle yet for lack of events
+    this._nextTick(callback, new Error('Database is not open'))
+  }
+
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._open = function (options, callback) {
@@ -50,21 +55,26 @@ AbstractLevelDOWN.prototype._open = function (options, callback) {
 }
 
 AbstractLevelDOWN.prototype.close = function (callback) {
-  const oldStatus = this.status
+  callback = fromCallback(callback, kPromise)
 
-  if (typeof callback !== 'function') {
-    throw new Error('close() requires a callback argument')
+  if (this.status === 'open') {
+    this.status = 'closing'
+    this._close((err) => {
+      if (err) {
+        this.status = 'open'
+        return callback(err)
+      }
+      this.status = 'closed'
+      callback()
+    })
+  } else if (this.status === 'closed' || this.status === 'new') {
+    this._nextTick(callback)
+  } else {
+    // Cannot handle yet for lack of events
+    this._nextTick(callback, new Error('Database is not open'))
   }
 
-  this.status = 'closing'
-  this._close((err) => {
-    if (err) {
-      this.status = oldStatus
-      return callback(err)
-    }
-    this.status = 'closed'
-    callback()
-  })
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._close = function (callback) {
@@ -72,22 +82,26 @@ AbstractLevelDOWN.prototype._close = function (callback) {
 }
 
 AbstractLevelDOWN.prototype.get = function (key, options, callback) {
-  if (typeof options === 'function') callback = options
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
 
-  if (typeof callback !== 'function') {
-    throw new Error('get() requires a callback argument')
+  if (maybeError(this, callback)) {
+    return callback[kPromise]
   }
 
   const err = this._checkKey(key)
-  if (err) return this._nextTick(callback, err)
+
+  if (err) {
+    this._nextTick(callback, err)
+    return callback[kPromise]
+  }
 
   key = this._serializeKey(key)
-
-  if (typeof options !== 'object' || options === null) options = {}
-
   options.asBuffer = options.asBuffer !== false
 
   this._get(key, options, callback)
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._get = function (key, options, callback) {
@@ -96,21 +110,21 @@ AbstractLevelDOWN.prototype._get = function (key, options, callback) {
 
 AbstractLevelDOWN.prototype.getMany = function (keys, options, callback) {
   callback = getCallback(options, callback)
-  callback = catering.fromCallback(callback)
+  callback = fromCallback(callback, kPromise)
   options = getOptions(options)
 
   if (maybeError(this, callback)) {
-    return callback.promise
+    return callback[kPromise]
   }
 
   if (!Array.isArray(keys)) {
     this._nextTick(callback, new Error('getMany() requires an array argument'))
-    return callback.promise
+    return callback[kPromise]
   }
 
   if (keys.length === 0) {
     this._nextTick(callback, null, [])
-    return callback.promise
+    return callback[kPromise]
   }
 
   if (typeof options.asBuffer !== 'boolean') {
@@ -125,14 +139,14 @@ AbstractLevelDOWN.prototype.getMany = function (keys, options, callback) {
 
     if (err) {
       this._nextTick(callback, err)
-      return callback.promise
+      return callback[kPromise]
     }
 
     serialized[i] = this._serializeKey(key)
   }
 
   this._getMany(serialized, options, callback)
-  return callback.promise
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._getMany = function (keys, options, callback) {
@@ -140,21 +154,26 @@ AbstractLevelDOWN.prototype._getMany = function (keys, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.put = function (key, value, options, callback) {
-  if (typeof options === 'function') callback = options
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
 
-  if (typeof callback !== 'function') {
-    throw new Error('put() requires a callback argument')
+  if (maybeError(this, callback)) {
+    return callback[kPromise]
   }
 
   const err = this._checkKey(key) || this._checkValue(value)
-  if (err) return this._nextTick(callback, err)
+
+  if (err) {
+    this._nextTick(callback, err)
+    return callback[kPromise]
+  }
 
   key = this._serializeKey(key)
   value = this._serializeValue(value)
 
-  if (typeof options !== 'object' || options === null) options = {}
-
   this._put(key, value, options, callback)
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
@@ -162,20 +181,24 @@ AbstractLevelDOWN.prototype._put = function (key, value, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.del = function (key, options, callback) {
-  if (typeof options === 'function') callback = options
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
 
-  if (typeof callback !== 'function') {
-    throw new Error('del() requires a callback argument')
+  if (maybeError(this, callback)) {
+    return callback[kPromise]
   }
 
   const err = this._checkKey(key)
-  if (err) return this._nextTick(callback, err)
+
+  if (err) {
+    this._nextTick(callback, err)
+    return callback[kPromise]
+  }
 
   key = this._serializeKey(key)
-
-  if (typeof options !== 'object' || options === null) options = {}
-
   this._del(key, options, callback)
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._del = function (key, options, callback) {
@@ -183,47 +206,62 @@ AbstractLevelDOWN.prototype._del = function (key, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
-  if (!arguments.length) return this._chainedBatch()
-
-  if (typeof options === 'function') callback = options
+  if (!arguments.length) {
+    if (!this.isOperational()) throw new Error('Database is not open')
+    return this._chainedBatch()
+  }
 
   if (typeof array === 'function') callback = array
+  else callback = getCallback(options, callback)
 
-  if (typeof callback !== 'function') {
-    throw new Error('batch(array) requires a callback argument')
+  callback = fromCallback(callback, kPromise)
+  options = getOptions(options)
+
+  if (maybeError(this, callback)) {
+    return callback[kPromise]
   }
 
   if (!Array.isArray(array)) {
-    return this._nextTick(callback, new Error('batch(array) requires an array argument'))
+    this._nextTick(callback, new Error('batch(array) requires an array argument'))
+    return callback[kPromise]
   }
 
   if (array.length === 0) {
-    return this._nextTick(callback)
+    this._nextTick(callback)
+    return callback[kPromise]
   }
-
-  if (typeof options !== 'object' || options === null) options = {}
 
   const serialized = new Array(array.length)
 
   for (let i = 0; i < array.length; i++) {
     if (typeof array[i] !== 'object' || array[i] === null) {
-      return this._nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
+      this._nextTick(callback, new Error('batch(array) element must be an object and not `null`'))
+      return callback[kPromise]
     }
 
     const e = Object.assign({}, array[i])
 
     if (e.type !== 'put' && e.type !== 'del') {
-      return this._nextTick(callback, new Error("`type` must be 'put' or 'del'"))
+      this._nextTick(callback, new Error("`type` must be 'put' or 'del'"))
+      return callback[kPromise]
     }
 
     const err = this._checkKey(e.key)
-    if (err) return this._nextTick(callback, err)
+
+    if (err) {
+      this._nextTick(callback, err)
+      return callback[kPromise]
+    }
 
     e.key = this._serializeKey(e.key)
 
     if (e.type === 'put') {
       const valueErr = this._checkValue(e.value)
-      if (valueErr) return this._nextTick(callback, valueErr)
+
+      if (valueErr) {
+        this._nextTick(callback, valueErr)
+        return callback[kPromise]
+      }
 
       e.value = this._serializeValue(e.value)
     }
@@ -232,6 +270,7 @@ AbstractLevelDOWN.prototype.batch = function (array, options, callback) {
   }
 
   this._batch(serialized, options, callback)
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
@@ -239,10 +278,11 @@ AbstractLevelDOWN.prototype._batch = function (array, options, callback) {
 }
 
 AbstractLevelDOWN.prototype.clear = function (options, callback) {
-  if (typeof options === 'function') {
-    callback = options
-  } else if (typeof callback !== 'function') {
-    throw new Error('clear() requires a callback argument')
+  callback = getCallback(options, callback)
+  callback = fromCallback(callback, kPromise)
+
+  if (maybeError(this, callback)) {
+    return callback[kPromise]
   }
 
   options = cleanRangeOptions(this, options)
@@ -250,6 +290,7 @@ AbstractLevelDOWN.prototype.clear = function (options, callback) {
   options.limit = 'limit' in options ? options.limit : -1
 
   this._clear(options, callback)
+  return callback[kPromise]
 }
 
 AbstractLevelDOWN.prototype._clear = function (options, callback) {
@@ -325,6 +366,7 @@ function isRangeOption (k) {
 }
 
 AbstractLevelDOWN.prototype.iterator = function (options) {
+  if (!this.isOperational()) throw new Error('Database is not open')
   if (typeof options !== 'object' || options === null) options = {}
   options = this._setupIteratorOptions(options)
   return this._iterator(options)

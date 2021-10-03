@@ -1,73 +1,9 @@
 'use strict'
 
 const verifyNotFoundError = require('./util').verifyNotFoundError
-const assertAsync = require('./util').assertAsync
 const testBuffer = Buffer.from('testbuffer')
 
 let db
-
-function makeGetDelErrorTests (test, testCommon, type, key, expectedError) {
-  test('test get() with ' + type + ' causes error', function (t) {
-    let async = false
-
-    db.get(key, function (err) {
-      t.ok(err, 'has error')
-      t.ok(err instanceof Error)
-      t.ok(err.message.match(expectedError), 'correct error message')
-      t.ok(async, 'callback is asynchronous')
-      t.end()
-    })
-
-    async = true
-  })
-
-  test('test del() with ' + type + ' causes error', function (t) {
-    let async = false
-
-    db.del(key, function (err) {
-      t.ok(err, 'has error')
-      t.ok(err instanceof Error)
-      t.ok(err.message.match(expectedError), 'correct error message')
-      t.ok(async, 'callback is asynchronous')
-      t.end()
-    })
-
-    async = true
-  })
-
-  testCommon.getMany && test('test getMany() with ' + type + ' causes error', assertAsync.ctx(function (t) {
-    // Add 1 assertion for every assertAsync()
-    t.plan(2 * 4)
-
-    db.getMany([key], assertAsync(function (err) {
-      t.ok(err, 'has error')
-      t.ok(err instanceof Error)
-      t.ok(err.message.match(expectedError), 'correct error message')
-    }))
-
-    db.getMany(['valid', key], assertAsync(function (err) {
-      t.ok(err, 'has error')
-      t.ok(err instanceof Error)
-      t.ok(err.message.match(expectedError), 'correct error message')
-    }))
-  }))
-}
-
-function makePutErrorTest (test, type, key, value, expectedError) {
-  test('test put() with ' + type + ' causes error', function (t) {
-    let async = false
-
-    db.put(key, value, function (err) {
-      t.ok(err, 'has error')
-      t.ok(err instanceof Error)
-      t.ok(err.message.match(expectedError), 'correct error message')
-      t.ok(async, 'callback is asynchronous')
-      t.end()
-    })
-
-    async = true
-  })
-}
 
 function makePutGetDelSuccessfulTest (test, testCommon, type, key, value, expectedResult) {
   const hasExpectedResult = arguments.length === 6
@@ -114,30 +50,12 @@ function makePutGetDelSuccessfulTest (test, testCommon, type, key, value, expect
   })
 }
 
-function makeErrorKeyTest (test, testCommon, type, key, expectedError) {
-  makeGetDelErrorTests(test, testCommon, type, key, expectedError)
-  makePutErrorTest(test, type, key, 'foo', expectedError)
-}
-
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
     db.open(t.end.bind(t))
   })
-}
-
-exports.errorKeys = function (test, testCommon) {
-  makeErrorKeyTest(test, testCommon, 'null key', null, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest(test, testCommon, 'undefined key', undefined, /key cannot be `null` or `undefined`/)
-  makeErrorKeyTest(test, testCommon, 'empty String key', '', /key cannot be an empty String/)
-  makeErrorKeyTest(test, testCommon, 'empty Buffer key', Buffer.alloc(0), /key cannot be an empty \w*Buffer/)
-  makeErrorKeyTest(test, testCommon, 'empty Array key', [], /key cannot be an empty Array/)
-}
-
-exports.errorValues = function (test, testCommon) {
-  makePutErrorTest(test, 'null value', 'key', null, /value cannot be `null` or `undefined`/)
-  makePutErrorTest(test, 'undefined value', 'key', undefined, /value cannot be `null` or `undefined`/)
 }
 
 exports.nonErrorKeys = function (test, testCommon) {
@@ -198,8 +116,6 @@ exports.tearDown = function (test, testCommon) {
 
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
-  exports.errorKeys(test, testCommon)
-  exports.errorValues(test, testCommon)
   exports.nonErrorKeys(test, testCommon)
   exports.nonErrorValues(test, testCommon)
   exports.tearDown(test, testCommon)

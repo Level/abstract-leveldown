@@ -1,31 +1,32 @@
 'use strict'
 
-let db
-
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
-  test('setUp db', function (t) {
-    db = testCommon.factory()
-    db.open(t.end.bind(t))
-  })
 }
 
 exports.close = function (test, testCommon) {
   test('test close()', function (t) {
-    testCommon.promises || t.throws(
-      db.close.bind(db),
-      /Error: close\(\) requires a callback argument/,
-      'no-arg close() throws'
-    )
-    testCommon.promises || t.throws(
-      db.close.bind(db, 'foo'),
-      /Error: close\(\) requires a callback argument/,
-      'non-callback close() throws'
-    )
+    const db = testCommon.factory()
 
-    db.close(function (err) {
-      t.error(err)
-      t.end()
+    db.open(function (err) {
+      t.ifError(err, 'no open() error')
+
+      db.close(function (err) {
+        t.error(err)
+        t.end()
+      })
+    })
+  })
+
+  test('test close() with promise', function (t) {
+    const db = testCommon.factory()
+
+    db.open(function (err) {
+      t.ifError(err, 'no open() error')
+
+      db.close()
+        .then(t.end.bind(t))
+        .catch(t.end.bind(t))
     })
   })
 }

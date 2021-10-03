@@ -1,24 +1,34 @@
 'use strict'
 
 const concat = require('level-concat-iterator')
-let db
 
 exports.setUp = function (test, testCommon) {
   test('setUp common', testCommon.setUp)
-  test('setUp db', function (t) {
-    db = testCommon.factory()
-    db.open(t.end.bind(t))
-  })
 }
 
 exports.args = function (test, testCommon) {
-  testCommon.promises || test('test argument-less clear() throws', function (t) {
-    t.throws(
-      db.clear.bind(db),
-      /Error: clear\(\) requires a callback argument/,
-      'no-arg clear() throws'
-    )
-    t.end()
+  test('test clear() with legacy range options', function (t) {
+    t.plan(4)
+
+    const db = testCommon.factory()
+
+    db.open(function (err) {
+      t.ifError(err)
+
+      try {
+        db.clear({ start: 'foo' }, t.fail.bind(t))
+      } catch (err) {
+        t.is(err.message, 'Legacy range options ("start" and "end") have been removed')
+      }
+
+      try {
+        db.clear({ start: 'foo' }).catch(t.fail.bind(t))
+      } catch (err) {
+        t.is(err.message, 'Legacy range options ("start" and "end") have been removed')
+      }
+
+      db.close(t.ifError.bind(t))
+    })
   })
 }
 
@@ -68,12 +78,47 @@ exports.clear = function (test, testCommon) {
         })
       })
     })
+
+    test('test simple clear() on ' + type + ' keys, with promise', function (t) {
+      t.plan(8)
+
+      const db = testCommon.factory()
+      const ops = keys.map(function (key) {
+        return { type: 'put', key: key, value: 'foo' }
+      })
+
+      db.open(function (err) {
+        t.ifError(err, 'no open error')
+
+        db.batch(ops, function (err) {
+          t.ifError(err, 'no batch error')
+
+          concat(db.iterator(), function (err, entries) {
+            t.ifError(err, 'no concat error')
+            t.is(entries.length, keys.length, 'has entries')
+
+            db.clear().then(function () {
+              t.ifError(err, 'no clear error')
+
+              concat(db.iterator(), function (err, entries) {
+                t.ifError(err, 'no concat error')
+                t.is(entries.length, 0, 'has no entries')
+
+                db.close(function (err) {
+                  t.ifError(err, 'no close error')
+                })
+              })
+            }).catch(t.fail.bind(t))
+          })
+        })
+      })
+    })
   }
 }
 
 exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
-    db.close(testCommon.tearDown.bind(null, t))
+    testCommon.tearDown(t)
   })
 }
 

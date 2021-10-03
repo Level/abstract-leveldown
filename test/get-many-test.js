@@ -1,8 +1,7 @@
 'use strict'
 
 const isBuffer = require('is-buffer')
-const isTypedArray = require('./util').isTypedArray
-const assertAsync = require('./util').assertAsync
+const { isTypedArray, assertAsync, illegalKeys } = require('./util')
 
 let db
 
@@ -45,6 +44,35 @@ exports.args = function (test, testCommon) {
       t.is(err && err.message, 'getMany() requires an array argument')
     })
   })
+
+  test('test getMany() with illegal keys', assertAsync.ctx(function (t) {
+    // Add 1 assertion for every assertAsync()
+    t.plan(illegalKeys.length * 12)
+
+    for (const { name, key, regex } of illegalKeys) {
+      db.getMany([key], assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback)')
+        t.ok(err instanceof Error, name + ' - is Error (callback)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback)')
+      }))
+
+      db.getMany(['valid', key], assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback, second key)')
+        t.ok(err instanceof Error, name + ' - is Error (callback, second key)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback, second key)')
+      }))
+
+      db.getMany([key]).catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise)')
+      })
+
+      db.getMany(['valid', key]).catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise, second key)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise, second key)')
+      })
+    }
+  }))
 }
 
 /**

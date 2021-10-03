@@ -1,8 +1,7 @@
 'use strict'
 
 const isBuffer = require('is-buffer')
-const verifyNotFoundError = require('./util').verifyNotFoundError
-const isTypedArray = require('./util').isTypedArray
+const { verifyNotFoundError, isTypedArray, illegalKeys, assertAsync } = require('./util')
 
 let db
 
@@ -15,32 +14,22 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  testCommon.promises || test('test argument-less get() throws', function (t) {
-    t.throws(
-      db.get.bind(db),
-      /Error: get\(\) requires a callback argument/,
-      'no-arg get() throws'
-    )
-    t.end()
-  })
+  test('test get() with illegal keys', assertAsync.ctx(function (t) {
+    t.plan(illegalKeys.length * 6)
 
-  testCommon.promises || test('test callback-less, 1-arg, get() throws', function (t) {
-    t.throws(
-      db.get.bind(db, 'foo'),
-      /Error: get\(\) requires a callback argument/,
-      'callback-less, 1-arg get() throws'
-    )
-    t.end()
-  })
+    for (const { name, key, regex } of illegalKeys) {
+      db.get(key, assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback)')
+        t.ok(err instanceof Error, name + ' - is Error (callback)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback)')
+      }))
 
-  testCommon.promises || test('test callback-less, 3-arg, get() throws', function (t) {
-    t.throws(
-      db.get.bind(db, 'foo', {}),
-      /Error: get\(\) requires a callback argument/,
-      'callback-less, 2-arg get() throws'
-    )
-    t.end()
-  })
+      db.get(key).catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise)')
+      })
+    }
+  }))
 }
 
 exports.get = function (test, testCommon) {
@@ -103,6 +92,28 @@ exports.get = function (test, testCommon) {
           })
         })
       })
+    })
+  })
+
+  test('test get() with promise', function (t) {
+    db.put('promises', 'yes', function (err) {
+      t.error(err)
+
+      db.get('promises').then(function (value) {
+        t.is(value.toString(), 'yes', 'got value without options')
+
+        db.get('not found').catch(function (err) {
+          t.ok(err, 'should error')
+          t.ok(verifyNotFoundError(err), 'should have correct error message')
+
+          const opts = testCommon.encodings ? { valueEncoding: 'utf8' } : { asBuffer: false }
+
+          db.get('promises', opts).then(function (value) {
+            t.is(value, 'yes', 'got value with string options')
+            t.end()
+          }).catch(t.fail.bind(t))
+        })
+      }).catch(t.fail.bind(t))
     })
   })
 

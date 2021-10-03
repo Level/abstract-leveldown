@@ -37,6 +37,48 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 </details>
 
+## Upcoming
+
+All methods that take a callback now also support promises. They return a promise if no callback is provided, the same as `levelup`.
+
+On any operation, `abstract-leveldown` now checks if it's open. If not, it will either throw an error (if the relevant API is synchronous) or asynchronously yield an error. For example:
+
+```js
+try {
+  db.iterator()
+} catch (err) {
+  // Error: Database is not open
+}
+```
+
+```js
+try {
+  await db.get('example')
+} catch (err) {
+  // Error: Database is not open
+}
+```
+
+```js
+db.get('example', function (err, value) {
+  // Error: Database is not open
+})
+```
+
+This may be a breaking change downstream because it changes error messages for implementations that had their own safety checks (which will now be ineffective because `abstract-leveldown` checks are performed first).
+
+Implementations that have additional methods, like `leveldown` that has an `approximateSize()` method which is not part of the `abstract-leveldown` interface, should add or align their own safety checks for consistency. Like so:
+
+```js
+LevelDOWN.prototype.approximateSize = function (start, end, callback) {
+  if (!this.isOperational()) {
+    throw new Error('Database is not open')
+  }
+
+  // ...
+}
+```
+
 ## 7.0.0
 
 Legacy range options have been removed ([Level/community#86](https://github.com/Level/community/issues/86)). If you previously did:

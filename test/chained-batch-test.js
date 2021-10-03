@@ -103,17 +103,6 @@ exports.args = function (test, testCommon) {
     t.end()
   })
 
-  testCommon.promises || test('test batch#write() with no callback', function (t) {
-    try {
-      db.batch().write()
-    } catch (err) {
-      t.equal(err.message, 'write() requires a callback argument', 'correct error message')
-      return t.end()
-    }
-    t.fail('should have thrown')
-    t.end()
-  })
-
   test('test batch#put() after write()', function (t) {
     const batch = db.batch().put('foo', 'bar')
     batch.write(function () {})
@@ -193,6 +182,12 @@ exports.args = function (test, testCommon) {
 
     async = true
   })
+
+  test('test batch#write() with promise and no operations', function (t) {
+    db.batch().write()
+      .then(t.end.bind(t))
+      .catch(t.end.bind(t))
+  })
 }
 
 exports.batch = function (test, testCommon) {
@@ -223,8 +218,13 @@ exports.batch = function (test, testCommon) {
 
       batch.write(function (err) {
         t.error(err)
+
+        const opts = testCommon.encodings
+          ? { keyEncoding: 'utf8', valueEncoding: 'utf8' }
+          : { keyAsBuffer: false, valueAsBuffer: false }
+
         collectEntries(
-          db.iterator({ keyAsBuffer: false, valueAsBuffer: false }), function (err, data) {
+          db.iterator(opts), function (err, data) {
             t.error(err)
             t.equal(data.length, 3, 'correct number of entries')
             const expected = [
@@ -237,6 +237,36 @@ exports.batch = function (test, testCommon) {
           }
         )
       })
+    })
+  })
+
+  test('test basic batch with promise', function (t) {
+    const db = testCommon.factory()
+
+    db.open(function (err) {
+      t.error(err)
+
+      db.batch()
+        .put('1', 'one')
+        .put('2', 'two')
+        .put('3', 'three')
+        .write().then(function () {
+          const opts = testCommon.encodings
+            ? { keyEncoding: 'utf8', valueEncoding: 'utf8' }
+            : { keyAsBuffer: false, valueAsBuffer: false }
+
+          collectEntries(
+            db.iterator(opts), function (err, data) {
+              t.error(err)
+              t.same(data, [
+                { key: '1', value: 'one' },
+                { key: '2', value: 'two' },
+                { key: '3', value: 'three' }
+              ])
+              db.close(t.end.bind(t))
+            }
+          )
+        }).catch(t.fail.bind(t))
     })
   })
 }

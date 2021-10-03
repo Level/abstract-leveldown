@@ -1,6 +1,6 @@
 'use strict'
 
-const isTypedArray = require('./util').isTypedArray
+const { isTypedArray, assertAsync, illegalKeys, illegalValues } = require('./util')
 
 let db
 
@@ -13,41 +13,39 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  testCommon.promises || test('test argument-less put() throws', function (t) {
-    t.throws(
-      db.put.bind(db),
-      /Error: put\(\) requires a callback argument/,
-      'no-arg put() throws'
-    )
-    t.end()
-  })
+  test('test put() with illegal keys', assertAsync.ctx(function (t) {
+    t.plan(illegalKeys.length * 6)
 
-  testCommon.promises || test('test callback-less, 1-arg, put() throws', function (t) {
-    t.throws(
-      db.put.bind(db, 'foo'),
-      /Error: put\(\) requires a callback argument/,
-      'callback-less, 1-arg put() throws'
-    )
-    t.end()
-  })
+    for (const { name, key, regex } of illegalKeys) {
+      db.put(key, 'value', assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback)')
+        t.ok(err instanceof Error, name + ' - is Error (callback)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback)')
+      }))
 
-  testCommon.promises || test('test callback-less, 2-arg, put() throws', function (t) {
-    t.throws(
-      db.put.bind(db, 'foo', 'bar'),
-      /Error: put\(\) requires a callback argument/,
-      'callback-less, 2-arg put() throws'
-    )
-    t.end()
-  })
+      db.put(key, 'value').catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise)')
+      })
+    }
+  }))
 
-  testCommon.promises || test('test callback-less, 3-arg, put() throws', function (t) {
-    t.throws(
-      db.put.bind(db, 'foo', 'bar', {}),
-      /Error: put\(\) requires a callback argument/,
-      'callback-less, 3-arg put() throws'
-    )
-    t.end()
-  })
+  test('test put() with illegal values', assertAsync.ctx(function (t) {
+    t.plan(illegalValues.length * 6)
+
+    for (const { name, value, regex } of illegalValues) {
+      db.put('key', value, assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback)')
+        t.ok(err instanceof Error, name + '- is Error (callback)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback)')
+      }))
+
+      db.put('key', value).catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise)')
+      })
+    }
+  }))
 }
 
 exports.put = function (test, testCommon) {
@@ -64,6 +62,20 @@ exports.put = function (test, testCommon) {
         t.end()
       })
     })
+  })
+
+  test('test simple put() with promise', function (t) {
+    db.put('foo', 'bar').then(function () {
+      db.get('foo', function (err, value) {
+        t.error(err)
+        let result = value.toString()
+        if (isTypedArray(value)) {
+          result = String.fromCharCode.apply(null, new Uint16Array(value))
+        }
+        t.equal(result, 'bar')
+        t.end()
+      })
+    }).catch(t.fail.bind(t))
   })
 }
 

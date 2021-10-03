@@ -1,6 +1,6 @@
 'use strict'
 
-const verifyNotFoundError = require('./util').verifyNotFoundError
+const { verifyNotFoundError, illegalKeys, assertAsync } = require('./util')
 
 let db
 
@@ -13,32 +13,22 @@ exports.setUp = function (test, testCommon) {
 }
 
 exports.args = function (test, testCommon) {
-  testCommon.promises || test('test argument-less del() throws', function (t) {
-    t.throws(
-      db.del.bind(db),
-      /Error: del\(\) requires a callback argument/,
-      'no-arg del() throws'
-    )
-    t.end()
-  })
+  test('test del() with illegal keys', assertAsync.ctx(function (t) {
+    t.plan(illegalKeys.length * 6)
 
-  testCommon.promises || test('test callback-less, 1-arg, del() throws', function (t) {
-    t.throws(
-      db.del.bind(db, 'foo'),
-      /Error: del\(\) requires a callback argument/,
-      'callback-less, 1-arg del() throws'
-    )
-    t.end()
-  })
+    for (const { name, key, regex } of illegalKeys) {
+      db.del(key, assertAsync(function (err) {
+        t.ok(err, name + ' - has error (callback)')
+        t.ok(err instanceof Error, name + ' - is Error (callback)')
+        t.ok(err.message.match(regex), name + ' - correct error message (callback)')
+      }))
 
-  testCommon.promises || test('test callback-less, 3-arg, del() throws', function (t) {
-    t.throws(
-      db.del.bind(db, 'foo', {}),
-      /Error: del\(\) requires a callback argument/,
-      'callback-less, 2-arg del() throws'
-    )
-    t.end()
-  })
+      db.del(key).catch(function (err) {
+        t.ok(err instanceof Error, name + ' - is Error (promise)')
+        t.ok(err.message.match(regex), name + ' - correct error message (promise)')
+      })
+    }
+  }))
 }
 
 exports.del = function (test, testCommon) {
@@ -57,11 +47,30 @@ exports.del = function (test, testCommon) {
     })
   })
 
+  test('test simple del() with promise', function (t) {
+    db.put('foo', 'bar', function (err) {
+      t.error(err)
+      db.del('foo').then(function (err) {
+        t.error(err)
+        db.get('foo', function (err, value) {
+          t.ok(err, 'entry properly deleted')
+          t.ok(typeof value === 'undefined', 'value is undefined')
+          t.ok(verifyNotFoundError(err), 'NotFound error')
+          t.end()
+        })
+      }).catch(t.fail.bind(t))
+    })
+  })
+
   test('test del on non-existent key', function (t) {
     db.del('blargh', function (err) {
       t.error(err)
       t.end()
     })
+  })
+
+  test('test del on non-existent key, with promise', async function (t) {
+    return db.del('blargh')
   })
 }
 

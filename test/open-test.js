@@ -4,28 +4,6 @@ exports.setUp = function (test, testCommon) {
   test('setUp', testCommon.setUp)
 }
 
-exports.args = function (test, testCommon) {
-  testCommon.promises || test('test database open no-arg throws', function (t) {
-    const db = testCommon.factory()
-    t.throws(
-      db.open.bind(db),
-      /Error: open\(\) requires a callback argument/,
-      'no-arg open() throws'
-    )
-    t.end()
-  })
-
-  testCommon.promises || test('test callback-less, 1-arg, open() throws', function (t) {
-    const db = testCommon.factory()
-    t.throws(
-      db.open.bind(db, {}),
-      /Error: open\(\) requires a callback argument/,
-      'callback-less, 1-arg open() throws'
-    )
-    t.end()
-  })
-}
-
 exports.open = function (test, testCommon) {
   test('test database open, no options', function (t) {
     const db = testCommon.factory()
@@ -39,6 +17,15 @@ exports.open = function (test, testCommon) {
     })
   })
 
+  test('test database open, no options, with promise', function (t) {
+    const db = testCommon.factory()
+
+    // default createIfMissing=true, errorIfExists=false
+    db.open().then(function () {
+      db.close(t.end.bind(t))
+    }).catch(t.fail.bind(t))
+  })
+
   test('test database open, options and callback', function (t) {
     const db = testCommon.factory()
 
@@ -48,6 +35,15 @@ exports.open = function (test, testCommon) {
       db.close(function () {
         t.end()
       })
+    })
+  })
+
+  test('test database open, options with promise', function (t) {
+    const db = testCommon.factory()
+
+    // default createIfMissing=true, errorIfExists=false
+    db.open({}).then(function () {
+      db.close(t.end.bind(t))
     })
   })
 
@@ -67,6 +63,21 @@ exports.open = function (test, testCommon) {
       })
     })
   })
+
+  test('test database open, close and open with promise', function (t) {
+    const db = testCommon.factory()
+
+    db.open().then(function () {
+      db.close(function (err) {
+        t.error(err)
+        db.open().then(function () {
+          db.close(function () {
+            t.end()
+          })
+        }).catch(t.fail.bind(t))
+      })
+    }).catch(t.fail.bind(t))
+  })
 }
 
 exports.tearDown = function (test, testCommon) {
@@ -75,7 +86,6 @@ exports.tearDown = function (test, testCommon) {
 
 exports.all = function (test, testCommon) {
   exports.setUp(test, testCommon)
-  exports.args(test, testCommon)
   exports.open(test, testCommon)
   exports.tearDown(test, testCommon)
 }

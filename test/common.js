@@ -34,8 +34,8 @@ function testCommon (options) {
     getMany: !!options.getMany,
 
     // Support running test suite on a levelup db. All options below this line
-    // are undocumented and should not be used by abstract-leveldown db's (yet).
-    promises: !!options.promises,
+    // are undocumented and should not be used by abstract-leveldown db's.
+    promises: options.promises !== false,
     status: options.status !== false,
     serialize: options.serialize !== false,
 
