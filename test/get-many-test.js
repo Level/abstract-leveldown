@@ -214,11 +214,7 @@ exports.getMany = function (test, testCommon) {
       for (const open of [true, false]) {
         const db = testCommon.factory()
 
-        if (testCommon.status) {
-          t.is(db.status, testCommon.deferredOpen ? 'opening' : 'new')
-        } else {
-          t.pass('no status')
-        }
+        t.is(db.status, testCommon.deferredOpen ? 'opening' : 'new')
 
         // Must be true if db supports deferredOpen
         const operational = testCommon.deferredOpen || db.isOperational()

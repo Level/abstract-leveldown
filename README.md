@@ -194,7 +194,7 @@ if (!db.supports.permanence) {
   throw new Error('Persistent storage is required')
 }
 
-if (db.supports.bufferKeys && db.supports.promises) {
+if (db.supports.bufferKeys) {
   await db.put(Buffer.from('key'), 'value')
 }
 ```
