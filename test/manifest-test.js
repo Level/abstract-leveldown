@@ -3,8 +3,6 @@
 const suite = require('level-supports/test')
 
 module.exports = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-
   suite(test, testCommon)
 
   testCommon.status && test('manifest has status', function (t) {
@@ -18,6 +16,4 @@ module.exports = function (test, testCommon) {
       db.close(t.end.bind(t))
     })
   })
-
-  test('tearDown', testCommon.tearDown)
 }

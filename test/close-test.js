@@ -1,9 +1,5 @@
 'use strict'
 
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-}
-
 exports.close = function (test, testCommon) {
   test('test close()', function (t) {
     const db = testCommon.factory()
@@ -31,12 +27,6 @@ exports.close = function (test, testCommon) {
   })
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.close(test, testCommon)
-  exports.tearDown(test, testCommon)
 }

@@ -24,12 +24,6 @@ require('./leveldown-test')(test, testCommon)
 require('./manifest-test')(test, testCommon)
 require('./open-test').all(test, testCommon)
 
-require('./open-create-if-missing-test').setUp(test, testCommon)
-require('./open-create-if-missing-test').tearDown(test, testCommon)
-
-require('./open-error-if-exists-test').setUp(test, testCommon)
-require('./open-error-if-exists-test').tearDown(test, testCommon)
-
 require('./del-test').setUp(test, testCommon)
 require('./del-test').args(test, testCommon)
 
@@ -65,22 +59,9 @@ require('./iterator-range-test').tearDown(test, testCommon)
 require('./async-iterator-test').setup(test, testCommon)
 require('./async-iterator-test').teardown(test, testCommon)
 
-require('./iterator-snapshot-test').setUp(test, testCommon)
-require('./iterator-snapshot-test').tearDown(test, testCommon)
-
-require('./iterator-no-snapshot-test').setUp(test, testCommon)
-require('./iterator-no-snapshot-test').tearDown(test, testCommon)
-
-require('./iterator-seek-test').setUp(test, testCommon)
 require('./iterator-seek-test').sequence(test, testCommon)
-require('./iterator-seek-test').tearDown(test, testCommon)
 
-require('./clear-test').setUp(test, testCommon)
 require('./clear-test').args(test, testCommon)
-require('./clear-test').tearDown(test, testCommon)
-
-require('./clear-range-test').setUp(test, testCommon)
-require('./clear-range-test').tearDown(test, testCommon)
 
 function implement (ctor, methods) {
   function Test () {

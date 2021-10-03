@@ -1,9 +1,5 @@
 'use strict'
 
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-}
-
 exports.snapshot = function (test, testCommon) {
   function make (run) {
     return function (t) {
@@ -80,12 +76,6 @@ exports.snapshot = function (test, testCommon) {
   }))
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.snapshot(test, testCommon)
-  exports.tearDown(test, testCommon)
 }

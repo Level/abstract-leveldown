@@ -39,6 +39,8 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Upcoming
 
+### Increased API parity with `levelup`
+
 All methods that take a callback now also support promises. They return a promise if no callback is provided, the same as `levelup`.
 
 On any operation, `abstract-leveldown` now checks if it's open. If not, it will either throw an error (if the relevant API is synchronous) or asynchronously yield an error. For example:
@@ -78,6 +80,10 @@ LevelDOWN.prototype.approximateSize = function (start, end, callback) {
   // ...
 }
 ```
+
+### Changes to test suite
+
+The `setUp` and `tearDown` functions have been removed from the test suite and `suite.common()`.
 
 ## 7.0.0
 

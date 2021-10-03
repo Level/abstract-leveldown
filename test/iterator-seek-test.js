@@ -1,14 +1,8 @@
 'use strict'
 
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.sequence(test, testCommon)
   exports.seek(test, testCommon)
-  exports.tearDown(test, testCommon)
-}
-
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
 }
 
 exports.sequence = function (test, testCommon) {
@@ -260,8 +254,4 @@ exports.seek = function (test, testCommon) {
       })
     })
   })
-}
-
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
 }

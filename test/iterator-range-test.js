@@ -19,7 +19,6 @@ const data = (function () {
 }())
 
 exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
     db.open(function () {
@@ -253,7 +252,7 @@ exports.range = function (test, testCommon) {
 
 exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
-    db.close(testCommon.tearDown.bind(null, t))
+    db.close(t.end.bind(t))
   })
 }
 

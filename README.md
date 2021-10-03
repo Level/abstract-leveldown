@@ -613,22 +613,6 @@ This also serves as a signal to users of your implementation. The following opti
 
 This metadata will be moved to manifests (`db.supports`) in the future.
 
-### Setup and teardown
-
-To perform (a)synchronous work before or after each test, you may define `setUp` and `tearDown` functions:
-
-```js
-suite({
-  // ..
-  setUp: function (t) {
-    t.end()
-  },
-  tearDown: function (t) {
-    t.end()
-  }
-})
-```
-
 ### Reusing `testCommon`
 
 The input to the test suite is a `testCommon` object. Should you need to reuse `testCommon` for your own (additional) tests, use the included utility to create a `testCommon` with defaults:
@@ -648,22 +632,18 @@ const testCommon = suite.common({
 suite(testCommon)
 ```
 
-The `testCommon` object will have all the properties describe above: `test`, `factory`, `setUp`, `tearDown` and the skip options. You might use it like so:
+The `testCommon` object will have all the properties describe above: `test`, `factory` and the skip options. You might use it like so:
 
 ```js
-test('setUp', testCommon.setUp)
-
 test('custom test', function (t) {
-  var db = testCommon.factory()
+  const db = testCommon.factory()
   // ..
 })
 
 test('another custom test', function (t) {
-  var db = testCommon.factory()
+  const db = testCommon.factory()
   // ..
 })
-
-test('tearDown', testCommon.tearDown)
 ```
 
 ## Spread The Word

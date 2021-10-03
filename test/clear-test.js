@@ -2,10 +2,6 @@
 
 const concat = require('level-concat-iterator')
 
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-}
-
 exports.args = function (test, testCommon) {
   test('test clear() with legacy range options', function (t) {
     t.plan(4)
@@ -116,15 +112,7 @@ exports.clear = function (test, testCommon) {
   }
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', function (t) {
-    testCommon.tearDown(t)
-  })
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.args(test, testCommon)
   exports.clear(test, testCommon)
-  exports.tearDown(test, testCommon)
 }

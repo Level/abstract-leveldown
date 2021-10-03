@@ -1,9 +1,5 @@
 'use strict'
 
-exports.setUp = function (test, testCommon) {
-  test('setUp', testCommon.setUp)
-}
-
 exports.open = function (test, testCommon) {
   test('test database open, no options', function (t) {
     const db = testCommon.factory()
@@ -80,12 +76,6 @@ exports.open = function (test, testCommon) {
   })
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.open(test, testCommon)
-  exports.tearDown(test, testCommon)
 }

@@ -16,10 +16,6 @@ const data = (function () {
   return d
 }())
 
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-}
-
 exports.range = function (test, testCommon) {
   function rangeTest (name, opts, expected) {
     test('db#clear() with ' + name, function (t) {
@@ -249,12 +245,6 @@ exports.range = function (test, testCommon) {
   }, data)
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.range(test, testCommon)
-  exports.tearDown(test, testCommon)
 }

@@ -20,10 +20,6 @@ function testCommon (options) {
     test: test,
     factory: factory,
 
-    // TODO (next major): remove
-    setUp: options.setUp || noopTest(),
-    tearDown: options.tearDown || noopTest(),
-
     // TODO (next major): use db.supports instead
     bufferKeys: options.bufferKeys !== false,
     createIfMissing: options.createIfMissing !== false,
@@ -45,12 +41,6 @@ function testCommon (options) {
 
     deferredOpen: !!options.deferredOpen,
     streams: !!options.streams
-  }
-}
-
-function noopTest () {
-  return function (t) {
-    t.end()
   }
 }
 

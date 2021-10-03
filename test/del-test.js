@@ -5,7 +5,6 @@ const { verifyNotFoundError, illegalKeys, assertAsync } = require('./util')
 let db
 
 exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
   test('setUp db', function (t) {
     db = testCommon.factory()
     db.open(t.end.bind(t))
@@ -76,7 +75,7 @@ exports.del = function (test, testCommon) {
 
 exports.tearDown = function (test, testCommon) {
   test('tearDown', function (t) {
-    db.close(testCommon.tearDown.bind(null, t))
+    db.close(t.end.bind(t))
   })
 }
 

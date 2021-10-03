@@ -2,10 +2,6 @@
 
 const collectEntries = require('level-concat-iterator')
 
-exports.setUp = function (test, testCommon) {
-  test('setUp common', testCommon.setUp)
-}
-
 exports.noSnapshot = function (test, testCommon) {
   function make (run) {
     return function (t) {
@@ -63,12 +59,6 @@ exports.noSnapshot = function (test, testCommon) {
   }))
 }
 
-exports.tearDown = function (test, testCommon) {
-  test('tearDown', testCommon.tearDown)
-}
-
 exports.all = function (test, testCommon) {
-  exports.setUp(test, testCommon)
   exports.noSnapshot(test, testCommon)
-  exports.tearDown(test, testCommon)
 }
