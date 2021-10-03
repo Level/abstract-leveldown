@@ -280,8 +280,6 @@ Lastly, an implementation is free to add its own options.
 
 ### `db.clear([options, ]callback)`
 
-**This method is experimental. Not all implementations support it yet.**
-
 Delete all entries or a range. Not guaranteed to be atomic. Accepts the following range options (with the same rules as on iterators):
 
 - `gt` (greater than), `gte` (greater than or equal) define the lower bound of the range to be deleted. Only entries where the key is greater than (or equal to) this option will be included in the range. When `reverse=true` the order will be reversed, but the entries deleted will be the same.
@@ -453,11 +451,9 @@ The default `_get()` invokes `callback` on a next tick with a `NotFound` error. 
 
 ### `db._getMany(keys, options, callback)`
 
-**This new method is optional for the time being. To enable its tests, set the [`getMany` option of the test suite](#excluding-tests) to `true`.**
-
 Get multiple values by an array of `keys`. The `options` object will always have the following properties: `asBuffer`. If an error occurs, call the `callback` function with an `Error`. Otherwise call `callback` with `null` as the first argument and an array of values as the second. If a key does not exist, set the relevant value to `undefined`.
 
-The default `_getMany()` invokes `callback` on a next tick with an array of values that is equal in length to `keys` and is filled with `undefined`. It must be overridden to support `getMany()` but this is currently an opt-in feature. If the implementation does support `getMany()` then `db.supports.getMany` must be set to true via the [constructor](#db--abstractleveldownmanifest).
+The default `_getMany()` invokes `callback` on a next tick with an array of values that is equal in length to `keys` and is filled with `undefined`. It must be overridden and `db.supports.getMany` must be set to true via the [constructor](#db--abstractleveldownmanifest).
 
 ### `db._put(key, value, options, callback)`
 
@@ -503,8 +499,6 @@ The default `_iterator()` returns a noop `AbstractIterator` instance. It must be
 The `options` object will always have the following properties: `reverse`, `keys`, `values`, `limit`, `keyAsBuffer` and `valueAsBuffer`.
 
 ### `db._clear(options, callback)`
-
-**This method is experimental and optional for the time being. To enable its tests, set the [`clear` option of the test suite](#excluding-tests) to `true`.**
 
 Delete all entries or a range. Does not have to be atomic. It is recommended (and possibly mandatory in the future) to operate on a snapshot so that writes scheduled after a call to `clear()` will not be affected.
 
@@ -604,8 +598,6 @@ This also serves as a signal to users of your implementation. The following opti
 
 - `bufferKeys`: set to `false` if binary keys are not supported by the underlying storage
 - `seek`: set to `false` if your `iterator` does not implement `_seek`
-- `clear`: defaults to `false` until a next major release. Set to `true` if your implementation either implements `_clear()` itself or is suitable to use the default implementation of `_clear()` (which requires binary key support).
-- `getMany`: defaults to `false` until a next major release. Set to `true` if your implementation implements `_getMany()`.
 - `snapshots`: set to `false` if any of the following is true:
   - Reads don't operate on a [snapshot](#iterator)
   - Snapshots are created asynchronously

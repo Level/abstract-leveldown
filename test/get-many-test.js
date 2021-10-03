@@ -79,11 +79,6 @@ exports.args = function (test, testCommon) {
  * @param {import('tape')} test
  */
 exports.getMany = function (test, testCommon) {
-  test('test getMany() support is reflected in manifest', function (t) {
-    t.is(db.supports && db.supports.getMany, true)
-    t.end()
-  })
-
   test('test simple getMany()', function (t) {
     db.put('foo', 'bar', function (err) {
       t.error(err)

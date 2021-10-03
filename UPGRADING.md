@@ -83,7 +83,8 @@ LevelDOWN.prototype.approximateSize = function (start, end, callback) {
 
 ### Changes to test suite
 
-The `setUp` and `tearDown` functions have been removed from the test suite and `suite.common()`.
+- Support of `db.clear()` and `db.getMany()` is now mandatory
+- The `setUp` and `tearDown` functions have been removed from the test suite and `suite.common()`.
 
 ## 7.0.0
 

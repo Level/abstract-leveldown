@@ -25,10 +25,7 @@ function suite (options) {
   require('./get-test').all(test, testCommon)
   require('./del-test').all(test, testCommon)
   require('./put-get-del-test').all(test, testCommon)
-
-  if (testCommon.getMany) {
-    require('./get-many-test').all(test, testCommon)
-  }
+  require('./get-many-test').all(test, testCommon)
 
   require('./batch-test').all(test, testCommon)
   require('./chained-batch-test').all(test, testCommon)
@@ -47,10 +44,8 @@ function suite (options) {
     require('./iterator-no-snapshot-test').all(test, testCommon)
   }
 
-  if (testCommon.clear) {
-    require('./clear-test').all(test, testCommon)
-    require('./clear-range-test').all(test, testCommon)
-  }
+  require('./clear-test').all(test, testCommon)
+  require('./clear-range-test').all(test, testCommon)
 }
 
 suite.common = common

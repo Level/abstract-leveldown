@@ -14,10 +14,11 @@ const kPromise = Symbol('promise')
 function AbstractLevelDOWN (manifest) {
   this.status = 'new'
 
-  // TODO (next major): make this mandatory
   this.supports = supports(manifest, {
     status: true,
-    promises: true
+    promises: true,
+    clear: true,
+    getMany: true
   })
 }
 

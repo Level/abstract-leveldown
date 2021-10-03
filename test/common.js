@@ -26,8 +26,6 @@ function testCommon (options) {
     errorIfExists: options.errorIfExists !== false,
     snapshots: options.snapshots !== false,
     seek: options.seek !== false,
-    clear: !!options.clear,
-    getMany: !!options.getMany,
 
     // Support running test suite on a levelup db. All options below this line
     // are undocumented and should not be used by abstract-leveldown db's.
