@@ -20,7 +20,7 @@ const rangeOptions = ['gt', 'gte', 'lt', 'lte']
 // Test the suite itself as well as the default implementation,
 // excluding noop operations that can't pass the test suite.
 
-require('./leveldown-test')(test, testCommon)
+require('./factory-test')(test, testCommon)
 require('./manifest-test')(test, testCommon)
 require('./open-test').all(test, testCommon)
 

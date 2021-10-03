@@ -43,6 +43,8 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 All methods that take a callback now also support promises. They return a promise if no callback is provided, the same as `levelup`.
 
+The prototype of `require('abstract-leveldown').AbstractLevelDOWN` has changed. It now inherits from `require('events').EventEmitter`.
+
 On any operation, `abstract-leveldown` now checks if it's open. If not, it will either throw an error (if the relevant API is synchronous) or asynchronously yield an error. For example:
 
 ```js

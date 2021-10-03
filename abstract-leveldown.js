@@ -2,6 +2,7 @@
 
 const supports = require('level-supports')
 const isBuffer = require('is-buffer')
+const { EventEmitter } = require('events')
 const { fromCallback } = require('catering')
 const AbstractIterator = require('./abstract-iterator')
 const AbstractChainedBatch = require('./abstract-chained-batch')
@@ -12,8 +13,9 @@ const rangeOptions = ['lt', 'lte', 'gt', 'gte']
 const kPromise = Symbol('promise')
 
 function AbstractLevelDOWN (manifest) {
-  this.status = 'new'
+  EventEmitter.call(this)
 
+  this.status = 'new'
   this.supports = supports(manifest, {
     status: true,
     promises: true,
@@ -21,6 +23,8 @@ function AbstractLevelDOWN (manifest) {
     getMany: true
   })
 }
+
+Object.setPrototypeOf(AbstractLevelDOWN.prototype, EventEmitter.prototype)
 
 AbstractLevelDOWN.prototype.open = function (options, callback) {
   callback = getCallback(options, callback)
