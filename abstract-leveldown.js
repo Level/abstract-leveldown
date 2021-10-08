@@ -36,12 +36,12 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
   options.createIfMissing = options.createIfMissing !== false
   options.errorIfExists = !!options.errorIfExists
 
-  const maybeOpened = () => {
+  const maybeOpened = (err) => {
     if (this.status === 'closing' || this.status === 'opening') {
       // Wait until pending state changes are done
-      this.once(kLanded, maybeOpened)
+      this.once(kLanded, err ? () => maybeOpened(err) : maybeOpened)
     } else if (this.status !== 'open') {
-      callback(new Error('Database is not open'))
+      callback(err || new Error('Database is not open'))
     } else {
       callback()
     }
@@ -57,7 +57,7 @@ AbstractLevelDOWN.prototype.open = function (options, callback) {
       if (err) {
         this.status = oldStatus
         this.emit(kLanded)
-        return callback(err)
+        return maybeOpened(err)
       }
 
       this.status = 'open'
@@ -84,12 +84,12 @@ AbstractLevelDOWN.prototype._open = function (options, callback) {
 AbstractLevelDOWN.prototype.close = function (callback) {
   callback = fromCallback(callback, kPromise)
 
-  const maybeClosed = () => {
+  const maybeClosed = (err) => {
     if (this.status === 'opening' || this.status === 'closing') {
       // Wait until pending state changes are done
-      this.once(kLanded, maybeClosed)
+      this.once(kLanded, err ? maybeClosed(err) : maybeClosed)
     } else if (this.status !== 'closed') {
-      callback(new Error('Database is not closed'))
+      callback(err || new Error('Database is not closed'))
     } else {
       callback()
     }
@@ -103,7 +103,7 @@ AbstractLevelDOWN.prototype.close = function (callback) {
       if (err) {
         this.status = 'open'
         this.emit(kLanded)
-        return callback(err)
+        return maybeClosed(err)
       }
 
       this.status = 'closed'
