@@ -213,7 +213,7 @@ exports.batch = function (test, testCommon) {
       t.is(batch.length, 4, 'length was incremented')
 
       batch.write(function (err) {
-        t.error(err)
+        t.error(err, 'no write() error')
 
         const opts = db.supports.encodings
           ? { keyEncoding: 'utf8', valueEncoding: 'utf8' }
@@ -292,17 +292,19 @@ exports.events = function (test, testCommon) {
     await db.close()
   })
 
-  test('test close() on chained batch event', async function (t) {
-    t.plan(1)
-
+  test('test close() on chained batch event', async function () {
     const db = testCommon.factory()
     await db.open()
 
+    let promise
+
     db.on('batch', function () {
-      db.close(t.ifError.bind(t))
+      // Should not interfere with the current write() operation
+      promise = db.close()
     })
 
     await db.batch().put('a', 'b').write()
+    await promise
   })
 }
 
