@@ -184,6 +184,20 @@ exports.args = function (test, testCommon) {
       .then(t.end.bind(t))
       .catch(t.end.bind(t))
   })
+
+  test('test twice batch#close() is idempotent', function (t) {
+    const batch = db.batch()
+    batch.close(function () {
+      let async = false
+
+      batch.close(function () {
+        t.ok(async, 'callback is asynchronous')
+        t.end()
+      })
+
+      async = true
+    })
+  })
 }
 
 exports.batch = function (test, testCommon) {

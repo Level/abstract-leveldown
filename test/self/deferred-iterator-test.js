@@ -137,7 +137,7 @@ test('deferred iterators are created in order', function (t) {
 })
 
 test('deferred iterator is closed upon failed open', function (t) {
-  t.plan(3)
+  t.plan(6)
 
   const db = mockDown({
     _open (options, callback) {
@@ -152,13 +152,84 @@ test('deferred iterator is closed upon failed open', function (t) {
   const it = db.iterator()
   t.ok(it instanceof DeferredIterator)
 
-  it.next(function (err) {
-    // TODO: should this be 'Iterator is not open'?
-    t.is(err && err.message, 'Database is not open')
+  const original = it._close
+  it._close = function (...args) {
+    t.pass('closed')
+    return original.call(this, ...args)
+  }
+
+  verifyClosed(t, it, () => {})
+})
+
+test('deferred iterator and real iterator are closed on db.close()', function (t) {
+  t.plan(12)
+
+  const db = mockDown({
+    _iterator () {
+      return mockIterator(this, {
+        _close (callback) {
+          t.pass('closed')
+          this.nextTick(callback)
+        }
+      })
+    }
+  })
+
+  const it = db.iterator()
+  t.ok(it instanceof DeferredIterator)
+
+  const original = it._close
+  it._close = function (...args) {
+    t.pass('closed')
+    return original.call(this, ...args)
+  }
+
+  db.close(function (err) {
+    t.ifError(err, 'no close() error')
+
+    verifyClosed(t, it, function () {
+      db.open(function (err) {
+        t.ifError(err, 'no open() error')
+
+        // Should still be closed
+        verifyClosed(t, it, function () {
+          db.close(t.ifError.bind(t))
+        })
+      })
+    })
   })
 })
 
-test('deferred iterator defers close()', function (t) {
+test('deferred iterator and real iterator are detached on db.close()', function (t) {
+  t.plan(4)
+
+  let real
+  const db = mockDown({
+    _iterator () {
+      real = mockIterator(this)
+      return real
+    }
+  })
+
+  const it = db.iterator()
+  t.ok(it instanceof DeferredIterator)
+
+  db.close(function (err) {
+    t.ifError(err, 'no close() error')
+
+    db.open(function (err) {
+      t.ifError(err, 'no open() error')
+
+      it.close = real.close = it._close = real._close = function () {
+        t.fail('should not be called')
+      }
+
+      db.close(t.ifError.bind(t))
+    })
+  })
+})
+
+test('deferred iterator defers underlying close()', function (t) {
   t.plan(3)
 
   const order = []
@@ -186,3 +257,21 @@ test('deferred iterator defers close()', function (t) {
     t.same(order, ['_open', '_iterator', '_close'])
   })
 })
+
+function verifyClosed (t, it, cb) {
+  it.next(function (err) {
+    t.is(err && err.message, 'Iterator is not open', 'correct error on first next()')
+
+    // Should account for userland code that ignores errors
+    try {
+      it.seek(123)
+    } catch (err) {
+      t.is(err && err.message, 'Iterator is not open', 'correct error on seek()')
+    }
+
+    it.next(function (err) {
+      t.is(err && err.message, 'Iterator is not open', 'correct error on second next()')
+      cb()
+    })
+  })
+}

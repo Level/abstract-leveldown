@@ -230,54 +230,36 @@ test('test opening explicitly gives a chance to capture an error with promise', 
 })
 
 test('test close() extensibility when open', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   const spy = sinon.spy(function (cb) { this._nextTick(cb) })
-  const expectedCb = function () {}
   const Test = implement(AbstractLevelDOWN, { _close: spy })
   const test = new Test({})
 
   test.once('open', function () {
-    test.close(expectedCb)
-
-    t.equal(spy.callCount, 1, 'got _close() call')
-    t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
-    t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
-  })
-})
-
-test('test close() extensibility when open, after a tick', function (t) {
-  t.plan(3)
-
-  const spy = sinon.spy(function (cb) { this._nextTick(cb) })
-  const expectedCb = function () {}
-  const Test = implement(AbstractLevelDOWN, { _close: spy })
-  const test = new Test({})
-
-  test.once('open', function () {
-    test.nextTick(function () {
-      test.close(expectedCb)
-
-      t.equal(spy.callCount, 1, 'got _close() call')
-      t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
-      t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
+    test.close(function (err) {
+      t.ifError(err, 'no close() error')
+      t.is(spy.callCount, 1, 'got _close() call')
+      t.is(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
+      t.is(spy.getCall(0).args.length, 1, 'got one arguments')
     })
   })
 })
 
 test('test close() extensibility when open, via open callback', function (t) {
-  t.plan(3)
+  t.plan(4)
 
   const spy = sinon.spy(function (cb) { this._nextTick(cb) })
-  const expectedCb = function () {}
   const Test = implement(AbstractLevelDOWN, { _close: spy })
   const test = new Test({}, function () {
-    test.close(expectedCb)
-    test.on('open', t.fail.bind(t))
+    test.close(function (err) {
+      t.ifError(err, 'no close() error')
+      t.is(spy.callCount, 1, 'got _close() call')
+      t.is(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
+      t.is(spy.getCall(0).args.length, 1, 'got one arguments')
+    })
 
-    t.equal(spy.callCount, 1, 'got _close() call')
-    t.equal(spy.getCall(0).thisValue, test, '`this` on _close() was correct')
-    t.equal(spy.getCall(0).args.length, 1, 'got one arguments')
+    test.on('open', t.fail.bind(t))
   })
 })
 
@@ -615,7 +597,7 @@ test('test chained batch() extensibility', function (t) {
     t.equal(spy.getCall(0).args[0].length, 2, 'got expected array argument')
     t.deepEqual(spy.getCall(0).args[0][0], { type: 'put', key: 'foo', value: 'bar' }, 'got expected array argument[0]')
     t.deepEqual(spy.getCall(0).args[0][1], { type: 'del', key: 'bang' }, 'got expected array argument[1]')
-    t.deepEqual(spy.getCall(0).args[1], { silent: true }, 'got expected options argument')
+    t.deepEqual(spy.getCall(0).args[1], {}, 'got expected options argument')
     t.is(typeof spy.getCall(0).args[2], 'function', 'got callback argument')
 
     test.batch().put('foo', 'bar', expectedOptions).del('bang', expectedOptions).write(expectedOptions, expectedCb)
@@ -626,7 +608,7 @@ test('test chained batch() extensibility', function (t) {
     t.equal(spy.getCall(1).args[0].length, 2, 'got expected array argument')
     t.deepEqual(spy.getCall(1).args[0][0], { type: 'put', key: 'foo', value: 'bar', options: 1 }, 'got expected array argument[0]')
     t.deepEqual(spy.getCall(1).args[0][1], { type: 'del', key: 'bang', options: 1 }, 'got expected array argument[1]')
-    t.deepEqual(spy.getCall(1).args[1], { options: 1, silent: true }, 'got expected options argument')
+    t.deepEqual(spy.getCall(1).args[1], { options: 1 }, 'got expected options argument')
     t.is(typeof spy.getCall(1).args[2], 'function', 'got callback argument')
   })
 })
@@ -1469,6 +1451,7 @@ test('_setupIteratorOptions', function (t) {
   })
 
   require('./self/defer-test')
+  require('./self/attach-resource-test')
   require('./self/deferred-iterator-test')
   require('./self/deferred-operations-test')
   require('./self/deferred-chained-batch-test')

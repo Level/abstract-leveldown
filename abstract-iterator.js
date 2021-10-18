@@ -75,9 +75,6 @@ AbstractIterator.prototype.seek = function (target) {
     throw new Error('Iterator is not open')
   } else if (this[kNexting]) {
     throw new Error('Iterator is busy')
-  } else if (this.db.status === 'opening') {
-    // Must be done here to not serialize twice
-    this.defer('_seek', [target])
   } else {
     this._seek(this.db._serializeKey(target))
   }
@@ -113,7 +110,7 @@ AbstractIterator.prototype.end = function (callback) {
   return this.close(callback)
 }
 
-AbstractIterator.prototype[kFinishClose] = function (err) {
+AbstractIterator.prototype[kFinishClose] = function () {
   this[kClosed] = true
   this.db.detachResource(this)
 
@@ -121,7 +118,7 @@ AbstractIterator.prototype[kFinishClose] = function (err) {
   this[kCloseCallbacks] = []
 
   for (const cb of callbacks) {
-    cb(err)
+    cb()
   }
 }
 
@@ -135,10 +132,6 @@ AbstractIterator.prototype[Symbol.asyncIterator] = async function * () {
   } finally {
     if (!this[kClosed]) await this.close()
   }
-}
-
-AbstractIterator.prototype.defer = function (method, args, options) {
-  this.db.defer(method, args, { thisArg: this, ...options })
 }
 
 // Temporary to catch issues upgrading to abstract-leveldown@8

@@ -21,13 +21,10 @@ exports.args = function (test, testCommon) {
 exports.sequence = function (test, testCommon) {
   test('test twice iterator#close() is idempotent', function (t) {
     const iterator = db.iterator()
-    iterator.close(function (err) {
-      t.error(err)
-
+    iterator.close(function () {
       let async = false
 
-      iterator.close(function (err) {
-        t.error(err)
+      iterator.close(function () {
         t.ok(async, 'callback is asynchronous')
         t.end()
       })

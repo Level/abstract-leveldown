@@ -171,9 +171,8 @@ Constructors typically take a `location` argument pointing to a location on disk
 
 A read-only property. An `abstract-leveldown` compliant store can be in one of the following states:
 
-- `'new'` - newly created, not opened or closed
 - `'opening'` - waiting for the store to be opened
-- `'open'` - successfully opened the store, available for use
+- `'open'` - successfully opened the store
 - `'closing'` - waiting for the store to be closed
 - `'closed'` - store has been successfully closed, should not be used.
 
@@ -359,7 +358,7 @@ If range options like `gt` were passed to `db.iterator()` and `target` does not 
 
 #### `iterator.close([callback])`
 
-End iteration and free up underlying resources. The `callback` function will be called with no arguments on success or with an `Error` if closing failed for any reason.
+Free up underlying resources. The `callback` function will be called with no arguments.
 
 If no callback is provided, a promise is returned.
 
@@ -440,7 +439,7 @@ FakeLevelDOWN.prototype._serializeKey = function (key) {
 
 Then `db.get(2, callback)` translates into `db._get('2', options, callback)`. Similarly, `db.iterator({ gt: 2 })` translates into `db._iterator({ gt: '2', ... })` and `iterator.seek(2)` translates into `iterator._seek('2')`.
 
-If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function (returning the key as-is). Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
+It must be safe to call `_serializeKey` at any time including if the db hasn't opened yet. If the underlying storage supports any JavaScript type or if your implementation wraps another implementation, it is recommended to make `_serializeKey` an identity function (returning the key as-is). Serialization is irreversible, unlike _encoding_ as performed by implementations like [`encoding-down`][encoding-down]. This also applies to `_serializeValue`.
 
 The default `_serializeKey()` is an identity function.
 
@@ -539,7 +538,7 @@ Seek the iterator to a given key or the closest key. This method is optional.
 
 #### `iterator._close(callback)`
 
-Free up underlying resources. This method is guaranteed to only be called once. If closing failed, call the `callback` function with an `Error`. Otherwise call `callback` without any arguments.
+Free up underlying resources. This method is guaranteed to only be called once. Once closing is done, call `callback` without any arguments. It is not allowed to yield an error.
 
 The default `_close()` invokes `callback` on a next tick. Overriding is optional.
 

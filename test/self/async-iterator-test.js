@@ -96,42 +96,6 @@ for (const type of ['explicit', 'deferred']) {
     }
   })
 
-  test(`for await...of db.iterator() with user error and close() error (${type} open)`, async function (t) {
-    t.plan(4)
-
-    const db = withIterator({
-      _next (callback) {
-        this._nextTick(callback, null, n.toString(), n.toString())
-        if (n++ > 10) throw new Error('Infinite loop')
-      },
-
-      _close (callback) {
-        this._nextTick(function () {
-          closed = true
-          callback(new Error('close error'))
-        })
-      }
-    })
-
-    if (type === 'explicit') await db.open()
-    const it = db.iterator()
-    verify(t, db, it)
-
-    let n = 0
-    let closed = false
-
-    try {
-      // eslint-disable-next-line no-unused-vars, no-unreachable-loop
-      for await (const kv of it) {
-        throw new Error('user error')
-      }
-    } catch (err) {
-      // TODO: ideally, this would be a combined aka aggregate error
-      t.is(err.message, 'user error')
-      t.ok(closed, 'closed')
-    }
-  })
-
   test(`for await...of db.iterator() closes on iterator error (${type} open)`, async function (t) {
     t.plan(5)
 
@@ -162,41 +126,6 @@ for (const type of ['explicit', 'deferred']) {
       }
     } catch (err) {
       t.is(err.message, 'iterator error')
-      t.ok(closed, 'closed')
-    }
-  })
-
-  test(`for await...of db.iterator() with iterator error and close() error (${type} open)`, async function (t) {
-    t.plan(5)
-
-    const db = withIterator({
-      _next (callback) {
-        t.pass('nexted')
-        this._nextTick(callback, new Error('iterator error'))
-      },
-
-      _close (callback) {
-        this._nextTick(function () {
-          closed = true
-          callback(new Error('close error'))
-        })
-      }
-    })
-
-    if (type === 'explicit') await db.open()
-    const it = db.iterator()
-    verify(t, db, it)
-
-    let closed = false
-
-    try {
-      // eslint-disable-next-line no-unused-vars
-      for await (const kv of it) {
-        t.fail('should not yield results')
-      }
-    } catch (err) {
-      // TODO: ideally, this would be a combined aka aggregate error
-      t.is(err.message, 'close error')
       t.ok(closed, 'closed')
     }
   })
@@ -232,41 +161,5 @@ for (const type of ['explicit', 'deferred']) {
     }
 
     t.ok(closed, 'closed')
-  })
-
-  test(`for await...of db.iterator() with user break and close() error (${type} open)`, async function (t) {
-    t.plan(5)
-
-    const db = withIterator({
-      _next (callback) {
-        this._nextTick(callback, null, n.toString(), n.toString())
-        if (n++ > 10) throw new Error('Infinite loop')
-      },
-
-      _close (callback) {
-        this._nextTick(function () {
-          closed = true
-          callback(new Error('close error'))
-        })
-      }
-    })
-
-    if (type === 'explicit') await db.open()
-    const it = db.iterator()
-    verify(t, db, it)
-
-    let n = 0
-    let closed = false
-
-    try {
-      // eslint-disable-next-line no-unused-vars, no-unreachable-loop
-      for await (const kv of it) {
-        t.pass('got a chance to break')
-        break
-      }
-    } catch (err) {
-      t.is(err.message, 'close error')
-      t.ok(closed, 'closed')
-    }
   })
 }
