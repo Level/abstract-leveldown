@@ -6,6 +6,18 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 <details><summary>Click to expand</summary>
 
+- [Upcoming](#upcoming)
+  - [1. API parity with `levelup`](#1-api-parity-with-levelup)
+    - [1.1. New: Promise support](#11-new-promise-support)
+    - [1.2. New: events & idempotent open](#12-new-events--idempotent-open)
+    - [1.3. New: deferred open](#13-new-deferred-open)
+    - [1.4. New: state checks](#14-new-state-checks)
+    - [1.5. New: chained batch length](#15-new-chained-batch-length)
+  - [2. New: encodings](#2-new-encodings)
+  - [3. Closing iterators is idempotent](#3-closing-iterators-is-idempotent)
+  - [4. Chained batch can be closed](#4-chained-batch-can-be-closed)
+  - [5. Semi-private properties have been made private](#5-semi-private-properties-have-been-made-private)
+  - [6. Breaking changes to test suite](#6-breaking-changes-to-test-suite)
 - [7.0.0](#700)
 - [6.0.0](#600)
   - [Changes to public API](#changes-to-public-api)
@@ -39,17 +51,29 @@ This document describes breaking changes and how to upgrade. For a complete list
 
 ## Upcoming
 
-### Increased API parity with `levelup`
+**This release removes the need for `levelup` and `encoding-down`. This means that an `abstract-leveldown` compliant db is a complete solution that doesn't need to be wrapped. It has the same API as `level(up)` including encodings, promises and events. In addition, implementations can use typed arrays (Uint8Array) instead of Buffer if they want to. Consumers of an implementation can use both.**
+
+For most folks an upgraded `abstract-leveldown` db can be a drop-in replacement for a `level(up)` db. Let's start this upgrade guide there: all methods have been enhanced and tuned to reach API parity with `levelup`.
+
+### 1. API parity with `levelup`
+
+#### 1.1. New: Promise support
 
 All methods that take a callback now also support promises. They return a promise if no callback is provided, the same as `levelup`. Implementations that override public (non-underscored) methods _must_ do the same and any implementation _should_ do the same for additional methods if any.
 
+#### 1.2. New: events & idempotent open
+
 The prototype of `require('abstract-leveldown').AbstractLevelDOWN` now inherits from `require('events').EventEmitter`. Opening and closing is idempotent and safe, and emits the same events as `levelup` would (with the exception of the 'ready' alias that `levelup` has for the 'open' event - `abstract-leveldown` only emits 'open').
+
+#### 1.3. New: deferred open
 
 Deferred open is built-in. This means an `abstract-leveldown` instance opens itself a tick after its constructor returns. Any operations made until opening has completed are queued up in memory. When opening completes the operations are replayed. If opening has failed (and this is a new behavior compared to `levelup`) the operations will yield errors. The `abstract-leveldown` prototype has a new `defer()` method for an implementation to defer custom operations.
 
 The initial `status` of an `abstract-leveldown` instance is now 'opening', and the previous `status` 'new' is gone.
 
-Wrapping an `abstract-leveldown` instance with `deferred-leveldown` will throw.
+Wrapping an `abstract-leveldown` instance with `deferred-leveldown` or `levelup` is no longer supported. It will either throw or exhibit undefined behavior.
+
+#### 1.4. New: state checks
 
 On any operation, `abstract-leveldown` now checks if it's open. If not, it will either throw an error (if the relevant API is synchronous) or asynchronously yield an error. For example:
 
@@ -92,7 +116,37 @@ LevelDOWN.prototype.approximateSize = function (start, end, callback) {
 }
 ```
 
-### Closing iterators is idempotent
+#### 1.5. New: chained batch length
+
+The `AbstractChainedBatch` prototype has a new `length` property that, like a chained batch in `levelup`, returns the number of operations in the batch. Implementations should not have to make changes for this unless they monkey-patched public methods of `AbstractChainedBatch`.
+
+### 2. New: encodings
+
+All relevant methods including the `AbstractLevelDOWN` constructor now accept `keyEncoding` and `valueEncoding` options. Read operations now yield strings rather than buffers by default, to align with `level` and friends.
+
+Both the public and private API of `abstract-leveldown` are encoding-aware. This means that private methods receive `keyEncoding` and `valueEncoding` options too, instead of `keyAsBuffer`, `valueAsBuffer` or `asBuffer`. Implementations don't need to perform encoding or decoding themselves. In fact they can do less: the `_serializeKey()` and `_serializeValue()` methods are also gone and implementations like `memdown` don't have to convert between strings and buffers.
+
+For example: a call like `db.put(key, { x: 2 }, { valueEncoding: 'json' })` will encode the `{ x: 2 }` value and might forward it to the private API as `db._put(key, '{"x":2}', { valueEncoding: 'utf8' }, callback)`. Same for the key (omitted for brevity). The private API would previously receive `{ asBuffer: false }` options.
+
+The keys, values and encoding options received by the private API depend on which encodings it supports. It must declare those via the manifest passed to the `AbstractLevelDOWN` constructor. See README for details. For example, an implementation might only support storing data as Uint8Arrays, known here as a "view":
+
+```js
+AbstractLevelDOWN({ encodings: { view: true } })
+```
+
+The JSON example above would then result in `db._put(key, value, { valueEncoding: 'view' })` where `value` is a Uint8Array containing JSON. Implementations can also declare support of multiple encodings; keys and values will then be encoded via the most optimal path.
+
+Lastly:
+
+- The `binary` encoding has been renamed to `buffer`, with `binary` as an alias
+- The `utf8` encoding will always return a string. It previously did not touch Buffers. Now it will call `buffer.toString('utf8')` for consistency. Consumers can (selectively) use the `buffer` or `view` encoding to avoid this conversion.
+- Unlike `encoding-down` and `level-codec`, the legacy and undocumented `encoding` option (as an alias for `valueEncoding`) is not supported
+- The `AbstractIterator` constructor now requires an `options` argument
+- The `AbstractIterator#_seek()` method got a new `options` argument
+- Zero-length keys are now valid
+- The `ascii`, `ucs2` and `utf16le` encodings are not supported.
+
+### 3. Closing iterators is idempotent
 
 The `iterator.end()` method has been renamed to `iterator.close()`, with `end()` being an alias for now. The term "close" makes it easier to differentiate between the iterator having reached its natural end (data-wise) versus closing it to cleanup resources.
 
@@ -104,30 +158,31 @@ The error messages `cannot call next() after end()` and `cannot call seek() afte
 
 The `next()` method no longer returns `this` (when a callback is provided).
 
-### Chained batch can be closed
+### 4. Chained batch can be closed
 
 Chained batch has a new method `close()` which is an idempotent operation and automatically called after `write()` (for backwards compatibility) or on `db.close()`. This to ensure batches can't be used after closing and reopening a db. If a `write()` is in progress, closing will wait for that. If `write()` is never called then `close()` must be.
 
 These changes could be breaking for an implementation that has (at its own risk) overridden the public `write()` method. In addition, the error message `write() already called on this batch` has been replaced with `Batch is not open`.
 
-### Semi-private properties have been made private
+### 5. Semi-private properties have been made private
 
-The following properties and methods can no longer be accessed, as they've been replaced with internal [symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol):
+The following properties and methods can no longer be accessed, as they've been removed or replaced with internal [symbols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol):
 
 - `AbstractIterator#_nexting`
 - `AbstractIterator#_ended`
 - `AbstractChainedBatch#_written`
 - `AbstractChainedBatch#_checkWritten()`
 - `AbstractChainedBatch#_operations`
+- `AbstractLevelDOWN#_setupIteratorOptions()`
 
-### Breaking changes to test suite
+### 6. Breaking changes to test suite
 
 - Options to skip tests have been removed in favor of `db.supports`
-- Support of `db.clear()` and `db.getMany()` is now mandatory
+- Support of `db.clear()` and `db.getMany()` is now mandatory. The default (slow) implementation of `_clear()` has been removed.
 - The `setUp` and `tearDown` functions have been removed from the test suite and `suite.common()`.
 - Added ability to access manifests via `testCommon.supports`, by lazily copying it from `testCommon.factory().supports`. This requires that the manifest does not change during the lifetime of a `db`.
 
-Lastly, it's recommended to revisit any custom tests of an implementation. In particular if those tests relied upon the previously loose state checking of `abstract-leveldown`. For example, making a `db.put()` call before `db.open()`. Such a test now has a different meaning. The previous meaning can typically be restored by wrapping tests with `db.once('open', ...)` logic.
+Lastly, it's recommended to revisit any custom tests of an implementation. In particular if those tests relied upon the previously loose state checking of `abstract-leveldown`. For example, making a `db.put()` call before `db.open()`. Such a test now has a different meaning. The previous meaning can typically be restored by wrapping tests with `db.once('open', ...)` or `await db.open()` logic.
 
 ## 7.0.0
 

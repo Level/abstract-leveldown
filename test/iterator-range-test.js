@@ -35,8 +35,8 @@ exports.setUp = function (test, testCommon) {
 
 exports.range = function (test, testCommon) {
   function rangeTest (name, opts, expected) {
-    opts.keyAsBuffer = false
-    opts.valueAsBuffer = false
+    opts.keyEncoding = 'utf8'
+    opts.valueEncoding = 'utf8'
 
     test(name, function (t) {
       collectEntries(db.iterator(opts), function (err, result) {

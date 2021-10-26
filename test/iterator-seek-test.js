@@ -50,24 +50,19 @@ exports.sequence = function (test, testCommon) {
   make('iterator#seek() throws after close()', function (db, t, done) {
     const ite = db.iterator()
 
-    // TODO: why call next? Can't we close immediately?
-    ite.next(function (err, key, value) {
-      t.error(err, 'no error from next()')
+    ite.close(function (err) {
+      t.error(err, 'no error from close()')
 
-      ite.close(function (err) {
-        t.error(err, 'no error from close()')
+      let error
 
-        let error
+      try {
+        ite.seek('two')
+      } catch (err) {
+        error = err.message
+      }
 
-        try {
-          ite.seek('two')
-        } catch (err) {
-          error = err.message
-        }
-
-        t.is(error, 'Iterator is not open', 'got error')
-        done()
-      })
+      t.is(error, 'Iterator is not open', 'got error')
+      done()
     })
   })
 }
@@ -116,9 +111,10 @@ exports.seek = function (test, testCommon) {
     })
   })
 
-  if (testCommon.supports.bufferKeys) {
+  if (testCommon.supports.encodings.buffer) {
+    // TODO: make this test meaningful, with bytes outside the utf8 range
     make('iterator#seek() to buffer target', function (db, t, done) {
-      const ite = db.iterator()
+      const ite = db.iterator({ keyEncoding: 'buffer' })
       ite.seek(Buffer.from('two'))
       ite.next(function (err, key, value) {
         t.error(err, 'no error from next()')
@@ -133,6 +129,18 @@ exports.seek = function (test, testCommon) {
       })
     })
   }
+
+  make('iterator#seek() to target with custom encoding', function (db, t, done) {
+    const ite = db.iterator()
+    const keyEncoding = { encode: () => 'two', format: 'utf8' }
+    ite.seek('xyz', { keyEncoding })
+    ite.next(function (err, key, value) {
+      t.error(err, 'no error')
+      t.same(key.toString(), 'two', 'key matches')
+      t.same(value.toString(), '2', 'value matches')
+      ite.close(done)
+    })
+  })
 
   make('iterator#seek() on reverse iterator', function (db, t, done) {
     const ite = db.iterator({ reverse: true, limit: 1 })

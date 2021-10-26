@@ -1,5 +1,8 @@
 'use strict'
 
+const { concat } = require('./util')
+const { Buffer } = require('buffer')
+
 let db
 
 exports.setUp = function (test, testCommon) {
@@ -90,16 +93,9 @@ exports.iterator = function (test, testCommon) {
       const fn = function (err, key, value) {
         t.error(err)
         if (key && value) {
-          if (db.supports.encodings) {
-            t.is(typeof key, 'string', 'key argument is a string')
-            t.is(typeof value, 'string', 'value argument is a string')
-          } else {
-            t.ok(Buffer.isBuffer(key), 'key argument is a Buffer')
-            t.ok(Buffer.isBuffer(value), 'value argument is a Buffer')
-          }
-          t.is(key.toString(), data[idx].key, 'correct key')
-          t.is(value.toString(), data[idx].value, 'correct value')
-          db._nextTick(next)
+          t.is(key, data[idx].key, 'correct key')
+          t.is(value, data[idx].value, 'correct value')
+          db.nextTick(next)
           idx++
         } else { // end
           t.ok(err == null, 'err argument is nullish')
@@ -118,6 +114,101 @@ exports.iterator = function (test, testCommon) {
       next()
     })
   })
+
+  // NOTE: adapted from memdown
+  test('iterator() sorts lexicographically', async function (t) {
+    const db = testCommon.factory()
+    await db.open()
+
+    // Write in unsorted order with multiple operations
+    await db.put('f', 'F')
+    await db.put('a', 'A')
+    await db.put('~', '~')
+    await db.put('e', 'E')
+    await db.put('🐄', '🐄')
+    await db.batch([
+      { type: 'put', key: 'd', value: 'D' },
+      { type: 'put', key: 'b', value: 'B' },
+      { type: 'put', key: 'ff', value: 'FF' },
+      { type: 'put', key: 'a🐄', value: 'A🐄' }
+    ])
+    await db.batch([
+      { type: 'put', key: '', value: 'empty' },
+      { type: 'put', key: '2', value: '2' },
+      { type: 'put', key: '12', value: '12' },
+      { type: 'put', key: '\t', value: '\t' }
+    ])
+
+    t.same(await concat(db.iterator()), [
+      { key: '', value: 'empty' },
+      { key: '\t', value: '\t' },
+      { key: '12', value: '12' },
+      { key: '2', value: '2' },
+      { key: 'a', value: 'A' },
+      { key: 'a🐄', value: 'A🐄' },
+      { key: 'b', value: 'B' },
+      { key: 'd', value: 'D' },
+      { key: 'e', value: 'E' },
+      { key: 'f', value: 'F' },
+      { key: 'ff', value: 'FF' },
+      { key: '~', value: '~' },
+      { key: '🐄', value: '🐄' }
+    ])
+
+    return db.close()
+  })
+
+  for (const keyEncoding of ['buffer', 'view']) {
+    if (!testCommon.supports.encodings[keyEncoding]) continue
+
+    test(`test iterator() has byte order (${keyEncoding} encoding)`, function (t) {
+      const db = testCommon.factory({ keyEncoding })
+
+      db.open(function (err) {
+        t.ifError(err, 'no open() error')
+
+        const ctor = keyEncoding === 'buffer' ? Buffer : Uint8Array
+        const keys = [2, 11, 1].map(b => ctor.from([b]))
+
+        db.batch(keys.map((key) => ({ type: 'put', key, value: 'x' })), function (err) {
+          t.ifError(err, 'no batch() error')
+
+          concat(db.iterator(), function (err, entries) {
+            t.ifError(err, 'no concat() error')
+            t.same(entries.map(e => e.key[0]), [1, 2, 11], 'order is ok')
+
+            db.close(t.end.bind(t))
+          })
+        })
+      })
+    })
+
+    // NOTE: adapted from memdown
+    test(`test iterator() with byte range (${keyEncoding} encoding)`, function (t) {
+      const db = testCommon.factory({ keyEncoding })
+
+      db.open(function (err) {
+        t.ifError(err, 'no open() error')
+
+        db.put(Buffer.from('a0', 'hex'), 'A', function (err) {
+          t.ifError(err, 'no put() error')
+
+          const it = db.iterator({ lt: Buffer.from('ff', 'hex') })
+
+          it.next(function (err, key, value) {
+            t.ifError(err, 'no next() error')
+            t.is(key && key.toString('hex'), 'a0')
+            t.is(value, 'A')
+
+            it.close(function (err) {
+              t.ifError(err, 'no close() error')
+              db.close(t.end.bind(t))
+            })
+          })
+        })
+      })
+    })
+  }
 }
 
 exports.tearDown = function (test, testCommon) {
