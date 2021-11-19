@@ -1,0 +1,7 @@
+coverage:
+  status:
+    project:
+      default:
+        # High threshold because codecov seems to compute it differently over time
+        threshold: 20%
+    patch: off
