@@ -12,7 +12,7 @@
     "test-browsers": "airtap --coverage test/self.js",
     "test-browser-local": "airtap --coverage -p local --live test/self.js",
     "coverage": "nyc report -r lcovonly",
-    "hallmark": "hallmark --fix",
+    "hallmark": "hallmark fix",
     "dependency-check": "dependency-check --no-dev -i buffer -i queue-microtask . test/*.js",
     "prepublishOnly": "npm run dependency-check"
   },
@@ -41,7 +41,7 @@
     "airtap": "^4.0.3",
     "airtap-sauce": "^1.1.0",
     "dependency-check": "^4.1.0",
-    "hallmark": "^3.1.0",
+    "hallmark": "^4.0.0",
     "nyc": "^15.1.0",
     "sinon": "^11.1.1",
     "standard": "^16.0.3",

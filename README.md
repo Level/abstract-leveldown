@@ -6,10 +6,10 @@
 [![npm](https://img.shields.io/npm/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 [![Node version](https://img.shields.io/node/v/abstract-leveldown.svg)](https://www.npmjs.com/package/abstract-leveldown)
 [![Test](https://img.shields.io/github/workflow/status/Level/abstract-leveldown/Test?label=test)](https://github.com/Level/abstract-leveldown/actions/workflows/test.yml)
-[![Coverage](https://img.shields.io/codecov/c/github/Level/abstract-leveldown?label=&logo=codecov&logoColor=fff)](https://codecov.io/gh/Level/abstract-leveldown)
-[![Standard](https://img.shields.io/badge/standard-informational?logo=javascript&logoColor=fff)](https://standardjs.com)
+[![Coverage](https://img.shields.io/codecov/c/github/Level/abstract-leveldown?label=\&logo=codecov\&logoColor=fff)](https://codecov.io/gh/Level/abstract-leveldown)
+[![Standard](https://img.shields.io/badge/standard-informational?logo=javascript\&logoColor=fff)](https://standardjs.com)
 [![Common Changelog](https://common-changelog.org/badge.svg)](https://common-changelog.org)
-[![Donate](https://img.shields.io/badge/donate-orange?logo=open-collective&logoColor=fff)](https://opencollective.com/level)
+[![Donate](https://img.shields.io/badge/donate-orange?logo=open-collective\&logoColor=fff)](https://opencollective.com/level)
 
 ## Table of Contents
 
