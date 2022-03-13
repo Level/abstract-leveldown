@@ -165,10 +165,6 @@ db.put('foo', 'bar', function (err) {
 
 See [`memdown`](https://github.com/Level/memdown/) if you are looking for a complete in-memory replacement for `leveldown`.
 
-## Browser Support
-
-[![Sauce Test Status](https://app.saucelabs.com/browser-matrix/abstract-leveldown.svg)](https://app.saucelabs.com/u/abstract-leveldown)
-
 ## Public API For Consumers
 
 ### `db = constructor(..)`
@@ -685,12 +681,6 @@ npm install abstract-leveldown
 > Individuals making significant and valuable contributions are given commit-access to the project to contribute as they see fit. This project is more like an open wiki than a standard guarded open source project.
 
 See the [Contribution Guide](https://github.com/Level/community/blob/master/CONTRIBUTING.md) for more details.
-
-## Big Thanks
-
-Cross-browser Testing Platform and Open Source ♥ Provided by [Sauce Labs](https://saucelabs.com).
-
-[![Sauce Labs logo](./sauce-labs.svg)](https://saucelabs.com)
 
 ## Donate
 
