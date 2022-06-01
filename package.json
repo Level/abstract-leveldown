@@ -41,7 +41,7 @@
     "dependency-check": "^4.1.0",
     "hallmark": "^4.0.0",
     "nyc": "^15.1.0",
-    "sinon": "^13.0.1",
+    "sinon": "^14.0.0",
     "standard": "^17.0.0",
     "tape": "^5.0.1"
   },
